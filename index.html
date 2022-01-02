@@ -6,150 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>书栖网正在建设中</title>
-    <style>
-        /* 字体引入 */
-        @font-face {
-            font-family: HarmonyOS_Sans;
-            src: url('./assets/fonts/HarmonyOS_Sans_SC_Regular.ttf') format('truetype');
-            font-weight: normal;
-            font-style: normal;
-        }
-
-        /* 全局样式 */
-        html,
-        body {
-            margin: 0;
-            font-family: HarmonyOS_Sans;
-        }
-
-        a,
-        a:visited {
-            text-decoration: none;
-            color: #0056ff;
-        }
-
-        /* 导航栏样式 */
-        .navbar {
-            background-color: #2b2b2b;
-            color: #fff;
-            height: 60px;
-            line-height: 60px;
-        }
-
-        .navbar-grid {
-            height: 100%;
-            display: grid;
-            grid-template-columns: 10vw 1fr 280px 10vw;
-            gap: 10px;
-        }
-
-        .navbar-grid .grid-item {
-
-            /* 下面三行为辅助样式 */
-            /* border: white solid 1px;
-            border-top: 0;
-            border-bottom: 0; */
-        }
-
-        .navbar-grid .grid-item a,
-        .navbar-grid .grid-item a:visited {
-            color: #fff;
-        }
-
-        .navbar-grid .grid-item * {
-            margin: 0;
-        }
-
-        .navbar>ul {
-            list-style-type: none;
-            display: flex;
-        }
-
-        .navbar>ul>li>a {
-            color: #fff;
-        }
-
-        /* 标题 siteTitle */
-        .siteTitle h1 {
-            margin-top: 130px;
-            display: inline-block;
-            font-size: 36px;
-        }
-
-        .siteTitle span {
-            display: inline-block;
-            color: crimson;
-        }
-
-        /* 正文样式 */
-        .main {
-            margin: 0 auto;
-            /* max-width: 600px; */
-            max-width: min(90vw, 600px);
-        }
-
-        .main p {
-            font-size: 15px;
-            line-height: 2em;
-        }
-
-        /* 搜索框 */
-        .searchBox #searchInput {
-            padding: 0 10px;
-            width: 300px;
-            width: min(80vw, 300px);
-            height: 40px;
-            margin-top: 30px;
-            margin-bottom: 5px;
-
-            transition: 0.4s;
-        }
-
-        .searchBox #searchInput:hover {
-            padding: 0 25px;
-            height: 45px;
-        }
-
-        .searchBox #searchInput:focus {
-            padding: 0 20px;
-            height: 40px;
-        }
-
-        .searchBox #searchButton {
-            width: 80px;
-            height: 40px;
-        }
-
-        /* 网站Slogan */
-        .sloganBox .emphasize {
-            font-weight: bold;
-            text-decoration: underline;
-            padding-top: 10px;
-            padding-bottom: 20px;
-        }
-
-        /* 自适应 */
-        @media (max-width: 600px) {
-            .narrowHide {
-                display: none;
-            }
-
-            .navbar-grid {
-                grid-template-columns: 10vw 1fr 110px 10vw;
-            }
-        }
-
-        @media (max-width: 300px) {
-            .exnarrowHide {
-                display: none;
-            }
-
-            .navbar-grid {
-                grid-template-columns: 10vw 1fr 0 10vw;
-            }
-        }
-    </style>
-
+    <link rel="stylesheet" href="./assets/stylesheets/style.css">
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
 </head>
 
@@ -169,16 +26,14 @@
             </div>
             <div class="grid-item"></div>
         </div>
-        <!-- <ul>
-            <li></li>
-            <li></li>
-        </ul> -->
+        <!-- <ul><li></li><li></li></ul> -->
     </div>
 
     <div class="main" align="center">
         <div class="siteTitle">
-            <h1>书栖网</h1><!-- 这里不留空否则会出现一个空格 -->
-            <nobr><span>&nbsp;网站正在建设中</span></nobr>
+            <nobr>
+                <h1>书栖网</h1><!-- 这里不留空否则会出现一个空格 --><span>&nbsp;网站正在建设中</span>
+            </nobr>
         </div>
 
         <div class="searchBox">
@@ -204,18 +59,19 @@
         <hr>
         <p>目前，我们使用业余时间进行网站开发，所以这个过程很慢，也请您耐心等待。如果您与我们一样，希望为这个项目添砖加瓦，欢迎通过 <u>contact@only4.work</u>
             与我们取得联系。当然，话说在前面，我们没有能力支付相应酬劳，包括我们自己也是一样，做这个项目不为什么，纯粹的是为爱发电罢了。同时，如果您想加入我们，你需要拥有相应编码能力，以及一些空闲时间。</p>
-        <p>如果你只是单纯的喜欢本项目，或者认同我们的做事风格等等，欢迎去Git仓库为我们点个Star，这对我们来说比金钱更能维持我们为爱发电的热情。</p>
+        <p>如果你只是单纯的喜欢本项目，或者认同我们的做事风格等等，欢迎去GitHub仓库为我们点个Star，这对我们来说比金钱更能维持我们为爱发电的热情。</p>
         <hr>
-        <p>也许你会问，为爱发电的话，高昂的运维费用怎么办？这个我没有办法给出肯定的回答，就像目前很多的开源项目作者一样，他们也被这个问题所困扰。</p>
-        <p>但我可以肯定的告诉你，我们会尽一切力量来维持这个网站的运行，从服务器到。</p>
+        <p>也许你会问，为爱发电的话，高昂的运维费用怎么办？这个我没有办法给出肯定的回答，就像目前很多的开源项目作者一样，他们也被这个问题所困扰。但我可以肯定的告诉你，我们会尽一切力量来维持这个网站的运行，从服务器到下载地址，我们会尽量压缩成本。压缩成本意味着尽量使用免费或者低价的云服务，这同时意味着可能会让网站加载变慢甚至少数情况下加载不出来，我们会尽量在这二者之间找到一个平衡点。
+        </p>
         <p>在网站的后续运营过程中，我们将主要使用网盘分享链接的形式进行分享，但由于网盘分享链接极其容易失效，所以部分情况下我们会为压缩包设置密码。若压缩包有密码，一律为：<u>bookshelf.plus</u>。</p>
+        <p>但在网站的细节方面，我们绝对会将用户体验放在第一位，该有的通通都给安排上。</p>
         <hr>
         <p>最后，还是要说一下版权的问题。我们十分重视版权。我们所整理的电子书全部来自于互联网，其中部分来自于下载站、公众号等。如果其中包含您的作品，且您不希望我们将您的作品作为免费分享出来，请联系<span>contact@only4.work</span>并提供相应证明材料，我们核实后将会第一时间删除。同时，您在本网站上下载的所有电子书文件，仅供学习交流使用，不可二次传播，特别是不可设置扫码关注等门槛二次分享。
         </p>
     </div>
     <div class="footer">
         <hr>
-        <span align="center">书栖网</span>
+        <p>书栖网 • 2021-2022</p>
     </div>
 
     <script>
@@ -232,17 +88,19 @@
         //     console.log($(this).val());
         // });
 
+        // 搜索框文字改变事件（实时）
         $("#searchInput").bind("input propertychange", function () {
             if ($('#searchInput').val() !== "")
-                $('#searchInput').val("这个功能还没做呢");
+                $('#searchInput').val("这个功能还没做呢，再等等吧");
         });
-        // setInterval(() => {
-        //     $('#searchInput').val("");
-        // }, 100)
+        
+        // 搜索框获得焦点事件
         $('#searchInput').focus(() => {
             $('#searchInput').val("");
             $('#searchInput').attr('placeholder', "不好意思，功能还没做好，现在还不能搜索哦")
         })
+
+        // 搜索框失去焦点事件
         $('#searchInput').blur((that) => {
             $('#searchInput').val("");
             $('#searchInput').attr('placeholder', "只需两步：搜索、下载  就这么简单")
