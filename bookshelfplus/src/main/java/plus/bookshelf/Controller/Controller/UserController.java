@@ -1,5 +1,7 @@
 package plus.bookshelf.Controller.Controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,16 +12,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import plus.bookshelf.Controller.VO.UserVO;
 import plus.bookshelf.Service.Impl.UserServiceImpl;
 import plus.bookshelf.Service.Model.UserModel;
-import plus.bookshelf.Service.Service.UserService;
 
 import static plus.bookshelf.Controller.Controller.BaseController.CONTENT_TYPE_FORMED;
 
+@Api(value = "用户")
 @Controller
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired
     UserServiceImpl userService;
 
+    @ApiOperation(value = "用户登录",notes = "传入用户名，以及密码的MD5值，进行登录")
     @RequestMapping(value = "login", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
     @ResponseBody
     public UserVO login(@RequestParam(value = "username") String username,

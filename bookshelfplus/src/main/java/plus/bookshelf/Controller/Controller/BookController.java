@@ -1,7 +1,6 @@
 package plus.bookshelf.Controller.Controller;
 
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,7 @@ import plus.bookshelf.Service.Service.BookService;
 
 @Api(value = "书籍")
 @Controller("book")
-@RequestMapping("/apiv1/book")
+@RequestMapping("/book")
 public class BookController extends BaseController {
 
     @Autowired
