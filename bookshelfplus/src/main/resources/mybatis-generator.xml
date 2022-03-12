@@ -41,11 +41,26 @@
         <!--selectByExampleQueryId="false"-->
 
         <!-- 生成对应表及其类名 -->
-        <table tableName="book_author_info" domainObjectName="AuthorDO" enableCountByExample="false"
-               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false"></table>
-        <table tableName="book_publishing_house_info" domainObjectName="PublishingHouseDO" enableCountByExample="false"
-               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false"></table>
+        <!--<table tableName="book_author_info" domainObjectName="AuthorDO" enableCountByExample="false"-->
+        <!--       enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
+        <!--       selectByExampleQueryId="false"></table>-->
+        <!--<table tableName="book_info" domainObjectName="BookDO" enableCountByExample="false"-->
+        <!--       enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
+        <!--       selectByExampleQueryId="false"></table>-->
+        <!--<table tableName="book_publishing_house_info" domainObjectName="PublishingHouseDO" enableCountByExample="false"-->
+        <!--       enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
+        <!--       selectByExampleQueryId="false"></table>-->
+        <!--<table tableName="book_thumbnail_info" domainObjectName="ThumbnailDO" enableCountByExample="false"-->
+        <!--       enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
+        <!--       selectByExampleQueryId="false"></table>-->
+        <!--<table tableName="category_info" domainObjectName="CategoryDO" enableCountByExample="false"-->
+        <!--       enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
+        <!--       selectByExampleQueryId="false"></table>-->
+        <!--<table tableName="file_info" domainObjectName="FileDO" enableCountByExample="false"-->
+        <!--       enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
+        <!--       selectByExampleQueryId="false"></table>-->
+        <!--<table tableName="file_object_info" domainObjectName="FileObjectDO" enableCountByExample="false"-->
+        <!--       enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
+        <!--       selectByExampleQueryId="false"></table>-->
     </context>
 </generatorConfiguration>
