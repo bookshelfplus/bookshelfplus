@@ -11,74 +11,34 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 12/03/2022 18:31:07
+ Date: 12/03/2022 21:55:59
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
--- Table structure for book_author_info
--- ----------------------------
-DROP TABLE IF EXISTS `book_author_info`;
-CREATE TABLE `book_author_info`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of book_author_info
--- ----------------------------
-
--- ----------------------------
 -- Table structure for book_info
 -- ----------------------------
 DROP TABLE IF EXISTS `book_info`;
 CREATE TABLE `book_info`  (
-  `id` tinyint(11) NOT NULL AUTO_INCREMENT COMMENT '自增编号',
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增编号',
   `book_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
   `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `category_id` int(11) NOT NULL DEFAULT 0,
-  `publishing_house_id` int(11) NOT NULL DEFAULT '',
-  `language` varchar(5) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
+  `publishing_house` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
+  `language` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
   `copyright` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
   `is_delete` tinyint(1) NOT NULL DEFAULT 0 COMMENT '1为已删除项',
-  PRIMARY KEY (`id`, `book_name`) USING BTREE,
-  INDEX `分类`(`category_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+  `thumbnail` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '缩略图',
+  `author` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '作者',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of book_info
 -- ----------------------------
-
--- ----------------------------
--- Table structure for book_publishing_house_info
--- ----------------------------
-DROP TABLE IF EXISTS `book_publishing_house_info`;
-CREATE TABLE `book_publishing_house_info`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of book_publishing_house_info
--- ----------------------------
-
--- ----------------------------
--- Table structure for book_thumbnail_info
--- ----------------------------
-DROP TABLE IF EXISTS `book_thumbnail_info`;
-CREATE TABLE `book_thumbnail_info`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `path` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of book_thumbnail_info
--- ----------------------------
+INSERT INTO `book_info` VALUES (1, '程序员小墨', '这是书栖网的第一本书', 3, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, '', '小墨');
 
 -- ----------------------------
 -- Table structure for category_info
@@ -88,13 +48,11 @@ CREATE TABLE `category_info`  (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '分类ID',
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '分类名',
   `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '分类简介（预留字段）',
-  `isShow` tinyint(1) NOT NULL DEFAULT 1 COMMENT '分类是否显示',
+  `is_show` tinyint(1) NOT NULL DEFAULT 1 COMMENT '分类是否显示',
   `order` int(11) NOT NULL COMMENT '分类顺序',
   `level` int(11) NOT NULL COMMENT '分类层级（一、二、三级）',
-  `parentId` int(11) NOT NULL DEFAULT 0 COMMENT '父分类ID',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `cateName`(`name`) USING BTREE COMMENT '索引名称不得重复',
-  INDEX `parentCateId`(`parentId`) USING BTREE
+  `parent_id` int(11) NOT NULL DEFAULT 0 COMMENT '父分类ID',
+  PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 44 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -165,9 +123,7 @@ CREATE TABLE `file_info`  (
   `hash_md5` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
   `hash_sha1` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
   `hash_sha256` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
-  PRIMARY KEY (`id`, `book_id`) USING BTREE,
-  INDEX `分类`(`file_name`) USING BTREE,
-  INDEX `fileId`(`hash_md5`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------

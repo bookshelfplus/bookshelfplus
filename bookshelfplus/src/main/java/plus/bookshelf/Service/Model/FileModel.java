@@ -1,10 +1,11 @@
-package plus.bookshelf.Service.Model.File;
+package plus.bookshelf.Service.Model;
 
+import lombok.Data;
 import org.joda.time.DateTime;
 import plus.bookshelf.Common.Enum.BookOrigin;
 import plus.bookshelf.Common.Enum.FileFormatEnum;
-import plus.bookshelf.Service.Model.Book.ThumbnailModel;
 
+@Data
 public class FileModel {
 
     // 文件Id
@@ -33,9 +34,6 @@ public class FileModel {
 
     // 文件来源 电子版/扫描版
     BookOrigin bookOrigin;
-
-    // 缩略图
-    ThumbnailModel thumbnail;
 
     // 文件创建时间
     DateTime fileCreateAt;

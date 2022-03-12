@@ -1,8 +1,9 @@
-package plus.bookshelf.Service.Model.Book;
+package plus.bookshelf.Service.Model;
 
+import lombok.Data;
 import plus.bookshelf.Common.Enum.Language;
-import plus.bookshelf.Service.Model.Category.CategoryModel;
 
+@Data
 public class BookModel {
 
     // 书籍id
@@ -15,13 +16,13 @@ public class BookModel {
     String description;
 
     // 作者姓名
-    AuthorModel[] author;
+    String author;
 
     //书籍所属分类
     CategoryModel category;
 
     // 出版社
-    PublishingHouseModel publishingHouse;
+    String publishingHouse;
 
     // 语言
     Language language;
@@ -31,4 +32,7 @@ public class BookModel {
 
     // 是否删除
     Boolean isDelete;
+
+    // 缩略图
+    String thumbnail;
 }

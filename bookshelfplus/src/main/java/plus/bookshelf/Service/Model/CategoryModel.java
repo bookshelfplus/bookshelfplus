@@ -1,15 +1,18 @@
-package plus.bookshelf.Service.Model.Category;
+package plus.bookshelf.Service.Model;
 
+import lombok.Data;
+
+@Data
 public class CategoryModel {
 
     // 分类名称
     Integer id;
 
     // 分类名称
-    Integer name;
+    String name;
 
     // 分类简介
-    Integer description;
+    String description;
 
 
     Boolean isShow;
@@ -20,12 +23,9 @@ public class CategoryModel {
     // 分类级别  0为一级分类, 1为二级分类...
     Integer level;
 
-    // 所属父分类Id
+    // 父分类
     Integer parentId;
 
-    // 父分类
-    CategoryModel parent;
-
-    // 子分类集合
-    CategoryModel[] children;
+    // // 子分类集合
+    // Integer[] childrenId;
 }

@@ -4,12 +4,30 @@
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>
 
+    <!-- 引入外部properties文件 https://www.cnblogs.com/zjulanjian/p/10972960.html -->
+    <properties resource="application.properties" />
+
     <context id="DB2Tables" targetRuntime="MyBatis3">
-        <!-- 数据库链接地址账号密码 -->
-        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://127.0.0.1:3306/bookshelfplus?serverTimezone=Asia/Shanghai&amp;useSSL=false"
-                        userId="root"
-                        password="111111">
+
+        <!-- 为sql关键字添加分隔符 https://cloud.tencent.com/developer/article/1868889 -->
+        <property name="autoDelimitKeywords" value="true"/>
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+
+        <!-- 数据库链接配置 -->
+        <!--<jdbcConnection driverClass="com.mysql.jdbc.Driver"-->
+        <!--                connectionURL="jdbc:mysql://127.0.0.1:3306/bookshelfplus?serverTimezone=Asia/Shanghai&amp;useSSL=false"-->
+        <!--                userId="root"-->
+        <!--                password="111111">-->
+        <!--</jdbcConnection>-->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="${spring.datasource.url}"
+                        userId="${spring.datasource.username}" password="${spring.datasource.password}">
+            <!--
+            禁止MyBatis使用其他数据库中的同名数据表
+             refer: https://blog.csdn.net/khsay/article/details/86478579
+                    https://www.cnblogs.com/coderLeo/p/12770673.html
+            -->
+            <property name="nullCatalogMeansCurrent" value="true"/>
         </jdbcConnection>
 
         <!-- 生成 DataObject 类存放位置 -->
@@ -41,13 +59,7 @@
         <!--selectByExampleQueryId="false"-->
 
         <!-- 生成对应表及其类名 -->
-        <!--<table tableName="book_author_info" domainObjectName="AuthorDO" enableCountByExample="false"-->
-        <!--       enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
-        <!--       selectByExampleQueryId="false"></table>-->
         <!--<table tableName="book_info" domainObjectName="BookDO" enableCountByExample="false"-->
-        <!--       enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
-        <!--       selectByExampleQueryId="false"></table>-->
-        <!--<table tableName="book_publishing_house_info" domainObjectName="PublishingHouseDO" enableCountByExample="false"-->
         <!--       enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
         <!--       selectByExampleQueryId="false"></table>-->
         <!--<table tableName="book_thumbnail_info" domainObjectName="ThumbnailDO" enableCountByExample="false"-->
