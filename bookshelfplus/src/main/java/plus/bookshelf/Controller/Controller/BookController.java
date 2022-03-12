@@ -1,5 +1,8 @@
 package plus.bookshelf.Controller.Controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +14,7 @@ import plus.bookshelf.Controller.VO.BookVO;
 import plus.bookshelf.Service.Model.BookModel;
 import plus.bookshelf.Service.Service.BookService;
 
+@Api(value = "书籍")
 @Controller("book")
 @RequestMapping("/apiv1/book")
 public class BookController extends BaseController {
@@ -18,6 +22,8 @@ public class BookController extends BaseController {
     @Autowired
     BookService bookService;
 
+    @ApiOperation(value = "获取书籍信息",notes = "获取书籍信息")
+    // @ApiImplicitParam(name = "book", value = "图书详细实体", required = true, dataType = "Book")
     @RequestMapping(value = "get", method = {RequestMethod.GET})
     @ResponseBody
     public BookVO get(@RequestParam(value = "id") Integer id) {
