@@ -74,5 +74,8 @@
         <!--<table tableName="file_object_info" domainObjectName="FileObjectDO" enableCountByExample="false"-->
         <!--       enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
         <!--       selectByExampleQueryId="false"></table>-->
+        <!--<table tableName="user_info" domainObjectName="UserDO" enableCountByExample="false"-->
+        <!--       enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
+        <!--       selectByExampleQueryId="false"></table>-->
     </context>
 </generatorConfiguration>
