@@ -1,7 +1,9 @@
-package plus.bookshelf.Service.Model.File;
+package plus.bookshelf.Service.Model;
 
+import lombok.Data;
 import plus.bookshelf.Common.Enum.FileStorageMediumEnum;
 
+@Data
 public class FileObjectModel {
 
     // 文件存储介质Id
