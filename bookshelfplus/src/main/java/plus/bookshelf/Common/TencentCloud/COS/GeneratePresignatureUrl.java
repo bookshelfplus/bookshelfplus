@@ -2,8 +2,10 @@ package plus.bookshelf.Common.TencentCloud.COS;
 
 import com.qcloud.cos.COSClient;
 import com.qcloud.cos.ClientConfig;
+import com.qcloud.cos.auth.AnonymousCOSCredentials;
 import com.qcloud.cos.auth.BasicCOSCredentials;
 import com.qcloud.cos.auth.COSCredentials;
+import com.qcloud.cos.endpoint.UserSpecifiedEndpointBuilder;
 import com.qcloud.cos.http.HttpMethodName;
 import com.qcloud.cos.http.HttpProtocol;
 import com.qcloud.cos.region.Region;
@@ -20,7 +22,8 @@ public class GeneratePresignatureUrl {
         this.cosProperties = cosProperties;
     }
 
-    // refer: https://cloud.tencent.com/document/product/436/35217#.E5.88.9B.E5.BB.BA-cosclient
+    // 生成预签名 URL refer: https://cloud.tencent.com/document/product/436/35217#.E5.88.9B.E5.BB.BA-cosclient
+    // 使用 CDN 加速域名 refer: https://intl.cloud.tencent.com/zh/document/product/436/40244
     // 创建 COSClient 实例，这个实例用来后续调用请求
     COSClient createCOSClient() {
         // 设置用户身份信息。
@@ -28,6 +31,8 @@ public class GeneratePresignatureUrl {
         String secretId = cosProperties.getAccessKey();
         String secretKey = cosProperties.getSecretKey();
         COSCredentials cred = new BasicCOSCredentials(secretId, secretKey);
+        // // 使用 CDN 加速域名，无需再发送 COS 的认证信息
+        // COSCredentials cred = new AnonymousCOSCredentials();
 
         // ClientConfig 中包含了后续请求 COS 的客户端设置：
         ClientConfig clientConfig = new ClientConfig();
@@ -37,9 +42,15 @@ public class GeneratePresignatureUrl {
         clientConfig.setRegion(new Region(cosProperties.getRegionName()));
 
         // 设置请求协议, http 或者 https
-        // 5.6.53 及更低的版本，建议设置使用 https 协议
         // 5.6.54 及更高版本，默认使用了 https
         clientConfig.setHttpProtocol(HttpProtocol.https);
+
+        // 设置 CDN 自定义域名
+        //  get service 请求会使用这个域名，这个域名不能自定义
+        String serviceApiEndpoint = "service.cos.myqcloud.com";
+        String cdnEndpoint = "dl.bookshelf.plus";
+        UserSpecifiedEndpointBuilder endPointBuilder = new UserSpecifiedEndpointBuilder(cdnEndpoint, serviceApiEndpoint);
+        clientConfig.setEndpointBuilder(endPointBuilder);
 
         // 以下的设置，是可选的：
 
