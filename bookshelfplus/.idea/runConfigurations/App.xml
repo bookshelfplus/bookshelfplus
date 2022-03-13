@@ -11,7 +11,6 @@
     <option name="ALTERNATIVE_JRE_PATH" />
     <method v="2">
       <option name="Make" enabled="true" />
-      <option name="LaunchBrowser.Before.Run" url="http://localhost:8090/swagger-ui.html" />
     </method>
   </configuration>
 </component>

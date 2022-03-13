@@ -1,4 +1,8 @@
-docs
-logs
-temp
 contrib
+docs
+
+temp/*
+!temp/.keep
+
+logs/*
+!logs/.keep
