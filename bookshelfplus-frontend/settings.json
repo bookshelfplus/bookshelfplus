@@ -1,0 +1,20 @@
+{
+  "NODE_ENV": "development",
+  "api": {
+    "prefix": "http://127.0.0.1:8090/"
+  },
+  "title": "张小弟之家电子书分享（测试中）",
+  "footer": {
+    "link": [
+      {
+        "text": "张小弟之家",
+        "url": "https://www.only4.work/",
+        "target": "_blank"
+      },
+      {
+        "text": "加入张小弟之家QQ群（链接待更新）",
+        "url": ""
+      }
+    ]
+  }
+}

@@ -1,1 +1,20 @@
+# 后端部分
 target
+
+# 前端部分
+# 排除数据库配置文件
+dbconfig.js
+
+# 排除nodejs模块文件夹
+node_modules/
+
+# 排除package-lock.json
+package-lock.json
+
+# 排除所有调试产生的log文件
+*.log
+
+.vs/*
+
+*.njsproj.user
+obj/*
