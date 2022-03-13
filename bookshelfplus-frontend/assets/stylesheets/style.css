@@ -1,0 +1,158 @@
+/* 字体引入 */
+@font-face {
+  font-family: HarmonyOS_Sans;
+  src: url("../fonts/HarmonyOS_Sans_SC_Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* 全局样式 */
+html,
+body {
+  margin: 0;
+  font-family: HarmonyOS_Sans;
+}
+
+a,
+a:visited {
+  text-decoration: none;
+  color: #0056ff;
+}
+
+hr {
+  border-top: solid 1px #9f9f9f;
+  border-bottom: 0;
+}
+
+/* 导航栏样式 */
+.navbar {
+  background-color: #2b2b2b;
+  color: #fff;
+  height: 60px;
+  line-height: 60px;
+}
+
+.navbar-grid {
+  height: 100%;
+  display: grid;
+  grid-template-columns: 10vw 1fr 280px 10vw;
+  gap: 10px;
+}
+
+.navbar-grid .grid-item {
+  /* 下面三行为辅助样式 */
+  /* border: white solid 1px;
+  border-top: 0;
+  border-bottom: 0; */
+}
+
+.navbar-grid .grid-item a,
+.navbar-grid .grid-item a:visited {
+  color: #fff;
+}
+
+.navbar-grid .grid-item * {
+  margin: 0;
+}
+
+.navbar > ul {
+  list-style-type: none;
+  display: flex;
+}
+
+.navbar > ul > li > a {
+  color: #fff;
+}
+
+/* 标题 siteTitle */
+.siteTitle h1 {
+  margin-top: 130px;
+  display: inline-block;
+  font-size: 36px;
+}
+
+.siteTitle span {
+  display: inline-block;
+  color: crimson;
+}
+
+/* 正文样式 */
+.main {
+  margin: 0 auto;
+  /* max-width: 600px; */
+  max-width: min(90vw, 720px);
+}
+
+.main p {
+  font-size: 17.5px;
+  line-height: 2em;
+}
+
+/* 搜索框 */
+.searchBox #searchInput {
+  padding: 0 10px;
+  width: 300px;
+  width: min(70vw, 280px);
+  height: 42px;
+  margin-top: 30px;
+  margin-bottom: 5px;
+
+  transition: 0.5s;
+}
+
+.searchBox #searchInput:focus {
+  padding: 0 18px;
+  height: 35px;
+  width: min(78vw, 300px);
+}
+
+.searchBox #searchButton {
+  width: 80px;
+  height: 40px;
+}
+
+/* 网站Slogan */
+.sloganBox .emphasize {
+  font-weight: bold;
+  text-decoration: underline;
+  padding-top: 10px;
+  padding-bottom: 20px;
+}
+
+/* 页脚 */
+.footer {
+  text-align: center;
+  margin-top: 40px;
+  color: #3f3f3f;
+}
+
+/* 自适应 */
+@media (max-width: 600px) {
+  .narrowHide {
+    display: none;
+  }
+
+  .navbar-grid {
+    grid-template-columns: 10vw 1fr 110px 10vw;
+  }
+
+  /* 正文样式 */
+  .main {
+    max-width: 90vw;
+  }
+
+  .main p {
+    font-size: initial;
+    /* line-height: initial; */
+  }
+}
+
+@media (max-width: 300px) {
+  .exnarrowHide {
+    display: none;
+  }
+
+  .navbar-grid {
+    grid-template-columns: 10vw 1fr 0 10vw;
+  }
+}
