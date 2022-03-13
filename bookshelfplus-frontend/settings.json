@@ -1,7 +1,7 @@
 {
   "NODE_ENV": "development",
   "api": {
-    "prefix": "http://127.0.0.1:8090/"
+    "prefix": "http://localhost/api"
   },
   "title": "张小弟之家电子书分享（测试中）",
   "footer": {
