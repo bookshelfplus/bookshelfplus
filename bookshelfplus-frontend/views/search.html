@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title><%= page + " | " + title; %></title>
+    <%- include("./component/header.html"); %>
+
+    <link href="https://cdn.jsdelivr.net/npm/gridjs/dist/theme/mermaid.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/gridjs/dist/gridjs.umd.js"></script>
+</head>
+<body>
+
+    <h1><%= title %></h1>
+    <p>本站电子书由“张小弟之家”整理，出于方便学习之目的，您从本站下载的电子书仅供学习交流使用，如需他用请联系原作者。<a href="https://gitee.com/only4/computer-related-books" target="_blank">查看同步更新Gitee仓库</a></p>
+    <p>由于信息量较大，我们无法做到一一确认相关电子书的权属管理，如本站不慎侵犯了您的权利，请发送邮件至<b>contact@only4.work</b>，来信请注明相关链接以及您的相关证明材料，我们收到邮件后会第一时间与您取得联系并积极处理，多谢理解！</p>
+
+    <main class="main">
+        <div id="container">
+            <div id="cateTable"></div>
+            <div id="itemTable"></div>
+        </div>
+    </main>
+
+    <script>
+        function getDefaultGridDictTemplate() {
+            return {
+                columns: [],
+                //data: '',
+
+                // 搜索
+                search: true,
+
+                // 分页
+                pagination: {
+                    limit: 10
+                },
+
+                // 排序
+                sort: true,
+
+                // 可调整列宽
+                resizable: true,
+
+                // 自适应
+                fixedHeader: true,
+                //height: '400px',
+
+                server: {},
+
+                language: {
+                    search: {
+                        placeholder: '🔍 搜索一下'
+                    },
+                    pagination: {
+                        previous: '上一页',
+                        next: '下一页',
+                        navigate: (page, pages) => `第 ${page} 页，共 ${pages} 页`,
+                        page: (e) => "第" + e + "页",
+                        showing: "显示结果：第",
+                        to: "-",
+                        of: "条结果，共",
+                        results: "条结果"
+                    },
+                    sort: {
+                        sortAsc: "按升序排序",
+                        sortDesc: "按降序排序"
+                    },
+                    loading: "数据正在加载中...",
+                    noRecordsFound: "无结果",
+                    error: "出错了"
+                },
+            };
+        }
+    </script>
+    <script>
+        let cateTableDict = getDefaultGridDictTemplate();
+        cateTableDict.columns = [
+            {
+                name: '分类',
+                sort: true
+            },
+            {
+                name: '分类简介',
+                sort: false
+            },
+            {
+                name: '操作',
+                sort: false,
+                formatter: (cell, row) => {
+                    return gridjs.h('button', {
+                        className: 'py-2 mb-4 px-4 border rounded-md text-white bg-blue-600',
+                        onClick: () => alert(`Editing "${row.cells[0].data}" "${row.cells[1].data}"`)
+                    }, '查看');
+                }
+            }
+        ];
+        cateTableDict.server = {
+            url: '/api/getCategoryList?cateLevel=1&parentCateId=', //+'page=1&perpage=20',
+            then: data => data.result.reduce((result, element) => {
+                //console.log(result, element);
+                result.push({
+                    分类: element.cateId,
+                    分类: element.cateName,
+                    分类简介: element.cateDescription,
+                });
+                return result;
+            }, [ /* reduce result的初始值 */])
+        };
+
+        let cateTable = new gridjs.Grid(cateTableDict);
+        cateTable.render(document.getElementById('cateTable'));
+    </script>
+    <script>
+        let itemTableDict = getDefaultGridDictTemplate();
+        itemTableDict.columns = [
+            {
+                name: '书名',
+                sort: true
+            },
+            {
+                name: '简介',
+                sort: false
+            },
+            {
+                name: '操作',
+                formatter: (cell, row) => {
+                    return gridjs.h('button', {
+                        className: 'py-2 mb-4 px-4 border rounded-md text-white bg-blue-600',
+                        onClick: () => alert(`Editing "${row.cells[0].data}" "${row.cells[1].data}"`)
+                    }, '查看详情');
+                }
+            }
+        ];
+        itemTableDict.server = {
+            url: '/api/getBookList',
+            then: data => data.result.reduce((result, element) => {
+                result.push({
+                    书名: element.书名,
+                    简介: element.书籍简介,
+                });
+                return result;
+            }, [ /* reduce result的初始值 */])
+        };
+
+        let itemTable = new gridjs.Grid(itemTableDict);
+        itemTable.render(document.getElementById('itemTable'));
+    </script>
+
+    <%- include("./component/footer.html"); %>
+</body>
+</html>

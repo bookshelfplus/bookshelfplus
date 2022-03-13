@@ -1,0 +1,11 @@
+<footer>
+    <hr />
+    <p>
+        <% site.footer.link.forEach(function(link){ %>
+        <span><a href="<%= link.url; %>" target="<%= link.target %>"><%= link.text; %></a></span>
+        <% }); %>
+    </p>
+    <p>
+        Copyright © 2021-2022 <%= site.title; %> All Rights Reserved.
+    </p>
+</footer>

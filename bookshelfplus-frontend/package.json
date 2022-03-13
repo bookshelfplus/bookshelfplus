@@ -1,18 +1,26 @@
 {
   "name": "bookshelf-plus",
   "version": "1.0.0",
-  "description": "书栖网",
-  "main": "index.js",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app",
+    "dev": "set NODE_ENV=development & node app",
+    "prod": "set NODE_ENV=production & node app"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://gitee.com/only4/bookshelf.git"
+  "description": "书栖网",
+  "dependencies": {
+    "body-parser": "^1.15.0",
+    "cookie-parser": "^1.4.0",
+    "debug": "^2.2.0",
+    "dotenv": "^16.0.0",
+    "ejs": "^3.1.6",
+    "element-plus": "^1.2.0-beta.6",
+    "express": "^4.14.0",
+    "morgan": "^1.7.0",
+    "mysql": "^2.18.1",
+    "serve-favicon": "^2.3.0"
   },
-  "keywords": [
-    "书栖网"
-  ],
-  "author": "Coding Zhang",
-  "license": "MIT"
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
 }
