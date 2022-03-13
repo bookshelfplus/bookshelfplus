@@ -1,16 +1,16 @@
 /* 字体引入 */
-@font-face {
+/* @font-face {
   font-family: HarmonyOS_Sans;
   src: url("../fonts/HarmonyOS_Sans_SC_Regular.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
-}
+} */
 
 /* 全局样式 */
 html,
 body {
   margin: 0;
-  font-family: HarmonyOS_Sans;
+  font-family: bookshelfplusFont;
 }
 
 a,
@@ -30,6 +30,8 @@ hr {
   color: #fff;
   height: 60px;
   line-height: 60px;
+
+  user-select: none;
 }
 
 .navbar-grid {
@@ -49,6 +51,7 @@ hr {
 .navbar-grid .grid-item a,
 .navbar-grid .grid-item a:visited {
   color: #fff;
+  margin-left: 12px;
 }
 
 .navbar-grid .grid-item * {
