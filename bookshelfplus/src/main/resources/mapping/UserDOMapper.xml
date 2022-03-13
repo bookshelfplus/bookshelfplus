@@ -179,7 +179,7 @@
       qq_third_party_auth_code = #{qqThirdPartyAuthCode,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="selectByUsernameAndEncryptpwd" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="selectByUsernameAndEncryptpwd" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from user_info

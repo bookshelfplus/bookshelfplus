@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 13/03/2022 01:51:00
+ Date: 13/03/2022 02:15:21
 */
 
 SET NAMES utf8mb4;
@@ -164,10 +164,11 @@ CREATE TABLE `user_info`  (
   `weixin_third_party_auth_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `qq_third_party_auth_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of user_info
 -- ----------------------------
+INSERT INTO `user_info` VALUES (1, 'xiaomo', 'e10adc3949ba59abbe56e057f20f883e', '小小墨', 'ADMIN', '', '', '', '');
 
 SET FOREIGN_KEY_CHECKS = 1;
