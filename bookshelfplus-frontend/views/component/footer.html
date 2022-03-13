@@ -1,11 +1,45 @@
-<footer>
-    <hr />
-    <p>
-        <% site.footer.link.forEach(function(link){ %>
-        <span><a href="<%= link.url; %>" target="<%= link.target %>"><%= link.text; %></a></span>
-        <% }); %>
-    </p>
-    <p>
-        Copyright © 2021-2022 <%= site.title; %> All Rights Reserved.
-    </p>
-</footer>
+<div class="footer">
+    <hr>
+    <p>书栖网 • 2021-2022</p>
+</div>
+
+<!-- https://gist.github.com/macbookandrew/f33dbbc0aa582d0515919dc5fb95c00a -->
+<script>
+    // 获取网页上的所有文字
+    // refer: https://www.cnblogs.com/yzeng/p/8268731.html
+    function getPageText() {
+        var str = document.documentElement.innerText;
+        str += "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"; // 数字和英文全部包含进去
+        var res = [].filter.call(str, (s, i, o) => o.indexOf(s) == i).sort().join('').trim();
+        return res;
+    }
+    function fontmin(text) {
+        // 设置post type
+        axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+        // 接口地址
+        axios.post('/fontmin/getfont', { text: text, font: "" })
+            .then(function (response) {
+                // 当接口成功返回时，动态设置css
+                let styleDom = document.createElement('style');
+                styleDom.type = 'text/css';
+                const cssText = `
+                @font-face {
+                    font-family: bookshelfplusFont;
+                    src: url("${response.data.url}") format("truetype");
+                }
+                `
+                styleDom.appendChild(document.createTextNode(cssText));
+                document.getElementsByTagName('head')[0].appendChild(styleDom)
+                console.log("字体加载成功");
+            })
+            .catch(function (error) {
+                console.log("字体加载失败", error);
+            });
+    }
+
+    $(document).ready(function () {
+        var allText = getPageText();
+        console.log(allText);
+        fontmin(allText);
+    });
+</script>

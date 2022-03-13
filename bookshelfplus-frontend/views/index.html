@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include("./component/header.html"); %>
+</head>
+
+<body>
+    <%- include("./component/navbar.html"); %>
+
+    <div class="main" align="center">
+        <div class="siteTitle">
+                <h1>书栖网</h1>
+        </div>
+
+        <div class="searchBox">
+            <input id="searchInput" type="text" placeholder="只需两步：搜索、下载  就这么简单" />
+            <input id="searchButton" type="button" value="搜一下" />
+        </div>
+
+        <div class="sloganBox">
+            <p class="emphasize">
+                一个完全免费无门槛的计算机类电子书下载网站
+            </p>
+        </div>
+    </div>
+
+    <div style="margin-top: 30vh;"></div>
+
+    <%- include("./component/footer.html"); %>
+
+    <script>
+        // /**
+        //  * 内容改变时并不会触发事件，但是在失去焦点的时候会触发。
+        //  */
+        // $("#inputid").change(function () {
+        //     console.log($(this).val());
+        // });
+        // /**
+        //  * 只要文本类容发生改变，就会触发该事件
+        //  */
+        // $("#inputid").bind("input propertychange", function () {
+        //     console.log($(this).val());
+        // });
+
+        // // 搜索框文字改变事件（实时）
+        // $("#searchInput").bind("input propertychange", function () {
+        //     if ($('#searchInput').val() !== "")
+        //         $('#searchInput').val("这个功能还没做呢，再等等吧");
+        // });
+
+        // 搜索框获得焦点事件
+        $('#searchInput').focus(() => {
+            // $('#searchInput').val("");
+            $('#searchInput').attr('placeholder', "在这里输入您想搜索的电子书吧")
+        })
+
+        // 搜索框失去焦点事件
+        $('#searchInput').blur((that) => {
+            // $('#searchInput').val("");
+            $('#searchInput').attr('placeholder', "只需两步：搜索、下载  就这么简单")
+        })
+
+        // 文本框回车事件
+        $('#searchInput').keydown(function (e) {
+            var curKey = e.which;
+            if (curKey == 13) {
+                $("#searchButton").click();
+                return false;
+            }
+        });
+
+        // 搜索按钮点击事件
+        $('#searchButton').click(function () {
+            if ($('#searchInput').val() !== "") {
+                location.href = "search?keyword=" + encodeURIComponent($('#searchInput').val());
+            }
+        });
+    </script>
+</body>
+
+</html>

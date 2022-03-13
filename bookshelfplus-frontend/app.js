@@ -12,18 +12,10 @@ let dotenv = require('dotenv');
 dotenv.config('./env');
 // console.log(process.env);
 
-// 取得API路径
-global.site = process.env.site;
-global.API_PREFIX = process.env.API_PREFIX;
-if(!global.API_PREFIX) {
-    console.log('API_PREFIX is not defined');
-    process.exit(1);
-}
-console.log("[API_PREFIX] " + global.API_PREFIX);
-
 // 引入路由文件
-var routes = require('./routes/search');
-var test = require('./routes/test');
+var indexRoute = require('./routes/index');
+var fontminRoute = require('./routes/fontmin');
+const { copyFileSync } = require('fs');
 
 // 创建应用
 var app = express();
@@ -42,8 +34,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // 路由
-app.use('/search', routes);
-app.use('/test', test);
+app.use('/', indexRoute);
+app.use('/fontmin', fontminRoute);
 
 // 捕获404并转发到错误处理程序 catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -62,7 +54,8 @@ if (app.get('env') === 'development') {
         res.status(err.status || 500);
         res.render('error', {
             message: err.message,
-            error: err
+            error: err,
+            title: '出错啦'
         });
     });
 } else {
@@ -87,5 +80,28 @@ var server = app.listen(app.get('port'), function () {
 
     // 引入站点配置文件
     global.site = require("./settings.json");
-    console.log(global.site);
+
+    // 取得API路径
+    if (!global.site) {
+        console.log('settings.json is not defined');
+        process.exit(1);
+    }
+    // console.log("[global.site]");
+    // console.log(JSON.stringify(global.site));
+    console.log(" ***************************** 启动成功 ***************************** ");
+});
+
+
+// 注册SIGINT信号事件
+process.on('SIGINT', function () {
+    console.clear();
+    console.log(" ***************************** 正在清理 ***************************** ");
+
+    require('./cleanup.js');
+
+    console.log(" ************************* 清理完毕，已退出 ************************* ");
+    console.log('Exit now!');
+
+    process.exit();
+    // return true;
 });
