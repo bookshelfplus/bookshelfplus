@@ -14,7 +14,8 @@ package-lock.json
 # 排除所有调试产生的log文件
 *.log
 
-.vs/*
+# 排除idea项目 iml 文件
+bookshelfplus.iml
 
-*.njsproj.user
-obj/*
+# TODO文件
+TODO*
