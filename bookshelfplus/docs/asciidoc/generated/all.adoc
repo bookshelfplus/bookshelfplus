@@ -121,15 +121,15 @@ __必填__|id|integer (int32)
 Status Controller
 
 
-[[_getusingget_1]]
-==== 线程CPU占用时间
+[[_getsystemloadaverageusingget]]
+==== 系统负载
 ....
-GET /status/getProcessCpu
+GET /status/getSystemLoadAverage
 ....
 
 
 ===== 说明
-获取服务器当前线程CPU占用时间。此方法通过统计线程CPU占用时间来统计当前进程占用CPU情况。
+获取服务器当前系统负载。
 
 
 ===== 响应
@@ -153,7 +153,7 @@ GET /status/getProcessCpu
 
 ====== 请求 path
 ----
-/status/getProcessCpu
+/status/getSystemLoadAverage
 ----
 
 

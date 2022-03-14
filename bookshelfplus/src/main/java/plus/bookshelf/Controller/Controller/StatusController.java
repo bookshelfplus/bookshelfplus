@@ -18,16 +18,24 @@ import java.util.Map;
 @RequestMapping("/status")
 public class StatusController {
 
-    @ApiOperation(value = "线程CPU占用时间", notes = "获取服务器当前线程CPU占用时间。此方法通过统计线程CPU占用时间来统计当前进程占用CPU情况。")
-    @RequestMapping(value = "getProcessCpu", method = {RequestMethod.GET})
-    @ResponseBody
-    public Object get() {
-        OperatingSystemMXBean operatingSystemMXBean = (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
-        ThreadMXBean threadBean = (ThreadMXBean) ManagementFactory.getThreadMXBean();
-        String processCpu = getProcessCpu(operatingSystemMXBean, threadBean);
+    // @ApiOperation(value = "线程CPU占用时间", notes = "获取服务器当前线程CPU占用时间。此方法通过统计线程CPU占用时间来统计当前进程占用CPU情况。")
+    // @RequestMapping(value = "getProcessCpu", method = {RequestMethod.GET})
+    // @ResponseBody
+    // public Object get() {
+    //     OperatingSystemMXBean operatingSystemMXBean = (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
+    //     ThreadMXBean threadBean = (ThreadMXBean) ManagementFactory.getThreadMXBean();
+    //     String processCpu = getProcessCpu(operatingSystemMXBean, threadBean);
+    //
+    //     System.out.println(processCpu);
+    //     return processCpu;
+    // }
 
-        System.out.println(processCpu);
-        return processCpu;
+    @ApiOperation(value = "系统负载", notes = "获取服务器当前系统负载。")
+    @RequestMapping(value = "getSystemLoadAverage", method = {RequestMethod.GET})
+    @ResponseBody
+    public Object getSystemLoadAverage() {
+        OperatingSystemMXBean operatingSystemMXBean = (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
+        return operatingSystemMXBean.getSystemLoadAverage();
     }
 
     // @ApiOperation(value = "服务端状态", notes = "获取服务器当前状态信息")
@@ -90,29 +98,29 @@ public class StatusController {
     //     return result;
     // }
 
-    // refer: https://blog.csdn.net/as403045314/article/details/101337176
-    private long preTime = System.nanoTime();
-    private long preUsedTime = 0;
-
-    /**
-     * getSystemLoadAverage()方法得到的操作系统统计的整个系统负载，不能较好的反应本进程的CPU占用情况
-     * 此方法通过统计线程CPU占用时间来统计当前进程占用CPU情况
-     *
-     * @param osMxBean
-     * @param threadBean
-     * @return
-     */
-    public String getProcessCpu(OperatingSystemMXBean osMxBean, ThreadMXBean threadBean) {
-        long totalTime = 0;
-        for (long id : threadBean.getAllThreadIds()) {
-            totalTime += threadBean.getThreadCpuTime(id);
-        }
-        long curtime = System.nanoTime();
-        long usedTime = totalTime - preUsedTime;
-        long totalPassedTime = curtime - preTime;
-        preTime = curtime;
-        preUsedTime = totalTime;
-        // return (((double) usedTime) / totalPassedTime / osMxBean.getAvailableProcessors()) * 100;
-        return String.valueOf(new BigDecimal(usedTime * 100 / (totalPassedTime * osMxBean.getAvailableProcessors())));
-    }
+    // // refer: https://blog.csdn.net/as403045314/article/details/101337176
+    // private long preTime = System.nanoTime();
+    // private long preUsedTime = 0;
+    //
+    // /**
+    //  * getSystemLoadAverage()方法得到的操作系统统计的整个系统负载，不能较好的反应本进程的CPU占用情况
+    //  * 此方法通过统计线程CPU占用时间来统计当前进程占用CPU情况
+    //  *
+    //  * @param osMxBean
+    //  * @param threadBean
+    //  * @return
+    //  */
+    // public String getProcessCpu(OperatingSystemMXBean osMxBean, ThreadMXBean threadBean) {
+    //     long totalTime = 0;
+    //     for (long id : threadBean.getAllThreadIds()) {
+    //         totalTime += threadBean.getThreadCpuTime(id);
+    //     }
+    //     long curtime = System.nanoTime();
+    //     long usedTime = totalTime - preUsedTime;
+    //     long totalPassedTime = curtime - preTime;
+    //     preTime = curtime;
+    //     preUsedTime = totalTime;
+    //     // return (((double) usedTime) / totalPassedTime / osMxBean.getAvailableProcessors()) * 100;
+    //     return String.valueOf(new BigDecimal(usedTime * 100 / (totalPassedTime * osMxBean.getAvailableProcessors())));
+    // }
 }
