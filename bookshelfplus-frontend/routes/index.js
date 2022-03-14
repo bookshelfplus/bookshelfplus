@@ -38,4 +38,8 @@ router.get('/status', function (req, res) {
     });
 });
 
+router.get('/get-frontend-status', function (req, res) {
+    res.end(JSON.stringify({ "server": "OK" }));
+});
+
 module.exports = router;

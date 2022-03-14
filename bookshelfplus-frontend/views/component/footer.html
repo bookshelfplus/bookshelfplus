@@ -16,7 +16,7 @@
     // refer: https://www.cnblogs.com/yzeng/p/8268731.html
     function getPageText() {
         var str = document.documentElement.innerText;
-        str += "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"; // 数字和英文全部包含进去
+        str += "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"; // 数字和英文全部包含进去，避免因为部分数字或字母造成大量生成字体
         var res = [].filter.call(str, (s, i, o) => o.indexOf(s) == i).sort().join('').trim();
         return res;
     }

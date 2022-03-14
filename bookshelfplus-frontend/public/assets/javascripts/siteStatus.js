@@ -21,11 +21,14 @@ function startCheck() {
     $(".info-ok").removeClass("info-ok");
     $(".info-err").removeClass("info-err");
 
-    var i = 0, timeSpan = 300;
-    setTimeout(checkOnlineStatus, timeSpan * ++i);
-    setTimeout(checkBackendStatus, timeSpan * ++i);
-    setTimeout(checkTimeOff, timeSpan * ++i);
-    setTimeout(finishCheck, timeSpan * ++i);
+    //执行前等待一段时间，显得更加真实
+    // 给定一个阶梯值，每次增加一个阶梯值同时加上一个随机数
+    var i = 0, timeSpan = 80;
+    setTimeout(checkOnlineStatus, timeSpan * ++i + Math.random() * 600);
+    setTimeout(checkBackendStatus, timeSpan * ++i + Math.random() * 600);
+    setTimeout(checkFrontendStatus, timeSpan * ++i + Math.random() * 600);
+    setTimeout(checkTimeOff, timeSpan * ++i + Math.random() * 600);
+    setTimeout(finishCheck, timeSpan * ++i + Math.random() * 600);
 }
 
 function checkOnlineStatus() {
@@ -36,18 +39,39 @@ function checkOnlineStatus() {
 
 function checkBackendStatus() {
     var backendStatus = false;
-    getRequest("/status/getProcessCpu", {})
+    getRequest("/status/get", {})
         .then(function (response) {
             console.log("response.data", response.data);
-            if (response.data == 0) {
-                backendStatus = true;
+            if (response.data.server === "OK") {
+                $("#backendStatus").text("后台连接正常");
+                $("#backendStatus").addClass("info-ok");
+            } else {
+                $("#backendStatus").text("服务器内部异常");
+                $("#backendStatus").addClass("info-err");
             }
-            $("#backendStatus").text("后台连接正常");
-            $("#backendStatus").addClass("info-ok");
         })
         .catch(function (error) {
-            $("#backendStatus").text("后台连接异常");
+            $("#backendStatus").text("无法连接到服务器");
             $("#backendStatus").addClass("info-err");
+        });
+}
+
+function checkFrontendStatus() {
+    var backendStatus = false;
+    getRequest("../get-frontend-status", {})
+        .then(function (response) {
+            console.log("response.data", response.data);
+            if (response.data.server === "OK") {
+                $("#frontendStatus").text("前台连接正常");
+                $("#frontendStatus").addClass("info-ok");
+            } else {
+                $("#frontendStatus").text("服务器内部异常");
+                $("#frontendStatus").addClass("info-err");
+            }
+        })
+        .catch(function (error) {
+            $("#frontendStatus").text("无法连接到服务器");
+            $("#frontendStatus").addClass("info-err");
         });
 }
 
@@ -80,7 +104,7 @@ function checkTimeOff(targetUrl = null) {
         if (xhr.readyState === 2) {
             // 获取响应头里的时间戳
             time = xhr.getResponseHeader("Date");
-            console.log("请求结束时本地时间(东八区时间): " + new Date(time).getTime());
+            // console.log("请求结束时本地时间(东八区时间): " + new Date(time).getTime());
 
             // requestEndTime = Date.now();
             // console.log("请求开始时本地时间(用于计算时间差): " + requestStartTime);
@@ -93,8 +117,11 @@ function checkTimeOff(targetUrl = null) {
 
             var target = document.getElementById("timeOff");
             if (target) {
-                target.innerHTML = "本地时间比服务器" + (timeOff > 0 ? "慢" : "快") + Math.abs(timeOff / 1000) + "秒";
-                $(target).addClass("info-ok");
+                // 产生随机时间（测试功能用）
+                // timeOff = Math.random() * 10 * 60 * 1000;
+                var spanSeconds = Math.abs(timeOff / 1000);
+                target.innerHTML = "本地时间比服务器" + (timeOff > 0 ? "慢" : "快") + spanSeconds.toFixed(3) + "秒";
+                $(target).addClass((spanSeconds >= 5 * 60) ? "info-err" : "info-ok");
             }
         }
     };
