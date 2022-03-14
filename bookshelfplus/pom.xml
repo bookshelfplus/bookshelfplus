@@ -24,6 +24,19 @@
         <maven.compiler.target>1.7</maven.compiler.target>
     </properties>
 
+    <repositories>
+        <repository>
+            <id>spring-releases</id>
+            <url>https://repo.spring.io/libs-release</url>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>spring-releases</id>
+            <url>https://repo.spring.io/libs-release</url>
+        </pluginRepository>
+    </pluginRepositories>
+
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -82,17 +95,17 @@
         </dependency>
 
         <!--引入SpringBoot对Redis的依赖-->
-        <dependency>
+        <!-- <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
-        </dependency>
+        </dependency> -->
 
         <!--SpringBoot将Session存储在Redis中-->
-        <dependency>
+        <!-- <dependency>
             <groupId>org.springframework.session</groupId>
             <artifactId>spring-session-data-redis</artifactId>
             <version>2.0.5.RELEASE</version>
-        </dependency>
+        </dependency> -->
 
         <!-- lombok -->
         <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
@@ -278,11 +291,11 @@
             添加SpringBoot打包plugin
             解决【flashsale-1.0-SNAPSHOT.jar中没有主清单属性】问题
             -->
-            <plugin>
+            <!-- <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>2.4.3</version>
-            </plugin>
+            </plugin> -->
         </plugins>
     </build>
 </project>

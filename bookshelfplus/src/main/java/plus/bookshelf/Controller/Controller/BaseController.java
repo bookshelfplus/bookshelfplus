@@ -1,7 +1,7 @@
 package plus.bookshelf.Controller.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
+// import org.springframework.data.redis.core.RedisTemplate;
 import plus.bookshelf.Service.Model.UserModel;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,8 +15,8 @@ public class BaseController {
     @Autowired
     HttpServletRequest httpServletRequest;
 
-    @Autowired
-    private RedisTemplate redisTemplate;
+    // @Autowired
+    // private RedisTemplate redisTemplate;
 
     /**
      * 获取用户登陆状态
@@ -31,10 +31,10 @@ public class BaseController {
      */
     public String onLogin(UserModel userModel) {
         String uuidToken = UUID.randomUUID().toString();
-        redisTemplate.expire(uuidToken, 1, TimeUnit.HOURS);
+        // redisTemplate.expire(uuidToken, 1, TimeUnit.HOURS);
 
-        // 建立token和用户登录态之间的联系
-        redisTemplate.opsForValue().set(uuidToken, userModel);
+        // // 建立token和用户登录态之间的联系
+        // redisTemplate.opsForValue().set(uuidToken, userModel);
         return uuidToken;
     }
 }
