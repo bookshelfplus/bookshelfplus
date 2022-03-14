@@ -70,7 +70,6 @@ hr {
 /* 标题 siteTitle */
 .siteTitle h1 {
   margin-top: 130px;
-  display: inline-block;
   font-size: 36px;
 }
 
@@ -82,8 +81,14 @@ hr {
 /* 正文样式 */
 .main {
   margin: 0 auto;
+  text-align: center;
   /* max-width: 600px; */
   max-width: min(90vw, 720px);
+  min-height: 50vh;
+}
+
+.main > h1 {
+  margin-block-start: 40px;
 }
 
 .main p {
