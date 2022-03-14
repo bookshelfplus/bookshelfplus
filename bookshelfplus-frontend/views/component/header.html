@@ -4,7 +4,15 @@
 <title><%= title; %></title>
 
 <link rel="stylesheet" href="./assets/stylesheets/style.css">
-<!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script> -->
 <script src="./assets/lib/jquery/3.6.0/jquery.min.js"></script>
+<script src="./assets/lib/axios/0.26.1/axios.min.js"></script>
 
-<script src="./assets/lib/axios/0.20.0/axios.min.js"></script>
+<script src="./assets/javascripts/httpRequest.js"></script>
+<script>
+    // API地址
+    const APIHOST = '<%= global.site.api.prefix %>';
+    axios.defaults.baseURL = APIHOST;
+
+    // 请求头 Content-Type
+    axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+</script>

@@ -15,3 +15,7 @@
 ```
 npm i nodemon -g
 ```
+
+---
+
+nginx启动目录不能包含中文

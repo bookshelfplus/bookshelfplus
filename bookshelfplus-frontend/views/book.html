@@ -11,5 +11,14 @@
         </div>
     </main>
     <%- include("./component/footer.html"); %>
+
+    <script>
+        getRequest("/book/get", { id: 1 })
+            .then(function (response) {
+                console.log(response.data);
+            }).catch(function (error) {
+                console.log(error);
+            });
+    </script>
 </body>
 </html>

@@ -20,9 +20,21 @@ router.get('/category', function (req, res) {
     });
 });
 
+router.get('/book', function (req, res) {
+    res.render('book', {
+        title: "书籍详情"
+    });
+});
+
 router.get('/about', function (req, res) {
     res.render('about', {
         title: "关于"
+    });
+});
+
+router.get('/status', function (req, res) {
+    res.render('status', {
+        title: "网站状态检测"
     });
 });
 
