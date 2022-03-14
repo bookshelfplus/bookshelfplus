@@ -1,9 +1,19 @@
-# 书栖网 网站开源项目
+<div style="text-align: center;" align="center">
+<h1>书栖网 网站开源项目</h1>
+<p>一个完全免费无门槛的计算机类电子书下载网站</p>
+</div>
+
+项目官网：https://bookshelf.plus
+
+开源仓库：<a href="https://github.com/bookshelfplus/bookshelfplus" target="_blank">GitHub</a>  <a href="https://gitee.com/bookshelfplus/bookshelfplus" target="_blank">Gitee</a>
+
+![](docs/image/homepage.png)
+
+## 简介
+
+前项目为书栖网官网开源项目，你也可以通过这个项目搭建一个属于自己的电子书分享与管理平台。
 
 > 如需获取计算机类电子书，请访问https://bookshelf.plus/ ，或前往Git仓库👉（[GitHub](https://github.com/only-4/computer-related-books)、[Gitee](https://gitee.com/only4/computer-related-books)）
-
-当前项目为 https://bookshelf.plus 网站源代码，你也可以通过这个项目搭建一个属于自己的电子书分享与管理平台。
-
 
 
 
@@ -34,6 +44,22 @@ npm i nodemon -g
 
 
 
+## 功能展示
+
+### 功能列表
+
+- [x] 首页。简约（说白了其实就是懒），一个搜索框就够了。后期考虑添加热门搜索功能。
+- [ ] 书籍列表页，也是搜索结果页。就是一个书单列表，带分页功能。
+- [ ] 书籍详情页。主要是显示书籍的各种详细信息（书名，简介，缩略图等），还有下载方式，同时还有反馈功能（连接失效反馈，版权问题申诉下架等）
+- [ ] 管理员后台。
+- [ ] 用户登录后台。
+
+### 功能截图
+
+截图待补充...
+
+
+
 ## 项目架构
 
 > 项目前后端分离开发，使用了不同的技术，通过nginx进行反向代理
@@ -59,3 +85,4 @@ npm i nodemon -g
 ## 注意事项
 
 - nginx启动目录不能包含中文，否则无法启动
+
