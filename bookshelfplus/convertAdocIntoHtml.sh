@@ -1,0 +1,1 @@
+mvn asciidoctor:process-asciidoc

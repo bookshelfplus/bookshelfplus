@@ -1,4 +1,4 @@
-<div style="text-align: center;" align="center">
+<div align="center">
 <h1>书栖网 网站开源项目</h1>
 <p>一个完全免费无门槛的计算机类电子书下载网站</p>
 </div>
