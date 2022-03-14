@@ -30,13 +30,23 @@ public class StatusController {
     //     return processCpu;
     // }
 
-    @ApiOperation(value = "系统负载", notes = "获取服务器当前系统负载。")
-    @RequestMapping(value = "getSystemLoadAverage", method = {RequestMethod.GET})
+    @ApiOperation(value = "系统状态", notes = "获取服务器当前系统负载。SystemLoadAverage返回-1时代表不支持。")
+    @RequestMapping(value = "get", method = {RequestMethod.GET})
     @ResponseBody
-    public Object getSystemLoadAverage() {
+    public Object get() {
         OperatingSystemMXBean operatingSystemMXBean = (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
-        return operatingSystemMXBean.getSystemLoadAverage();
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("server", "OK");
+        return hashMap;
     }
+
+    // @ApiOperation(value = "系统负载", notes = "获取服务器当前系统负载。SystemLoadAverage返回-1时代表不支持。")
+    // @RequestMapping(value = "get", method = {RequestMethod.GET})
+    // @ResponseBody
+    // public Object get() {
+    //     OperatingSystemMXBean operatingSystemMXBean = (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
+    //     return operatingSystemMXBean.getSystemLoadAverage();
+    // }
 
     // @ApiOperation(value = "服务端状态", notes = "获取服务器当前状态信息")
     // @RequestMapping(value = "get", method = {RequestMethod.GET})
