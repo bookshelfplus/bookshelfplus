@@ -1,0 +1,329 @@
+= 书栖网 服务端接口文档
+
+
+[[_overview]]
+== 概览
+RESTful API | bookshelf.plus
+
+
+=== 版本信息
+[%hardbreaks]
+__版本__ : 1.0
+
+
+=== URI scheme
+[%hardbreaks]
+__域名__ : localhost:8090
+__基础路径__ : /api
+
+
+=== 标签
+
+* book-controller : Book Controller
+* status-controller : Status Controller
+* user-controller : User Controller
+
+
+
+
+[[_paths]]
+== 资源
+
+[[_book-controller_resource]]
+=== Book-controller
+Book Controller
+
+
+[[_getusingget]]
+==== 获取书籍信息
+....
+GET /book/get
+....
+
+
+===== 说明
+获取书籍信息
+
+
+===== 参数
+
+[options="header", cols=".^2,.^3,.^9,.^4"]
+|===
+|类型|名称|说明|类型
+|**Query**|**id** +
+__必填__|id|integer (int32)
+|===
+
+
+===== 响应
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_bookvo,BookVO>>
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+===== 生成
+
+* `*/*`
+
+
+===== HTTP请求示例
+
+====== 请求 path
+----
+/book/get
+----
+
+
+====== 请求 query
+[source,json]
+----
+{
+  "id" : 0
+}
+----
+
+
+===== HTTP响应示例
+
+====== 响应 200
+[source,json]
+----
+{
+  "author" : "string",
+  "bookName" : "string",
+  "category" : {
+    "description" : "string",
+    "id" : 0,
+    "isShow" : true,
+    "level" : 0,
+    "name" : "string",
+    "order" : 0,
+    "parentId" : 0
+  },
+  "copyright" : "string",
+  "description" : "string",
+  "id" : 0,
+  "language" : "string",
+  "publishingHouse" : "string",
+  "thumbnail" : "string"
+}
+----
+
+
+[[_status-controller_resource]]
+=== Status-controller
+Status Controller
+
+
+[[_getusingget_1]]
+==== 线程CPU占用时间
+....
+GET /status/getProcessCpu
+....
+
+
+===== 说明
+获取服务器当前线程CPU占用时间。此方法通过统计线程CPU占用时间来统计当前进程占用CPU情况。
+
+
+===== 响应
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|object
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+===== 生成
+
+* `*/*`
+
+
+===== HTTP请求示例
+
+====== 请求 path
+----
+/status/getProcessCpu
+----
+
+
+===== HTTP响应示例
+
+====== 响应 200
+[source,json]
+----
+"object"
+----
+
+
+[[_user-controller_resource]]
+=== User-controller
+User Controller
+
+
+[[_loginusingpost]]
+==== 用户登录
+....
+POST /user/login
+....
+
+
+===== 说明
+传入用户名，以及密码的MD5值，进行登录
+
+
+===== 参数
+
+[options="header", cols=".^2,.^3,.^9,.^4"]
+|===
+|类型|名称|说明|类型
+|**FormData**|**encryptpwd** +
+__必填__|encryptpwd|string
+|**FormData**|**username** +
+__必填__|username|string
+|===
+
+
+===== 响应
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_uservo,UserVO>>
+|**201**|Created|无内容
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+===== 消耗
+
+* `application/x-www-form-urlencoded`
+
+
+===== 生成
+
+* `*/*`
+
+
+===== HTTP请求示例
+
+====== 请求 path
+----
+/user/login
+----
+
+
+====== 请求 formData
+[source,json]
+----
+"string"
+----
+
+
+===== HTTP响应示例
+
+====== 响应 200
+[source,json]
+----
+{
+  "avatar" : "string",
+  "id" : 0,
+  "nickname" : "string",
+  "phone" : "string",
+  "userIdentity" : "string",
+  "username" : "string"
+}
+----
+
+
+
+
+[[_definitions]]
+== 定义
+
+[[_bookvo]]
+=== BookVO
+
+[options="header", cols=".^3,.^11,.^4"]
+|===
+|名称|说明|类型
+|**author** +
+__可选__|**样例** : `"string"`|string
+|**bookName** +
+__可选__|**样例** : `"string"`|string
+|**category** +
+__可选__|**样例** : `"<<_categorymodel>>"`|<<_categorymodel,CategoryModel>>
+|**copyright** +
+__可选__|**样例** : `"string"`|string
+|**description** +
+__可选__|**样例** : `"string"`|string
+|**id** +
+__可选__|**样例** : `0`|integer (int32)
+|**language** +
+__可选__|**样例** : `"string"`|enum (SIMPLIFIED_CHINESE, ENGLISH, TRADITIONAL_CHINESE)
+|**publishingHouse** +
+__可选__|**样例** : `"string"`|string
+|**thumbnail** +
+__可选__|**样例** : `"string"`|string
+|===
+
+
+[[_categorymodel]]
+=== CategoryModel
+
+[options="header", cols=".^3,.^11,.^4"]
+|===
+|名称|说明|类型
+|**description** +
+__可选__|**样例** : `"string"`|string
+|**id** +
+__可选__|**样例** : `0`|integer (int32)
+|**isShow** +
+__可选__|**样例** : `true`|boolean
+|**level** +
+__可选__|**样例** : `0`|integer (int32)
+|**name** +
+__可选__|**样例** : `"string"`|string
+|**order** +
+__可选__|**样例** : `0`|integer (int32)
+|**parentId** +
+__可选__|**样例** : `0`|integer (int32)
+|===
+
+
+[[_uservo]]
+=== UserVO
+
+[options="header", cols=".^3,.^11,.^4"]
+|===
+|名称|说明|类型
+|**avatar** +
+__可选__|**样例** : `"string"`|string
+|**id** +
+__可选__|**样例** : `0`|integer (int32)
+|**nickname** +
+__可选__|**样例** : `"string"`|string
+|**phone** +
+__可选__|**样例** : `"string"`|string
+|**userIdentity** +
+__可选__|**样例** : `"string"`|string
+|**username** +
+__可选__|**样例** : `"string"`|string
+|===
+
+
+
+
+
