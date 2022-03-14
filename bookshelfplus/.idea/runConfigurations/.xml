@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="生成接口文档文件 SwaggerApiDocGeneratorTest" type="JUnit" factoryName="JUnit">
+  <configuration default="false" name="生成接口文档文件" type="JUnit" factoryName="JUnit">
     <module name="bookshelfplus" />
     <extension name="coverage">
       <pattern>
@@ -9,8 +9,8 @@
     </extension>
     <option name="PACKAGE_NAME" value="plus.bookshelf" />
     <option name="MAIN_CLASS_NAME" value="plus.bookshelf.SwaggerApiDocGeneratorTest" />
-    <option name="METHOD_NAME" value="" />
-    <option name="TEST_OBJECT" value="class" />
+    <option name="METHOD_NAME" value="generateAsciiDocsToFile" />
+    <option name="TEST_OBJECT" value="method" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>
