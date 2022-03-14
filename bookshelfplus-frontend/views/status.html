@@ -6,6 +6,14 @@
         .info-disabled {
             color: #999;
         }
+
+        .info-ok {
+            color: green;
+        }
+
+        .info-err {
+            color: red;
+        }
     </style>
 </head>
 <body>
@@ -14,9 +22,14 @@
         <h1>
             <%= title %>
         </h1>
-        <div id="container">
-            <input id="checkBtn" type="button" value="检测" onclick="startCheck()">
 
+        <div class="removeAfterScriptLoaded">
+            <p>正在准备检测环境，请稍候...</p>
+            <p>若长时间无响应请尝试刷新页面</p>
+        </div>
+
+        <div id="container" style="visibility: hidden;">
+            <input id="checkBtn" type="button" value="检测" onclick="startCheck()">
             <div class="parentNode">
                 <div class="childrenNode">
                     <h3 class="title">网络连通性</h3>
@@ -38,67 +51,17 @@
         </div>
     </main>
     <%- include("./component/footer.html"); %>
+    <script async="true" src="./assets/javascripts/siteStatus.js"></script>
     <script>
-        var timeout = null;
-        $('.info').css("display", "none");
+        // function checkTimeOff() {
+        //     var oldScriptDom = document.getElementById("timeCalibrationScript");
+        //     if (oldScriptDom) oldScriptDom.parentNode.removeChild(oldScriptDom);
 
-        function startCheck() {
-            if (timeout) clearTimeout(timeout);
-
-            document.getElementById("checkBtn").value = "检测中";
-            document.getElementById("checkBtn").disabled = "disabled";
-            $('.info').html("loading...");
-            $('.info-disabled').html("暂不提供检测");
-            $('.info').css("display", "");
-
-            var i = 0, timeSpan = 300;
-            setTimeout(checkOnlineStatus, timeSpan * ++i);
-            setTimeout(checkBackendStatus, timeSpan * ++i);
-            setTimeout(checkTimeOff, timeSpan * ++i);
-            setTimeout(finishCheck, timeSpan * ++i);
-        }
-
-        function checkOnlineStatus() {
-            var onlineStatus = window.navigator.onLine;
-            $("#onlineStatus").text(onlineStatus ? "已连接" : "您当前未连接互联网");
-        }
-
-        function checkBackendStatus() {
-            var backendStatus = false;
-            getRequest("/status/getProcessCpu", {})
-                .then(function (response) {
-                    console.log("response.data", response.data);
-                    if (response.data == 0) {
-                        backendStatus = true;
-                    }
-                    $("#backendStatus").text("后台连接正常");
-                })
-                .catch(function (error) {
-                    $("#backendStatus").text("后台连接异常");
-                });
-        }
-
-        function checkTimeOff() {
-            var oldScriptDom = document.getElementById("timeCalibrationScript");
-            if (oldScriptDom) oldScriptDom.parentNode.removeChild(oldScriptDom);
-
-            oldScriptDom = document.createElement("script");
-            oldScriptDom.id = "timeCalibrationScript";
-            oldScriptDom.src = "./assets/javascripts/timeCalibration.js?" + Date.now() + "-" + new Date().getTime();
-            document.body.appendChild(oldScriptDom);
-        }
-
-        function finishCheck() {
-            document.getElementById("checkBtn").value = "重新检测";
-            document.getElementById("checkBtn").disabled = "";
-
-            if (timeout) clearTimeout(timeout);
-            timeout = setTimeout(startCheck, 5000);
-        }
-
-        // $(document).ready(function () {
-        //     startCheck();
-        // });
+        //     oldScriptDom = document.createElement("script");
+        //     oldScriptDom.id = "timeCalibrationScript";
+        //     oldScriptDom.src = "./assets/javascripts/timeCalibration.js?" + Date.now() + "-" + new Date().getTime();
+        //     document.body.appendChild(oldScriptDom);
+        // }
     </script>
 </body>
 </html>

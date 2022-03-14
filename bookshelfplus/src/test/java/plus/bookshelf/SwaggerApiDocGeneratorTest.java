@@ -41,7 +41,6 @@ public class SwaggerApiDocGeneratorTest {
     //             .withGeneratedExamples()
     //             .withoutInlineSchema()
     //             .build();
-    //     System.out.println(swaggerApiUrl);
     //     //设置swagger-api的json来源
     //     Swagger2MarkupConverter.from(new URL(swaggerApiUrl))
     //             .withConfig(config)
