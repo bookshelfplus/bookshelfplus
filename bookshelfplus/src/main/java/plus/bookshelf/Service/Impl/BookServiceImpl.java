@@ -1,5 +1,7 @@
 package plus.bookshelf.Service.Impl;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,14 +52,22 @@ public class BookServiceImpl implements BookService {
         }
 
         BookDOExample bookDOExample = new BookDOExample();
-        BeanUtils.copyProperties(bookModel, bookDOExample);
-        List<BookDO> bookDOS = bookDOMapper.selectByExampleWithBLOBs(bookDOExample);
+        BookDOExample.Criteria criteria = bookDOExample.createCriteria();
 
-        List<BookModel> bookModels = new ArrayList<>();
-        for (BookDO bookDO : bookDOS) {
-            bookModels.add(convertFromDataObjecct(bookDO));
-        }
-        return bookModels;
+        // criteria.andIsDeleteEqualTo(false);
+        // if (bookModel.getId() != null && bookModel.getId() != 0)
+        //     criteria.andIdEqualTo(bookModel.getId());
+        if (StringUtils.isNotBlank(bookModel.getBookName()))
+            criteria.andBookNameLike("%" + bookModel.getBookName() + "%");
+        // if (StringUtils.isNotBlank(bookModel.getAuthor()))
+        //     criteria.andAuthorEqualTo(bookModel.getAuthor());
+        // if (bookModel.getCategory() != null && bookModel.getCategory().getId() != null && bookModel.getCategory().getId() != 0)
+        //     criteria.andCategoryIdEqualTo(bookModel.getCategory().getId());
+        // if (StringUtils.isNotBlank(bookModel.getPublishingHouse()))
+        //     criteria.andPublishingHouseEqualTo(bookModel.getPublishingHouse());
+
+        List<BookDO> bookDOs = bookDOMapper.selectByExampleWithBLOBs(bookDOExample);
+        return convertFromDataObjecctList(bookDOs);
     }
 
     private BookModel convertFromDataObjecct(BookDO bookDO) {
@@ -80,5 +90,13 @@ public class BookServiceImpl implements BookService {
         bookModel.setCategory(categoryModel);
 
         return bookModel;
+    }
+
+    private List<BookModel> convertFromDataObjecctList(List<BookDO> bookDOs) {
+        List<BookModel> bookModels = new ArrayList<>();
+        for (BookDO bookDO : bookDOs) {
+            bookModels.add(convertFromDataObjecct(bookDO));
+        }
+        return bookModels;
     }
 }
