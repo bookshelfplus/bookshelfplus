@@ -2,14 +2,45 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <%- include("./component/header.html"); %>
+    <style>
+        #result-table {
+            width: 100%;
+            border: 1px solid black;
+            margin-top: 30px;
+        }
+    </style>
 </head>
 <body>
     <%- include("./component/navbar.html"); %>
-    <main class="main">
+    <div class="main">
         <h1><%= title %></h1>
+        <%- include("./component/searchbox.html"); %>
         <div id="container">
+            <table id="result-table"></table>
         </div>
-    </main>
+    </div>
     <%- include("./component/footer.html"); %>
+    <!-- 获取参数 -->
+    <script src="./assets/javascripts/getParams.js"></script>
+    <script>
+        var requestParams = getParams();
+        var searchbox = document.getElementById("searchInput");
+        searchbox.value = requestParams["keyword"];
+    </script>
+    <!-- 渲染表格 -->
+    <script src="./assets/javascripts/renderTable.js"></script>
+    <script>
+        var data1 = [
+            { a: "a1", b: "b1", c: "c1", },
+            { c: "c2", a: "a2", b: "b2", },
+            { a: "a3", c: "c3", b: "b3", }
+        ];
+
+        var table1 = renderTable({
+            tableId: "result-table",
+            data: data1,
+            renderTableHead: true,
+        });
+    </script>
 </body>
 </html>
