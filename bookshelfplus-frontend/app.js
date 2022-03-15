@@ -7,12 +7,10 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 let dotenv = require('dotenv');
-const compression = require('compression'); // gzip
 
 // 读取配置文件
 dotenv.config('./env');
 // console.log(process.env);
-
 // 引入路由文件
 var indexRoute = require('./routes/index');
 var fontminRoute = require('./routes/fontmin');
@@ -20,7 +18,15 @@ const { copyFileSync } = require('fs');
 
 // 创建应用
 var app = express();
-app.use(compression());  // 启用gzip
+
+// gzip
+if (process.env.gzip == "true") {
+    const compression = require('compression');
+    app.use(compression());
+    console.log("[GZIP] gzip enabled");
+} else {
+    console.log("[GZIP] gzip disabled");
+}
 
 // 设置视图引擎 view engine setup
 app.set('views', path.join(__dirname, 'views'));
