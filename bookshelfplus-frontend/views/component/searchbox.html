@@ -50,6 +50,6 @@
             alert("请输入搜索内容");
             return;
         }
-        window.location.href = "./search?keyword=" + encodeURIComponent(searchBoxValue);
+        window.location.href = "./search?keyword=" + encodeURIComponent(searchBoxValue.trim());
     });
 </script>

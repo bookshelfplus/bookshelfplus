@@ -3,10 +3,32 @@
 <head>
     <%- include("./component/header.html"); %>
     <style>
+        .main {
+            width: 80vw !important;
+            max-width: initial !important;
+        }
+
         #result-table {
             width: 100%;
             border: 1px solid black;
             margin-top: 30px;
+            line-height: 1.8em;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        tr a {
+            cursor: pointer;
+            /* cursor: alias; */
+        }
+
+        .overflow-omit {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            display: block;
         }
     </style>
 </head>
@@ -17,6 +39,7 @@
         <%- include("./component/searchbox.html"); %>
         <div id="container">
             <table id="result-table"></table>
+            <!-- <table id="origin-table"></table> -->
         </div>
     </div>
     <%- include("./component/footer.html"); %>
@@ -25,22 +48,57 @@
     <script>
         var requestParams = getParams();
         var searchbox = document.getElementById("searchInput");
-        searchbox.value = requestParams["keyword"];
+        var keyword = (requestParams["keyword"] || "").trim();
+        searchbox.value = keyword;
+        if (keyword === "") {
+            searchbox.focus();
+        }
     </script>
     <!-- 渲染表格 -->
     <script src="./assets/javascripts/renderTable.js"></script>
     <script>
-        var data1 = [
-            { a: "a1", b: "b1", c: "c1", },
-            { c: "c2", a: "a2", b: "b2", },
-            { a: "a3", c: "c3", b: "b3", }
-        ];
+        getRequest("/book/search", { bookName: encodeURIComponent(searchbox.value) })
+            .then(function (responseData) {
+                var axiosData = responseData.data;
+                var status = axiosData.status;
+                var data = axiosData.data;
+                if (status === "success") {
+                    console.log(data)
 
-        var table1 = renderTable({
-            tableId: "result-table",
-            data: data1,
-            renderTableHead: true,
-        });
+                    // 数据进行转换
+                    var renderData = [];
+                    data.forEach(element => {
+                        var mainDivWidth = 80/*vw*/; // 定义div的宽度（用于计算表格中的数据的显示长度）
+                        var columnWidth = [23, 17, 30, 10, 20];
+                        renderData.push({
+                            书名: ` <a href="/book?id=${element.category.id}">
+                                        <span class="overflow-omit" style="max-width: ${columnWidth[0] * mainDivWidth / 100}vw; max-height: 2em;">
+                                            ${element.bookName}
+                                        </span>
+                                    </a>`,
+                            分类: ` <a href="/category?id=${element.category.id}">
+                                        <span class="overflow-omit" style="max-width: ${columnWidth[1] * mainDivWidth / 100}vw; max-height: 2em;">
+                                            ${element.category.name}
+                                        </span>
+                                    </a>`,
+                            简介: ` <span class="overflow-omit" style="max-width: ${columnWidth[2] * mainDivWidth / 100}vw; max-height: 2em;">
+                                        ${element.description}
+                                    </span>`,
+                            语言: ` <span class="overflow-omit" style="max-width: ${columnWidth[3] * mainDivWidth / 100}vw; max-height: 2em;">
+                                        ${element.language}
+                                    </span>`,
+                            出版社: `<span class="overflow-omit" style="max-width: ${columnWidth[4] * mainDivWidth / 100}vw; max-height: 2em;">
+                                        ${element.publishingHouse}
+                                    </span>`,
+                        })
+                    });
+                    renderTable({ data: renderData, tableId: "result-table", renderTableHead: true });
+                    // renderTable({ data: data, tableId: "origin-table", renderTableHead: true });
+                }
+                else {
+                    alert("搜索失败");
+                }
+            });
     </script>
 </body>
 </html>
