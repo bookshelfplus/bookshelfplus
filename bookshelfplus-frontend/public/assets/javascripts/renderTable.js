@@ -5,8 +5,10 @@ function renderTable({
 }) {
     var tbodyHtml = "";
     var theadHtml = "";
+    if (!data) return null;
+    if (!data.length) return null;
 
-    if (Array.isArray(data)) {
+    if (Array.isArray(data[0])) {
         // 是数组
         // 如果元素是数组 ["a", "b", "c"]，则数组的第一项作为表头
 

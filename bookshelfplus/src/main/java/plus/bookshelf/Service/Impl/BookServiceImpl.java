@@ -51,7 +51,7 @@ public class BookServiceImpl implements BookService {
 
         BookDOExample bookDOExample = new BookDOExample();
         BeanUtils.copyProperties(bookModel, bookDOExample);
-        List<BookDO> bookDOS = bookDOMapper.selectByExample(bookDOExample);
+        List<BookDO> bookDOS = bookDOMapper.selectByExampleWithBLOBs(bookDOExample);
 
         List<BookModel> bookModels = new ArrayList<>();
         for (BookDO bookDO : bookDOS) {
@@ -73,6 +73,7 @@ public class BookServiceImpl implements BookService {
         bookModel.setCopyright(bookDO.getCopyright());
         bookModel.setIsDelete(bookDO.getIsDelete());
         bookModel.setThumbnail(bookDO.getThumbnail());
+        bookModel.setLanguage(bookDO.getLanguage());
 
         // 查询得到categoryModel
         CategoryModel categoryModel = categoryService.getCategoryById(bookDO.getCategoryId());
