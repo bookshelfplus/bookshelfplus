@@ -5,6 +5,7 @@
   "scripts": {
     "start": "node app",
     "dev": "nodemon",
+    "test": "set NODE_ENV=production & nodemon",
     "prod": "set NODE_ENV=production & pm2 start app.js --name bookshelfplus-frontend",
     "clean": "node cleanup.js"
   },
