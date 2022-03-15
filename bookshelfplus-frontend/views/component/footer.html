@@ -30,22 +30,35 @@
         axios.post('../fontmin/getfont', { text: text, font: "" })
             .then(function (response) {
                 // 当接口成功返回时，动态设置css
-                let styleDom = document.createElement('style');
-                styleDom.type = 'text/css';
-                const cssText = `
-                @font-face {
-                    font-family: bookshelfplusFont;
-                    src: url("${response.data.url}") format("truetype");
-                }
-                `
-                styleDom.appendChild(document.createTextNode(cssText));
-                document.getElementsByTagName('head')[0].appendChild(styleDom)
-                console.log("字体加载成功");
+                loadFont(response.data.url);
+                $("html,body").css("transition", ".05s");
+                setTimeout(()=>{
+                    $("html,body").css("opacity", "1");
+                }, 100)
             })
             .catch(function (error) {
                 console.log("字体加载失败", error);
+                $("html,body").css("transition", ".05s");
+                setTimeout(()=>{
+                    $("html,body").css("opacity", "1");
+                }, 100)
             });
     }
+
+    function loadFont(fontUrl) {
+        let styleDom = document.createElement('style');
+        styleDom.type = 'text/css';
+        const cssText = `
+        @font-face {
+            font-family: bookshelfplusFont;
+            src: url("${fontUrl}") format("truetype");
+        }
+        `
+        styleDom.appendChild(document.createTextNode(cssText));
+        document.getElementsByTagName('head')[0].appendChild(styleDom)
+        console.log("字体加载成功");
+    }
+
 
     $(document).ready(function () {
         var allText = getPageText();
