@@ -1,7 +1,6 @@
 package plus.bookshelf.Controller.VO;
 
 import lombok.Data;
-import plus.bookshelf.Common.Enum.Language;
 import plus.bookshelf.Service.Model.CategoryModel;
 
 @Data
@@ -26,7 +25,7 @@ public class BookVO {
     String publishingHouse;
 
     // 语言
-    Language language;
+    String language;
 
     // 来源(版权)信息
     String copyright;

@@ -74,7 +74,7 @@
 
         <!-- 生成对应表及其类名 -->
         <!--<table tableName="book_info" domainObjectName="BookDO" enableCountByExample="false"-->
-        <!--       enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
+        <!--       enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="true"-->
         <!--       selectByExampleQueryId="false"></table>-->
         <!--<table tableName="book_thumbnail_info" domainObjectName="ThumbnailDO" enableCountByExample="false"-->
         <!--       enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
