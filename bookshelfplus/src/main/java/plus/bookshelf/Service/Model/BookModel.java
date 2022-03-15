@@ -1,7 +1,9 @@
 package plus.bookshelf.Service.Model;
 
 import lombok.Data;
-import plus.bookshelf.Common.Enum.Language;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Data
 public class BookModel {
@@ -10,6 +12,7 @@ public class BookModel {
     Integer id;
 
     // 书名
+    @NotBlank(message = "书籍名称不能为空")
     String bookName;
 
     // 书籍简介
@@ -25,13 +28,13 @@ public class BookModel {
     String publishingHouse;
 
     // 语言
-    Language language;
+    String language;
 
     // 来源(版权)信息
     String copyright;
 
     // 是否删除
-    Boolean isDelete;
+    Boolean isDelete = false;
 
     // 缩略图
     String thumbnail;
