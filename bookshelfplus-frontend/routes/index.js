@@ -38,6 +38,7 @@ router.get('/status', function (req, res) {
     });
 });
 
+// 网站状态检测Api接口
 router.get('/get-frontend-status', function (req, res) {
     res.end(JSON.stringify({ "server": "OK" }));
 });

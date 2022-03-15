@@ -45,8 +45,11 @@
 
     // 搜索按钮点击事件
     $('#searchButton').click(function () {
-        if ($('#searchInput').val() !== "") {
-            location.href = "search?keyword=" + encodeURIComponent($('#searchInput').val());
+        var searchBoxValue = $('#searchInput').val();
+        if (!searchBoxValue || searchBoxValue.trim() == "") {
+            alert("请输入搜索内容");
+            return;
         }
+        window.location.href = "./search?keyword=" + encodeURIComponent(searchBoxValue);
     });
 </script>
