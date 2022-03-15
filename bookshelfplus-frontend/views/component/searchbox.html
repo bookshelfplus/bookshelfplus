@@ -48,8 +48,9 @@
     $('#searchButton').click(function () {
         var searchBoxValue = $('#searchInput').val();
         if (!searchBoxValue || searchBoxValue.trim() == "") {
-            alert("请输入搜索内容");
-            return;
+            // alert("请输入搜索内容");
+            // return;
+            window.location.href = "./search";
         }
         window.location.href = "./search?keyword=" + encodeURIComponent(searchBoxValue.trim());
     });

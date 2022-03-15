@@ -40,6 +40,7 @@ public class BaseController {
 
     /**
      * 保存用户的登录状态
+     *
      * @return String uuidToken
      */
     public String onLogin(UserModel userModel) {
