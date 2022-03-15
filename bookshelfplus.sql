@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 13/03/2022 02:15:21
+ Date: 15/03/2022 14:34:27
 */
 
 SET NAMES utf8mb4;
@@ -33,12 +33,21 @@ CREATE TABLE `book_info`  (
   `thumbnail` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '缩略图',
   `author` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '作者',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of book_info
 -- ----------------------------
 INSERT INTO `book_info` VALUES (1, '程序员小墨', '这是书栖网的第一本书', 3, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, '', '小墨');
+INSERT INTO `book_info` VALUES (2, '程序员小墨', '这是书栖网的第一本书', 3, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, '', '小墨');
+INSERT INTO `book_info` VALUES (3, '程序员小墨', '这是书栖网的第一本书', 3, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, '', '小墨');
+INSERT INTO `book_info` VALUES (4, '程序员小墨', '这是书栖网的第一本书', 3, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, '', '小墨');
+INSERT INTO `book_info` VALUES (5, '程序员小墨', '这是书栖网的第一本书', 3, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, '', '小墨');
+INSERT INTO `book_info` VALUES (6, '程序员小墨', '这是书栖网的第一本书', 3, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, '', '小墨');
+INSERT INTO `book_info` VALUES (7, '程序员小墨', '这是书栖网的第一本书', 3, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, '', '小墨');
+INSERT INTO `book_info` VALUES (8, '程序员小墨', '这是书栖网的第一本书', 3, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, '', '小墨');
+INSERT INTO `book_info` VALUES (9, '程序员小墨', '这是书栖网的第一本书', 3, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, '', '小墨');
+INSERT INTO `book_info` VALUES (10, '程序员小墨', '这是书栖网的第一本书', 3, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, '', '小墨');
 
 -- ----------------------------
 -- Table structure for category_info
@@ -169,6 +178,6 @@ CREATE TABLE `user_info`  (
 -- ----------------------------
 -- Records of user_info
 -- ----------------------------
-INSERT INTO `user_info` VALUES (1, 'xiaomo', 'e10adc3949ba59abbe56e057f20f883e', '小小墨', 'ADMIN', '', '', '', '');
+INSERT INTO `user_info` VALUES (1, 'xiaomo', 'e10adc3949ba59abbe56e057f20f883e', '小小墨', 'ADMIN', '/密码/123456/', '', '', '');
 
 SET FOREIGN_KEY_CHECKS = 1;
