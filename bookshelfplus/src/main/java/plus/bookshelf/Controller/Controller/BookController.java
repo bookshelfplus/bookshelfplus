@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import plus.bookshelf.Common.Response.CommonReturnType;
 import plus.bookshelf.Controller.VO.BookVO;
 import plus.bookshelf.Service.Model.BookModel;
 import plus.bookshelf.Service.Service.BookService;
@@ -25,14 +26,14 @@ public class BookController extends BaseController {
     // @ApiImplicitParam(name = "book", value = "图书详细实体", required = true, dataType = "Book")
     @RequestMapping(value = "get", method = {RequestMethod.GET})
     @ResponseBody
-    public BookVO get(@RequestParam(value = "id") Integer id) {
+    public CommonReturnType get(@RequestParam(value = "id") Integer id) {
         if (id == null) {
             return null;
         }
 
         BookModel bookModel = bookService.getBookById(id);
         BookVO bookVO = convertFromModel(bookModel);
-        return bookVO;
+        return CommonReturnType.create(bookVO);
     }
 
     private BookVO convertFromModel(BookModel bookModel) {

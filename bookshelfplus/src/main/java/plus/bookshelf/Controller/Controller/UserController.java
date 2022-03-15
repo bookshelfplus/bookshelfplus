@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import plus.bookshelf.Common.Response.CommonReturnType;
 import plus.bookshelf.Controller.VO.UserVO;
 import plus.bookshelf.Service.Impl.UserServiceImpl;
 import plus.bookshelf.Service.Model.UserModel;
@@ -26,11 +27,11 @@ public class UserController {
     @ApiOperation(value = "用户登录",notes = "传入用户名，以及密码的MD5值，进行登录")
     @RequestMapping(value = "login", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
     @ResponseBody
-    public UserVO login(@RequestParam(value = "username") String username,
+    public CommonReturnType login(@RequestParam(value = "username") String username,
                         @RequestParam(value = "encryptpwd") String encryptPwd) {
         UserModel userModel = userService.userLogin(username, encryptPwd);
         UserVO userVO = convertFromService(userModel);
-        return userVO;
+        return CommonReturnType.create(userVO);
     }
 
     private UserVO convertFromService(UserModel userModel) {
