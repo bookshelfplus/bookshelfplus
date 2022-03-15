@@ -12,6 +12,7 @@
   "description": "书栖网",
   "dependencies": {
     "body-parser": "^1.15.0",
+    "compression": "^1.7.4",
     "cookie-parser": "^1.4.0",
     "crypto": "^1.0.1",
     "debug": "^2.2.0",
