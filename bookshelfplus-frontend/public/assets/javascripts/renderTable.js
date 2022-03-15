@@ -52,8 +52,12 @@ function renderTable({
             }
             theadHtml += "</tr>";
         }
+
+    } else if (typeof data === "string") {
+        // 是文字 （一般用于未查到结果，显示提示信息）
+        theadHtml += `<tr><th>${data}</th></tr>`;
     } else {
-        throw new DOMException("Failed to render table: data is not array or dictionary.");
+        throw new DOMException("Failed to render table: data is not array, dictionary or string.");
     }
 
     // 获取table
