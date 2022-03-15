@@ -12,6 +12,10 @@ public class BaseController {
     // content-type 常量
     public static final String CONTENT_TYPE_FORMED = "application/x-www-form-urlencoded";
 
+    // PageHelper分页常量
+    public static final Integer COMMON_START_PAGE = 1;
+    public static final Integer COMMON_PAGE_SIZE = 10;
+
     @Autowired
     HttpServletRequest httpServletRequest;
 
