@@ -58,7 +58,7 @@
                     var status = axiosData.status;
                     var data = axiosData.data;
                     if (status === "success") {
-                        console.log(data)
+                        // console.log(data)
 
                         // 数据进行转换
                         var renderData = [];
@@ -87,16 +87,12 @@
                                         </span>`,
                             })
                         });
+
                         if(renderData.length == 0) {
-                            renderData.push({
-                                书名: "没有搜索到相关书籍",
-                                分类: "",
-                                简介: "",
-                                语言: "",
-                                出版社: "",
-                            })
+                            renderTable({ data: "没有搜索到相关书籍", tableId: "result-table", renderTableHead: true });
+                        } else {
+                            renderTable({ data: renderData, tableId: "result-table", renderTableHead: true });
                         }
-                        renderTable({ data: renderData, tableId: "result-table", renderTableHead: true });
                         // renderTable({ data: data, tableId: "origin-table", renderTableHead: true });
 
                         // 渲染后重新获取一次字体
