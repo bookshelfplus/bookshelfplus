@@ -14,7 +14,6 @@ __版本__ : 1.0
 === URI scheme
 [%hardbreaks]
 __域名__ : localhost:8090
-__基础路径__ : /api
 
 
 === 标签
@@ -37,7 +36,7 @@ Book Controller
 [[_getusingget]]
 ==== 获取书籍信息
 ....
-GET /book/get
+GET /api/book/get
 ....
 
 
@@ -47,7 +46,7 @@ GET /book/get
 
 ===== 参数
 
-[options="header", cols=".^2,.^3,.^9,.^4"]
+[options="header", cols=".^2a,.^3a,.^9a,.^4a"]
 |===
 |类型|名称|说明|类型
 |**Query**|**id** +
@@ -57,10 +56,10 @@ __必填__|id|integer (int32)
 
 ===== 响应
 
-[options="header", cols=".^2,.^14,.^4"]
+[options="header", cols=".^2a,.^14a,.^4a"]
 |===
 |HTTP代码|说明|类型
-|**200**|OK|<<_bookvo,BookVO>>
+|**200**|OK|<<_commonreturntype,CommonReturnType>>
 |**401**|Unauthorized|无内容
 |**403**|Forbidden|无内容
 |**404**|Not Found|无内容
@@ -69,23 +68,14 @@ __必填__|id|integer (int32)
 
 ===== 生成
 
-* `*/*`
+* `\*/*`
 
 
 ===== HTTP请求示例
 
 ====== 请求 path
 ----
-/book/get
-----
-
-
-====== 请求 query
-[source,json]
-----
-{
-  "id" : 0
-}
+/api/book/get?id=0
 ----
 
 
@@ -95,23 +85,8 @@ __必填__|id|integer (int32)
 [source,json]
 ----
 {
-  "author" : "string",
-  "bookName" : "string",
-  "category" : {
-    "description" : "string",
-    "id" : 0,
-    "isShow" : true,
-    "level" : 0,
-    "name" : "string",
-    "order" : 0,
-    "parentId" : 0
-  },
-  "copyright" : "string",
-  "description" : "string",
-  "id" : 0,
-  "language" : "string",
-  "publishingHouse" : "string",
-  "thumbnail" : "string"
+  "data" : "object",
+  "status" : "string"
 }
 ----
 
@@ -121,23 +96,23 @@ __必填__|id|integer (int32)
 Status Controller
 
 
-[[_getsystemloadaverageusingget]]
-==== 系统负载
+[[_getusingget_1]]
+==== 系统状态
 ....
-GET /status/getSystemLoadAverage
+GET /api/status/get
 ....
 
 
 ===== 说明
-获取服务器当前系统负载。
+获取服务器当前系统负载。SystemLoadAverage返回-1时代表不支持。
 
 
 ===== 响应
 
-[options="header", cols=".^2,.^14,.^4"]
+[options="header", cols=".^2a,.^14a,.^4a"]
 |===
 |HTTP代码|说明|类型
-|**200**|OK|object
+|**200**|OK|<<_commonreturntype,CommonReturnType>>
 |**401**|Unauthorized|无内容
 |**403**|Forbidden|无内容
 |**404**|Not Found|无内容
@@ -146,14 +121,14 @@ GET /status/getSystemLoadAverage
 
 ===== 生成
 
-* `*/*`
+* `\*/*`
 
 
 ===== HTTP请求示例
 
 ====== 请求 path
 ----
-/status/getSystemLoadAverage
+/api/status/get
 ----
 
 
@@ -162,7 +137,10 @@ GET /status/getSystemLoadAverage
 ====== 响应 200
 [source,json]
 ----
-"object"
+{
+  "data" : "object",
+  "status" : "string"
+}
 ----
 
 
@@ -174,7 +152,7 @@ User Controller
 [[_loginusingpost]]
 ==== 用户登录
 ....
-POST /user/login
+POST /api/user/login
 ....
 
 
@@ -184,22 +162,22 @@ POST /user/login
 
 ===== 参数
 
-[options="header", cols=".^2,.^3,.^9,.^4"]
+[options="header", cols=".^2a,.^3a,.^4a"]
 |===
-|类型|名称|说明|类型
+|类型|名称|类型
 |**FormData**|**encryptpwd** +
-__必填__|encryptpwd|string
+__可选__|string
 |**FormData**|**username** +
-__必填__|username|string
+__可选__|string
 |===
 
 
 ===== 响应
 
-[options="header", cols=".^2,.^14,.^4"]
+[options="header", cols=".^2a,.^14a,.^4a"]
 |===
 |HTTP代码|说明|类型
-|**200**|OK|<<_uservo,UserVO>>
+|**200**|OK|<<_commonreturntype,CommonReturnType>>
 |**201**|Created|无内容
 |**401**|Unauthorized|无内容
 |**403**|Forbidden|无内容
@@ -214,14 +192,14 @@ __必填__|username|string
 
 ===== 生成
 
-* `*/*`
+* `\*/*`
 
 
 ===== HTTP请求示例
 
 ====== 请求 path
 ----
-/user/login
+/api/user/login
 ----
 
 
@@ -238,12 +216,8 @@ __必填__|username|string
 [source,json]
 ----
 {
-  "avatar" : "string",
-  "id" : 0,
-  "nickname" : "string",
-  "phone" : "string",
-  "userIdentity" : "string",
-  "username" : "string"
+  "data" : "object",
+  "status" : "string"
 }
 ----
 
@@ -253,73 +227,15 @@ __必填__|username|string
 [[_definitions]]
 == 定义
 
-[[_bookvo]]
-=== BookVO
+[[_commonreturntype]]
+=== CommonReturnType
 
-[options="header", cols=".^3,.^11,.^4"]
+[options="header", cols=".^3a,.^11a,.^4a"]
 |===
 |名称|说明|类型
-|**author** +
-__可选__|**样例** : `"string"`|string
-|**bookName** +
-__可选__|**样例** : `"string"`|string
-|**category** +
-__可选__|**样例** : `"<<_categorymodel>>"`|<<_categorymodel,CategoryModel>>
-|**copyright** +
-__可选__|**样例** : `"string"`|string
-|**description** +
-__可选__|**样例** : `"string"`|string
-|**id** +
-__可选__|**样例** : `0`|integer (int32)
-|**language** +
-__可选__|**样例** : `"string"`|enum (SIMPLIFIED_CHINESE, ENGLISH, TRADITIONAL_CHINESE)
-|**publishingHouse** +
-__可选__|**样例** : `"string"`|string
-|**thumbnail** +
-__可选__|**样例** : `"string"`|string
-|===
-
-
-[[_categorymodel]]
-=== CategoryModel
-
-[options="header", cols=".^3,.^11,.^4"]
-|===
-|名称|说明|类型
-|**description** +
-__可选__|**样例** : `"string"`|string
-|**id** +
-__可选__|**样例** : `0`|integer (int32)
-|**isShow** +
-__可选__|**样例** : `true`|boolean
-|**level** +
-__可选__|**样例** : `0`|integer (int32)
-|**name** +
-__可选__|**样例** : `"string"`|string
-|**order** +
-__可选__|**样例** : `0`|integer (int32)
-|**parentId** +
-__可选__|**样例** : `0`|integer (int32)
-|===
-
-
-[[_uservo]]
-=== UserVO
-
-[options="header", cols=".^3,.^11,.^4"]
-|===
-|名称|说明|类型
-|**avatar** +
-__可选__|**样例** : `"string"`|string
-|**id** +
-__可选__|**样例** : `0`|integer (int32)
-|**nickname** +
-__可选__|**样例** : `"string"`|string
-|**phone** +
-__可选__|**样例** : `"string"`|string
-|**userIdentity** +
-__可选__|**样例** : `"string"`|string
-|**username** +
+|**data** +
+__可选__|**样例** : `"object"`|object
+|**status** +
 __可选__|**样例** : `"string"`|string
 |===
 
