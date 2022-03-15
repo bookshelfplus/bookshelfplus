@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiOperation;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import plus.bookshelf.Common.Response.CommonReturnType;
 
 import java.lang.management.ManagementFactory;
 import java.math.BigDecimal;
@@ -33,11 +34,11 @@ public class StatusController {
     @ApiOperation(value = "系统状态", notes = "获取服务器当前系统负载。SystemLoadAverage返回-1时代表不支持。")
     @RequestMapping(value = "get", method = {RequestMethod.GET})
     @ResponseBody
-    public Object get() {
-        OperatingSystemMXBean operatingSystemMXBean = (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
-        HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("server", "OK");
-        return hashMap;
+    public CommonReturnType get() {
+        // HashMap<String, Object> hashMap = new HashMap<>();
+        // hashMap.put("server", "OK");
+        // return CommonReturnType.create(hashMap);
+        return CommonReturnType.create(null);
     }
 
     // @ApiOperation(value = "系统负载", notes = "获取服务器当前系统负载。SystemLoadAverage返回-1时代表不支持。")

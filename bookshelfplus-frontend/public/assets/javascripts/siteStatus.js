@@ -41,8 +41,8 @@ function checkBackendStatus() {
     var backendStatus = false;
     getRequest("/status/get", {})
         .then(function (response) {
-            console.log("response.data", response.data);
-            if (response.data.server === "OK") {
+            console.log("backend response data:", response.data);
+            if (response.data.status === "success") {
                 $("#backendStatus").text("后台连接正常");
                 $("#backendStatus").addClass("info-ok");
             } else {
@@ -60,7 +60,7 @@ function checkFrontendStatus() {
     var backendStatus = false;
     getRequest("../get-frontend-status", {})
         .then(function (response) {
-            console.log("response.data", response.data);
+            console.log("frontend response data:", response.data);
             if (response.data.server === "OK") {
                 $("#frontendStatus").text("前台连接正常");
                 $("#frontendStatus").addClass("info-ok");
