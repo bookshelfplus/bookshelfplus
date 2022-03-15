@@ -2,20 +2,87 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <%- include("./component/header.html"); %>
+    <style>
+        .main {
+            width: 80vw !important;
+            max-width: initial !important;
+        }
+
+        #bookImage {
+            /* width: 100%; */
+            height: auto;
+            max-height: 300px;
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
     <%- include("./component/navbar.html"); %>
     <main class="main">
         <h1><%= title %></h1>
         <div id="container">
+
         </div>
     </main>
     <%- include("./component/footer.html"); %>
 
+    <!-- 获取参数 -->
+    <script src="./assets/javascripts/getParams.js"></script>
     <script>
-        getRequest("/book/get", { id: 1 })
+        var requestParams = getParams();
+        var searchbox = document.getElementById("searchInput");
+        var bookId = Number(requestParams["id"]) ?? "";
+        if (bookId === "") {
+            location.href = "/search";
+        }
+    </script>
+    <script>
+        getRequest("/book/get", { id: bookId })
             .then(function (response) {
-                console.log(response.data);
+                var axiosData = response.data;
+                var status = axiosData.status;
+                var data = axiosData.data;
+                if (status === "success") {
+                    console.log(data)
+                    data.thumbnail = "https://img14.360buyimg.com/pop/jfs/t1/141705/31/25225/853702/61a85f89Ef68c838b/929ded96a4a7579e.png";
+                    if(data.description == ""){
+                        data.description = "暂无描述";
+                    }
+                    document.getElementById("container").innerHTML =`
+                    <div class="grid">
+                        <div class="grid-item">
+                            <img id="bookImage" src="${data.thumbnail}" alt="书籍缩略图">
+                        </div>
+                        <div class="grid-item">
+                            <h1>${data.bookName}</h1>
+                        </div>
+                        <div class="grid-item">
+                            <a href="/download/?bookId=${data.id}">下载这本书</a>
+                        </div>
+                        <div class="grid-item">
+                            <p>作者：${data.author}</p>
+                            <p>所属分类：<a href="/category?id=${data.category.id}">${data.category.name}</a></p>
+                            <p>语言：${data.language}</p>
+                            <p>出版社：${data.publishingHouse}</p>
+                            <p></p>
+                        </div>
+                    </div>
+                    <div>
+                        <h2>书本介绍</h2>
+                        <p>${data.description}</p>
+                        <h2>版权信息</h2>
+                        <p>${data.copyright}</p>
+                    </div>`;
+
+                    // 渲染后重新获取一次字体
+                    fontmin(getPageText());
+                }
+                else {
+                    alert(
+                        `查询失败
+                        错误码: ${data.errCode}
+                        错误信息: ${data.errMsg}`);
+                }
             }).catch(function (error) {
                 console.log(error);
             });

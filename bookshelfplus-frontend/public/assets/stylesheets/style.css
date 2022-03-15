@@ -108,6 +108,7 @@ hr {
   transition: 0.5s;
 }
 
+
 .searchBox #searchInput:focus {
   padding: 0 18px;
   height: 35px;
@@ -117,6 +118,32 @@ hr {
 .searchBox #searchButton {
   width: 80px;
   height: 40px;
+
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  color: #000;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 400;
+  height: 32px;
+  line-height: 32px;
+  margin: 0;
+  padding: 0 16px;
+  text-align: center;
+  text-decoration: none;
+  vertical-align: middle;
+  white-space: nowrap;
+  /* width: auto; */
+
+  margin-left: 10px;
+  transition: 0.25s;
+}
+
+.searchBox #searchButton:hover {
+  background-color: #000;
+  color: #fff;
 }
 
 /* 网站Slogan */
@@ -163,4 +190,13 @@ hr {
   .navbar-grid {
     grid-template-columns: 10vw 1fr 0 10vw;
   }
+}
+
+/* 全局样式 */
+/* 超出内容显示为... */
+.overflow-omit {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
 }

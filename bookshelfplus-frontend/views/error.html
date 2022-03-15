@@ -5,9 +5,11 @@
 </head>
 <body>
     <%- include("./component/navbar.html"); %>
-    <h1><%= message %></h1>
-    <h2><%= error.status %></h2>
-    <pre><%= error.stack %></pre>
+    <div class="main">
+        <h1><%= message %></h1>
+        <h2><%= error.status %></h2>
+        <pre><%= error.stack %></pre>
+    </div>
     <%- include("./component/footer.html"); %>
 </body>
 </html>
