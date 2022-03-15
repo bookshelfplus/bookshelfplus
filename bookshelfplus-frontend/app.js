@@ -7,6 +7,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 let dotenv = require('dotenv');
+const compression = require('compression'); // gzip
 
 // 读取配置文件
 dotenv.config('./env');
@@ -19,6 +20,7 @@ const { copyFileSync } = require('fs');
 
 // 创建应用
 var app = express();
+app.use(compression());  // 启用gzip
 
 // 设置视图引擎 view engine setup
 app.set('views', path.join(__dirname, 'views'));
