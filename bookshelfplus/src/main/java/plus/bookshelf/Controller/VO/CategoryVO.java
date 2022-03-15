@@ -1,9 +1,9 @@
-package plus.bookshelf.Service.Model;
+package plus.bookshelf.Controller.VO;
 
 import lombok.Data;
 
 @Data
-public class CategoryModel {
+public class CategoryVO {
 
     // 分类名称
     Integer id;
@@ -14,9 +14,6 @@ public class CategoryModel {
     // 分类简介
     String description;
 
-    // 是否展示 （该字段暂未启用）
-    Boolean isShow;
-
     // 分类显示顺序
     Integer order;
 
@@ -25,7 +22,4 @@ public class CategoryModel {
 
     // 父分类
     Integer parentId;
-
-    // // 子分类集合
-    // Integer[] childrenId;
 }

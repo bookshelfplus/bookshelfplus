@@ -6,11 +6,56 @@
 <body>
     <%- include("./component/navbar.html"); %>
     <main class="main">
-        <h1><%= title %></h1>
+        <!-- <h1><%= title %></h1> -->
         <div id="container">
             <!-- <a href="./book">书本详情页</a> -->
         </div>
     </main>
     <%- include("./component/footer.html"); %>
+
+    <!-- 获取参数 -->
+    <script src="./assets/javascripts/getParams.js"></script>
+    <script>
+        var requestParams = getParams();
+        var searchbox = document.getElementById("searchInput");
+        var categoryId = Number(requestParams["id"]) ?? "";
+        if (categoryId === "") {
+            location.href = "/search";
+        }
+    </script>
+    <script>
+        getRequest("/category/get", { id: categoryId })
+            .then(function (response) {
+                var axiosData = response.data;
+                var status = axiosData.status;
+                var data = axiosData.data;
+                if (status === "success") {
+                    console.log(data)
+                    if (data.description == "")
+                        data.description = "暂无描述";
+
+                    var topCategory = data.parentId !== 0 ? `<a href="/category?id=${data.parentId}">上级分类</a>` : "";
+                    document.getElementById("container").innerHTML = `
+                    <div class="grid">
+                        <div class="grid-item">
+                            <h1>${data.name}</h1>
+                            <p>分类ID: ${data.id}</p>
+                            <p>${topCategory}</p>
+                        </div>
+                        <div class="grid-item">
+                            <h2>简介</h2>
+                            <p>${data.description}</p>
+                        </div>
+                    </div>`;
+
+                    // 渲染后重新获取一次字体
+                    fontmin(getPageText());
+                } else {
+                        alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
+                }
+            }).catch(function (error) {
+                console.log(error);
+            });
+    </script>
 </body>
 </html>

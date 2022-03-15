@@ -19,7 +19,7 @@
 <body>
     <%- include("./component/navbar.html"); %>
     <main class="main">
-        <h1><%= title %></h1>
+        <!-- <h1><%= title %></h1> -->
         <div id="container">
 
         </div>
@@ -76,12 +76,8 @@
 
                     // 渲染后重新获取一次字体
                     fontmin(getPageText());
-                }
-                else {
-                    alert(
-                        `查询失败
-                        错误码: ${data.errCode}
-                        错误信息: ${data.errMsg}`);
+                } else {
+                        alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
                 }
             }).catch(function (error) {
                 console.log(error);
