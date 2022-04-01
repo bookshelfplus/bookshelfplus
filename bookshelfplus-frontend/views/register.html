@@ -48,9 +48,11 @@
             var username = $("#username").val();
             var password = $("#password").val();
             // var encryptpwd = hex_sha1(password);
-            // var encryptpwd = hex_md5(password);
+            var encryptpwd = hex_md5(password);
 
-            postRequest("/user/login", { username: username, password: password })
+            console.log(password, encryptpwd);
+
+            postRequest("/user/login", { username: username, encryptpwd: encryptpwd })
                 .then(function (response) {
                     var axiosData = response.data;
                     var status = axiosData.status;
