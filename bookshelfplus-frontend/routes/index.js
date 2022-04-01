@@ -38,6 +38,12 @@ router.get('/login', function (req, res) {
     });
 });
 
+router.get('/register', function (req, res) {
+    res.render('register', {
+        title: "用户注册"
+    });
+});
+
 router.get('/admin/index', function (req, res) { // '/admin(/index)?'
     res.render('admin/index', {
         title: "后台管理"
