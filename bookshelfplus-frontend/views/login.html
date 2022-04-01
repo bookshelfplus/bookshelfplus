@@ -15,6 +15,27 @@
             margin-bottom: 20px;
         }
     </style>
+    <script>
+        if(!localStorage) {
+            alert("您的浏览器不支持localStorage，请更换浏览器！");
+            window.location.href = "/";
+        }
+
+        if(localStorage.getItem("token")) {
+            // 用户已登录
+            if(localStorage.getItem("is_admin") === "true") {
+                // 是管理员
+                window.location.href = "/dashboard/admin/index";
+            } else if(localStorage.getItem("is_admin") === "false") {
+                // 是普通用户
+                window.location.href = "/dashboard/user/index";
+            } else {
+                // 未知状态
+                localStorage.clear("token");
+                localStorage.clear("is_admin");
+            }
+        }
+    </script>
 </head>
 <body>
     <%- include("./component/navbar.html"); %>
@@ -50,6 +71,10 @@
             // var encryptpwd = hex_sha1(password);
             // var encryptpwd = hex_md5(password);
 
+            if(localStorage.getItem("token"))
+                localStorage.clearItem("token");
+            if(localStorage.getItem("is_admin"))
+                localStorage.clearItem("is_admin");
             postRequest("/user/login", { username: username, password: password })
                 .then(function (response) {
                     var axiosData = response.data;
@@ -59,11 +84,14 @@
                     if (status === "success") {
                         console.log(data);
                         if(data) {
-                            alert("登录成功");
+                            localStorage.setItem("token", data.token);
+                            // alert("登录成功");
                             if(data.group === "ADMIN") {
-                                window.location.href = "/admin/index";
+                                localStorage.setItem("is_admin", "true");
+                                window.location.href = "/dashboard/admin/index";
                             } else {
-                                window.location.href = "/user/index";
+                                localStorage.setItem("is_admin", "false");
+                                window.location.href = "/dashboard/user/index";
                             }
                         } else {
                             alert("用户名或密码错误");

@@ -22,4 +22,7 @@ public class UserVO {
 
     // 用户手机号
     String phone;
+
+    // 用户 token (NanoID)
+    String token;
 }

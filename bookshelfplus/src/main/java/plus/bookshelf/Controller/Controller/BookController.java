@@ -18,7 +18,7 @@ import plus.bookshelf.Service.Service.BookService;
 
 import java.util.List;
 
-@Api(value = "书籍")
+@Api(tags = "书籍信息")
 @Controller("book")
 @RequestMapping("/book")
 public class BookController extends BaseController {

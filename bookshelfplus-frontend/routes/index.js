@@ -44,8 +44,14 @@ router.get('/register', function (req, res) {
     });
 });
 
-router.get('/admin/index', function (req, res) { // '/admin(/index)?'
-    res.render('admin/index', {
+router.get('/dashboard/admin/index', function (req, res) { // '/admin(/index)?'
+    res.render('dashboard/admin/index', {
+        title: "后台管理（管理员）"
+    });
+});
+
+router.get('/dashboard/user/index', function (req, res) { // '/admin(/index)?'
+    res.render('dashboard/user/index', {
         title: "后台管理"
     });
 });

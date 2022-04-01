@@ -16,7 +16,7 @@
 </div>
 <script>
     function logout() {
-        getRequest("/user/logout", {})
+        getRequest("/user/logout", { token: localStorage.getItem("token") })
             .then(function (response) {
                 var axiosData = response.data;
                 var status = axiosData.status;
@@ -25,7 +25,9 @@
                 if (status === "success") {
                     console.log(data);
                     if(data) {
-                        alert("退出登录成功");
+                        localStorage.clear("token");
+                        localStorage.clear("is_admin");
+                        // alert("退出登录成功");
                         // window.location.href = "/";
                         location.reload();
                     } else {

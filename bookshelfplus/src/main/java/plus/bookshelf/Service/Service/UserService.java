@@ -10,4 +10,11 @@ public interface UserService {
      * @param encryptPwd
      */
     UserModel userLogin(String username, String encryptPwd);
+
+    /**
+     * 通过用户Id获取用户
+     * @param id 用户Id
+     * @return
+     */
+    UserModel getUserById(Integer id);
 }
