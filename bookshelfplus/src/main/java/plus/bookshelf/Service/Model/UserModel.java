@@ -2,6 +2,8 @@ package plus.bookshelf.Service.Model;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+
 @Data
 public class UserModel {
 
@@ -9,6 +11,7 @@ public class UserModel {
     Integer id;
 
     // 用户名
+    @NotBlank(message = "用户名不能为空")
     String username;
 
     // 用户加密后的密码
@@ -18,7 +21,7 @@ public class UserModel {
     String nickname;
 
     // 用户身份    NOT_LOGIN, ADMIN, LOGIN_USER;
-    String userIdentity;
+    String group;
 
     // 用户头像
     String avatar;

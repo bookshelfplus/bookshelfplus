@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <%- include("./component/header.html"); %>
+    <style>
+        .main {
+            width: 80vw !important;
+            max-width: initial !important;
+        }
+
+        #bookImage {
+            /* width: 100%; */
+            height: auto;
+            max-height: 300px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <%- include("./component/navbar.html"); %>
+    <main class="main">
+        <h1><%= title %></h1>
+        <div id="container">
+            <div>
+                <!-- 用户登录 输入用户名和密码的文本框 -->
+                <div class="form">
+                    <div class="form-group">
+                        <label for="username">用户名</label>
+                        <input type="text" id="username" placeholder="用户名">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">密码</label>
+                        <input type="password" id="password" placeholder="密码">
+                    </div>
+                    <button class="btn-submit">登录</button>
+                </div>
+            </div>
+        </div>
+    </main>
+    <%- include("./component/footer.html"); %>
+
+    <script src="./assets/lib/cryptography/2.2/md5-min.js"></script>
+    <!-- <script src="./assets/lib/cryptography/2.2/sha1-min.js"></script> -->
+    <script>
+        $("#username").val("xiaomo");
+        $("#password").val("123456");
+        $(".btn-submit").click(function() {
+            var username = $("#username").val();
+            var password = $("#password").val();
+            // var encryptpwd = hex_sha1(password);
+            var encryptpwd = hex_md5(password);
+
+            console.log(password, encryptpwd);
+
+            postRequest("/user/login", { username: username, encryptpwd: encryptpwd })
+                .then(function (response) {
+                    var axiosData = response.data;
+                    var status = axiosData.status;
+                    var data = axiosData.data;
+
+                    if (status === "success") {
+                        console.log(data);
+                        if(data) {
+                            alert("登录成功");
+                            if(data.group === "ADMIN") {
+                                window.location.href = "/admin/index";
+                            } else {
+                                window.location.href = "/user/index";
+                            }
+                        } else {
+                            alert("用户名或密码错误");
+                        }
+                    } else {
+                        alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
+                    }
+                }).catch(function (error) {
+                    console.log(error);
+                });
+        });
+    </script>
+</body>
+</html>

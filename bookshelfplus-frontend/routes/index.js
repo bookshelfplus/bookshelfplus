@@ -32,6 +32,18 @@ router.get('/about', function (req, res) {
     });
 });
 
+router.get('/login', function (req, res) {
+    res.render('login', {
+        title: "用户登录"
+    });
+});
+
+router.get('/admin/index', function (req, res) { // '/admin(/index)?'
+    res.render('admin/index', {
+        title: "后台管理"
+    });
+});
+
 router.get('/status', function (req, res) {
     res.render('status', {
         title: "网站状态检测"

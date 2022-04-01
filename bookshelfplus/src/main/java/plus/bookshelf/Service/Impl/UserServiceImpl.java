@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
         userModel.setUsername(userDO.getUsername());
         userModel.setEncriptPwd(userDO.getEncriptPwd());
         userModel.setNickname(userDO.getNickname());
-        userModel.setUserIdentity(userDO.getUserIdentity());
+        userModel.setGroup(userDO.getGroup());
         userModel.setAvatar(userDO.getAvatar());
         userModel.setPhone(userDO.getPhone());
         userModel.setWeixinThirdPartyAuthCode(userDO.getWeixinThirdPartyAuthCode());
