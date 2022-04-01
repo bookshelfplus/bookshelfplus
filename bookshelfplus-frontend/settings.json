@@ -1,7 +1,8 @@
 {
   "NODE_ENV": "development",
   "api": {
-    "prefix": "http://localhost/api"
+    "_prefix": "http://bookshelf.plus/api",
+    "prefix": "/api"
   },
   "title": "张小弟之家电子书分享（测试中）",
   "footer": {

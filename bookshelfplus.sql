@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 15/03/2022 14:34:27
+ Date: 16/03/2022 00:50:42
 */
 
 SET NAMES utf8mb4;
@@ -38,16 +38,16 @@ CREATE TABLE `book_info`  (
 -- ----------------------------
 -- Records of book_info
 -- ----------------------------
-INSERT INTO `book_info` VALUES (1, '程序员小墨', '这是书栖网的第一本书', 3, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, '', '小墨');
-INSERT INTO `book_info` VALUES (2, '程序员小墨', '这是书栖网的第一本书', 3, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, '', '小墨');
-INSERT INTO `book_info` VALUES (3, '程序员小墨', '这是书栖网的第一本书', 3, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, '', '小墨');
-INSERT INTO `book_info` VALUES (4, '程序员小墨', '这是书栖网的第一本书', 3, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, '', '小墨');
-INSERT INTO `book_info` VALUES (5, '程序员小墨', '这是书栖网的第一本书', 3, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, '', '小墨');
-INSERT INTO `book_info` VALUES (6, '程序员小墨', '这是书栖网的第一本书', 3, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, '', '小墨');
-INSERT INTO `book_info` VALUES (7, '程序员小墨', '这是书栖网的第一本书', 3, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, '', '小墨');
-INSERT INTO `book_info` VALUES (8, '程序员小墨', '这是书栖网的第一本书', 3, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, '', '小墨');
-INSERT INTO `book_info` VALUES (9, '程序员小墨', '这是书栖网的第一本书', 3, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, '', '小墨');
-INSERT INTO `book_info` VALUES (10, '程序员小墨', '这是书栖网的第一本书', 3, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, '', '小墨');
+INSERT INTO `book_info` VALUES (1, '程序员小墨', '这是书栖网的第1本书', 3, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, '', '小墨');
+INSERT INTO `book_info` VALUES (2, '程序员小墨', '这是书栖网的第2本书', 2, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, '', '小墨');
+INSERT INTO `book_info` VALUES (3, '程序员小墨', '这是书栖网的第3本书', 1, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, '', '小墨');
+INSERT INTO `book_info` VALUES (4, '程序员小墨', '这是书栖网的第4本书', 5, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, '', '小墨');
+INSERT INTO `book_info` VALUES (5, '程序员小墨', '这是书栖网的第5本书', 4, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, '', '小墨');
+INSERT INTO `book_info` VALUES (6, '程序员小墨', '这是书栖网的第6本书', 6, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, '', '小墨');
+INSERT INTO `book_info` VALUES (7, '程序员小墨', '这是书栖网的第7本书', 7, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, '', '小墨');
+INSERT INTO `book_info` VALUES (8, '程序员小墨', '这是书栖网的第8本书', 8, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, '', '小墨');
+INSERT INTO `book_info` VALUES (9, '程序员小墨', '这是书栖网的第9本书', 9, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, '', '小墨');
+INSERT INTO `book_info` VALUES (10, '这是一本名字肥肠肥肠滴长滴书', '这是书栖网的第10本书，外加一个超级超级超级超级超级超级超级超级超级超级超级超级超级超级超级超级长的简介', 10, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, '', '小墨');
 
 -- ----------------------------
 -- Table structure for category_info
