@@ -15,7 +15,7 @@ public class UserVO {
     String nickname;
 
     // 用户身份    NOT_LOGIN, ADMIN, LOGIN_USER;
-    String userIdentity;
+    String group;
 
     // 用户头像
     String avatar;

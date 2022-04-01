@@ -17,7 +17,7 @@ import java.util.Map;
 @Api(value = "状态检测")
 @Controller("status")
 @RequestMapping("/status")
-public class StatusController {
+public class StatusController extends BaseController {
 
     // @ApiOperation(value = "线程CPU占用时间", notes = "获取服务器当前线程CPU占用时间。此方法通过统计线程CPU占用时间来统计当前进程占用CPU情况。")
     // @RequestMapping(value = "getProcessCpu", method = {RequestMethod.GET})

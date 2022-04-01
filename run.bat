@@ -1,4 +1,7 @@
 @echo off
+:: 启动后端MySQL数据库
+:: skip ...
+
 :: 启动后端SpringBoot
 cd ./bookshelfplus/
 :: refer: https://blog.csdn.net/abc86319253/article/details/44019881

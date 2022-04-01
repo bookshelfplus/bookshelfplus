@@ -1,0 +1,43 @@
+<div class="navbar">
+    <div class="navbar-grid">
+        <div class="grid-item"></div>
+        <div class="grid-item">
+            <nobr>
+                <h1 onclick="location.href='/'" style="cursor: pointer;">书栖网</h1>
+            </nobr>
+        </div>
+        <div class="grid-item exnarrowHide" style="text-align: right; color: white;">
+            <a href="/">首页</a>
+            <a href="/admin/manage">管理</a>
+            <a style="color: grey;" href="javascript:logout();">退出登录</a>
+        </div>
+        <div class="grid-item"></div>
+    </div>
+</div>
+<script>
+    function logout() {
+        getRequest("/user/logout", {})
+            .then(function (response) {
+                var axiosData = response.data;
+                var status = axiosData.status;
+                var data = axiosData.data;
+
+                if (status === "success") {
+                    console.log(data);
+                    if(data) {
+                        alert("退出登录成功");
+                        // window.location.href = "/";
+                        location.reload();
+                    } else {
+                        alert("退出登录失败");
+                    }
+                } else {
+                    alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+                alert("退出登录失败");
+            });
+    }
+</script>

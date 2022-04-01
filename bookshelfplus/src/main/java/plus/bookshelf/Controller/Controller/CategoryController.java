@@ -20,7 +20,7 @@ import plus.bookshelf.Service.Service.CategoryService;
 @Api(value = "书籍分类")
 @Controller("category")
 @RequestMapping("/category")
-public class CategoryController {
+public class CategoryController extends BaseController {
 
     @Autowired
     CategoryService categoryService;
