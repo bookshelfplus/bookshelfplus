@@ -89,18 +89,8 @@ public class UserController extends BaseController {
     @RequestMapping(value = "getUserStatus", method = {RequestMethod.GET})
     @ResponseBody
     public CommonReturnType getUserStatus(@RequestParam(value = "token", required = false) String token) throws BusinessException {
-        // token 未传入
-        if (token == null || "".equals(token)) {
-            throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "用户令牌未传入");
-        }
-
-        // token 已过期
-        Object userIdObject = RedisSessionManager.getInstance(redisTemplate).getValue(token);
-        if (userIdObject == null) {
-            throw new BusinessException(BusinessErrorCode.USER_TOKEN_EXPIRED, "登陆过期啦，请重新登录");
-        }
-        Integer userId = (Integer) userIdObject;
-        UserModel userModel = userService.getUserById(userId);
+        // 已经在 getUserByToken 方法中判断了 token 为空、不合法；用户不存在情况，此处无需再判断
+        UserModel userModel = userService.getUserByToken(redisTemplate, token);
         UserVO userVO = convertFromService(userModel);
         return CommonReturnType.create(userVO);
     }

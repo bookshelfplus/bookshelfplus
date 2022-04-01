@@ -9,6 +9,7 @@ import java.util.List;
 public interface BookService {
     /**
      * 通过书籍Id获取书籍
+     *
      * @param id
      * @return
      */
@@ -16,7 +17,16 @@ public interface BookService {
 
     /**
      * 通过搜索条件获取书籍列表
+     *
      * @return
      */
     List<BookModel> searchBooks(BookModel bookModel) throws BusinessException;
+
+    /**
+     * 添加书籍
+     *
+     * @param bookModel
+     * @return
+     */
+    Integer addBook(BookModel bookModel) throws BusinessException;
 }

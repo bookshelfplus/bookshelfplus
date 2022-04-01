@@ -1,7 +1,12 @@
 package plus.bookshelf.Service.Impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import plus.bookshelf.Common.Error.BusinessErrorCode;
+import plus.bookshelf.Common.Error.BusinessException;
+import plus.bookshelf.Common.SessionManager.RedisSessionManager;
+import plus.bookshelf.Controller.VO.UserVO;
 import plus.bookshelf.Dao.DO.UserDO;
 import plus.bookshelf.Dao.Mapper.UserDOMapper;
 import plus.bookshelf.Service.Model.UserModel;
@@ -26,6 +31,27 @@ public class UserServiceImpl implements UserService {
         UserDO userDO = userDOMapper.selectByPrimaryKey(id);
         UserModel userModel = convertFromDataObject(userDO);
 
+        return userModel;
+    }
+
+    @Override
+    public UserModel getUserByToken(RedisTemplate redisTemplate, String token) throws BusinessException {
+        // token 未传入
+        if (token == null || "".equals(token)) {
+            throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "用户令牌未传入");
+        }
+
+        // token 已过期
+        Object userIdObject = RedisSessionManager.getInstance(redisTemplate).getValue(token);
+        if (userIdObject == null) {
+            throw new BusinessException(BusinessErrorCode.USER_TOKEN_EXPIRED, "登陆过期啦，请重新登录");
+        }
+
+        Integer userId = (Integer) userIdObject;
+        UserModel userModel = getUserById(userId);
+        if (userModel == null) {
+            throw new BusinessException(BusinessErrorCode.USER_NOT_EXIST);
+        }
         return userModel;
     }
 
