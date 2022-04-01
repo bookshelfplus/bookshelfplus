@@ -302,11 +302,11 @@
             添加SpringBoot打包plugin
             解决【flashsale-1.0-SNAPSHOT.jar中没有主清单属性】问题
             -->
-            <!-- <plugin>
+            <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>2.4.3</version>
-            </plugin> -->
+            </plugin>
 
             <!-- 拉姆达表达式需要支持 Java 8 语法 -->
             <plugin>
