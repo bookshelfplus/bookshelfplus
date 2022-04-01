@@ -1,6 +1,8 @@
 package plus.bookshelf.Controller.Controller;
 
+import com.aventrix.jnanoid.jnanoid.NanoIdUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -10,16 +12,22 @@ import plus.bookshelf.Common.Error.BusinessException;
 import plus.bookshelf.Common.Response.CommonReturnType;
 import plus.bookshelf.Common.Response.CommonReturnTypeStatus;
 import plus.bookshelf.Common.SessionManager.LocalSessionManager;
+import plus.bookshelf.Common.SessionManager.RedisSessionManager;
 import plus.bookshelf.Common.SessionManager.SessionManager;
 import plus.bookshelf.Service.Model.UserModel;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 public class BaseController {
 
     @Autowired
     HttpServletRequest httpServletRequest;
+
+    @Autowired
+    RedisTemplate redisTemplate;
 
     // content-type 常量
     public static final String CONTENT_TYPE_FORMED = "application/x-www-form-urlencoded";
@@ -28,15 +36,15 @@ public class BaseController {
     public static final Integer COMMON_START_PAGE = 1;
     public static final Integer COMMON_PAGE_SIZE = 10;
 
-    // @Autowired
-    // private RedisTemplate redisTemplate;
-
     /**
      * 获取用户登陆状态
      */
     public Boolean isLogin() {
-        SessionManager sessionManager = LocalSessionManager.getInstance(httpServletRequest);
+        SessionManager sessionManager = RedisSessionManager.getInstance(redisTemplate);
         return (Boolean) sessionManager.getValue("IS_LOGIN");
+
+        // SessionManager sessionManager = LocalSessionManager.getInstance(httpServletRequest);
+        // return (Boolean) sessionManager.getValue("IS_LOGIN");
     }
 
     /**
@@ -44,28 +52,30 @@ public class BaseController {
      *
      * @return String uuidToken
      */
-    public void onLogin(UserModel userModel) {
-        // String uuidToken = UUID.randomUUID().toString();
-        // redisTemplate.expire(uuidToken, 1, TimeUnit.HOURS);
+    public String onLogin(UserModel userModel) {
+        String token = NanoIdUtils.randomNanoId(); // UUID.randomUUID().toString();
+        SessionManager sessionManager = RedisSessionManager.getInstance(redisTemplate);
+        sessionManager.setValue(token, userModel.getId());
+        return token;
 
-        // // 建立token和用户登录态之间的联系
-        // redisTemplate.opsForValue().set(uuidToken, userModel);
-        // return uuidToken;
-
-        SessionManager sessionManager = LocalSessionManager.getInstance(httpServletRequest);
-        sessionManager.setValue("IS_LOGIN", true);
-        sessionManager.setValue("user", userModel);
-        return;
+        // SessionManager sessionManager = LocalSessionManager.getInstance(httpServletRequest);
+        // sessionManager.setValue("IS_LOGIN", true);
+        // sessionManager.setValue("user", userModel);
+        // return;
     }
 
     /**
      * 用户退出登录
      */
-    public void onLogout() {
-        SessionManager sessionManager = LocalSessionManager.getInstance(httpServletRequest);
-        sessionManager.setValue("IS_LOGIN", false);
-        sessionManager.remove("user");
+    public void onLogout(String token) {
+        SessionManager sessionManager = RedisSessionManager.getInstance(redisTemplate);
+        sessionManager.remove(token);
         return;
+
+        // SessionManager sessionManager = LocalSessionManager.getInstance(httpServletRequest);
+        // sessionManager.setValue("IS_LOGIN", false);
+        // sessionManager.remove("user");
+        // return;
     }
 
     // 定义ExceptionHandler解决未被Controller层吸收的Exception

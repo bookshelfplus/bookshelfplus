@@ -81,7 +81,7 @@
 
         <!--参数验证-->
         <dependency>
-            <groupId>org.hibernate</groupId>
+            <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
             <version>6.2.3.Final</version>
         </dependency>
@@ -94,17 +94,17 @@
         </dependency>
 
         <!--引入SpringBoot对Redis的依赖-->
-        <!-- <dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
-        </dependency> -->
+        </dependency>
 
         <!--SpringBoot将Session存储在Redis中-->
-        <!-- <dependency>
+        <dependency>
             <groupId>org.springframework.session</groupId>
             <artifactId>spring-session-data-redis</artifactId>
             <version>2.0.5.RELEASE</version>
-        </dependency> -->
+        </dependency>
 
         <!-- lombok -->
         <dependency>
@@ -172,6 +172,12 @@
             <version>1.4.1</version>
         </dependency>
 
+        <!-- NanoID （用于替换 uuid ） -->
+        <dependency>
+            <groupId>com.aventrix.jnanoid</groupId>
+            <artifactId>jnanoid</artifactId>
+            <version>2.0.0</version>
+        </dependency>
     </dependencies>
 
     <build>

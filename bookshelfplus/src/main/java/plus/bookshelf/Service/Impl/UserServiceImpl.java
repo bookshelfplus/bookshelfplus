@@ -21,6 +21,14 @@ public class UserServiceImpl implements UserService {
         return userModel;
     }
 
+    @Override
+    public UserModel getUserById(Integer id) {
+        UserDO userDO = userDOMapper.selectByPrimaryKey(id);
+        UserModel userModel = convertFromDataObject(userDO);
+
+        return userModel;
+    }
+
     private UserModel convertFromDataObject(UserDO userDO) {
         if (userDO == null) {
             return null;

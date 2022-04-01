@@ -17,7 +17,7 @@ import plus.bookshelf.Service.Model.CategoryModel;
 import plus.bookshelf.Service.Service.BookService;
 import plus.bookshelf.Service.Service.CategoryService;
 
-@Api(value = "书籍分类")
+@Api(tags = "书籍分类信息")
 @Controller("category")
 @RequestMapping("/category")
 public class CategoryController extends BaseController {

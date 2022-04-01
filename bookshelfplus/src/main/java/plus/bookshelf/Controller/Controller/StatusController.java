@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
-@Api(value = "状态检测")
+@Api(tags = "网站后台状态检测")
 @Controller("status")
 @RequestMapping("/status")
 public class StatusController extends BaseController {

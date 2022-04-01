@@ -1,0 +1,6 @@
+<script>
+    if(localStorage.getItem("is_admin") === "false") {
+        // 是普通用户，跳转到普通用户后台页面
+        window.location.href = "/dashboard/user/index";
+    }
+</script>
