@@ -70,11 +70,24 @@ public class BookServiceImpl implements BookService {
         return convertFromDataObjecctList(bookDOs);
     }
 
+    @Override
+    public Integer addBook(BookModel bookModel) throws BusinessException {
+
+        // 校验入参
+        ValidationResult result = validator.validate(bookModel);
+        if (result.isHasErrors()) {
+            throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, result.getErrMsg());
+        }
+
+        BookDO bookDO = convertToDataObjecct(bookModel);
+        return bookDOMapper.insertSelective(bookDO);
+    }
+
     private BookModel convertFromDataObjecct(BookDO bookDO) {
-        BookModel bookModel = new BookModel();
         if (bookDO == null) {
             return null;
         }
+        BookModel bookModel = new BookModel();
         bookModel.setId(bookDO.getId());
         bookModel.setBookName(bookDO.getBookName());
         bookModel.setDescription(bookDO.getDescription());
@@ -90,6 +103,24 @@ public class BookServiceImpl implements BookService {
         bookModel.setCategory(categoryModel);
 
         return bookModel;
+    }
+
+    private BookDO convertToDataObjecct(BookModel bookModel) {
+        if (bookModel == null) {
+            return null;
+        }
+        BookDO bookDO = new BookDO();
+        bookDO.setId(bookModel.getId());
+        bookDO.setBookName(bookModel.getBookName());
+        bookDO.setDescription(bookModel.getDescription());
+        bookDO.setAuthor(bookModel.getAuthor());
+        bookDO.setPublishingHouse(bookModel.getPublishingHouse());
+        bookDO.setCopyright(bookModel.getCopyright());
+        bookDO.setIsDelete(bookModel.getIsDelete());
+        bookDO.setThumbnail(bookModel.getThumbnail());
+        bookDO.setLanguage(bookModel.getLanguage());
+        bookDO.setCategoryId(bookModel.getCategory().getId());
+        return bookDO;
     }
 
     private List<BookModel> convertFromDataObjecctList(List<BookDO> bookDOs) {
