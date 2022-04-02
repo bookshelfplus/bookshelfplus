@@ -53,6 +53,9 @@ hr {
   color: #fff;
   margin-left: 12px;
 }
+.navbar-grid .grid-item .active {
+  border-bottom: dotted;
+}
 
 .navbar-grid .grid-item * {
   margin: 0;
