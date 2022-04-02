@@ -15,9 +15,18 @@ router.get('/search', function (req, res) {
 });
 
 router.get('/category', function (req, res) {
-    res.render('category', {
-        title: "书籍分类"
-    });
+    console.log(req)
+    if (req.query.id) {
+        // 分类详情页
+        res.render('category-details', {
+            title: "书籍分类"
+        });
+    } else {
+        // 分类首页
+        res.render('category', {
+            title: "书籍分类"
+        });
+    }
 });
 
 router.get('/book', function (req, res) {
@@ -81,7 +90,9 @@ router.get('/dashboard/:group/:page', function (req, res) {
     if (req.params.page == "index") {
         res.render(`dashboard/${req.params.group}/index`, {
             title: "后台管理",
-            links: navbarLinks
+            links: navbarLinks,
+            group: req.params.group,
+            page: req.params.page,
         });
         return;
     }
@@ -92,6 +103,7 @@ router.get('/dashboard/:group/:page', function (req, res) {
         res.render(`dashboard/${req.params.group}/manage`, {
             title: req.params.group === "admin" ? "后台管理" : "用户中心",
             links: navbarLinks,
+            group: req.params.group,
             page: req.params.page,
         });
         return;

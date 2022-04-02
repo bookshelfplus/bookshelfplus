@@ -3,17 +3,79 @@
 <head>
     <%- include("../component/header.html"); %>
     <%- include("../component/header-admin.html"); %>
+    <style>
+        #container-controls {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 20px;
+            place-items: center right;
+        }
+        #container-controls > .form-labels {
+            font-size: 1.05em;
+            font-family: cursive;
+        }
+        #container-controls > .form-elements {
+            /* grid-column: 1; */
+            height: 30px;
+            width: 100%;
+            font-size: 18px;
+        }
+        #container-submit {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            padding: 0 30%;
+            margin-top: 30px;
+        }
+        .btn {
+            height: 30px;
+        }
+    </style>
 </head>
 <body>
     <%- include("../component/navbar.html"); %>
     <main class="main">
         <h1><%= title %></h1>
+        <p><%= page %></p>
         <div id="container">
-            <div>
-                <%= typeof title !=='undefined' ? page : "出错啦"; %>
+            <div id="container-controls">页面加载中，请稍候 ...</div>
+            <div id="container-submit">
+                <button class="btn" id="btn-submit">提交</button>
+                <button class="btn" id="btn-clear">清空</button>
             </div>
         </div>
     </main>
     <%- include("../component/footer-admin.html"); %>
+    <!-- 验证组件用户输入值 -->
+    <script src="/assets/javascripts/dashboard/getValidateUtils.js"></script>
+    <!-- 渲染组件 & 提交表单方法 -->
+    <script src="/assets/javascripts/dashboard/renderFormControls.js"></script>
+    <!-- 引入对应页面渲染配置 -->
+    <script src="/assets/javascripts/dashboard/<%=group%>/<%=page%>.js"></script>
+    <!-- 进行渲染 -->
+    <script>
+        var group = '<%=group%>';
+        var page = '<%=page%>';
+        var title = '<%=title%>';
+
+        // 获取将要渲染的 Controls
+        var controlsProfile = getControlsProfile();
+
+        // 渲染控件
+        var formControls = renderFormControls({ Controls: controlsProfile });
+        console.log(formControls);
+
+        // 将控件填充到网页上
+        var containerControls = document.getElementById('container-controls');
+        containerControls.innerHTML = "";
+        formControls.forEach(function(item){
+            let Control
+            containerControls.appendChild(item.label);
+            containerControls.appendChild(item.control);
+        });
+
+        // 更新提交按钮显示名称
+        document.getElementById("btn-submit").innerHTML = "提交";
+    </script>
 </body>
 </html>
