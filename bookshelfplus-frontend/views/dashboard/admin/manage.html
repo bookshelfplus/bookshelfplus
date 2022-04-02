@@ -35,8 +35,7 @@
 <body>
     <%- include("../component/navbar.html"); %>
     <main class="main">
-        <h1><%= headText %></h1>
-        <p><%= page %></p>
+        <h1><%= headSubTextArr[page] || page %></h1>
         <div id="container">
             <div id="container-controls">页面加载中，请稍候 ...</div>
             <div id="container-submit">

@@ -71,14 +71,14 @@ router.get('/dashboard/:group/:page', function (req, res) {
                 name: "仪表盘",
                 url: "/dashboard/admin/index"
             }, {
-                name: "用户管理",
-                url: "/dashboard/admin/UserManage"
-            }, {
                 name: "书籍管理",
                 url: "/dashboard/admin/BookManage"
             }, {
                 name: "分类管理",
                 url: "/dashboard/admin/CategoryManage"
+            }, {
+                name: "用户管理",
+                url: "/dashboard/admin/UserManage"
             }
         ];
     } else if (req.params.group === "user") {
@@ -101,6 +101,7 @@ router.get('/dashboard/:group/:page', function (req, res) {
         res.render(`dashboard/${req.params.group}/index`, {
             title: getPageTitle(req.params.group === "admin" ? "后台管理" : "用户中心"),
             headText: req.params.group === "admin" ? "后台管理" : "用户中心",
+            headSubTextArr: {},
             links: navbarLinks,
             group: req.params.group,
             page: req.params.page,
@@ -113,7 +114,15 @@ router.get('/dashboard/:group/:page', function (req, res) {
         (req.params.group === "user" && ["myBookshelf", "myCollection"].indexOf(req.params.page) > -1)) {
         res.render(`dashboard/${req.params.group}/manage`, {
             title: getPageTitle(req.params.group === "admin" ? "后台管理" : "用户中心"),
-            headText: req.params.group === "admin" ? "后台管理" : "用户中心",
+            headSubTextArr: {
+                // 管理员
+                "UserManage": "用户管理",
+                "BookManage": "书籍管理",
+                "CategoryManage": "分类管理",
+                // 用户
+                "myBookshelf": "我的书架",
+                "myCollection": "我的收藏",
+            },
             links: navbarLinks,
             group: req.params.group,
             page: req.params.page,
