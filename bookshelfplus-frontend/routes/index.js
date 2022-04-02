@@ -15,7 +15,6 @@ router.get('/search', function (req, res) {
 });
 
 router.get('/category', function (req, res) {
-    console.log(req)
     if (req.query.id) {
         // 分类详情页
         res.render('category-details', {

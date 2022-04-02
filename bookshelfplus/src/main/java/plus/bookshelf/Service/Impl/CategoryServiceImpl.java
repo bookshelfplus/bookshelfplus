@@ -7,12 +7,21 @@ import plus.bookshelf.Dao.Mapper.CategoryDOMapper;
 import plus.bookshelf.Service.Model.CategoryModel;
 import plus.bookshelf.Service.Service.CategoryService;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
     private CategoryDOMapper categoryDOMapper;
 
+    /**
+     * 获取指定分类详情
+     *
+     * @param id
+     * @return
+     */
     @Override
     public CategoryModel getCategoryById(Integer id) {
         CategoryDO categoryDO = categoryDOMapper.selectByPrimaryKey(id);
@@ -29,6 +38,23 @@ public class CategoryServiceImpl implements CategoryService {
         // categoryModel.setChildren(children);
 
         return categoryModel;
+    }
+
+    /**
+     * 取得所有分类
+     *
+     * @return
+     */
+    @Override
+    public List<CategoryModel> getAllCategorys() {
+        CategoryDO[] categoryDOS = categoryDOMapper.selectAll();
+        List<CategoryModel> categoryModels = new ArrayList<>();
+
+        for (CategoryDO categoryDO : categoryDOS) {
+            CategoryModel categoryModel = convertFromDataObject(categoryDO);
+            categoryModels.add(categoryModel);
+        }
+        return categoryModels;
     }
 
     // 转换时不转换父亲与儿子，否则会陷入死循环

@@ -182,4 +182,9 @@
     from category_info
     where parent_id = #{parentId,jdbcType=INTEGER}
   </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from category_info
+  </select>
 </mapper>
