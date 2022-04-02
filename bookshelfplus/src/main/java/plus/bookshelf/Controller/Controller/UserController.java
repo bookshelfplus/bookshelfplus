@@ -70,14 +70,13 @@ public class UserController extends BaseController {
     // @ApiImplicitParams({
     //         @ApiImplicitParam(name = "token", value = "用户token", required = true, dataType = "String")
     // })
-    @RequestMapping(value = "logout", method = {RequestMethod.GET})
+    @RequestMapping(value = "logout", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
     @ResponseBody
     public CommonReturnType logout(@RequestParam(value = "token", required = false) String token) throws BusinessException {
-        // token 未传入
-        if (token == null || "".equals(token)) {
-            throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "用户令牌未传入");
-        }
-
+        // // token 未传入
+        // if (token == null || "".equals(token)) {
+        //     throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "用户令牌未传入");
+        // }
         onLogout(token);
         return CommonReturnType.create("success");
     }
@@ -86,7 +85,7 @@ public class UserController extends BaseController {
     // @ApiImplicitParams({
     //         @ApiImplicitParam(name = "token", value = "用户token", required = true, dataType = "String")
     // })
-    @RequestMapping(value = "getUserStatus", method = {RequestMethod.GET})
+    @RequestMapping(value = "getUserStatus", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
     @ResponseBody
     public CommonReturnType getUserStatus(@RequestParam(value = "token", required = false) String token) throws BusinessException {
         // 已经在 getUserByToken 方法中判断了 token 为空、不合法；用户不存在情况，此处无需再判断

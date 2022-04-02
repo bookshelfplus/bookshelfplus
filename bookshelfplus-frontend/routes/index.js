@@ -44,16 +44,59 @@ router.get('/register', function (req, res) {
     });
 });
 
-router.get('/dashboard/admin/index', function (req, res) { // '/admin(/index)?'
-    res.render('dashboard/admin/index', {
-        title: "后台管理（管理员）"
-    });
-});
+router.get('/dashboard/:group/:page', function (req, res) {
+    var navbarLinks = null;
+    if (req.params.group === "admin") {
+        navbarLinks = [
+            {
+                name: "仪表盘",
+                url: "/dashboard/admin/index"
+            }, {
+                name: "用户管理",
+                url: "/dashboard/admin/UserManage"
+            }, {
+                name: "书籍管理",
+                url: "/dashboard/admin/BookManage"
+            }, {
+                name: "分类管理",
+                url: "/dashboard/admin/CategoryManage"
+            }
+        ];
+    } else if (req.params.group === "user") {
+        navbarLinks = [
+            {
+                name: "仪表盘",
+                url: "/dashboard/user/index"
+            }, {
+                name: "我的书架",
+                url: "/dashboard/user/myBookshelf"
+            }, {
+                name: "我的收藏",
+                url: "/dashboard/user/myCollection"
+            }
+        ];
+    }
 
-router.get('/dashboard/user/index', function (req, res) { // '/admin(/index)?'
-    res.render('dashboard/user/index', {
-        title: "后台管理"
-    });
+    // 仪表盘
+    if (req.params.page == "index") {
+        res.render(`dashboard/${req.params.group}/index`, {
+            title: "后台管理",
+            links: navbarLinks
+        });
+        return;
+    }
+
+    // 后台管理 其他管理页面
+    if ((req.params.group === "admin" && ["UserManage", "BookManage", "CategoryManage"].indexOf(req.params.page) > -1) ||
+        (req.params.group === "user" && ["myBookshelf", "myCollection"].indexOf(req.params.page) > -1)) {
+        res.render(`dashboard/${req.params.group}/manage`, {
+            title: req.params.group === "admin" ? "后台管理" : "用户中心",
+            links: navbarLinks,
+            page: req.params.page,
+        });
+        return;
+    }
+    throw new Error("404 Not Found");
 });
 
 router.get('/status', function (req, res) {

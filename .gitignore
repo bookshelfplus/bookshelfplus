@@ -19,3 +19,6 @@ bookshelfplus.iml
 
 # TODO文件
 TODO*
+
+# 不提交仓库代码量统计相关文件
+.VSCodeCounter
