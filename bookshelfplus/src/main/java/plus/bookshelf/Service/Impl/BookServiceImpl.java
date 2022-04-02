@@ -61,8 +61,8 @@ public class BookServiceImpl implements BookService {
             criteria.andBookNameLike("%" + bookModel.getBookName() + "%");
         // if (StringUtils.isNotBlank(bookModel.getAuthor()))
         //     criteria.andAuthorEqualTo(bookModel.getAuthor());
-        // if (bookModel.getCategory() != null && bookModel.getCategory().getId() != null && bookModel.getCategory().getId() != 0)
-        //     criteria.andCategoryIdEqualTo(bookModel.getCategory().getId());
+        if (bookModel.getCategory() != null && bookModel.getCategory().getId() != null && bookModel.getCategory().getId() != 0)
+            criteria.andCategoryIdEqualTo(bookModel.getCategory().getId());
         // if (StringUtils.isNotBlank(bookModel.getPublishingHouse()))
         //     criteria.andPublishingHouseEqualTo(bookModel.getPublishingHouse());
 
