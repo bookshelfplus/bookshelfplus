@@ -17,6 +17,9 @@ import plus.bookshelf.Service.Model.CategoryModel;
 import plus.bookshelf.Service.Service.BookService;
 import plus.bookshelf.Service.Service.CategoryService;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Api(tags = "书籍分类信息")
 @Controller("category")
 @RequestMapping("/category")
@@ -25,7 +28,7 @@ public class CategoryController extends BaseController {
     @Autowired
     CategoryService categoryService;
 
-    @ApiOperation(value = "获取书籍分类", notes = "获取书籍分类")
+    @ApiOperation(value = "获取指定分类", notes = "获取指定的书籍分类")
     @RequestMapping(value = "get", method = {RequestMethod.GET})
     @ResponseBody
     public CommonReturnType get(@RequestParam(value = "id") Integer id) {
@@ -36,6 +39,19 @@ public class CategoryController extends BaseController {
         CategoryModel categoryModel = categoryService.getCategoryById(id);
         CategoryVO categoryVO = convertFromModel(categoryModel);
         return CommonReturnType.create(categoryVO);
+    }
+
+    @ApiOperation(value = "获取所有分类", notes = "获取所有的书籍分类")
+    @RequestMapping(value = "list", method = {RequestMethod.GET})
+    @ResponseBody
+    public CommonReturnType getAll() {
+        List<CategoryModel> categoryModels = categoryService.getAllCategorys();
+        List<CategoryVO> categoryVOS = new ArrayList<>();
+        for (CategoryModel categoryModel : categoryModels) {
+            CategoryVO categoryVO = convertFromModel(categoryModel);
+            categoryVOS.add(categoryVO);
+        }
+        return CommonReturnType.create(categoryVOS);
     }
 
     private CategoryVO convertFromModel(CategoryModel categoryModel) {

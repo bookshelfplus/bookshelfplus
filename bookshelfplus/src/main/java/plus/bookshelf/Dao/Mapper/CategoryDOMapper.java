@@ -62,4 +62,6 @@ public interface CategoryDOMapper {
     int updateByPrimaryKey(CategoryDO record);
 
     CategoryDO[] selectChildrenByCategoryId(Integer id);
+
+    CategoryDO[] selectAll();
 }
