@@ -7,11 +7,9 @@
                 书栖网
             </h1>
             <% links.forEach(item=> { %>
-                <a href="<%= item.url %>" style="vertical-align: middle;">
-                    <%= item.name %>
-                </a>
-                <% }); %>
-                    <a href="javascript:logout();" style="color: grey; vertical-align: middle; float: right;">退出登录</a>
+                <a href="<%= item.url %>" style="vertical-align: middle;"><%= item.name %></a>
+            <% }); %>
+            <a href="javascript:logout();" style="color: grey; vertical-align: middle; float: right;">退出登录</a>
         </div>
         <div class="grid-item"></div>
     </div>
@@ -42,4 +40,22 @@
                 alert("退出登录失败");
             });
     }
+</script>
+<script>
+    // 导航栏中突出当前页面
+    var group = '<%=group%>';
+    var page = '<%=page%>';
+    console.log(group, page);
+    // document.getElementsByTagName("a").asArray().forEach(element => {
+    $("a").toArray().forEach(element => {
+        var linkRoute = element.href.split('/').filter(s=>!!s);
+        if(linkRoute.length > 2) {
+            var linkGroup = linkRoute[linkRoute.length-2];
+            var linkPage = linkRoute[linkRoute.length-1];
+            console.log(element, linkGroup, linkPage);
+            if(page == linkPage) {
+                $(element).addClass("active");
+            }
+        }
+    });
 </script>
