@@ -14,6 +14,25 @@
             max-height: 300px;
             margin-bottom: 20px;
         }
+
+        .form-group {
+            display: grid;
+            grid-template-columns: auto auto;
+            width: 250px;
+            margin: 0 auto;
+            row-gap: 20px;
+            margin-bottom: 30px;
+            place-items: center;
+        }
+
+        .form-group > input {
+            height: 25px;
+        }
+
+        .btn-submit {
+            height: 30px;
+            width: 72px;
+        }
     </style>
     <script>
         if(!localStorage) {
@@ -48,19 +67,20 @@
                     <div class="form-group">
                         <label for="username">用户名</label>
                         <input type="text" id="username" placeholder="用户名">
-                    </div>
-                    <div class="form-group">
                         <label for="password">密码</label>
                         <input type="password" id="password" placeholder="密码">
                     </div>
                     <button class="btn-submit">登录</button>
+                    <p>
+                        <a href="/register">注册</a>
+                    </p>
                 </div>
             </div>
         </div>
     </main>
     <%- include("./component/footer.html"); %>
 
-    <script src="/assets/lib/cryptography/2.2/md5-min.js"></script>
+    <!-- <script src="/assets/lib/cryptography/2.2/md5-min.js"></script> -->
     <!-- <script src="/assets/lib/cryptography/2.2/sha1-min.js"></script> -->
     <script>
         $("#username").val("xiaomo");
