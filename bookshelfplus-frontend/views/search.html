@@ -28,7 +28,7 @@
 <body>
     <%- include("./component/navbar.html"); %>
     <div class="main">
-        <h1><%= title %></h1>
+        <h1><%= headText %></h1>
         <%- include("./component/searchbox.html"); %>
         <div id="container">
             <table id="result-table"></table>
@@ -47,6 +47,7 @@
         var keyword = (requestParams["keyword"] || "").trim();
         searchbox.value = keyword;
         if (keyword === "") {
+            search('');
             searchbox.focus();
         } else {
             search(keyword);

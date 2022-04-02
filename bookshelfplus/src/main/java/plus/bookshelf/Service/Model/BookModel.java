@@ -12,7 +12,7 @@ public class BookModel {
     Integer id;
 
     // 书名
-    @NotBlank(message = "书籍名称不能为空")
+    // @NotBlank(message = "书籍名称不能为空")
     String bookName;
 
     // 书籍简介

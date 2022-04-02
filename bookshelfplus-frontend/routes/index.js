@@ -2,15 +2,20 @@
 var express = require('express');
 var router = express.Router();
 
+function getPageTitle(title) {
+    return `${title} | ${site.title}`
+}
 router.get('/', function (req, res) {
     res.render('index', {
-        title: site.title
+        title: site.title,
+        headText: "书栖网"
     });
 });
 
 router.get('/search', function (req, res) {
     res.render('search', {
-        title: "搜一下"
+        title: getPageTitle("搜一下"),
+        headText: "搜一下"
     });
 });
 
@@ -18,37 +23,43 @@ router.get('/category', function (req, res) {
     if (req.query.id) {
         // 分类详情页
         res.render('category-details', {
-            title: "书籍分类"
+            title: getPageTitle("书籍分类"),
+            headText: "书籍分类"
         });
     } else {
         // 分类首页
         res.render('category', {
-            title: "书籍分类"
+            title: getPageTitle("书籍分类"),
+            headText: "书籍分类"
         });
     }
 });
 
 router.get('/book', function (req, res) {
     res.render('book', {
-        title: "书籍详情"
+        title: getPageTitle("书籍详情"),
+        headText: "书籍详情"
     });
 });
 
 router.get('/about', function (req, res) {
     res.render('about', {
-        title: "关于"
+        title: getPageTitle("关于"),
+        headText: "关于"
     });
 });
 
 router.get('/login', function (req, res) {
     res.render('login', {
-        title: "用户登录"
+        title: getPageTitle("用户登录"),
+        headText: "用户登录"
     });
 });
 
 router.get('/register', function (req, res) {
     res.render('register', {
-        title: "用户注册"
+        title: getPageTitle("用户注册"),
+        headText: "用户注册"
     });
 });
 
@@ -88,7 +99,8 @@ router.get('/dashboard/:group/:page', function (req, res) {
     // 仪表盘
     if (req.params.page == "index") {
         res.render(`dashboard/${req.params.group}/index`, {
-            title: "后台管理",
+            title: getPageTitle(req.params.group === "admin" ? "后台管理" : "用户中心"),
+            headText: req.params.group === "admin" ? "后台管理" : "用户中心",
             links: navbarLinks,
             group: req.params.group,
             page: req.params.page,
@@ -100,7 +112,8 @@ router.get('/dashboard/:group/:page', function (req, res) {
     if ((req.params.group === "admin" && ["UserManage", "BookManage", "CategoryManage"].indexOf(req.params.page) > -1) ||
         (req.params.group === "user" && ["myBookshelf", "myCollection"].indexOf(req.params.page) > -1)) {
         res.render(`dashboard/${req.params.group}/manage`, {
-            title: req.params.group === "admin" ? "后台管理" : "用户中心",
+            title: getPageTitle(req.params.group === "admin" ? "后台管理" : "用户中心"),
+            headText: req.params.group === "admin" ? "后台管理" : "用户中心",
             links: navbarLinks,
             group: req.params.group,
             page: req.params.page,
@@ -112,7 +125,8 @@ router.get('/dashboard/:group/:page', function (req, res) {
 
 router.get('/status', function (req, res) {
     res.render('status', {
-        title: "网站状态检测"
+        title: getPageTitle("网站状态检测"),
+        headText: "网站状态检测"
     });
 });
 
