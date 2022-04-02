@@ -9,9 +9,8 @@
         <div class="grid-item exnarrowHide" style="text-align: right; color: white;">
             <a class="home narrowHide" href="/">首页</a>
             <a href="/search">搜索</a>
-            <a href="/category">分类</a>
-            <a class="narrowHide" href="/about">关于</a>
-            <a class="narrowHide" href="/login">登录</a>
+            <a class="narrowHide" href="/category">分类</a>
+            <a href="/login">登录</a>
         </div>
         <div class="grid-item"></div>
     </div>
@@ -29,13 +28,13 @@
         }
 
         //其他页面
-        console.log("page:", page);
+        // console.log("page:", page);
         $("a").toArray().forEach(element => {
             var linkRoute = element.getAttribute("href").split('/').filter(s=>!!s);
-            console.log(element.href, linkRoute);
+            // console.log(element.href, linkRoute);
             if(linkRoute.length > 0) {
                 var linkPage = linkRoute[linkRoute.length-1];
-                console.log(element, linkPage);
+                // console.log(element, linkPage);
                 if(page == linkPage) {
                     $(element).addClass("active");
                     return;
