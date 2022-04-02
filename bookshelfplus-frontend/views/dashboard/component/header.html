@@ -25,7 +25,7 @@
             window.location.href = "/";
         }
 
-        getRequest("/user/getUserStatus", { token: localStorage.getItem("token") })
+        postRequest("/user/getUserStatus", { token: localStorage.getItem("token") })
             .then(function (responseData) {
                 var axiosData = responseData.data;
                 var status = axiosData.status;

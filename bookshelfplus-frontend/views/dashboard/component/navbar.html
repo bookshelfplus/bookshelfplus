@@ -1,22 +1,24 @@
 <div class="navbar">
     <div class="navbar-grid">
         <div class="grid-item"></div>
-        <div class="grid-item">
-            <nobr>
-                <h1 onclick="location.href='/'" style="cursor: pointer;">书栖网</h1>
-            </nobr>
-        </div>
-        <div class="grid-item exnarrowHide" style="text-align: right; color: white;">
-            <a href="/">首页</a>
-            <a href="/admin/manage">管理</a>
-            <a style="color: grey;" href="javascript:logout();">退出登录</a>
+        <div class="grid-item" style="grid-column-start: span 2;">
+            <h1 style="display: inline; vertical-align: middle; margin-right: 20px; cursor: pointer;"
+                onclick="location.href='/';">
+                书栖网
+            </h1>
+            <% links.forEach(item=> { %>
+                <a href="<%= item.url %>" style="vertical-align: middle;">
+                    <%= item.name %>
+                </a>
+                <% }); %>
+                    <a href="javascript:logout();" style="color: grey; vertical-align: middle; float: right;">退出登录</a>
         </div>
         <div class="grid-item"></div>
     </div>
 </div>
 <script>
     function logout() {
-        getRequest("/user/logout", { token: localStorage.getItem("token") })
+        postRequest("/user/logout", { token: localStorage.getItem("token") })
             .then(function (response) {
                 var axiosData = response.data;
                 var status = axiosData.status;
@@ -24,12 +26,10 @@
 
                 if (status === "success") {
                     console.log(data);
-                    if(data) {
+                    if (data) {
                         localStorage.clear("token");
                         localStorage.clear("is_admin");
-                        // alert("退出登录成功");
-                        // window.location.href = "/";
-                        location.reload();
+                        location.href = "/login";
                     } else {
                         alert("退出登录失败");
                     }

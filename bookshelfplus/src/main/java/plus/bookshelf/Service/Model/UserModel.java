@@ -20,7 +20,7 @@ public class UserModel {
     // 用户昵称
     String nickname;
 
-    // 用户身份    NOT_LOGIN, ADMIN, LOGIN_USER;
+    // 用户身份    NOT_LOGIN, ADMIN, USER;
     String group;
 
     // 用户头像
