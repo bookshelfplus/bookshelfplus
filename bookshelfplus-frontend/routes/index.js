@@ -79,6 +79,9 @@ router.get('/dashboard/:group/:page', function (req, res) {
             }, {
                 name: "用户管理",
                 url: "/dashboard/admin/UserManage"
+            }, {
+                name: "调试",
+                url: "/dashboard/admin/Debug"
             }
         ];
     } else if (req.params.group === "user") {
@@ -110,7 +113,7 @@ router.get('/dashboard/:group/:page', function (req, res) {
     }
 
     // 后台管理 其他管理页面
-    if ((req.params.group === "admin" && ["UserManage", "BookManage", "CategoryManage"].indexOf(req.params.page) > -1) ||
+    if ((req.params.group === "admin" && ["UserManage", "BookManage", "CategoryManage", "Debug"].indexOf(req.params.page) > -1) ||
         (req.params.group === "user" && ["myBookshelf", "myCollection"].indexOf(req.params.page) > -1)) {
         res.render(`dashboard/${req.params.group}/manage`, {
             title: getPageTitle(req.params.group === "admin" ? "后台管理" : "用户中心"),
@@ -119,6 +122,7 @@ router.get('/dashboard/:group/:page', function (req, res) {
                 "UserManage": "用户管理",
                 "BookManage": "书籍管理",
                 "CategoryManage": "分类管理",
+                "Debug": "调试",
                 // 用户
                 "myBookshelf": "我的书架",
                 "myCollection": "我的收藏",
