@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Error</title>
+<meta charset="utf-8">
+<title>Oh No!</title>
 <style>
     body {
         width: 35em;
@@ -11,11 +12,15 @@
 </style>
 </head>
 <body>
-<h1>An error occurred.</h1>
-<p>Sorry, the page you are looking for is currently unavailable.<br/>
-Please try again later.</p>
-<p>If you are the system administrator of this resource then you should check
-the error log for details.</p>
-<p><em>Faithfully yours, nginx.</em></p>
+<h1>Oh No! 服务器要炸啦！</h1>
+<p>对不起，当前网站访问量过大，已超出服务器的最大处理能力，已触发自动保护机制。也请您不要频繁刷新，让服务器喝口水、喘口气儿吧~</p>
+<p>我们还是一如既往完全免费的书栖网，在网站不可用期间，大家可以前往Git仓库下载电子书。</p>
+<p>本站不接受打赏，由程序员小墨开发并开源，如果您想支持本站，可以去开源仓库或<a href="https://space.bilibili.com/457109942">去B站</a>为我点个Star，如果您有能力的话，也欢迎前往项目开源仓库为项目提交Pr。</p>
+<p>感谢大家的支持。</p>
+<p style="text-align: center;"><em>书栖网</em><br><em><span id="date"></span></em></p>
+<script>
+var d = new Date();
+document.getElementById("date").innerHTML = d.getFullYear() + "." + (d.getMonth() + 1) + "." + d.getDate();
+</script>
 </body>
 </html>
