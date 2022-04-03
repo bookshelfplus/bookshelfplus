@@ -72,6 +72,11 @@
                     </div>
                     <button class="btn-submit">登录</button>
                     <p>
+                        快捷登录：
+                        <button type="button" onclick="thirdPartyLogin('gitee')">Gitee</button>
+                        <button type="button" onclick="thirdPartyLogin('qq')">QQ</button>
+                    </p>
+                    <p>
                         <a href="/register">注册</a>
                     </p>
                 </div>
@@ -83,6 +88,7 @@
     <!-- <script src="/assets/lib/cryptography/2.2/md5-min.js"></script> -->
     <!-- <script src="/assets/lib/cryptography/2.2/sha1-min.js"></script> -->
     <script>
+        // 用户正常登录逻辑
         $("#username").val("xiaomo");
         $("#password").val("123456");
         $(".btn-submit").click(function() {
@@ -123,6 +129,24 @@
                     console.log(error);
                 });
         });
+    </script>
+    <script>
+        // 第三方授权登录逻辑
+        function thirdPartyLogin(type) {
+            getRequest("/third-party/login", { platform: type })
+                .then(function (response) {
+                    var axiosData = response.data;
+                    var status = axiosData.status;
+                    var data = axiosData.data;
+                    if (status === "success") {
+                        location.href = data;
+                    } else {
+                        alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
+                    }
+                }).catch(function (error) {
+                    console.log(error);
+                });
+        }
     </script>
 </body>
 </html>

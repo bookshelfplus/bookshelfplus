@@ -76,9 +76,6 @@
         <!--<table tableName="book_info" domainObjectName="BookDO" enableCountByExample="false"-->
         <!--       enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="true"-->
         <!--       selectByExampleQueryId="false"></table>-->
-        <!--<table tableName="book_thumbnail_info" domainObjectName="ThumbnailDO" enableCountByExample="false"-->
-        <!--       enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
-        <!--       selectByExampleQueryId="false"></table>-->
         <!--<table tableName="category_info" domainObjectName="CategoryDO" enableCountByExample="false"-->
         <!--       enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
         <!--       selectByExampleQueryId="false"></table>-->
@@ -89,6 +86,12 @@
         <!--       enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
         <!--       selectByExampleQueryId="false"></table>-->
         <!--<table tableName="user_info" domainObjectName="UserDO" enableCountByExample="false"-->
+        <!--       enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
+        <!--       selectByExampleQueryId="false"></table>-->
+        <!--<table tableName="third_party_user_info" domainObjectName="ThirdPartyUserDO" enableCountByExample="false"-->
+        <!--       enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
+        <!--       selectByExampleQueryId="false"></table>-->
+        <!--<table tableName="third_party_user_auth_relation" domainObjectName="ThirdPartyUserAuthDO" enableCountByExample="false"-->
         <!--       enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
         <!--       selectByExampleQueryId="false"></table>-->
     </context>

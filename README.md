@@ -134,6 +134,8 @@ npm config set registry https://registry.npm.taobao.org/
 # TODO
 # 配置 Redis 地址
 # TODO
+# 配置第三方登录
+# TODO thirdparty.sample.properties -> thirdparty.properties
 ```
 
 配置好后，需要重启 nginx

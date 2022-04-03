@@ -1,8 +1,6 @@
 package plus.bookshelf.Controller.Controller;
 
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.BeanUtils;
@@ -12,10 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import plus.bookshelf.Common.Error.BusinessErrorCode;
 import plus.bookshelf.Common.Error.BusinessException;
 import plus.bookshelf.Common.Response.CommonReturnType;
-import plus.bookshelf.Common.SessionManager.LocalSessionManager;
-import plus.bookshelf.Common.SessionManager.RedisSessionManager;
 import plus.bookshelf.Controller.VO.UserVO;
-import plus.bookshelf.Dao.Mapper.UserDOMapper;
 import plus.bookshelf.Service.Impl.UserServiceImpl;
 import plus.bookshelf.Service.Model.UserModel;
 

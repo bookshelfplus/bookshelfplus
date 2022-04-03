@@ -178,6 +178,20 @@
             <artifactId>jnanoid</artifactId>
             <version>2.0.0</version>
         </dependency>
+
+        <!--  第三方登录 JustAuth -->
+        <dependency>
+            <groupId>me.zhyd.oauth</groupId>
+            <artifactId>JustAuth</artifactId>
+            <version>1.16.5</version>
+        </dependency>
+        <!-- 第三方登录 HTTP工具依赖 -->
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>4.9.1</version>
+        </dependency>
+
     </dependencies>
 
     <build>

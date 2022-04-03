@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 02/04/2022 23:09:40
+ Date: 03/04/2022 23:36:35
 */
 
 SET NAMES utf8mb4;
@@ -157,6 +157,50 @@ CREATE TABLE `file_object_info`  (
 
 -- ----------------------------
 -- Records of file_object_info
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for third_party_user_auth_relation
+-- ----------------------------
+DROP TABLE IF EXISTS `third_party_user_auth_relation`;
+CREATE TABLE `third_party_user_auth_relation`  (
+  `id` int(11) NOT NULL COMMENT '主键',
+  `user_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '系统用户ID',
+  `third_party_user_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '社会化用户ID'
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of third_party_user_auth_relation
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for third_party_user_info
+-- ----------------------------
+DROP TABLE IF EXISTS `third_party_user_info`;
+CREATE TABLE `third_party_user_info`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `uuid` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '第三方系统的唯一ID',
+  `source` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'gitee、qq、github、......',
+  `access_token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '用户的授权令牌',
+  `expire_in` int(255) NULL DEFAULT NULL COMMENT '第三方用户的授权令牌有效期',
+  `refresh_token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '刷新令牌',
+  `open_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '第三方用户的Open ID',
+  `uid` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '第三方的用户ID',
+  `access_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '个别平台的授权信息',
+  `union_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '第三方用户的 Union ID',
+  `scope` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '第三方用户授予的权限',
+  `token_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '个别平台的授权信息',
+  `id_token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT 'id token',
+  `mac_algorithm` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '小米平台用户的附带属性',
+  `mac_key` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '小米平台用户的附带属性',
+  `code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '用户的授权Code',
+  `oauth_token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT 'Twitter平台用户的附带属性',
+  `oauth_token_secret` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT 'Twitter平台用户的附带属性',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = 'refer: https://justauth.wiki/features/integrate-existing-systems' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of third_party_user_info
 -- ----------------------------
 
 -- ----------------------------
