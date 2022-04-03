@@ -36,7 +36,21 @@ function search({ tableElementId = "", searchText = "", categoryId = 0 }) {
                 });
 
                 if (renderData.length == 0) {
-                    renderTable({ data: `没有搜索到与 <span style="color: red;">${searchboxValue}</span> 相关的书籍，请换个关键词再试试吧`, tableId: "result-table", renderTableHead: true });
+                    console.log("没有搜索到相关书籍");
+                    function htmlEncode(str) {
+                        // refer: https://stackoverflow.com/questions/4183801/escape-html-chracters
+                        var div = document.createElement('div');
+                        var txt = document.createTextNode(str);
+                        div.appendChild(txt);
+                        return div.innerHTML;
+                    }
+                    if (searchText && searchText != "") {
+                        //
+                        renderTable({ data: `没有搜索到与 <span style="color: red;">${htmlEncode(searchText)}</span> 相关的书籍，请换个关键词再试试吧`, tableId: tableElementId, renderTableHead: true });
+                    } else if (categoryId && categoryId != 0) {
+                        //
+                        renderTable({ data: `该分类下暂无电子书`, tableId: tableElementId, renderTableHead: true });
+                    }
                 } else {
                     renderTable({ data: renderData, tableId: tableElementId, renderTableHead: true });
                 }
