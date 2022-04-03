@@ -207,9 +207,11 @@ npm run prod
 # mvn install -Djar.forceCreation spring-boot:run
 java -jar ./bookshelfplus/target/bookshelfplus-1.0-SNAPSHOT.jar
 
+# 在后台执行：
+# java -jar ./bookshelfplus/target/bookshelfplus-1.0-SNAPSHOT.jar &
+
 # 如果提示: Cannot create resource output directory: xxx
 # 那么说明权限不够，在前面加上 sudo
-# sudo mvn install -Djar.forceCreation spring-boot:run
 
 # 启动 nginx
 # TODO
@@ -223,6 +225,21 @@ WARNING: Illegal reflective access by com.google.inject.internal.cglib.core.$Ref
 WARNING: Please consider reporting this to the maintainers of com.google.inject.internal.cglib.core.$ReflectUtils$1
 WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
 WARNING: All illegal access operations will be denied in a future release
+```
+
+
+
+### 查看后端运行状态
+
+```bash
+# 查看后端运行状态
+# ps -A | grep java
+ubuntu@xxxxxx:~$ ps -A | grep java
+ 558861 ?        00:00:13 java
+ 
+# 结束在后台运行的 Java 进程
+# sudo kill -9 [端口号]
+ubuntu@xxxxxx:~$ sudo kill -9 558861
 ```
 
 
