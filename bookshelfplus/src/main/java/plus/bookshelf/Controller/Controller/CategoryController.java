@@ -10,11 +10,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import plus.bookshelf.Common.Response.CommonReturnType;
-import plus.bookshelf.Controller.VO.BookVO;
 import plus.bookshelf.Controller.VO.CategoryVO;
-import plus.bookshelf.Service.Model.BookModel;
 import plus.bookshelf.Service.Model.CategoryModel;
-import plus.bookshelf.Service.Service.BookService;
 import plus.bookshelf.Service.Service.CategoryService;
 
 import java.util.ArrayList;
