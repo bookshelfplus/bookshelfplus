@@ -17,9 +17,17 @@
 
 
 
+## 项目许可证
+
+本项目使用 MIT 许可证，但**不得使用本项目作为毕业设计项目，或者将本项目传至诸如CSDN等付费下载平台**。除此之外，不做其他限制，祝您使用愉快 :)
+
+
+
 ## 开始使用
 
 > 所需环境：Java JDK 8，Maven，MySQL 5.7+，nodejs，Redis等
+
+> **下面的配置有些没有说明命令的执行目录，请自行判断。**这部分文档后期将会完善。
 
 ### 安装环境
 
@@ -111,6 +119,9 @@ npm config set registry https://registry.npm.taobao.org/
 # TODO
 
 # [后端]
+# 配置 MySQL 数据库地址
+# TODO
+# 配置 Redis
 # TODO
 ```
 
@@ -180,7 +191,9 @@ npm run prod
 
 # [后端]
 # 启动后端服务 (默认监听 8090 端口)
-mvn install -Djar.forceCreation spring-boot:run
+# mvn install -Djar.forceCreation spring-boot:run
+java -jar ./bookshelfplus/target/bookshelfplus-1.0-SNAPSHOT.jar
+
 # 如果提示: Cannot create resource output directory: xxx
 # 那么说明权限不够，在前面加上 sudo
 # sudo mvn install -Djar.forceCreation spring-boot:run
@@ -201,8 +214,6 @@ WARNING: All illegal access operations will be denied in a future release
 
 
 
-
-
 ### 停止项目
 
 ```bash
@@ -219,6 +230,17 @@ npm run prod-stop
 # 停止后端服务
 # TODO
 ```
+
+
+
+### 其他
+
+```bash
+# 清除前端字体缓存
+node ./bookshelfplus-frontend/cleanup.js
+```
+
+
 
 
 
@@ -269,3 +291,13 @@ npm run prod-stop
 ## 注意事项
 
 - nginx启动目录不能包含中文，否则无法启动
+
+
+
+## 联系我们
+
+目前该项目由 程序员小墨 独立开发，你可以在 [GitHub](https://github.com/coder-xiaomo)、[Gitee](https://gitee.com/coder-xiaomo)、[B站](https://space.bilibili.com/457109942)或微信公众号等平台找到我（所有平台都是“程序员小墨”这个名字）。
+
+如您希望合作，或者共同维护本项目，可以通过 `admin@only4.work` 与我取得联系。邮件主题中请注明 `[书栖网开源项目]` 方便我们快速了解您的来意，谢谢。
+
+精力有限，暂不提供免费客服服务，如您遇到问题，请自行搜索解决。这类相关邮件我们将不予回复，望理解！
