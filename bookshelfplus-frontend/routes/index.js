@@ -63,6 +63,14 @@ router.get('/register', function (req, res) {
     });
 });
 
+router.get('/callback/:platform', function (req, res) {
+    // 第三方登录回调页面
+    res.render('callback', {
+        title: getPageTitle("正在跳转"),
+        platform: req.params.platform
+    });
+});
+
 router.get('/dashboard/:group/:page', function (req, res) {
     var navbarLinks = null;
     if (req.params.group === "admin") {

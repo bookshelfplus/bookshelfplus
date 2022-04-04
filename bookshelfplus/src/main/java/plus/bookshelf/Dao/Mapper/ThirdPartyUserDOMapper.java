@@ -1,6 +1,7 @@
 package plus.bookshelf.Dao.Mapper;
 
 import org.springframework.stereotype.Repository;
+import plus.bookshelf.Dao.DO.ThirdPartyUserAuthDO;
 import plus.bookshelf.Dao.DO.ThirdPartyUserDO;
 
 @Repository // 添加这个注解，Autowired的时候idea就不会报错了
@@ -52,4 +53,12 @@ public interface ThirdPartyUserDOMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(ThirdPartyUserDO record);
+
+    /**
+     * 通过 uuid + source 查询第三方登录的用户信息（limit 1）
+     * @param uuid
+     * @param source
+     * @return
+     */
+    ThirdPartyUserDO selectByUuidAndSource(String uuid, String source);
 }

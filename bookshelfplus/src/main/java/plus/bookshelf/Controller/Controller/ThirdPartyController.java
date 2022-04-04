@@ -3,10 +3,13 @@ package plus.bookshelf.Controller.Controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import me.zhyd.oauth.config.AuthConfig;
+import me.zhyd.oauth.exception.AuthException;
 import me.zhyd.oauth.model.AuthCallback;
+import me.zhyd.oauth.model.AuthResponse;
 import me.zhyd.oauth.request.AuthGiteeRequest;
 import me.zhyd.oauth.request.AuthRequest;
 import me.zhyd.oauth.utils.AuthStateUtils;
+import org.apache.tomcat.jni.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +17,16 @@ import plus.bookshelf.Common.Error.BusinessErrorCode;
 import plus.bookshelf.Common.Error.BusinessException;
 import plus.bookshelf.Common.Response.CommonReturnType;
 import plus.bookshelf.Common.ThirdParty.ThirdPartyConfig;
+import plus.bookshelf.Controller.VO.UserVO;
+import plus.bookshelf.Dao.DO.ThirdPartyUserAuthDO;
+import plus.bookshelf.Dao.DO.ThirdPartyUserDO;
+import plus.bookshelf.Dao.Mapper.ThirdPartyUserAuthDOMapper;
+import plus.bookshelf.Dao.Mapper.ThirdPartyUserDOMapper;
+import plus.bookshelf.Service.Impl.ThirdPartyUserServiceImpl;
+import plus.bookshelf.Service.Model.UserModel;
+
+import java.util.Map;
+import java.util.Objects;
 
 @Api(tags = "第三方登录")
 @Controller
@@ -28,6 +41,9 @@ public class ThirdPartyController extends BaseController {
     @Autowired
     private ThirdPartyConfig thirdPartyConfig;
 
+    @Autowired
+    ThirdPartyUserServiceImpl thirdPartyUserService;
+
     @ApiOperation(value = "第三方用户登录跳转地址", notes = "传入需要登录的第三方平台（大小写均可），返回跳转url")
     @RequestMapping(value = "login", method = {RequestMethod.GET})
     @ResponseBody
@@ -40,15 +56,26 @@ public class ThirdPartyController extends BaseController {
     @ApiOperation(value = "快捷登录回调函数", notes = "传入 code 值，进行登录")
     @RequestMapping(value = "callback/{platform}", method = {RequestMethod.GET})
     @ResponseBody
-    public CommonReturnType qq(@PathVariable("platform") String platform,
-                               // @RequestParam Map<String,String> params,
-                               AuthCallback callback) throws BusinessException {
-        // System.out.println(params);
-        // System.out.println(platform);
-        // System.out.println(params.get("code"));
-        // System.out.println(params.get("state"));
+    public CommonReturnType callback(@PathVariable("platform") String platform,
+                                     // @RequestParam Map<String,String> params,
+                                     AuthCallback callback) throws BusinessException {
         AuthRequest authRequest = getAuthRequest(platform);
-        return CommonReturnType.create(authRequest.login(callback));
+        AuthResponse authResponse;
+        try {
+            authResponse = authRequest.login(callback);
+        } catch (AuthException e) {
+            // [ERROR] - Failed to login with oauth authorization.
+            throw new BusinessException(BusinessErrorCode.THIRD_PARTY_LOGIN_FAIL, "第三方登录失败");
+        }
+
+        UserModel userModel = thirdPartyUserService.loginCallback(authResponse);
+        UserVO userVO = UserController.convertFromService(userModel);
+
+        if (userModel != null) {
+            String token = onLogin(userModel);
+            userVO.setToken(token); // token 仅在用户登录时传一次，后面获取用户状态接口中不重复返回 token 信息
+        }
+        return CommonReturnType.create(userVO);
     }
 
     // 创建授权request

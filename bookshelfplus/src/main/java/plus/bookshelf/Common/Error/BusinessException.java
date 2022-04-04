@@ -13,9 +13,9 @@ public class BusinessException extends Exception implements CommonError {
     }
 
     // 接收自定义errMsg的方式构造业务异常
-    public BusinessException(CommonError commonError,String errMsg){
+    public BusinessException(CommonError commonError, String errMsg) {
         super();
-        this.commonError=commonError;
+        this.commonError = commonError;
         this.commonError.setErrMsg(errMsg);
     }
 
