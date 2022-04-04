@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 03/04/2022 23:36:35
+ Date: 04/04/2022 14:26:48
 */
 
 SET NAMES utf8mb4;
@@ -214,6 +214,7 @@ CREATE TABLE `user_info`  (
   `nickname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `group` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `weixin_third_party_auth_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `qq_third_party_auth_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
@@ -223,7 +224,7 @@ CREATE TABLE `user_info`  (
 -- ----------------------------
 -- Records of user_info
 -- ----------------------------
-INSERT INTO `user_info` VALUES (1, 'admin', '7c4a8d09ca3762af61e59520943dc26494f8941b', '小小墨', 'ADMIN', '/密码/123456/', '', '', '');
-INSERT INTO `user_info` VALUES (2, 'xiaomo', '7c4a8d09ca3762af61e59520943dc26494f8941b', '小小墨', 'USER', '/密码/123456/', '', '', '');
+INSERT INTO `user_info` VALUES (1, 'admin', '7c4a8d09ca3762af61e59520943dc26494f8941b', '小小墨', 'ADMIN', '/密码/123456/', '', '', '', '');
+INSERT INTO `user_info` VALUES (2, 'xiaomo', '7c4a8d09ca3762af61e59520943dc26494f8941b', '小小墨', 'USER', '/密码/123456/', '', '', '', '');
 
 SET FOREIGN_KEY_CHECKS = 1;

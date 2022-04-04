@@ -3,6 +3,7 @@ package plus.bookshelf.Service.Impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import plus.bookshelf.Common.Error.BusinessErrorCode;
 import plus.bookshelf.Common.Error.BusinessException;
 import plus.bookshelf.Common.SessionManager.RedisSessionManager;
@@ -53,6 +54,26 @@ public class UserServiceImpl implements UserService {
             throw new BusinessException(BusinessErrorCode.USER_NOT_EXIST);
         }
         return userModel;
+    }
+
+    @Override
+    @Transactional
+    public Boolean userRegister(String username, String encryptPwd) throws BusinessException {
+        if (username == null || "".equals(username)) {
+            throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "用户名不能为空");
+        } else if (encryptPwd == null || "".equals(encryptPwd)) {
+            throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "密码不能为空");
+        }
+        Integer count = userDOMapper.selectCountByUsername(username);
+        if (count > 0) {
+            throw new BusinessException(BusinessErrorCode.USER_ALREADY_EXIST, "用户已存在");
+        }
+        UserDO userDO = new UserDO();
+        userDO.setUsername(username);
+        userDO.setEncriptPwd(encryptPwd);
+        userDO.setGroup("USER");
+        userDO.setNickname("该用户尚未设置昵称");
+        return userDOMapper.insertSelective(userDO) > 0;
     }
 
     private UserModel convertFromDataObject(UserDO userDO) {

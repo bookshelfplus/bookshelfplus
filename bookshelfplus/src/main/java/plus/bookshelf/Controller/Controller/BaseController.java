@@ -3,11 +3,20 @@ package plus.bookshelf.Controller.Controller;
 import com.aventrix.jnanoid.jnanoid.NanoIdUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import plus.bookshelf.Common.Error.BusinessErrorCode;
+import plus.bookshelf.Common.Error.BusinessException;
+import plus.bookshelf.Common.Response.CommonReturnType;
+import plus.bookshelf.Common.Response.CommonReturnTypeStatus;
 import plus.bookshelf.Common.SessionManager.RedisSessionManager;
 import plus.bookshelf.Common.SessionManager.SessionManager;
 import plus.bookshelf.Service.Model.UserModel;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 
 public class BaseController {
 
@@ -66,23 +75,23 @@ public class BaseController {
         // return;
     }
 
-    // // 定义ExceptionHandler解决未被Controller层吸收的Exception
-    // @ExceptionHandler(Exception.class)
-    // @ResponseStatus(HttpStatus.OK)
-    // @ResponseBody
-    // public Object handlerException(HttpServletRequest request, Exception ex) {
-    //     HashMap<Object, Object> responseData = new HashMap<>();
-    //
-    //     if (ex instanceof BusinessException) {
-    //         BusinessException businessException = (BusinessException) ex;
-    //         responseData.put("errCode", businessException.getErrCode());
-    //         responseData.put("errMsg", businessException.getErrMsg());
-    //     } else {
-    //         // 生产环境输出格式化信息
-    //         responseData.put("errCode", BusinessErrorCode.UNKNOWN_ERROR.getErrCode());
-    //         responseData.put("errMsg", BusinessErrorCode.UNKNOWN_ERROR.getErrMsg());
-    //     }
-    //
-    //     return CommonReturnType.create(responseData, CommonReturnTypeStatus.FAILED);
-    // }
+    // 定义ExceptionHandler解决未被Controller层吸收的Exception
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public Object handlerException(HttpServletRequest request, Exception ex) {
+        HashMap<Object, Object> responseData = new HashMap<>();
+
+        if (ex instanceof BusinessException) {
+            BusinessException businessException = (BusinessException) ex;
+            responseData.put("errCode", businessException.getErrCode());
+            responseData.put("errMsg", businessException.getErrMsg());
+        } else {
+            // 生产环境输出格式化信息
+            responseData.put("errCode", BusinessErrorCode.UNKNOWN_ERROR.getErrCode());
+            responseData.put("errMsg", BusinessErrorCode.UNKNOWN_ERROR.getErrMsg());
+        }
+
+        return CommonReturnType.create(responseData, CommonReturnTypeStatus.FAILED);
+    }
 }
