@@ -16,8 +16,8 @@ public enum BusinessErrorCode implements CommonError {
     OPERATION_NOT_ALLOWED(30001, "用户没有此操作的权限"),
 
     // 40000开头为第三方登录相关错误定义
-    THIRD_PARTY_LOGIN_FAIL(40001, "第三方登录失败");
-
+    THIRD_PARTY_LOGIN_FAIL(40001, "第三方登录失败"),
+    THIRD_PARTY_ACCOUNT_ALREADY_BOUND(40002, "该账号已被其他账号绑定");
 
 
     private BusinessErrorCode(int errCode, String errMsg) {

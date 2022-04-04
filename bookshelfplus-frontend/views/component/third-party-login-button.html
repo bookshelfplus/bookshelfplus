@@ -1,0 +1,20 @@
+<button type="button" onclick="thirdPartyLogin('gitee')">Gitee</button>
+<button type="button" onclick="thirdPartyLogin('qq')">QQ</button>
+<script>
+    // 第三方授权登录逻辑
+    function thirdPartyLogin(type) {
+        getRequest("/third-party/login", { platform: type })
+            .then(function (response) {
+                var axiosData = response.data;
+                var status = axiosData.status;
+                var data = axiosData.data;
+                if (status === "success") {
+                    location.href = data;
+                } else {
+                    alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
+                }
+            }).catch(function (error) {
+                console.log(error);
+            });
+    }
+</script>

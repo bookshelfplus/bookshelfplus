@@ -53,11 +53,11 @@ public class ThirdPartyController extends BaseController {
         return CommonReturnType.create(authorizeUrl);
     }
 
-    @ApiOperation(value = "快捷登录回调函数", notes = "传入 code 值，进行登录")
+    @ApiOperation(value = "快捷登录回调函数", notes = "如果传入 token 那么就是绑定第三方账号到当前登录账号，否则就是通过第三方授权登录")
     @RequestMapping(value = "callback/{platform}", method = {RequestMethod.GET})
     @ResponseBody
     public CommonReturnType callback(@PathVariable("platform") String platform,
-                                     // @RequestParam Map<String,String> params,
+                                     @RequestParam(value = "token", required = false) String token,
                                      AuthCallback callback) throws BusinessException {
         AuthRequest authRequest = getAuthRequest(platform);
         AuthResponse authResponse;
@@ -67,15 +67,21 @@ public class ThirdPartyController extends BaseController {
             // [ERROR] - Failed to login with oauth authorization.
             throw new BusinessException(BusinessErrorCode.THIRD_PARTY_LOGIN_FAIL, "第三方登录失败");
         }
+        if (token == null || token.isEmpty()) {
+            // 通过第三方授权登录
+            UserModel userModel = thirdPartyUserService.loginCallback(authResponse);
+            UserVO userVO = UserController.convertFromService(userModel);
 
-        UserModel userModel = thirdPartyUserService.loginCallback(authResponse);
-        UserVO userVO = UserController.convertFromService(userModel);
-
-        if (userModel != null) {
-            String token = onLogin(userModel);
-            userVO.setToken(token); // token 仅在用户登录时传一次，后面获取用户状态接口中不重复返回 token 信息
+            if (userModel != null) {
+                String userLoginToken = onLogin(userModel);
+                userVO.setToken(userLoginToken); // token 仅在用户登录时传一次，后面获取用户状态接口中不重复返回 token 信息
+            }
+            return CommonReturnType.create(userVO);
+        } else {
+            // 绑定第三方账号到当前登录账号
+            Boolean isSuccess = thirdPartyUserService.bindThirdPartAccountCallback(authResponse, token);
+            return CommonReturnType.create(isSuccess);
         }
-        return CommonReturnType.create(userVO);
     }
 
     // 创建授权request
