@@ -136,7 +136,7 @@ public class ThirdPartyController extends BaseController {
                         .redirectUri(thirdPartyConfig.getGithubRedirecturi())
                         .build());
             case "qq":
-                return new AuthGiteeRequest(AuthConfig.builder()
+                return new AuthQqRequest(AuthConfig.builder()
                         .clientId(thirdPartyConfig.getQqClientid())
                         .clientSecret(thirdPartyConfig.getQqClientsecret())
                         .redirectUri(thirdPartyConfig.getQqRedirecturi())
