@@ -24,6 +24,14 @@ public class ThirdPartyConfig {
     @Value("${thirdparty.oschina.redirecturi}")
     private String oschinaRedirecturi;
 
+    // 飞书
+    @Value("${thirdparty.feishu.clientid}")
+    private String feishuClientId;
+    @Value("${thirdparty.feishu.clientsecret}")
+    private String feishuClientsecret;
+    @Value("${thirdparty.feishu.redirecturi}")
+    private String feishuRedirecturi;
+
     // QQ
     @Value("${thirdparty.qq.clientid}")
     private String qqClientid;
