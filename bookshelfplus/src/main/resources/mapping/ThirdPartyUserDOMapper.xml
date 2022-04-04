@@ -286,4 +286,8 @@
   <select id="getLastInsertId" resultType="java.lang.Integer">
     SELECT LAST_INSERT_ID();
   </select>
+  <select id="getUserBindThirdParties" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" /> from third_party_user_info
+    where id in (select third_party_user_id from third_party_user_auth_relation where user_id = #{userId,jdbcType=INTEGER})
+  </select>
 </mapper>

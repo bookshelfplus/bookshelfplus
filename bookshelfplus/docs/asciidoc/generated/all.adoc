@@ -647,7 +647,7 @@ __可选__|string
 Third Party Controller
 
 
-[[_qqusingget]]
+[[_callbackusingget]]
 ==== 快捷登录回调函数
 ....
 GET /api/third-party/callback/{platform}
@@ -655,7 +655,7 @@ GET /api/third-party/callback/{platform}
 
 
 ===== 说明
-传入 code 值，进行登录
+如果传入 token 那么就是绑定第三方账号到当前登录账号，否则就是通过第三方授权登录
 
 
 ===== 参数
@@ -677,6 +677,8 @@ __可选__||string
 __可选__||string
 |**Query**|**state** +
 __可选__||string
+|**Query**|**token** +
+__可选__|token|string
 |===
 
 

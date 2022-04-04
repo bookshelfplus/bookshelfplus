@@ -3,7 +3,11 @@ package plus.bookshelf.Service.Service;
 import me.zhyd.oauth.model.AuthResponse;
 import org.springframework.transaction.annotation.Transactional;
 import plus.bookshelf.Common.Error.BusinessException;
+import plus.bookshelf.Service.Model.ThirdPartyUserModel;
 import plus.bookshelf.Service.Model.UserModel;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 public interface ThirdPartyUserService {
 
@@ -25,4 +29,11 @@ public interface ThirdPartyUserService {
      */
     @Transactional
     Boolean bindThirdPartAccountCallback(AuthResponse authResponse, String token) throws BusinessException;
+
+    /**
+     * 获取用户登录的所有第三方平台信息
+     * @param token
+     * @return
+     */
+    List<ThirdPartyUserModel> getBindingStatus(String token) throws BusinessException, InvocationTargetException, IllegalAccessException;
 }
