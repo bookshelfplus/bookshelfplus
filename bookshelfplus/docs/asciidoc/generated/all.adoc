@@ -21,6 +21,8 @@ __域名__ : localhost:8090
 * 书籍信息 : Book Controller
 * 书籍分类信息 : Category Controller
 * 用户操作 : User Controller
+* 第三方登录 : Third Party Controller
+* 系统调试接口 : Debug Controller
 * 网站后台状态检测 : Status Controller
 
 
@@ -32,6 +34,82 @@ __域名__ : localhost:8090
 [[_261c63557a0a2affe4e9ee7cf30075c0]]
 === 书籍信息
 Book Controller
+
+
+[[_addusingget]]
+==== 【管理员】添加书籍
+....
+GET /api/book/add
+....
+
+
+===== 说明
+管理员在后台添加书籍
+
+
+===== 参数
+
+[options="header", cols=".^2a,.^3a,.^9a,.^4a"]
+|===
+|类型|名称|说明|类型
+|**Query**|**author** +
+__可选__|author|string
+|**Query**|**bookName** +
+__可选__|bookName|string
+|**Query**|**categoryId** +
+__可选__|categoryId|integer (int32)
+|**Query**|**copyright** +
+__可选__|copyright|string
+|**Query**|**description** +
+__可选__|description|string
+|**Query**|**isDelete** +
+__可选__|isDelete|boolean
+|**Query**|**language** +
+__可选__|language|string
+|**Query**|**publishingHouse** +
+__可选__|publishingHouse|string
+|**Query**|**thumbnail** +
+__可选__|thumbnail|string
+|**Query**|**token** +
+__可选__|token|string
+|===
+
+
+===== 响应
+
+[options="header", cols=".^2a,.^14a,.^4a"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_commonreturntype,CommonReturnType>>
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+===== 生成
+
+* `\*/*`
+
+
+===== HTTP请求示例
+
+====== 请求 path
+----
+/api/book/add
+----
+
+
+===== HTTP响应示例
+
+====== 响应 200
+[source,json]
+----
+{
+  "data" : "object",
+  "status" : "string"
+}
+----
 
 
 [[_getusingget]]
@@ -166,14 +244,14 @@ Category Controller
 
 
 [[_getusingget_1]]
-==== 获取书籍分类
+==== 获取指定分类
 ....
 GET /api/category/get
 ....
 
 
 ===== 说明
-获取书籍分类
+获取指定的书籍分类
 
 
 ===== 参数
@@ -223,30 +301,15 @@ __必填__|id|integer (int32)
 ----
 
 
-[[_9083a36b9e1b060bcb75ff62bb4bda37]]
-=== 用户操作
-User Controller
-
-
-[[_getuserstatususingget]]
-==== 获取用户登录状态
+[[_getallusingget]]
+==== 获取所有分类
 ....
-GET /api/user/getUserStatus
+GET /api/category/list
 ....
 
 
 ===== 说明
-获取用户登录状态
-
-
-===== 参数
-
-[options="header", cols=".^2a,.^3a,.^9a,.^4a"]
-|===
-|类型|名称|说明|类型
-|**Query**|**token** +
-__必填__|token|string
-|===
+获取所有的书籍分类
 
 
 ===== 响应
@@ -270,7 +333,83 @@ __必填__|token|string
 
 ====== 请求 path
 ----
-/api/user/getUserStatus?token=string
+/api/category/list
+----
+
+
+===== HTTP响应示例
+
+====== 响应 200
+[source,json]
+----
+{
+  "data" : "object",
+  "status" : "string"
+}
+----
+
+
+[[_9083a36b9e1b060bcb75ff62bb4bda37]]
+=== 用户操作
+User Controller
+
+
+[[_getuserstatususingpost]]
+==== 获取用户登录状态
+....
+POST /api/user/getUserStatus
+....
+
+
+===== 说明
+获取用户登录状态
+
+
+===== 参数
+
+[options="header", cols=".^2a,.^3a,.^4a"]
+|===
+|类型|名称|类型
+|**FormData**|**token** +
+__可选__|string
+|===
+
+
+===== 响应
+
+[options="header", cols=".^2a,.^14a,.^4a"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_commonreturntype,CommonReturnType>>
+|**201**|Created|无内容
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+===== 消耗
+
+* `application/x-www-form-urlencoded`
+
+
+===== 生成
+
+* `\*/*`
+
+
+===== HTTP请求示例
+
+====== 请求 path
+----
+/api/user/getUserStatus
+----
+
+
+====== 请求 formData
+[source,json]
+----
+"string"
 ----
 
 
@@ -359,10 +498,10 @@ __可选__|string
 ----
 
 
-[[_logoutusingget]]
+[[_logoutusingpost]]
 ==== 用户登出
 ....
-GET /api/user/logout
+POST /api/user/logout
 ....
 
 
@@ -372,11 +511,99 @@ GET /api/user/logout
 
 ===== 参数
 
+[options="header", cols=".^2a,.^3a,.^4a"]
+|===
+|类型|名称|类型
+|**FormData**|**token** +
+__可选__|string
+|===
+
+
+===== 响应
+
+[options="header", cols=".^2a,.^14a,.^4a"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_commonreturntype,CommonReturnType>>
+|**201**|Created|无内容
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+===== 消耗
+
+* `application/x-www-form-urlencoded`
+
+
+===== 生成
+
+* `\*/*`
+
+
+===== HTTP请求示例
+
+====== 请求 path
+----
+/api/user/logout
+----
+
+
+====== 请求 formData
+[source,json]
+----
+"string"
+----
+
+
+===== HTTP响应示例
+
+====== 响应 200
+[source,json]
+----
+{
+  "data" : "object",
+  "status" : "string"
+}
+----
+
+
+[[_4b02b6687df4f15fab50b8d31c1fc123]]
+=== 第三方登录
+Third Party Controller
+
+
+[[_qqusingget]]
+==== 快捷登录回调函数
+....
+GET /api/third-party/callback/{platform}
+....
+
+
+===== 说明
+传入 code 值，进行登录
+
+
+===== 参数
+
 [options="header", cols=".^2a,.^3a,.^9a,.^4a"]
 |===
 |类型|名称|说明|类型
-|**Query**|**token** +
-__必填__|token|string
+|**Path**|**platform** +
+__必填__|platform|string
+|**Query**|**auth_code** +
+__可选__||string
+|**Query**|**authorization_code** +
+__可选__||string
+|**Query**|**code** +
+__可选__||string
+|**Query**|**oauth_token** +
+__可选__||string
+|**Query**|**oauth_verifier** +
+__可选__||string
+|**Query**|**state** +
+__可选__||string
 |===
 
 
@@ -401,7 +628,141 @@ __必填__|token|string
 
 ====== 请求 path
 ----
-/api/user/logout?token=string
+/api/third-party/callback/string
+----
+
+
+===== HTTP响应示例
+
+====== 响应 200
+[source,json]
+----
+{
+  "data" : "object",
+  "status" : "string"
+}
+----
+
+
+[[_loginusingget]]
+==== 第三方用户登录跳转地址
+....
+GET /api/third-party/login
+....
+
+
+===== 说明
+传入需要登录的第三方平台（大小写均可），返回跳转url
+
+
+===== 参数
+
+[options="header", cols=".^2a,.^3a,.^9a,.^4a"]
+|===
+|类型|名称|说明|类型
+|**Query**|**platform** +
+__必填__|platform|string
+|===
+
+
+===== 响应
+
+[options="header", cols=".^2a,.^14a,.^4a"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_commonreturntype,CommonReturnType>>
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+===== 生成
+
+* `\*/*`
+
+
+===== HTTP请求示例
+
+====== 请求 path
+----
+/api/third-party/login?platform=string
+----
+
+
+===== HTTP响应示例
+
+====== 响应 200
+[source,json]
+----
+{
+  "data" : "object",
+  "status" : "string"
+}
+----
+
+
+[[_aca0f16a4237edba915fe70c9b07871c]]
+=== 系统调试接口
+Debug Controller
+
+
+[[_statususingpost]]
+==== 获取系统配置
+....
+POST /api/debug/status
+....
+
+
+===== 说明
+仅限管理员登录状态下可获取
+
+
+===== 参数
+
+[options="header", cols=".^2a,.^3a,.^4a"]
+|===
+|类型|名称|类型
+|**FormData**|**token** +
+__可选__|string
+|===
+
+
+===== 响应
+
+[options="header", cols=".^2a,.^14a,.^4a"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_commonreturntype,CommonReturnType>>
+|**201**|Created|无内容
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+===== 消耗
+
+* `application/x-www-form-urlencoded`
+
+
+===== 生成
+
+* `\*/*`
+
+
+===== HTTP请求示例
+
+====== 请求 path
+----
+/api/debug/status
+----
+
+
+====== 请求 formData
+[source,json]
+----
+"string"
 ----
 
 
