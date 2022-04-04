@@ -104,6 +104,12 @@ public class ThirdPartyController extends BaseController {
                         .clientSecret(thirdPartyConfig.getFeishuClientsecret())
                         .redirectUri(thirdPartyConfig.getFeishuRedirecturi())
                         .build());
+            case "github":
+                return new AuthGithubRequest(AuthConfig.builder()
+                        .clientId(thirdPartyConfig.getGithubClientid())
+                        .clientSecret(thirdPartyConfig.getGithubClientsecret())
+                        .redirectUri(thirdPartyConfig.getGithubRedirecturi())
+                        .build());
             case "qq":
                 return new AuthGiteeRequest(AuthConfig.builder()
                         .clientId(thirdPartyConfig.getQqClientid())
