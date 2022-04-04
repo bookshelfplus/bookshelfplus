@@ -16,6 +16,14 @@ public class ThirdPartyConfig {
     @Value("${thirdparty.gitee.redirecturi}")
     private String giteeRedirecturi;
 
+    // OSCHINA
+    @Value("${thirdparty.oschina.clientid}")
+    private String oschinaClientId;
+    @Value("${thirdparty.oschina.clientsecret}")
+    private String oschinaClientsecret;
+    @Value("${thirdparty.oschina.redirecturi}")
+    private String oschinaRedirecturi;
+
     // QQ
     @Value("${thirdparty.qq.clientid}")
     private String qqClientid;

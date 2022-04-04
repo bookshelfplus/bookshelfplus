@@ -16,9 +16,6 @@ import plus.bookshelf.Dao.Mapper.ThirdPartyUserAuthDOMapper;
 import plus.bookshelf.Dao.Mapper.ThirdPartyUserDOMapper;
 import plus.bookshelf.Service.Model.UserModel;
 import plus.bookshelf.Service.Service.ThirdPartyUserService;
-import plus.bookshelf.Service.Service.UserService;
-
-import javax.annotation.Resource;
 
 @Service
 public class ThirdPartyUserServiceImpl implements ThirdPartyUserService {
@@ -192,39 +189,6 @@ public class ThirdPartyUserServiceImpl implements ThirdPartyUserService {
         String userId = token.getUserId();
         String screenName = token.getScreenName();
         String oauthCallbackConfirmed = token.getOauthToken();
-
-        // String uuid = data.get("uuid").toString();
-        // String username = data.get("username").toString();
-        // String nickname = data.get("nickname").toString();
-        // String avatar = data.get("avatar").toString();
-        // String blog = data.get("blog").toString();
-        // String company = data.get("company").toString();
-        // String location = data.get("location").toString();
-        // String email = data.get("email").toString();
-        // String remark = data.get("remark").toString();
-        // String gender = data.get("gender").toString();
-        // String source = data.get("source").toString();
-
-        // Map token = (Map) data.get("token");
-        // String accessToken = token.get("accessToken").toString();
-        // int expiresIn = Integer.parseInt(token.get("expiresIn").toString());
-        // String refreshToken = token.get("refreshToken").toString();
-        // int refreshTokenExpireIn = Integer.parseInt(token.get("refreshTokenExpireIn").toString());
-        // String uid = token.get("uid").toString();
-        // String openId = token.get("openId").toString();
-        // String accessCode = token.get("accessCode").toString();
-        // String unionId = token.get("unionId").toString();
-        // String scope = token.get("scope").toString();
-        // String tokenType = token.get("tokenType").toString();// token 类型，默认为 bearer
-        // String idToken = token.get("idToken").toString();// id_token
-        // String macAlgorithm = token.get("macAlgorithm").toString();// mac 算法
-        // String macKey = token.get("macKey").toString();// mac 密钥
-        // String code = token.get("code").toString();// code
-        // String oauthToken = token.get("oauthToken").toString();// oauth_token
-        // String oauthTokenSecret = token.get("oauthTokenSecret").toString();// oauth_token_secret
-        // String userId = token.get("userId").toString();// user_id
-        // String screenName = token.get("screenName").toString();// screen_name
-        // String oauthCallbackConfirmed = token.get("oauthCallbackConfirmed").toString();// oauth_callback_confirmed
 
         ThirdPartyUserDO thirdPartyUserDO = new ThirdPartyUserDO();
         thirdPartyUserDO.setUuid(uuid);
