@@ -277,4 +277,10 @@
       oauth_token_secret = #{oauthTokenSecret,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectByUuidAndSource" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from third_party_user_info
+    where uuid = #{uuid} and `source` = #{source}
+  </select>
 </mapper>

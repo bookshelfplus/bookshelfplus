@@ -91,7 +91,7 @@ public class UserController extends BaseController {
         return CommonReturnType.create(userVO);
     }
 
-    private UserVO convertFromService(UserModel userModel) {
+    public static UserVO convertFromService(UserModel userModel) {
         if (userModel == null) {
             return null;
         }

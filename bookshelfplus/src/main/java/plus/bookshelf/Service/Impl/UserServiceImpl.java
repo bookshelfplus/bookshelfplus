@@ -8,10 +8,13 @@ import plus.bookshelf.Common.Error.BusinessErrorCode;
 import plus.bookshelf.Common.Error.BusinessException;
 import plus.bookshelf.Common.SessionManager.RedisSessionManager;
 import plus.bookshelf.Controller.VO.UserVO;
+import plus.bookshelf.Dao.DO.ThirdPartyUserDO;
 import plus.bookshelf.Dao.DO.UserDO;
 import plus.bookshelf.Dao.Mapper.UserDOMapper;
 import plus.bookshelf.Service.Model.UserModel;
 import plus.bookshelf.Service.Service.UserService;
+
+import java.util.Map;
 
 @Service
 public class UserServiceImpl implements UserService {

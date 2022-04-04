@@ -13,7 +13,11 @@ public enum BusinessErrorCode implements CommonError {
     USER_ALREADY_EXIST(20005, "用户已存在"),
 
     // 30000开头为权限相关错误定义
-    OPERATION_NOT_ALLOWED(30001, "用户没有此操作的权限");
+    OPERATION_NOT_ALLOWED(30001, "用户没有此操作的权限"),
+
+    // 40000开头为第三方登录相关错误定义
+    THIRD_PARTY_LOGIN_FAIL(40001, "第三方登录失败");
+
 
 
     private BusinessErrorCode(int errCode, String errMsg) {
