@@ -1,12 +1,12 @@
-<button type="button" onclick="thirdPartyLogin('gitee')">Gitee</button>
-<button type="button" onclick="thirdPartyLogin('OSCHINA')">OSCHINA</button>
-<button type="button" onclick="thirdPartyLogin('feishu')">飞书</button>
-<button type="button" onclick="thirdPartyLogin('GitHub')">GitHub(不稳定)</button>
-<button type="button" onclick="thirdPartyLogin('qq')">QQ</button>
+<button class="btn-third-party" id="btn_gitee" onclick="thirdPartyLogin('gitee')">Gitee</button>
+<button class="btn-third-party" id="btn_oschina" onclick="thirdPartyLogin('OSCHINA')">OSCHINA</button>
+<button class="btn-third-party" id="btn_feishu" onclick="thirdPartyLogin('feishu')">飞书</button>
+<button class="btn-third-party" id="btn_github" onclick="thirdPartyLogin('GitHub')">GitHub(不稳定)</button>
+<button class="btn-third-party" id="btn_qq" onclick="thirdPartyLogin('qq')">QQ</button>
 <script>
     // 第三方授权登录逻辑
-    function thirdPartyLogin(type) {
-        getRequest("/third-party/login", { platform: type })
+    function thirdPartyLogin(platform) {
+        getRequest("/third-party/login", { platform: platform })
             .then(function (response) {
                 var axiosData = response.data;
                 var status = axiosData.status;
