@@ -46,20 +46,22 @@ public class UserController extends BaseController {
         return CommonReturnType.create(userVO);
     }
 
-    // @ApiOperation(value = "用户注册", notes = "传入用户名，以及密码明文，后台计算密码SHA1值，进行注册")
-    // @RequestMapping(value = "register", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
-    // @ResponseBody
-    // public CommonReturnType register(@RequestParam(value = "username") String username,
-    //                                  @RequestParam(value = "password") String password) {
-    //     if (username == null || password == null) {
-    //         return null;
-    //     }
-    //     String encryptPwd = DigestUtils.sha1Hex(password);
-    //
-    //     UserModel userModel = userService.userRegister(username, encryptPwd);
-    //     UserVO userVO = convertFromService(userModel);
-    //     return CommonReturnType.create(userVO);
-    // }
+    @ApiOperation(value = "用户注册", notes = "传入用户名，以及密码明文，后台计算密码SHA1值，进行注册")
+    @RequestMapping(value = "register", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
+    @ResponseBody
+    public CommonReturnType register(@RequestParam(value = "username") String username,
+                                     @RequestParam(value = "password") String password) throws BusinessException {
+        if (username == null || password == null) {
+            return null;
+        }
+        String encryptPwd = DigestUtils.sha1Hex(password);
+
+        if(!userService.userRegister(username, encryptPwd)){
+            throw new BusinessException(BusinessErrorCode.UNKNOWN_ERROR, "未知错误，注册失败");
+        }
+        // 注册成功后，进行登录
+        return login(username, password);
+    }
 
     @ApiOperation(value = "用户登出", notes = "用户退出登录")
     // @ApiImplicitParams({
