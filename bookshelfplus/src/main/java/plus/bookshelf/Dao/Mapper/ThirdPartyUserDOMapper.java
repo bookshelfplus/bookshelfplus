@@ -67,4 +67,11 @@ public interface ThirdPartyUserDOMapper {
      * @return
      */
     Integer getLastInsertId();
+
+    /**
+     * 获取用户登录的所有第三方平台信息
+     * @param userId
+     * @return
+     */
+    ThirdPartyUserDO[] getUserBindThirdParties(Integer userId);
 }

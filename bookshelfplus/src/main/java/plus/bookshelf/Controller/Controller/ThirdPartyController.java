@@ -8,7 +8,6 @@ import me.zhyd.oauth.model.AuthCallback;
 import me.zhyd.oauth.model.AuthResponse;
 import me.zhyd.oauth.request.*;
 import me.zhyd.oauth.utils.AuthStateUtils;
-import org.apache.tomcat.jni.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -17,15 +16,14 @@ import plus.bookshelf.Common.Error.BusinessException;
 import plus.bookshelf.Common.Response.CommonReturnType;
 import plus.bookshelf.Common.ThirdParty.ThirdPartyConfig;
 import plus.bookshelf.Controller.VO.UserVO;
-import plus.bookshelf.Dao.DO.ThirdPartyUserAuthDO;
-import plus.bookshelf.Dao.DO.ThirdPartyUserDO;
-import plus.bookshelf.Dao.Mapper.ThirdPartyUserAuthDOMapper;
-import plus.bookshelf.Dao.Mapper.ThirdPartyUserDOMapper;
 import plus.bookshelf.Service.Impl.ThirdPartyUserServiceImpl;
+import plus.bookshelf.Service.Model.ThirdPartyUserModel;
 import plus.bookshelf.Service.Model.UserModel;
 
-import java.util.Map;
-import java.util.Objects;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 @Api(tags = "第三方登录")
 @Controller
@@ -81,6 +79,18 @@ public class ThirdPartyController extends BaseController {
             Boolean isSuccess = thirdPartyUserService.bindThirdPartAccountCallback(authResponse, token);
             return CommonReturnType.create(isSuccess);
         }
+    }
+
+    @ApiOperation(value = "获取用户已绑定的第三方平台", notes = "传入当前登录用户 token ，返回已绑定的第三方平台")
+    @RequestMapping(value = "getBindingStatus", method = {RequestMethod.GET})
+    @ResponseBody
+    public CommonReturnType getBindingStatus(@RequestParam(value = "token", required = false) String token) throws BusinessException, InvocationTargetException, IllegalAccessException {
+        List<ThirdPartyUserModel> bindingStatus = thirdPartyUserService.getBindingStatus(token);
+        List<String> bindingPlatformList = new ArrayList<>();
+        for (ThirdPartyUserModel thirdPartyUserModel : bindingStatus) {
+            bindingPlatformList.add(thirdPartyUserModel.getSource());
+        }
+        return CommonReturnType.create(bindingPlatformList);
     }
 
     // 创建授权request

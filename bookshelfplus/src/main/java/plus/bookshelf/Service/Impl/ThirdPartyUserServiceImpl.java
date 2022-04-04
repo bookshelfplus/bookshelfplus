@@ -4,6 +4,7 @@ import me.zhyd.oauth.enums.AuthUserGender;
 import me.zhyd.oauth.model.AuthResponse;
 import me.zhyd.oauth.model.AuthToken;
 import me.zhyd.oauth.model.AuthUser;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -14,8 +15,13 @@ import plus.bookshelf.Dao.DO.ThirdPartyUserAuthDO;
 import plus.bookshelf.Dao.DO.ThirdPartyUserDO;
 import plus.bookshelf.Dao.Mapper.ThirdPartyUserAuthDOMapper;
 import plus.bookshelf.Dao.Mapper.ThirdPartyUserDOMapper;
+import plus.bookshelf.Service.Model.ThirdPartyUserModel;
 import plus.bookshelf.Service.Model.UserModel;
 import plus.bookshelf.Service.Service.ThirdPartyUserService;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ThirdPartyUserServiceImpl implements ThirdPartyUserService {
@@ -90,6 +96,13 @@ public class ThirdPartyUserServiceImpl implements ThirdPartyUserService {
         }
     }
 
+    /**
+     * 绑定第三方账号 回调函数
+     * @param authResponse
+     * @param token
+     * @return
+     * @throws BusinessException
+     */
     @Override
     @Transactional
     public Boolean bindThirdPartAccountCallback(AuthResponse authResponse, String token) throws BusinessException {
@@ -152,6 +165,31 @@ public class ThirdPartyUserServiceImpl implements ThirdPartyUserService {
             // 未知错误
             throw new BusinessException(BusinessErrorCode.UNKNOWN_ERROR, "未知错误，绑定失败");
         }
+    }
+
+    /**
+     * 获取用户已绑定的第三方平台
+     * @param token
+     * @return
+     */
+    @Override
+    @Transactional
+    public List<ThirdPartyUserModel> getBindingStatus(String token) throws BusinessException, InvocationTargetException, IllegalAccessException {
+        // 函数中已判空，不需要再判断
+        UserModel userModel = userService.getUserByToken(redisTemplate, token);
+        ThirdPartyUserDO[] userBindThirdParties = thirdPartyUserDOMapper.getUserBindThirdParties(userModel.getId());
+        List<ThirdPartyUserModel> thirdPartyUserModelList = new ArrayList<>();
+        for (ThirdPartyUserDO thirdPartyUserDO : userBindThirdParties) {
+            ThirdPartyUserModel thirdPartyUserModel = convertThirdPartyUserDOToModel(thirdPartyUserDO);
+            thirdPartyUserModelList.add(thirdPartyUserModel);
+        }
+        return thirdPartyUserModelList;
+    }
+
+    private ThirdPartyUserModel convertThirdPartyUserDOToModel(ThirdPartyUserDO thirdPartyUserDO) throws InvocationTargetException, IllegalAccessException {
+        ThirdPartyUserModel thirdPartyUserModel = new ThirdPartyUserModel();
+        BeanUtils.copyProperties(thirdPartyUserDO, thirdPartyUserModel);
+        return thirdPartyUserModel;
     }
 
     private ThirdPartyUserDO getThirdPartyUserDOFromAuthData(Object authData) {
