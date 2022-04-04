@@ -22,6 +22,7 @@ import plus.bookshelf.Service.Service.ThirdPartyUserService;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class ThirdPartyUserServiceImpl implements ThirdPartyUserService {
@@ -98,6 +99,7 @@ public class ThirdPartyUserServiceImpl implements ThirdPartyUserService {
 
     /**
      * 绑定第三方账号 回调函数
+     *
      * @param authResponse
      * @param token
      * @return
@@ -169,6 +171,7 @@ public class ThirdPartyUserServiceImpl implements ThirdPartyUserService {
 
     /**
      * 获取用户已绑定的第三方平台
+     *
      * @param token
      * @return
      */
@@ -184,6 +187,34 @@ public class ThirdPartyUserServiceImpl implements ThirdPartyUserService {
             thirdPartyUserModelList.add(thirdPartyUserModel);
         }
         return thirdPartyUserModelList;
+    }
+
+    @Override
+    @Transactional
+    public Boolean unbindThirdPartAccount(String token, String platform) throws BusinessException {
+        UserModel userModel = userService.getUserByToken(redisTemplate, token);
+        platform = platform.toUpperCase();
+        ThirdPartyUserDO[] userBindThirdParties = thirdPartyUserDOMapper.getUserBindThirdParties(userModel.getId());
+        for (ThirdPartyUserDO thirdPartyUserDO : userBindThirdParties) {
+            if (thirdPartyUserDO.getSource().toUpperCase().equals(platform)) {
+                // 用户 Id
+                Integer userId = userModel.getId();
+                // 第三方账号 Id
+                Integer thirdPartyUserId = thirdPartyUserDO.getId();
+                // 首先在 Auth 表中删除
+                int affectRows = thirdPartyUserAuthDOMapper.deleteByUserIdAndThirdPartyUserId(userId, thirdPartyUserId);
+                if (affectRows > 0) {
+                    // 删除成功，删除第三方账号信息
+                    int affectRows2 = thirdPartyUserDOMapper.deleteByPrimaryKey(thirdPartyUserId);
+                    if (affectRows2 > 0) {
+                        // 删除成功
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
+        return false;
     }
 
     private ThirdPartyUserModel convertThirdPartyUserDOToModel(ThirdPartyUserDO thirdPartyUserDO) throws InvocationTargetException, IllegalAccessException {

@@ -36,4 +36,13 @@ public interface ThirdPartyUserService {
      * @return
      */
     List<ThirdPartyUserModel> getBindingStatus(String token) throws BusinessException, InvocationTargetException, IllegalAccessException;
+
+    /**
+     * 解绑第三方账号
+     * @param token 用户token
+     * @param platform 第三方平台
+     * @return
+     */
+    @Transactional
+    Boolean unbindThirdPartAccount(String token, String platform) throws BusinessException;
 }

@@ -21,6 +21,28 @@
     </main>
     <%- include("../component/footer-user.html"); %>
     <script>
+        function thirdPartyWithdraw(platform) {
+            postRequest("/third-party/withdrawThirdPartyBings", { token: localStorage.token, platform: platform })
+                .then(function (response) {
+                    var axiosData = response.data;
+                    var status = axiosData.status;
+                    var data = axiosData.data;
+                    if (status === "success") {
+                        console.log(data);
+                        if(data == "success") {
+                            alert("取消绑定成功！");
+                            location.reload();
+                        } else {
+                            alert("出错啦，刷新页面重新试试吧");
+                        }
+                    } else {
+                        alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
+                        location.reload();
+                    }
+                }).catch(function (error) {
+                    console.log(error);
+                });
+        }
         if(localStorage.token != null) {
             getRequest("/third-party/getBindingStatus", { token: localStorage.token })
                 .then(function (response) {
