@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import plus.bookshelf.Common.Enum.plus.bookshelf.TencentCloud.COS.CosProperties;
@@ -16,6 +17,7 @@ import plus.bookshelf.Common.TencentCloud.COS.GeneratePresignatureUrl;
 @SpringBootApplication(scanBasePackages = {"plus.bookshelf"})
 @RestController
 @MapperScan("plus.bookshelf.Dao.Mapper")
+// @EnableTransactionManagement // 引入事务管理
 public class App {
     public static void main(String[] args) {
         System.out.println("Dreams remain daydreams until they are put into action. \n" +

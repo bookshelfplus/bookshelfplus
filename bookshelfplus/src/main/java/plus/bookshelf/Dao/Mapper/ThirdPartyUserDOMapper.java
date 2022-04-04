@@ -55,10 +55,16 @@ public interface ThirdPartyUserDOMapper {
     int updateByPrimaryKey(ThirdPartyUserDO record);
 
     /**
-     * 通过 uuid + source 查询第三方登录的用户信息（limit 1）
+     * 通过 uuid + source 查询第三方登录的用户信息
      * @param uuid
      * @param source
      * @return
      */
     ThirdPartyUserDO selectByUuidAndSource(String uuid, String source);
+
+    /**
+     * 获取上一步插入数据的主键id
+     * @return
+     */
+    Integer getLastInsertId();
 }

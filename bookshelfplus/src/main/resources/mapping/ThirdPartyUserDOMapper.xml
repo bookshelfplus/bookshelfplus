@@ -283,4 +283,7 @@
     from third_party_user_info
     where uuid = #{uuid} and `source` = #{source}
   </select>
+  <select id="getLastInsertId" resultType="java.lang.Integer">
+    SELECT LAST_INSERT_ID();
+  </select>
 </mapper>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <%- include("../component/header.html"); %>
+    <%- include("../component/header-user.html"); %>
+</head>
+<body>
+    <%- include("../component/navbar.html"); %>
+    <main class="main">
+        <h1><%= headSubTextArr[page] || page %></h1>
+        <div id="container">
+            <div>
+                第三方账号绑定：
+                <%- include("../../component/third-party-login-button.html"); %>
+            </div>
+        </div>
+    </main>
+    <%- include("../component/footer-user.html"); %>
+</body>
+</html>

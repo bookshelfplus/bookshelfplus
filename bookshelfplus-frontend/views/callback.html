@@ -21,21 +21,41 @@
         正在跳转中，请稍后...
     </p>
     <script>
-        getRequest("/third-party/callback/<%=platform%>" + location.search)
+        // 带 token 的为绑定第三方账号，不带 token 的为第三方登录
+        getRequest("/third-party/callback/<%=platform%>" + location.search + (localStorage.token ? ("&token=" + localStorage.token) : ""))
             .then(function (response) {
                 var axiosData = response.data;
                 var status = axiosData.status;
                 var data = axiosData.data;
                 if (status === "success") {
                     console.log(data)
+                    // 默认直接跳转 user 后台，如果是管理员则由 user 后台跳转
+                    if(localStorage.token) {
+                        // 绑定第三方账号
+
+                        // 绑定第三方账号成功
+                        alert("绑定成功");
+                        location.href = "/dashboard/user/myAccount";
+                    } else {
+                        // 第三方登录成功
+                        localStorage.setItem("token", data.token);
+                        // alert("登录成功");
+                        if(data.group === "ADMIN") {
+                            localStorage.setItem("is_admin", "true");
+                            window.location.href = "/dashboard/admin/index";
+                        } else {
+                            localStorage.setItem("is_admin", "false");
+                            window.location.href = "/dashboard/user/index";
+                        }
+                    }
                 } else {
                     alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
                     location.replace("/login");
                 }
             }).catch(function (error) {
                 console.log(error);
-                document.getElementById("displayText").innerHTML="系统错误，请稍后再试！";
-                document.getElementById("displayText").style.color="red";
+                document.getElementById("displayText").innerHTML = "系统错误，请稍后再试！";
+                document.getElementById("displayText").style.color = "red";
             });
     </script>
 </body>

@@ -103,15 +103,32 @@ router.get('/dashboard/:group/:page', function (req, res) {
             }, {
                 name: "我的收藏",
                 url: "/dashboard/user/myCollection"
+            }, {
+                name: "账号设置",
+                url: "/dashboard/user/myAccount"
             }
         ];
     }
 
+    var headText = req.params.group === "admin" ? "后台管理" : "用户中心";
+    var title = getPageTitle(headText);
+    var headSubTextArr = {
+        // 管理员
+        "UserManage": "用户管理",
+        "BookManage": "书籍管理",
+        "CategoryManage": "分类管理",
+        "Debug": "调试",
+        // 用户
+        "myBookshelf": "我的书架",
+        "myCollection": "我的收藏",
+        "myAccount": "账号设置"
+    };
+
     // 仪表盘
     if (req.params.page == "index") {
         res.render(`dashboard/${req.params.group}/index`, {
-            title: getPageTitle(req.params.group === "admin" ? "后台管理" : "用户中心"),
-            headText: req.params.group === "admin" ? "后台管理" : "用户中心",
+            title: title,
+            headText: headText,
             headSubTextArr: {},
             links: navbarLinks,
             group: req.params.group,
@@ -120,27 +137,32 @@ router.get('/dashboard/:group/:page', function (req, res) {
         return;
     }
 
-    // 后台管理 其他管理页面
+    // 后台管理 新增或者修改页面
     if ((req.params.group === "admin" && ["UserManage", "BookManage", "CategoryManage", "Debug"].indexOf(req.params.page) > -1) ||
         (req.params.group === "user" && ["myBookshelf", "myCollection"].indexOf(req.params.page) > -1)) {
         res.render(`dashboard/${req.params.group}/manage`, {
-            title: getPageTitle(req.params.group === "admin" ? "后台管理" : "用户中心"),
-            headSubTextArr: {
-                // 管理员
-                "UserManage": "用户管理",
-                "BookManage": "书籍管理",
-                "CategoryManage": "分类管理",
-                "Debug": "调试",
-                // 用户
-                "myBookshelf": "我的书架",
-                "myCollection": "我的收藏",
-            },
+            title: title,
+            headSubTextArr: headSubTextArr,
             links: navbarLinks,
             group: req.params.group,
             page: req.params.page,
         });
         return;
     }
+
+    // 后台管理 其他管理页面
+    if ((req.params.group === "admin" && [].indexOf(req.params.page) > -1) ||
+        (req.params.group === "user" && ["myAccount"].indexOf(req.params.page) > -1)) {
+        res.render(`dashboard/${req.params.group}/${req.params.page}`, {
+            title: title,
+            headSubTextArr: headSubTextArr,
+            links: navbarLinks,
+            group: req.params.group,
+            page: req.params.page,
+        });
+        return;
+    }
+
     throw new Error("404 Not Found");
 });
 

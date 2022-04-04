@@ -11,9 +11,6 @@ html,
 body {
   margin: 0;
   font-family: bookshelfplusFont;
-
-  /* 字体加载前先隐藏，不然文字会闪一下 */
-  opacity: 0;
 }
 
 a,

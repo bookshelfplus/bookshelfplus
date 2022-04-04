@@ -15,4 +15,14 @@ public interface ThirdPartyUserService {
      */
     @Transactional
     UserModel loginCallback(AuthResponse authResponse) throws BusinessException;
+
+
+    /**
+     * 个人账号中心绑定第三方账号回调函数
+     * @param authResponse
+     * @throws BusinessException
+     * @return
+     */
+    @Transactional
+    Boolean bindThirdPartAccountCallback(AuthResponse authResponse, String token) throws BusinessException;
 }
