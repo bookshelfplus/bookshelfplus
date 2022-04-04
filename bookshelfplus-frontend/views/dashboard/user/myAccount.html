@@ -10,11 +10,48 @@
         <h1><%= headSubTextArr[page] || page %></h1>
         <div id="container">
             <div>
-                第三方账号绑定：
+                <h3>绑定第三方账号</h3>
                 <%- include("../../component/third-party-login-button.html"); %>
+                <div id="withdraw-container" style="display: none;">
+                    <h3>取消第三方账号绑定（暂未实现）</h3>
+                    <div id="withdraw-buttons"></div>
+                </div>
             </div>
         </div>
     </main>
     <%- include("../component/footer-user.html"); %>
+    <script>
+        if(localStorage.token != null) {
+            getRequest("/third-party/getBindingStatus", { token: localStorage.token })
+                .then(function (response) {
+                    var axiosData = response.data;
+                    var status = axiosData.status;
+                    var data = axiosData.data;
+                    if (status === "success") {
+                        console.log(data);
+                        if(data) {
+                            $("#withdraw-container").show();
+                            data.forEach(platformName => {
+                                // 隐藏绑定按钮
+                                var btn = $(`#btn_${platformName.toLowerCase()}`);
+                                var platformChineseName = btn.html();
+                                btn.attr("disabled", true);
+                                btn.html(platformChineseName+"（已绑定）");
+
+                                // 添加取消绑定按钮
+                                var withdrawBtn = $(`<button class="btn-third-party" id="btn_${platformName.toLowerCase()}_withdraw" onclick="thirdPartyWithdraw('${platformName}')">取消绑定${platformChineseName}</button>`);
+                                $("#withdraw-buttons").append(withdrawBtn);
+                                $("#withdraw-buttons").append(" ");
+                            });
+                        }
+                    } else {
+                        $(".btn-third-party").hide();
+                        alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
+                    }
+                }).catch(function (error) {
+                    console.log(error);
+                });
+        }
+    </script>
 </body>
 </html>
