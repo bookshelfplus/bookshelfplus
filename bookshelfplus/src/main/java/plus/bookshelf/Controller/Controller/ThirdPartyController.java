@@ -6,9 +6,7 @@ import me.zhyd.oauth.config.AuthConfig;
 import me.zhyd.oauth.exception.AuthException;
 import me.zhyd.oauth.model.AuthCallback;
 import me.zhyd.oauth.model.AuthResponse;
-import me.zhyd.oauth.request.AuthGiteeRequest;
-import me.zhyd.oauth.request.AuthOschinaRequest;
-import me.zhyd.oauth.request.AuthRequest;
+import me.zhyd.oauth.request.*;
 import me.zhyd.oauth.utils.AuthStateUtils;
 import org.apache.tomcat.jni.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,6 +97,12 @@ public class ThirdPartyController extends BaseController {
                         .clientId(thirdPartyConfig.getOschinaClientId())
                         .clientSecret(thirdPartyConfig.getOschinaClientsecret())
                         .redirectUri(thirdPartyConfig.getOschinaRedirecturi())
+                        .build());
+            case "feishu":
+                return new AuthFeishuRequest(AuthConfig.builder()
+                        .clientId(thirdPartyConfig.getFeishuClientId())
+                        .clientSecret(thirdPartyConfig.getFeishuClientsecret())
+                        .redirectUri(thirdPartyConfig.getFeishuRedirecturi())
                         .build());
             case "qq":
                 return new AuthGiteeRequest(AuthConfig.builder()
