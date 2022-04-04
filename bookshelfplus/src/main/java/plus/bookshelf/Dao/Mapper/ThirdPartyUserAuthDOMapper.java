@@ -68,4 +68,13 @@ public interface ThirdPartyUserAuthDOMapper {
      * @mbg.generated
      */
     ThirdPartyUserAuthDO selectByUserId(Integer id);
+
+    /**
+     * 通过 用户 id 和 第三方用户 id 删除绑定关系
+     *
+     * @param userId
+     * @param thirdPartyUserId
+     * @return
+     */
+    Integer deleteByUserIdAndThirdPartyUserId(Integer userId, Integer thirdPartyUserId);
 }

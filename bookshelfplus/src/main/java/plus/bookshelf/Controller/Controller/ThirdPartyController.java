@@ -93,6 +93,21 @@ public class ThirdPartyController extends BaseController {
         return CommonReturnType.create(bindingPlatformList);
     }
 
+    @ApiOperation(value = "取消第三方平台绑定", notes = "传入当前登录用户 token 和平台 platform （不区分大小写），返回 bool 值，true 为取消绑定成功")
+    @RequestMapping(value = "withdrawThirdPartyBings", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
+    @ResponseBody
+    public CommonReturnType unbindThirdPartAccount(@RequestParam(value = "token", required = true) String token,
+                                                    @RequestParam(value = "platform", required = true) String platform) throws BusinessException {
+        if(platform == null || platform.isEmpty()){
+            throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "参数错误，第三方平台不能为空");
+        }
+        Boolean isSuccess = thirdPartyUserService.unbindThirdPartAccount(token, platform);
+        if(!isSuccess){
+            throw new BusinessException(BusinessErrorCode.THIRD_PARTY_UNBIND_FAIL, "取消绑定失败，系统错误");
+        }
+        return CommonReturnType.create("success");
+    }
+
     // 创建授权request
     private AuthRequest getAuthRequest(String platform) throws BusinessException {
         switch (platform.toLowerCase()) {
