@@ -7,6 +7,7 @@ import me.zhyd.oauth.exception.AuthException;
 import me.zhyd.oauth.model.AuthCallback;
 import me.zhyd.oauth.model.AuthResponse;
 import me.zhyd.oauth.request.AuthGiteeRequest;
+import me.zhyd.oauth.request.AuthOschinaRequest;
 import me.zhyd.oauth.request.AuthRequest;
 import me.zhyd.oauth.utils.AuthStateUtils;
 import org.apache.tomcat.jni.User;
@@ -92,6 +93,12 @@ public class ThirdPartyController extends BaseController {
                         .clientId(thirdPartyConfig.getGiteeClientId())
                         .clientSecret(thirdPartyConfig.getGiteeClientsecret())
                         .redirectUri(thirdPartyConfig.getGiteeRedirecturi())
+                        .build());
+            case "oschina":
+                return new AuthOschinaRequest(AuthConfig.builder()
+                        .clientId(thirdPartyConfig.getOschinaClientId())
+                        .clientSecret(thirdPartyConfig.getOschinaClientsecret())
+                        .redirectUri(thirdPartyConfig.getOschinaRedirecturi())
                         .build());
             case "qq":
                 return new AuthGiteeRequest(AuthConfig.builder()
