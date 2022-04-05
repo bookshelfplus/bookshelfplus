@@ -33,6 +33,7 @@
 <script>
     function getUserStatus() {
         if(!localStorage) {
+            alert("浏览器不支持 localStorage ，请更换浏览器");
             window.location.href = "/";
         }
 
@@ -55,6 +56,11 @@
                         window.location.href = "/login";
                     }
                 } else {
+                    if(data.errCode == "20004") { // 登陆过期
+                        localStorage.clear("token");
+                        localStorage.clear("is_admin");
+                        window.location.href = "/login";
+                    }
                     alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
                 }
             });

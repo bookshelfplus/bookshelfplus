@@ -56,7 +56,7 @@ public class UserController extends BaseController {
         }
         String encryptPwd = DigestUtils.sha1Hex(password);
 
-        if(!userService.userRegister(username, encryptPwd)){
+        if (!userService.userRegister(username, encryptPwd)) {
             throw new BusinessException(BusinessErrorCode.UNKNOWN_ERROR, "未知错误，注册失败");
         }
         // 注册成功后，进行登录
@@ -89,6 +89,35 @@ public class UserController extends BaseController {
         UserModel userModel = userService.getUserByToken(redisTemplate, token);
         UserVO userVO = convertFromService(userModel);
         return CommonReturnType.create(userVO);
+    }
+
+    @ApiOperation(value = "账号注销", notes = "传入用户 token ，以及密码明文，后台计算密码SHA1值，进行注销")
+    @RequestMapping(value = "cancelAccount", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
+    @ResponseBody
+    public CommonReturnType cancelAccount(@RequestParam(value = "token", required = false) String token,
+                                          @RequestParam(value = "password", required = false) String password) throws BusinessException {
+        // 已经在 getUserByToken 方法中判断了 token 为空、不合法；用户不存在情况，此处无需再判断
+        UserModel userModel = userService.getUserByToken(redisTemplate, token);
+
+        if(password == null || "".equals(password)){
+            throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "参数不合法，缺少密码");
+        }
+
+        // 验证用户密码是否输入正确
+        if (!userModel.getEncriptPwd().equals(DigestUtils.sha1Hex(password))) {
+            throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "密码错误");
+        }
+
+        // 进行用户账号注销流程
+        Boolean isSuccess = userService.cancelAccount(userModel);
+        if (!isSuccess) {
+            throw new BusinessException(BusinessErrorCode.UNKNOWN_ERROR, "系统未知错误，注销失败，请联系网站管理员");
+        }
+
+        // 用户退出登录
+        onLogout(token);
+
+        return CommonReturnType.create("success");
     }
 
     public static UserVO convertFromService(UserModel userModel) {

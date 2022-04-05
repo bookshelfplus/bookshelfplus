@@ -10,10 +10,14 @@ import plus.bookshelf.Common.SessionManager.RedisSessionManager;
 import plus.bookshelf.Controller.VO.UserVO;
 import plus.bookshelf.Dao.DO.ThirdPartyUserDO;
 import plus.bookshelf.Dao.DO.UserDO;
+import plus.bookshelf.Dao.Mapper.ThirdPartyUserAuthDOMapper;
+import plus.bookshelf.Dao.Mapper.ThirdPartyUserDOMapper;
 import plus.bookshelf.Dao.Mapper.UserDOMapper;
 import plus.bookshelf.Service.Model.UserModel;
 import plus.bookshelf.Service.Service.UserService;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -21,6 +25,12 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     UserDOMapper userDOMapper;
+
+    @Autowired
+    ThirdPartyUserDOMapper thirdPartyUserDOMapper;
+
+    @Autowired
+    ThirdPartyUserAuthDOMapper thirdPartyUserAuthDOMapper;
 
     @Override
     public UserModel userLogin(String username, String encryptPwd) {
@@ -77,6 +87,44 @@ public class UserServiceImpl implements UserService {
         userDO.setGroup("USER");
         userDO.setNickname("该用户尚未设置昵称");
         return userDOMapper.insertSelective(userDO) > 0;
+    }
+
+    @Override
+    @Transactional
+    public Boolean cancelAccount(UserModel userModel) throws BusinessException {
+
+        // 用户Id
+        Integer userId = userModel.getId();
+
+        ThirdPartyUserDO[] userBindThirdParties = thirdPartyUserDOMapper.getUserBindThirdParties(userModel.getId());
+
+        List<Integer> thirdPartyIds = new ArrayList<>();
+        for (ThirdPartyUserDO thirdPartyUserDO : userBindThirdParties) {
+            Integer thirdPartyUserId = thirdPartyUserDO.getId();
+            // 删除第三方账号与用户的关联
+            // 首先在 Auth 表中删除
+            int affectRows = thirdPartyUserAuthDOMapper.deleteByUserIdAndThirdPartyUserId(userId, thirdPartyUserId);
+            if (affectRows == 0) {
+                // 删除失败
+                return false;
+            }
+            // 第三方账号与用户关联删除成功，删除第三方账号信息
+            int affectRows2 = thirdPartyUserDOMapper.deleteByPrimaryKey(thirdPartyUserId);
+            if (affectRows2 == 0) {
+                // 删除失败
+                return false;
+            }
+        }
+
+        // 删除用户信息
+        int affectRows3 = userDOMapper.deleteByPrimaryKey(userModel.getId());
+        if (affectRows3 == 0) {
+            // 删除失败
+            return false;
+        }
+
+        // 注销成功
+        return true;
     }
 
     private UserModel convertFromDataObject(UserDO userDO) {
