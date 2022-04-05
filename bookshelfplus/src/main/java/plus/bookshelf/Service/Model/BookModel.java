@@ -21,7 +21,7 @@ public class BookModel {
     // 作者姓名
     String author;
 
-    //书籍所属分类
+    // 书籍所属分类
     CategoryModel category;
 
     // 出版社

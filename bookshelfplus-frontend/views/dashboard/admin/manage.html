@@ -51,30 +51,37 @@
     <script src="/assets/javascripts/dashboard/renderFormControls.js"></script>
     <!-- 引入对应页面渲染配置 -->
     <script src="/assets/javascripts/dashboard/<%=group%>/<%=page%>.js"></script>
+    <% if (generateCategoryHierarchy == true) {%>
+        <!-- 生成分类结构 -->
+        <script src="/assets/javascripts/generateCategoryHierarchy.js"></script>
+    <%}%>
     <!-- 进行渲染 -->
     <script>
         var group = '<%=group%>';
         var page = '<%=page%>';
         var title = '<%=title%>';
 
-        // 获取将要渲染的 Controls
-        var controlsProfile = getControlsProfile();
+        async function renderFormControlsFunc() {
+            // 获取将要渲染的 Controls
+            var controlsProfile = await getControlsProfile();
 
-        // 渲染控件
-        var formControls = renderFormControls({ Controls: controlsProfile });
-        console.log(formControls);
+            // 渲染控件
+            var formControls = renderFormControls({ Controls: controlsProfile });
+            console.log(formControls);
 
-        // 将控件填充到网页上
-        var containerControls = document.getElementById('container-controls');
-        containerControls.innerHTML = "";
-        formControls.forEach(function(item){
-            let Control
-            containerControls.appendChild(item.label);
-            containerControls.appendChild(item.control);
-        });
+            // 将控件填充到网页上
+            var containerControls = document.getElementById('container-controls');
+            containerControls.innerHTML = "";
+            formControls.forEach(function(item){
+                let Control
+                containerControls.appendChild(item.label);
+                containerControls.appendChild(item.control);
+            });
 
-        // 更新提交按钮显示名称
-        document.getElementById("btn-submit").innerHTML = "提交";
+            // 更新提交按钮显示名称
+            document.getElementById("btn-submit").innerHTML = getSubmitButtonValue() || "提交";
+        }
+        renderFormControlsFunc();
     </script>
 </body>
 </html>
