@@ -2,10 +2,32 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <%- include("./component/header.html"); %>
+    <style>
+        .main {
+            width: 80vw !important;
+            max-width: initial !important;
+        }
+
+        #book-table {
+            width: 100%;
+            /* border: 1px solid black; */
+            margin-top: 30px;
+            line-height: 2.3em;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        tr a {
+            cursor: pointer;
+            /* cursor: alias; */
+        }
+    </style>
 </head>
 <body>
     <%- include("./component/navbar.html"); %>
-    <main class="main" style="max-width: 80vw;">
+    <main class="main">
         <!-- <h1><%= title %></h1> -->
         <div id="container">
             <!-- <a href="./book">书本详情页</a> -->
