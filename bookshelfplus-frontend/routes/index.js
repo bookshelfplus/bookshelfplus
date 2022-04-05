@@ -146,6 +146,8 @@ router.get('/dashboard/:group/:page', function (req, res) {
             links: navbarLinks,
             group: req.params.group,
             page: req.params.page,
+            // 引入Scripts
+            generateCategoryHierarchy:  ["BookManage", "CategoryManage"].indexOf(req.params.page) > -1
         });
         return;
     }
