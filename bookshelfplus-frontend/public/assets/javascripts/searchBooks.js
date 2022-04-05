@@ -60,5 +60,8 @@ function search({ tableElementId = "", searchText = "", categoryId = 0 }) {
             } else {
                 alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
             }
+        }).catch(function (error) {
+            console.log(error);
+            alert("无法连接到服务器，请检查网络连接！");
         });
 }
