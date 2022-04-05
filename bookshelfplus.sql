@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 04/04/2022 17:06:31
+ Date: 05/04/2022 17:54:17
 */
 
 SET NAMES utf8mb4;
@@ -203,6 +203,23 @@ CREATE TABLE `third_party_user_info`  (
 
 -- ----------------------------
 -- Records of third_party_user_info
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for user_book_favorites_relation
+-- ----------------------------
+DROP TABLE IF EXISTS `user_book_favorites_relation`;
+CREATE TABLE `user_book_favorites_relation`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `book_id` int(11) NOT NULL,
+  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `user_id`(`user_id`, `book_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of user_book_favorites_relation
 -- ----------------------------
 
 -- ----------------------------

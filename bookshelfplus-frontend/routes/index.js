@@ -114,14 +114,14 @@ router.get('/dashboard/:group/:page', function (req, res) {
                 title: "仪表盘",
                 baseTemplate: "index",
             },
-            "myBookshelf": {
-                title: "我的书架",
-                baseTemplate: "form",
-                pageTemplate: "myBookshelf",
-            },
+            // "myBookshelf": {
+            //     title: "我的书架",
+            //     baseTemplate: "form",
+            //     pageTemplate: "myBookshelf",
+            // },
             "myCollection": {
                 title: "我的收藏",
-                baseTemplate: "form",
+                baseTemplate: "blank",
                 pageTemplate: "myCollection",
             },
             "myAccount": {

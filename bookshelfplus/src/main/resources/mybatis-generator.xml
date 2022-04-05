@@ -94,5 +94,8 @@
         <!--<table tableName="third_party_user_auth_relation" domainObjectName="ThirdPartyUserAuthDO" enableCountByExample="false"-->
         <!--       enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
         <!--       selectByExampleQueryId="false"></table>-->
+        <!--<table tableName="user_book_favorites_relation" domainObjectName="UserFavoritesDO" enableCountByExample="false"-->
+        <!--       enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
+        <!--       selectByExampleQueryId="false"></table>-->
     </context>
 </generatorConfiguration>
