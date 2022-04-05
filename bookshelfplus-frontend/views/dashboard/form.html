@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <%- include("../component/header.html"); %>
-    <%- include("../component/header-admin.html"); %>
+    <%- include("./component/header.html"); %>
     <style>
         #container-controls {
             display: grid;
@@ -10,16 +9,18 @@
             gap: 20px;
             place-items: center right;
         }
-        #container-controls > .form-labels {
+
+        #container-controls>.form-labels {
             font-size: 1.05em;
             font-family: cursive;
         }
-        #container-controls > .form-elements {
-            /* grid-column: 1; */
+
+        #container-controls>.form-elements {
             height: 30px;
             width: 100%;
             font-size: 18px;
         }
+
         #container-submit {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -27,15 +28,16 @@
             padding: 0 30%;
             margin-top: 30px;
         }
+
         .btn {
             height: 30px;
         }
     </style>
 </head>
 <body>
-    <%- include("../component/navbar.html"); %>
+    <%- include("./component/navbar.html"); %>
     <main class="main">
-        <h1><%= headSubTextArr[page] || page %></h1>
+        <h1><%= title %></h1>
         <div id="container">
             <div id="container-controls">页面加载中，请稍候 ...</div>
             <div id="container-submit">
@@ -44,22 +46,20 @@
             </div>
         </div>
     </main>
-    <%- include("../component/footer-admin.html"); %>
+    <%- include("./component/footer.html"); %>
     <!-- 验证组件用户输入值 -->
     <script src="/assets/javascripts/dashboard/getValidateUtils.js"></script>
     <!-- 渲染组件 & 提交表单方法 -->
     <script src="/assets/javascripts/dashboard/renderFormControls.js"></script>
-    <!-- 引入对应页面渲染配置 -->
-    <script src="/assets/javascripts/dashboard/<%=group%>/<%=page%>.js"></script>
-    <% if (generateCategoryHierarchy == true) {%>
-        <!-- 生成分类结构 -->
-        <script src="/assets/javascripts/generateCategoryHierarchy.js"></script>
-    <%}%>
+    <% if ( pageTemplate != "" ) { %>
+        <!-- 引入对应页面渲染配置 -->
+        <%- include(pageTemplate); %>
+    <% } %>
     <!-- 进行渲染 -->
     <script>
-        var group = '<%=group%>';
-        var page = '<%=page%>';
-        var title = '<%=title%>';
+        var group = '<%= group %>';
+        var page = '<%= page %>';
+        var title = '<%= title %>';
 
         async function renderFormControlsFunc() {
             // 获取将要渲染的 Controls
@@ -72,7 +72,7 @@
             // 将控件填充到网页上
             var containerControls = document.getElementById('container-controls');
             containerControls.innerHTML = "";
-            formControls.forEach(function(item){
+            formControls.forEach(function (item) {
                 let Control
                 containerControls.appendChild(item.label);
                 containerControls.appendChild(item.control);

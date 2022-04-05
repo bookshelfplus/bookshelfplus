@@ -72,57 +72,80 @@ router.get('/callback/:platform', function (req, res) {
 });
 
 router.get('/dashboard/:group/:page', function (req, res) {
-    var navbarLinks = null;
+
+    // baseTemplate 基于哪个html模板渲染页面
+    // pageTemplate 引入这个文件中的页面脚本
     if (req.params.group === "admin") {
-        navbarLinks = [
-            {
-                name: "仪表盘",
-                url: "/dashboard/admin/index"
-            }, {
-                name: "书籍管理",
-                url: "/dashboard/admin/BookManage"
-            }, {
-                name: "分类管理",
-                url: "/dashboard/admin/CategoryManage"
-            }, {
-                name: "用户管理",
-                url: "/dashboard/admin/UserManage"
-            }, {
-                name: "调试",
-                url: "/dashboard/admin/Debug"
+        var dashboardPage = {
+            "index": {
+                title: "仪表盘",
+                baseTemplate: "index",
+            },
+            "BookManage": {
+                title: "书籍管理",
+                baseTemplate: "form",
+                pageTemplate: "BookManage",
+            },
+            "CategoryManage": {
+                title: "分类管理",
+                baseTemplate: "form",
+                pageTemplate: "CategoryManage",
+            },
+            "UserManage": {
+                title: "用户管理",
+                baseTemplate: "form",
+                pageTemplate: "UserManage",
+            },
+            "Account": {
+                title: "账号设置",
+                baseTemplate: "blank",
+                pageTemplate: "Account",
+            },
+            "Debug": {
+                title: "调试",
+                baseTemplate: "blank",
+                pageTemplate: "Debug",
             }
-        ];
+        };
+        var headText = "后台管理";
     } else if (req.params.group === "user") {
-        navbarLinks = [
-            {
-                name: "仪表盘",
-                url: "/dashboard/user/index"
-            }, {
-                name: "我的书架",
-                url: "/dashboard/user/myBookshelf"
-            }, {
-                name: "我的收藏",
-                url: "/dashboard/user/myCollection"
-            }, {
-                name: "账号设置",
-                url: "/dashboard/user/myAccount"
+        var dashboardPage = {
+            "index": {
+                title: "仪表盘",
+                baseTemplate: "index",
+            },
+            "myBookshelf": {
+                title: "我的书架",
+                baseTemplate: "form",
+                pageTemplate: "myBookshelf",
+            },
+            "myCollection": {
+                title: "我的收藏",
+                baseTemplate: "form",
+                pageTemplate: "myCollection",
+            },
+            "myAccount": {
+                title: "账号设置",
+                baseTemplate: "blank",
+                pageTemplate: "myAccount",
             }
-        ];
+        };
+        var headText = "用户中心";
     }
 
-    var headText = req.params.group === "admin" ? "后台管理" : "用户中心";
-    var title = getPageTitle(headText);
-    var headSubTextArr = {
-        // 管理员
-        "UserManage": "用户管理",
-        "BookManage": "书籍管理",
-        "CategoryManage": "分类管理",
-        "Debug": "调试",
-        // 用户
-        "myBookshelf": "我的书架",
-        "myCollection": "我的收藏",
-        "myAccount": "账号设置"
-    };
+    if (Object.keys(dashboardPage).indexOf(req.params.page) > -1) {
+        var currentPage = dashboardPage[req.params.page];
+        res.render(`dashboard/${currentPage.baseTemplate}`, {
+            htmlTitle: getPageTitle(headText),
+            title: currentPage.title,
+            pageTemplate: "./" + req.params.group + "/" + currentPage.pageTemplate + ".html",
+            dashboardPage: dashboardPage,
+            group: req.params.group,
+            page: req.params.page,
+        });
+        return;
+    }
+    throw new Error("404 Not Found");
 
     // 仪表盘
     if (req.params.page == "index") {
@@ -147,7 +170,7 @@ router.get('/dashboard/:group/:page', function (req, res) {
             group: req.params.group,
             page: req.params.page,
             // 引入Scripts
-            generateCategoryHierarchy:  ["BookManage", "CategoryManage"].indexOf(req.params.page) > -1
+            generateCategoryHierarchy: ["BookManage", "CategoryManage"].indexOf(req.params.page) > -1
         });
         return;
     }

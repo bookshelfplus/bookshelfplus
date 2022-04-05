@@ -6,8 +6,8 @@
                 onclick="location.href='/';">
                 书栖网
             </h1>
-            <% links.forEach(item=> { %>
-                <a href="<%= item.url %>" style="vertical-align: middle;"><%= item.name %></a>
+            <% Object.keys(dashboardPage).forEach(item => { %>
+                <a href="./<%= item %>" style="vertical-align: middle;"><%= dashboardPage[item].title %></a>
             <% }); %>
             <a href="javascript:logout();" style="color: grey; vertical-align: middle; float: right;">退出登录</a>
         </div>
@@ -48,8 +48,8 @@
 </script>
 <script>
     // 导航栏中突出当前页面
-    var group = '<%=group%>';
-    var page = '<%=page%>';
+    var group = '<%= group %>';
+    var page = '<%= page %>';
     console.log(group, page);
     // document.getElementsByTagName("a").asArray().forEach(element => {
     $("a").toArray().forEach(element => {

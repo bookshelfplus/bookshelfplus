@@ -10,19 +10,22 @@
             <a class="home narrowHide" href="/">首页</a>
             <a href="/search">搜索</a>
             <a class="narrowHide" href="/category">分类</a>
-            <a href="/login">登录</a>
+            <a id="dashboard" href="/login">登录</a>
         </div>
         <div class="grid-item"></div>
     </div>
 </div>
 <script>
+    if (localStorage.token)
+        $("#dashboard").html("后台");
+
     function navbarHighlight() {
         // 导航栏中突出当前页面
-        var route = location.pathname.split('/').filter(s=>!!s);
-        var page = route[route.length-1];
+        var route = location.pathname.split('/').filter(s => !!s);
+        var page = route[route.length - 1];
 
         // 首页
-        if(route.length === 0) {
+        if (route.length === 0) {
             $(".home").addClass("active");
             return;
         }
@@ -30,12 +33,12 @@
         //其他页面
         // console.log("page:", page);
         $("a").toArray().forEach(element => {
-            var linkRoute = element.getAttribute("href").split('/').filter(s=>!!s);
+            var linkRoute = element.getAttribute("href").split('/').filter(s => !!s);
             // console.log(element.href, linkRoute);
-            if(linkRoute.length > 0) {
-                var linkPage = linkRoute[linkRoute.length-1];
+            if (linkRoute.length > 0) {
+                var linkPage = linkRoute[linkRoute.length - 1];
                 // console.log(element, linkPage);
-                if(page == linkPage) {
+                if (page == linkPage) {
                     $(element).addClass("active");
                     return;
                 }

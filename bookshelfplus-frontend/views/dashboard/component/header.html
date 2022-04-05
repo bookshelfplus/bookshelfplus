@@ -2,7 +2,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<title><%= headSubTextArr[page] || title %></title>
+<title><%= htmlTitle %></title>
 
 <link rel="stylesheet" href="/assets/stylesheets/style.css">
 <script src="/assets/lib/jquery/3.6.0/jquery.min.js"></script>
@@ -13,7 +13,24 @@
     // API地址
     const APIHOST = '<%= global.site.api.prefix %>';
     axios.defaults.baseURL = APIHOST;
-
+</script>
+<% if (group == "admin") {%>
+<script>
+    // <%= group %>
+    if(localStorage.getItem("is_admin") === "false") {
+        // 是普通用户，跳转到普通用户后台页面
+        window.location.href = "/dashboard/user/index";
+    }
+</script>
+<%} else {%>
+<script>
+    if(localStorage.getItem("is_admin") === "true") {
+        // 是管理员用户，跳转到管理员用户后台页面
+        window.location.href = "/dashboard/admin/index";
+    }
+</script>
+<%}%>
+<script>
     function getUserStatus() {
         if(!localStorage) {
             window.location.href = "/";
