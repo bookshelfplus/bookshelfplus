@@ -18,10 +18,7 @@ import plus.bookshelf.Service.Model.CategoryModel;
 import plus.bookshelf.Service.Service.BookService;
 import plus.bookshelf.Service.Service.CategoryService;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -101,6 +98,7 @@ public class BookServiceImpl implements BookService {
         UserFavoritesDO userFavoritesDO = new UserFavoritesDO();
         userFavoritesDO.setBookId(bookId);
         userFavoritesDO.setUserId(userId);
+        userFavoritesDO.setCreateTime(new Date());
         int affectRows = userFavoritesDOMapper.insert(userFavoritesDO);
         return affectRows > 0;
     }
@@ -131,7 +129,7 @@ public class BookServiceImpl implements BookService {
     public Map getFavoritesStatus(Integer userId, Integer bookId) throws BusinessException {
         UserFavoritesDO userFavoritesDO = userFavoritesDOMapper.selectCountByUserIdAndBookId(userId, bookId);
 
-        Map<String, String> result = new HashMap<>();
+        Map<String, Object> result = new HashMap<>();
         if (userFavoritesDO == null) {
             // 用户未收藏
             result.put("status", "0");
@@ -139,7 +137,7 @@ public class BookServiceImpl implements BookService {
         } else {
             // 用户已收藏，返回收藏时间
             result.put("status", "1");
-            result.put("time", userFavoritesDO.getCreateTime().toString());
+            result.put("time", userFavoritesDO.getCreateTime());
         }
         return result;
     }

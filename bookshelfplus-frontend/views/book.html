@@ -15,6 +15,47 @@
             margin-bottom: 20px;
             margin-top: 60px;
         }
+
+        #favorties-button {
+            width: 32px;
+            height: 32px;
+            user-select: none;
+            cursor: pointer;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+
+        #favorties-button:hover {
+            transform: scale(1.2);
+        }
+
+        .download-link {
+            user-select: none;
+            font-size: 1.1em;
+        }
+        #download-icon {
+            width: 0px;
+            height: 1.2em;
+            user-select: none;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.3s;
+            position: relative;;
+        }
+        .download-link:hover #download-icon {
+            width: 1.2em;
+            opacity: 1;
+        }
+        .download-link * {
+            vertical-align: middle;
+        }
+
+        #book-details {
+            margin-top: 20px;
+        }
+        #book-details > p {
+            margin: 0;
+        }
     </style>
 </head>
 <body>
@@ -38,6 +79,7 @@
         }
     </script>
     <script>
+        // 获取书籍信息
         getRequest("/book/get", { id: bookId })
             .then(function (response) {
                 var axiosData = response.data;
@@ -58,22 +100,31 @@
                             <h1>${data.bookName}</h1>
                         </div>
                         <div class="grid-item">
-                            <a href="/download/?bookId=${data.id}">下载这本书</a>
+                            <img id="favorties-button" src="./assets/image/svg/favorites_empty.svg" style="visibility: hidden; opacity: 1; transition: all 0.3s;" title="点击收藏/取消收藏" onclick="alert('请先登录！')" />
+                            <!-- 预加载图片 --><img src="./assets/image/svg/favorites_fill.svg" style="display: none;" />
                         </div>
                         <div class="grid-item">
+                            <a class="download-link" href="/download/?bookId=${data.id}"><img id="download-icon" src="./assets/image/svg/download.svg" /><span>下载这本书</span></a>
+                        </div>
+                    </div>
+                    <hr style="opacity: 0.3; margin-top: 30px; margin-bottom: 25px;">
+                    <div>
+                        <h2>基本信息</h2>
+                        <div class="grid-item" id="book-details">
                             <p>作者：${data.author}</p>
                             <p>所属分类：<a href="/category?id=${data.category.id}">${data.category.name}</a></p>
                             <p>语言：${data.language}</p>
                             <p>出版社：${data.publishingHouse}</p>
                             <p></p>
                         </div>
-                    </div>
-                    <div>
                         <h2>书本介绍</h2>
                         <p>${data.description}</p>
                         <h2>版权信息</h2>
                         <p>${data.copyright}</p>
                     </div>`;
+
+                    // 获取用户收藏信息
+                    getUserFavouritesStatus();
 
                     // 渲染后重新获取一次字体
                     fontmin(getPageText());
@@ -84,6 +135,94 @@
                 console.log(error);
                 alert("无法连接到服务器，请检查网络连接！");
             });
+    </script>
+    <script>
+        // 显示收藏还是取消收藏图标
+        var favortiesIcon = false;
+        // 获取用户收藏信息
+        function getUserFavouritesStatus() {
+            if(!localStorage || !localStorage.getItem("token") || !localStorage.getItem("is_admin")) {
+                // 用户未登录
+                $("#favorties-button").css("visibility", "visible");
+                return;
+            }
+            postRequest("/book/getFavoritesStatus", { token: localStorage.getItem("token"), bookId: bookId })
+                .then(function (responseData) {
+                    var axiosData = responseData.data;
+                    var status = axiosData.status;
+                    var data = axiosData.data;
+                    if (status === "success") {
+                        console.log(data)
+                        if(data.status == 1) {
+                            // 用户已收藏
+                            console.log("已收藏");
+                            favortiesIcon = true;
+                        } else {
+                            // 用户没有收藏本书
+                            console.log("没有收藏");
+                            favortiesIcon = false;
+                        }
+                        toggleDisplayButton();
+                    } else {
+                        if(data.errCode == "20004") {
+                            // 登陆过期，小问题，这里不弹窗显示
+                            localStorage.removeItem("token");
+                            localStorage.removeItem("is_admin");
+                        } else {
+                            alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
+                        }
+                    }
+                }).finally(function () {
+                    $("#favorties-button").css("visibility", "visible");
+                });
+        }
+    </script>
+    <script>
+        // 正在请求标记
+        var requestingFlag = false;
+        // 添加收藏/取消收藏
+        function toggleFavorites(toggleStatus) {
+            if(requestingFlag) return;
+            requestingFlag = true;
+            $("#favorties-button").css("opacity", "0.3");
+            postRequest("/book/toggleFavorites", { token: localStorage.getItem("token"), bookId: bookId, status: toggleStatus ? 1 : 0 })
+                .then(function (responseData) {
+                    var axiosData = responseData.data;
+                    var status = axiosData.status;
+                    var data = axiosData.data;
+                    if (status === "success") {
+                        console.log(data)
+                        if(data == "success") {
+                            if(toggleStatus) {
+                                console.log("收藏成功");
+                                favortiesIcon = true;
+                            } else {
+                                console.log("取消收藏成功");
+                                favortiesIcon = false;
+                            }
+                        } else {
+                            console.log("操作失败");
+                        }
+                    } else {
+                        alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
+                    }
+                }).finally(function () {
+                    setTimeout(toggleDisplayButton, 500);
+                });
+        }
+
+        function toggleDisplayButton() {
+            requestingFlag = false;
+            $("#favorties-button").attr("src", "");
+            $("#favorties-button").css("opacity", "1");
+            if(favortiesIcon) {
+                $("#favorties-button").attr("src", "./assets/image/svg/favorites_fill.svg");
+                $("#favorties-button").attr("onclick", "toggleFavorites(false)");
+            } else {
+                $("#favorties-button").attr("src", "./assets/image/svg/favorites_empty.svg");
+                $("#favorties-button").attr("onclick", "toggleFavorites(true)");
+            }
+        }
     </script>
 </body>
 </html>
