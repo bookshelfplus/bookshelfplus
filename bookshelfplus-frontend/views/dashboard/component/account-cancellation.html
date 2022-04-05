@@ -1,0 +1,90 @@
+<style>
+    #account-cancellation-info>p {
+        text-align: left;
+    }
+
+    .btn-danger {
+        color: #fff;
+        background-color: #d9534f;
+        border: 0;
+        border-radius: 4px;
+        transition: all 0.3s;
+        padding: 5px 10px;
+        cursor: pointer;
+    }
+
+    .btn-danger:hover {
+        color: #fff;
+        background-color: #c9302c;
+        border-color: #ac2925;
+        border-radius: 10px;
+    }
+
+    .hide {
+        display: none;
+    }
+
+    #account-cancellation-password {
+        margin: 20px auto;
+        width: min(50%, 600px);
+        padding: 3px 5px;
+        font-size: large;
+    }
+</style>
+<div>
+    <!-- 注销账号 -->
+    <p style="font-size: 0.5em;">注销账号非退出登录，退出登录请点击右上角“<b>退出登录</b>”按钮</p>
+    <div id="account-cancellation-info" class="hide">
+        <h3>注销账号须知</h3>
+        <p>注销账号后，您将无法登录本网站，并且不能再次注册账号。</p>
+        <p>注销账号后，您的所有账号信息将被删除，包括您的账号名、密码、账号绑定信息等。</p>
+        <p>注销账号后，您的账号信息将被永久删除，并且不可恢复。</p>
+        <h3>注销账号流程</h3>
+        <p>1. 仔细阅读以上须知，并手动将您账号中有用信息保存下来，账号一旦注销，数据永久删除，无法找回。</p>
+        <p>2. 输入您的帐号密码并点击下方按钮，注销即刻完成。</p>
+    </div>
+    <div id="account-cancellation-buttons">
+        <button class="btn-danger" id="btn-account-cancellation">注销账号</button>
+        <input class="hide" type="password" id="account-cancellation-password" placeholder="请输入您的密码"
+            autocomplete="new-password" />
+        <button class="btn-danger hide" id="btn-account-cancellation-confirm" style="font-size: large;">
+            我已阅读以上须知，并知晓账号注销后果，愿意放弃账号内所有数据及权益，确认注销账号
+        </button>
+    </div>
+</div>
+<script>
+    $("#btn-account-cancellation").click(function () {
+        $("#account-cancellation-info").removeClass("hide");
+        $("#btn-account-cancellation").addClass("hide");
+        $("#account-cancellation-password").removeClass("hide");
+        $("#btn-account-cancellation-confirm").removeClass("hide");
+    });
+    $("#btn-account-cancellation-confirm").click(function () {
+        var accountCancellationPassword = $("#account-cancellation-password").val();
+        if (accountCancellationPassword == "") {
+            alert("请输入您的密码");
+            return;
+        }
+        postRequest("/user/cancelAccount", { token: localStorage.token, password: accountCancellationPassword })
+            .then(function (response) {
+                var axiosData = response.data;
+                var status = axiosData.status;
+                var data = axiosData.data;
+                if (status === "success") {
+                    console.log(data);
+                    if (data == "success") {
+                        alert("注销成功！");
+                        location.reload();
+                    } else {
+                        alert("出错啦，刷新页面重新试试吧");
+                    }
+                } else {
+                    alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
+                    $("#account-cancellation-password").val("");
+                }
+            }).catch(function (error) {
+                console.log(error);
+                alert("无法连接到服务器，请检查网络连接！");
+            });
+    });
+</script>

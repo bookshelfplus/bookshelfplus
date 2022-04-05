@@ -38,4 +38,13 @@ public interface UserService {
      * @return 注册成功返回true，否则返回false
      */
     Boolean userRegister(String username, String encryptPwd) throws BusinessException;
+
+    /**
+     * 账号注销
+     *
+     * @param userModel
+     * @return
+     * @throws BusinessException
+     */
+    Boolean cancelAccount(UserModel userModel) throws BusinessException;
 }

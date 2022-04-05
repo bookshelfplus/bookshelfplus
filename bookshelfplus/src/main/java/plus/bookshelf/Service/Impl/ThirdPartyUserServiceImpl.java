@@ -22,7 +22,6 @@ import plus.bookshelf.Service.Service.ThirdPartyUserService;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 @Service
 public class ThirdPartyUserServiceImpl implements ThirdPartyUserService {
