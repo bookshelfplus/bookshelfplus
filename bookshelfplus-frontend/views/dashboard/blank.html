@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <%- include("./component/header.html"); %>
+</head>
+<body>
+    <%- include("./component/navbar.html"); %>
+    <main class="main">
+        <h1><%= title %></h1>
+        <div id="container">
+            <% if ( pageTemplate != "" ) { %>
+                <!-- 引入对应页面渲染配置 -->
+                <%- include(pageTemplate); %>
+            <% } %>
+        </div>
+    </main>
+    <%- include("./component/footer.html"); %>
+</body>
+</html>
