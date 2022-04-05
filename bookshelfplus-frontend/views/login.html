@@ -86,10 +86,34 @@
     <!-- <script src="/assets/lib/cryptography/2.2/md5-min.js"></script> -->
     <!-- <script src="/assets/lib/cryptography/2.2/sha1-min.js"></script> -->
     <script>
+        // 避免重复点击
+        var isOnLogin = false;
+
         // 用户正常登录逻辑
         $("#username").val("xiaomo");
         $("#password").val("123456");
+        $("#username").keydown(function(event) {
+            if(event.keyCode === 13) {
+                if($("#password").val() === "") {
+                    $("#password").focus();
+                } else {
+                    $(".btn-submit").click();
+                }
+            }
+        });
+        $("#password").keydown(function(event) {
+            if(event.keyCode === 13) {
+                if($("#username").val() === "") {
+                    $("#username").focus();
+                } else {
+                    $(".btn-submit").click();
+                }
+            }
+        });
         $(".btn-submit").click(function() {
+            if(isOnLogin) return;
+            isOnLogin= true;
+
             var username = $("#username").val();
             var password = $("#password").val();
             // var encryptpwd = hex_sha1(password);
@@ -125,6 +149,9 @@
                     }
                 }).catch(function (error) {
                     console.log(error);
+                    alert("无法连接到服务器，请检查网络连接！");
+                }).finally(function () {
+                    isOnLogin = false;
                 });
         });
     </script>
