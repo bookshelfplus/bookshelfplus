@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import plus.bookshelf.Common.Error.BusinessErrorCode;
 import plus.bookshelf.Common.Error.BusinessException;
 import plus.bookshelf.Common.Response.CommonReturnType;
 import plus.bookshelf.Controller.VO.BookVO;
@@ -19,6 +20,7 @@ import plus.bookshelf.Service.Model.UserModel;
 import plus.bookshelf.Service.Service.BookService;
 
 import java.util.List;
+import java.util.Map;
 
 @Api(tags = "书籍信息")
 @Controller("book")
@@ -71,6 +73,49 @@ public class BookController extends BaseController {
         return CommonReturnType.create(bookModels);
     }
 
+    @ApiOperation(value = "【用户】收藏/取消收藏书籍", notes = "用户收藏书籍")
+    @RequestMapping(value = "toggleFavorites", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
+    @ResponseBody
+    public CommonReturnType addFavorites(@RequestParam(value = "token", required = false) String token,
+                                         @RequestParam(value = "bookId", required = false) Integer bookId,
+                                         @RequestParam(value = "status", required = true) Boolean isFavoritesNow) throws BusinessException {
+
+        // 已经在 getUserByToken 方法中判断了 token 为空、不合法；用户不存在情况，此处无需再判断
+        UserModel userModel = userService.getUserByToken(redisTemplate, token);
+
+        if (isFavoritesNow) {
+            // 这里查询一次书籍的用处是为了防止用户收藏的书籍不存在
+            BookModel bookModel = bookService.getBookById(bookId);
+            if (bookModel == null) {
+                throw new BusinessException(BusinessErrorCode.BOOK_NOT_EXIST, "书籍不存在");
+            }
+
+            Boolean isSuccess = bookService.addFavorites(userModel.getId(), bookModel.getId());
+            if (!isSuccess) {
+                throw new BusinessException(BusinessErrorCode.BOOK_FAVORITES_ALREADY_EXIST, "书籍已经收藏");
+            }
+        } else {
+            // 不用担心书籍不存在的情况，因为书籍不存在数据库中不会删除成功
+            Boolean isSuccess = bookService.removeFavorites(userModel.getId(), bookId);
+            if (!isSuccess) {
+                throw new BusinessException(BusinessErrorCode.BOOK_FAVORITES_NOT_EXIST, "书籍尚未收藏");
+            }
+        }
+        return CommonReturnType.create("success");
+    }
+
+    @ApiOperation(value = "【用户】收藏/取消收藏书籍", notes = "用户收藏书籍")
+    @RequestMapping(value = "getFavoritesStatus", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
+    @ResponseBody
+    public CommonReturnType addFavorites(@RequestParam(value = "token", required = false) String token,
+                                         @RequestParam(value = "bookId", required = false) Integer bookId) throws BusinessException {
+
+        // 已经在 getUserByToken 方法中判断了 token 为空、不合法；用户不存在情况，此处无需再判断
+        UserModel userModel = userService.getUserByToken(redisTemplate, token);
+
+        Map favoritesStatus = bookService.getFavoritesStatus(userModel.getId(), bookId);
+        return CommonReturnType.create(favoritesStatus);
+    }
 
     @ApiOperation(value = "【管理员】添加书籍", notes = "管理员在后台添加书籍")
     @RequestMapping(value = "add", method = {RequestMethod.GET})

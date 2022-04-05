@@ -1,8 +1,6 @@
 package plus.bookshelf.Service.Impl;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,14 +10,18 @@ import plus.bookshelf.Common.Validator.ValidationResult;
 import plus.bookshelf.Common.Validator.ValidatorImpl;
 import plus.bookshelf.Dao.DO.BookDO;
 import plus.bookshelf.Dao.DO.BookDOExample;
+import plus.bookshelf.Dao.DO.UserFavoritesDO;
 import plus.bookshelf.Dao.Mapper.BookDOMapper;
+import plus.bookshelf.Dao.Mapper.UserFavoritesDOMapper;
 import plus.bookshelf.Service.Model.BookModel;
 import plus.bookshelf.Service.Model.CategoryModel;
 import plus.bookshelf.Service.Service.BookService;
 import plus.bookshelf.Service.Service.CategoryService;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -29,6 +31,9 @@ public class BookServiceImpl implements BookService {
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private UserFavoritesDOMapper userFavoritesDOMapper;
 
     @Autowired
     ValidatorImpl validator;
@@ -81,6 +86,62 @@ public class BookServiceImpl implements BookService {
 
         BookDO bookDO = convertToDataObjecct(bookModel);
         return bookDOMapper.insertSelective(bookDO);
+    }
+
+    /**
+     * 用户收藏书籍
+     *
+     * @param userId 用户id
+     * @param bookId 书籍id
+     * @return
+     * @throws BusinessException
+     */
+    @Override
+    public Boolean addFavorites(Integer userId, Integer bookId) throws BusinessException {
+        UserFavoritesDO userFavoritesDO = new UserFavoritesDO();
+        userFavoritesDO.setBookId(bookId);
+        userFavoritesDO.setUserId(userId);
+        int affectRows = userFavoritesDOMapper.insert(userFavoritesDO);
+        return affectRows > 0;
+    }
+
+    /**
+     * 用户取消收藏书籍
+     *
+     * @param userId 用户id
+     * @param bookId 书籍id
+     * @return
+     * @throws BusinessException
+     */
+    @Override
+    public Boolean removeFavorites(Integer userId, Integer bookId) throws BusinessException {
+        int affectRows = userFavoritesDOMapper.deleteByUserIdAndBookId(userId, bookId);
+        return affectRows > 0;
+    }
+
+    /**
+     * 获取用户收藏状态
+     *
+     * @param userId 用户id
+     * @param bookId 书籍id
+     * @return
+     * @throws BusinessException
+     */
+    @Override
+    public Map getFavoritesStatus(Integer userId, Integer bookId) throws BusinessException {
+        UserFavoritesDO userFavoritesDO = userFavoritesDOMapper.selectCountByUserIdAndBookId(userId, bookId);
+
+        Map<String, String> result = new HashMap<>();
+        if (userFavoritesDO == null) {
+            // 用户未收藏
+            result.put("status", "0");
+            result.put("time", null);
+        } else {
+            // 用户已收藏，返回收藏时间
+            result.put("status", "1");
+            result.put("time", userFavoritesDO.getCreateTime().toString());
+        }
+        return result;
     }
 
     private BookModel convertFromDataObjecct(BookDO bookDO) {

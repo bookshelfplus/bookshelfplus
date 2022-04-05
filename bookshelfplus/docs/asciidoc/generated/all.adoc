@@ -170,6 +170,79 @@ __必填__|id|integer (int32)
 ----
 
 
+[[_addfavoritesusingpost_1]]
+==== 【用户】收藏/取消收藏书籍
+....
+POST /api/book/getFavoritesStatus
+....
+
+
+===== 说明
+用户收藏书籍
+
+
+===== 参数
+
+[options="header", cols=".^2a,.^3a,.^4a"]
+|===
+|类型|名称|类型
+|**FormData**|**bookId** +
+__可选__|integer (int32)
+|**FormData**|**token** +
+__可选__|string
+|===
+
+
+===== 响应
+
+[options="header", cols=".^2a,.^14a,.^4a"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_commonreturntype,CommonReturnType>>
+|**201**|Created|无内容
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+===== 消耗
+
+* `application/x-www-form-urlencoded`
+
+
+===== 生成
+
+* `\*/*`
+
+
+===== HTTP请求示例
+
+====== 请求 path
+----
+/api/book/getFavoritesStatus
+----
+
+
+====== 请求 formData
+[source,json]
+----
+"string"
+----
+
+
+===== HTTP响应示例
+
+====== 响应 200
+[source,json]
+----
+{
+  "data" : "object",
+  "status" : "string"
+}
+----
+
+
 [[_searchusingget]]
 ==== 查询书籍列表
 ....
@@ -223,6 +296,81 @@ __可选__|publishingHouse|string
 ====== 请求 path
 ----
 /api/book/search
+----
+
+
+===== HTTP响应示例
+
+====== 响应 200
+[source,json]
+----
+{
+  "data" : "object",
+  "status" : "string"
+}
+----
+
+
+[[_addfavoritesusingpost]]
+==== 【用户】收藏/取消收藏书籍
+....
+POST /api/book/toggleFavorites
+....
+
+
+===== 说明
+用户收藏书籍
+
+
+===== 参数
+
+[options="header", cols=".^2a,.^3a,.^4a"]
+|===
+|类型|名称|类型
+|**FormData**|**bookId** +
+__可选__|integer (int32)
+|**FormData**|**status** +
+__可选__|boolean
+|**FormData**|**token** +
+__可选__|string
+|===
+
+
+===== 响应
+
+[options="header", cols=".^2a,.^14a,.^4a"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_commonreturntype,CommonReturnType>>
+|**201**|Created|无内容
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+===== 消耗
+
+* `application/x-www-form-urlencoded`
+
+
+===== 生成
+
+* `\*/*`
+
+
+===== HTTP请求示例
+
+====== 请求 path
+----
+/api/book/toggleFavorites
+----
+
+
+====== 请求 formData
+[source,json]
+----
+"string"
 ----
 
 
@@ -352,6 +500,79 @@ GET /api/category/list
 [[_9083a36b9e1b060bcb75ff62bb4bda37]]
 === 用户操作
 User Controller
+
+
+[[_cancelaccountusingpost]]
+==== 账号注销
+....
+POST /api/user/cancelAccount
+....
+
+
+===== 说明
+传入用户 token ，以及密码明文，后台计算密码SHA1值，进行注销
+
+
+===== 参数
+
+[options="header", cols=".^2a,.^3a,.^4a"]
+|===
+|类型|名称|类型
+|**FormData**|**password** +
+__可选__|string
+|**FormData**|**token** +
+__可选__|string
+|===
+
+
+===== 响应
+
+[options="header", cols=".^2a,.^14a,.^4a"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_commonreturntype,CommonReturnType>>
+|**201**|Created|无内容
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+===== 消耗
+
+* `application/x-www-form-urlencoded`
+
+
+===== 生成
+
+* `\*/*`
+
+
+===== HTTP请求示例
+
+====== 请求 path
+----
+/api/user/cancelAccount
+----
+
+
+====== 请求 formData
+[source,json]
+----
+"string"
+----
+
+
+===== HTTP响应示例
+
+====== 响应 200
+[source,json]
+----
+{
+  "data" : "object",
+  "status" : "string"
+}
+----
 
 
 [[_getuserstatususingpost]]
@@ -719,6 +940,64 @@ __可选__|token|string
 ----
 
 
+[[_getbindingstatususingget]]
+==== 获取用户已绑定的第三方平台
+....
+GET /api/third-party/getBindingStatus
+....
+
+
+===== 说明
+传入当前登录用户 token ，返回已绑定的第三方平台
+
+
+===== 参数
+
+[options="header", cols=".^2a,.^3a,.^9a,.^4a"]
+|===
+|类型|名称|说明|类型
+|**Query**|**token** +
+__可选__|token|string
+|===
+
+
+===== 响应
+
+[options="header", cols=".^2a,.^14a,.^4a"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_commonreturntype,CommonReturnType>>
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+===== 生成
+
+* `\*/*`
+
+
+===== HTTP请求示例
+
+====== 请求 path
+----
+/api/third-party/getBindingStatus
+----
+
+
+===== HTTP响应示例
+
+====== 响应 200
+[source,json]
+----
+{
+  "data" : "object",
+  "status" : "string"
+}
+----
+
+
 [[_loginusingget]]
 ==== 第三方用户登录跳转地址
 ....
@@ -762,6 +1041,79 @@ __必填__|platform|string
 ====== 请求 path
 ----
 /api/third-party/login?platform=string
+----
+
+
+===== HTTP响应示例
+
+====== 响应 200
+[source,json]
+----
+{
+  "data" : "object",
+  "status" : "string"
+}
+----
+
+
+[[_unbindthirdpartaccountusingpost]]
+==== 取消第三方平台绑定
+....
+POST /api/third-party/withdrawThirdPartyBings
+....
+
+
+===== 说明
+传入当前登录用户 token 和平台 platform （不区分大小写），返回 bool 值，true 为取消绑定成功
+
+
+===== 参数
+
+[options="header", cols=".^2a,.^3a,.^4a"]
+|===
+|类型|名称|类型
+|**FormData**|**platform** +
+__可选__|string
+|**FormData**|**token** +
+__可选__|string
+|===
+
+
+===== 响应
+
+[options="header", cols=".^2a,.^14a,.^4a"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_commonreturntype,CommonReturnType>>
+|**201**|Created|无内容
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+===== 消耗
+
+* `application/x-www-form-urlencoded`
+
+
+===== 生成
+
+* `\*/*`
+
+
+===== HTTP请求示例
+
+====== 请求 path
+----
+/api/third-party/withdrawThirdPartyBings
+----
+
+
+====== 请求 formData
+[source,json]
+----
+"string"
 ----
 
 
