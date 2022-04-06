@@ -71,7 +71,7 @@ router.get('/callback/:platform', function (req, res) {
     });
 });
 
-router.get('/dashboard/:group/:page', function (req, res) {
+router.get('/dashboard/:group/:page/:subpage?', function (req, res) {
 
     // baseTemplate 基于哪个html模板渲染页面
     // pageTemplate 引入这个文件中的页面脚本
@@ -81,27 +81,34 @@ router.get('/dashboard/:group/:page', function (req, res) {
                 title: "仪表盘",
                 baseTemplate: "index",
             },
-            "BookManage": {
+            "book-manage": {
                 title: "书籍管理",
-                baseTemplate: "form",
+                baseTemplate: "blank",
                 pageTemplate: "BookManage",
+                childPage: {
+                    "add": {
+                        title: "添加书籍",
+                        baseTemplate: "form",
+                        pageTemplate: "BookManage_Add",
+                    },
+                }
             },
-            "CategoryManage": {
+            "category-manage": {
                 title: "分类管理",
                 baseTemplate: "form",
                 pageTemplate: "CategoryManage",
             },
-            "UserManage": {
+            "user-manage": {
                 title: "用户管理",
                 baseTemplate: "form",
                 pageTemplate: "UserManage",
             },
-            "Account": {
+            "account": {
                 title: "账号设置",
                 baseTemplate: "blank",
                 pageTemplate: "Account",
             },
-            "Debug": {
+            "debug": {
                 title: "调试",
                 baseTemplate: "blank",
                 pageTemplate: "Debug",
@@ -114,17 +121,17 @@ router.get('/dashboard/:group/:page', function (req, res) {
                 title: "仪表盘",
                 baseTemplate: "index",
             },
-            // "myBookshelf": {
+            // "my-bookshelf": {
             //     title: "我的书架",
             //     baseTemplate: "form",
             //     pageTemplate: "myBookshelf",
             // },
-            "myCollection": {
+            "my-collection": {
                 title: "我的收藏",
                 baseTemplate: "blank",
                 pageTemplate: "myCollection",
             },
-            "myAccount": {
+            "my-account": {
                 title: "账号设置",
                 baseTemplate: "blank",
                 pageTemplate: "myAccount",
@@ -133,61 +140,54 @@ router.get('/dashboard/:group/:page', function (req, res) {
         var headText = "用户中心";
     }
 
+    // function isChildPage(page) {
+    //     console.log(page);
+    //     // 查找 dashboardPage 中每一项的 childPage 字段，并与 page 比较
+    //     for (var key in dashboardPage) {
+    //         console.log(key);
+    //         if (dashboardPage[key].childPage && dashboardPage[key].childPage[page]) {
+    //             return true;
+    //         }
+    //     }
+    //     return false;
+    // }
+
+    console.log("req.params.page\t\t" + req.params.page)
+    console.log("req.params.subpage\t" + req.params.subpage)
+    // 如果请求的页面在 dashboardPage 中
     if (Object.keys(dashboardPage).indexOf(req.params.page) > -1) {
+        // 当前请求的页面
         var currentPage = dashboardPage[req.params.page];
-        res.render(`dashboard/${currentPage.baseTemplate}`, {
-            htmlTitle: getPageTitle(headText),
-            title: currentPage.title,
-            pageTemplate: "./" + req.params.group + "/" + currentPage.pageTemplate + ".html",
-            dashboardPage: dashboardPage,
-            group: req.params.group,
-            page: req.params.page,
-        });
-        return;
-    }
-    throw new Error("404 Not Found");
 
-    // 仪表盘
-    if (req.params.page == "index") {
-        res.render(`dashboard/${req.params.group}/index`, {
-            title: title,
-            headText: headText,
-            headSubTextArr: {},
-            links: navbarLinks,
-            group: req.params.group,
-            page: req.params.page,
-        });
-        return;
-    }
-
-    // 后台管理 新增或者修改页面
-    if ((req.params.group === "admin" && ["UserManage", "BookManage", "CategoryManage", "Debug"].indexOf(req.params.page) > -1) ||
-        (req.params.group === "user" && ["myBookshelf", "myCollection"].indexOf(req.params.page) > -1)) {
-        res.render(`dashboard/${req.params.group}/manage`, {
-            title: title,
-            headSubTextArr: headSubTextArr,
-            links: navbarLinks,
-            group: req.params.group,
-            page: req.params.page,
-            // 引入Scripts
-            generateCategoryHierarchy: ["BookManage", "CategoryManage"].indexOf(req.params.page) > -1
-        });
+        // 如果请求的就是主页面，或者当前页没有子页面，则渲染主页面
+        if (!req.params.subpage || !currentPage.childPage || Object.keys(currentPage.childPage).indexOf(req.params.subpage) === -1) {
+            console.log("page");
+            res.render(`dashboard/${currentPage.baseTemplate}`, {
+                htmlTitle: getPageTitle(headText),
+                title: currentPage.title,
+                pageTemplate: "./" + req.params.group + "/" + currentPage.pageTemplate + ".html",
+                dashboardPage: dashboardPage,
+                group: req.params.group,
+                page: req.params.page,
+            });
+        } else {
+            // 如果当前 page 有 subpage，则渲染子页面
+            var currentSubPage = currentPage.childPage[req.params.subpage];
+            console.log("subpage");
+            res.render(`dashboard/${currentSubPage.baseTemplate}`, {
+                htmlTitle: getPageTitle(headText),
+                title: currentSubPage.title,
+                pageTemplate: "./" + req.params.group + "/" + currentSubPage.pageTemplate + ".html",
+                dashboardPage: dashboardPage,
+                group: req.params.group,
+                page: req.params.page,
+                subpage: req.params.subpage
+            });
+        }
         return;
     }
 
-    // 后台管理 其他管理页面
-    if ((req.params.group === "admin" && [].indexOf(req.params.page) > -1) ||
-        (req.params.group === "user" && ["myAccount"].indexOf(req.params.page) > -1)) {
-        res.render(`dashboard/${req.params.group}/${req.params.page}`, {
-            title: title,
-            headSubTextArr: headSubTextArr,
-            links: navbarLinks,
-            group: req.params.group,
-            page: req.params.page,
-        });
-        return;
-    }
-
+    // 如果请求的页面不在 dashboardPage 中，则渲染错误页面
     throw new Error("404 Not Found");
 });
 

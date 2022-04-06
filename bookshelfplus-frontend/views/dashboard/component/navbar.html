@@ -6,7 +6,7 @@
                 <img src="/assets/image/svg/home.svg" style="width: 1em; height: 1em; transform: translateY(2px);" title="返回首页">
             </h1>
             <% Object.keys(dashboardPage).forEach(item => { %>
-                <a href="./<%= item %>" style="vertical-align: middle;"><%= dashboardPage[item].title %></a>
+                <a href="/dashboard/<%= group %>/<%= item %>" style="vertical-align: middle;"><%= dashboardPage[item].title %></a>
             <% }); %>
             <a href="javascript:logout();" style="color: grey; vertical-align: middle; float: right;">退出登录</a>
         </div>
