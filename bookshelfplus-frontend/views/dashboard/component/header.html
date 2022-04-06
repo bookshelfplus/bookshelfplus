@@ -9,6 +9,7 @@
 <script src="/assets/lib/axios/0.26.1/axios.min.js"></script>
 
 <script src="/assets/javascripts/httpRequest.js"></script>
+<script src="/assets/javascripts/localStorageUtils.js"></script>
 <script>
     // API地址
     const APIHOST = '<%= global.site.api.prefix %>';
@@ -16,15 +17,14 @@
 </script>
 <% if (group == "admin") {%>
 <script>
-    // <%= group %>
-    if(localStorage.getItem("is_admin") === "false") {
+    if(localStorageUtils.getIsUser()) {
         // 是普通用户，跳转到普通用户后台页面
         window.location.href = "/dashboard/user/index";
     }
 </script>
 <%} else {%>
 <script>
-    if(localStorage.getItem("is_admin") === "true") {
+    if(llocalStorageUtils.getIsAdmin()) {
         // 是管理员用户，跳转到管理员用户后台页面
         window.location.href = "/dashboard/admin/index";
     }
@@ -32,18 +32,14 @@
 <%}%>
 <script>
     function getUserStatus() {
-        if(!localStorage) {
-            alert("浏览器不支持 localStorage ，请更换浏览器");
+        localStorageUtils.checkLocalStorage();
+
+        if(!localStorageUtils.getLoginStatus()) {
+            localStorageUtils.userLogout();
             window.location.href = "/";
         }
 
-        if(!localStorage.getItem("token") || !localStorage.getItem("is_admin")) {
-            localStorage.removeItem("token");
-            localStorage.removeItem("is_admin");
-            window.location.href = "/";
-        }
-
-        postRequest("/user/getUserStatus", { token: localStorage.getItem("token") })
+        postRequest("/user/getUserStatus", { token: localStorageUtils.getToken() })
             .then(function (responseData) {
                 var axiosData = responseData.data;
                 var status = axiosData.status;
@@ -57,8 +53,7 @@
                     }
                 } else {
                     if(data.errCode == "20004") { // 登陆过期
-                        localStorage.removeItem("token");
-                        localStorage.removeItem("is_admin");
+                        localStorageUtils.userLogout();
                         window.location.href = "/login";
                     }
                     alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);

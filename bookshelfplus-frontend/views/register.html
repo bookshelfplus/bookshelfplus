@@ -34,12 +34,6 @@
             width: 72px;
         }
     </style>
-    <script>
-        if(!localStorage) {
-            alert("您的浏览器不支持localStorage，请更换浏览器！");
-            window.location.href = "/";
-        }
-    </script>
 </head>
 <body>
     <%- include("./component/navbar.html"); %>
@@ -66,6 +60,8 @@
     <%- include("./component/footer.html"); %>
 
     <script>
+        localStorageUtils.checkLocalStorage();
+
         $("#username").val("xiaomo");
         $("#password").val("123456");
         $(".btn-register").click(function() {
@@ -81,13 +77,14 @@
                     if (status === "success") {
                         console.log(data);
                         if(data) {
-                            localStorage.setItem("token", data.token);
+                            localStorageUtils.userLogin({
+                                token: data.token,
+                                is_admin: data.group === "ADMIN",
+                            });
                             alert("注册成功");
-                            if(data.group === "ADMIN") {
-                                localStorage.setItem("is_admin", "true");
+                            if (localStorageUtils.getIsAdmin()) {
                                 window.location.href = "/dashboard/admin/index";
                             } else {
-                                localStorage.setItem("is_admin", "false");
                                 window.location.href = "/dashboard/user/index";
                             }
                         } else {

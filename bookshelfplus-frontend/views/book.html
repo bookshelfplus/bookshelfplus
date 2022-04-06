@@ -40,7 +40,7 @@
             cursor: pointer;
             opacity: 0;
             transition: all 0.3s;
-            position: relative;;
+            position: relative;
         }
         .download-link:hover #download-icon {
             width: 1.2em;
@@ -53,7 +53,7 @@
         #book-details {
             margin-top: 20px;
         }
-        #book-details > p {
+        #book-details>p {
             margin: 0;
         }
     </style>
@@ -88,10 +88,10 @@
                 if (status === "success") {
                     console.log(data)
                     data.thumbnail = "https://img14.360buyimg.com/pop/jfs/t1/141705/31/25225/853702/61a85f89Ef68c838b/929ded96a4a7579e.png";
-                    if(data.description == ""){
+                    if (data.description == "") {
                         data.description = "暂无描述";
                     }
-                    document.getElementById("container").innerHTML =`
+                    document.getElementById("container").innerHTML = `
                     <div class="grid">
                         <div class="grid-item">
                             <img id="bookImage" src="${data.thumbnail}" alt="书籍缩略图">
@@ -141,19 +141,21 @@
         var favortiesIcon = false;
         // 获取用户收藏信息
         function getUserFavouritesStatus() {
-            if(!localStorage || !localStorage.getItem("token") || !localStorage.getItem("is_admin")) {
+            localStorageUtils.checkLocalStorage();
+
+            if (!localStorageUtils.getLoginStatus()) {
                 // 用户未登录
                 $("#favorties-button").css("visibility", "visible");
                 return;
             }
-            postRequest("/book/getFavoritesStatus", { token: localStorage.getItem("token"), bookId: bookId })
+            postRequest("/book/getFavoritesStatus", { token: localStorageUtils.getToken(), bookId: bookId })
                 .then(function (responseData) {
                     var axiosData = responseData.data;
                     var status = axiosData.status;
                     var data = axiosData.data;
                     if (status === "success") {
                         console.log(data)
-                        if(data.status == 1) {
+                        if (data.status == 1) {
                             // 用户已收藏
                             console.log("已收藏");
                             favortiesIcon = true;
@@ -164,10 +166,9 @@
                         }
                         toggleDisplayButton();
                     } else {
-                        if(data.errCode == "20004") {
+                        if (data.errCode == "20004") {
                             // 登陆过期，小问题，这里不弹窗显示
-                            localStorage.removeItem("token");
-                            localStorage.removeItem("is_admin");
+                            localStorageUtils.userLogout();
                         } else {
                             alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
                         }
@@ -182,18 +183,18 @@
         var requestingFlag = false;
         // 添加收藏/取消收藏
         function toggleFavorites(toggleStatus) {
-            if(requestingFlag) return;
+            if (requestingFlag) return;
             requestingFlag = true;
             $("#favorties-button").css("opacity", "0.3");
-            postRequest("/book/toggleFavorites", { token: localStorage.getItem("token"), bookId: bookId, status: toggleStatus ? 1 : 0 })
+            postRequest("/book/toggleFavorites", { token: localStorageUtils.getToken(), bookId: bookId, status: toggleStatus ? 1 : 0 })
                 .then(function (responseData) {
                     var axiosData = responseData.data;
                     var status = axiosData.status;
                     var data = axiosData.data;
                     if (status === "success") {
                         console.log(data)
-                        if(data == "success") {
-                            if(toggleStatus) {
+                        if (data == "success") {
+                            if (toggleStatus) {
                                 console.log("收藏成功");
                                 favortiesIcon = true;
                             } else {
@@ -215,7 +216,7 @@
             requestingFlag = false;
             $("#favorties-button").attr("src", "");
             $("#favorties-button").css("opacity", "1");
-            if(favortiesIcon) {
+            if (favortiesIcon) {
                 $("#favorties-button").attr("src", "./assets/image/svg/favorites_fill.svg");
                 $("#favorties-button").attr("onclick", "toggleFavorites(false)");
             } else {

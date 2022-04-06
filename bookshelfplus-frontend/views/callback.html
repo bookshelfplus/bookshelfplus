@@ -5,10 +5,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title><%=title%></title>
+    <title><%= title %></title>
     <!-- <script src="/assets/lib/jquery/3.6.0/jquery.min.js"></script> -->
     <script src="/assets/lib/axios/0.26.1/axios.min.js"></script>
     <script src="/assets/javascripts/httpRequest.js"></script>
+    <script src="/assets/javascripts/localStorageUtils.js"></script>
     <script>
         // API地址
         const APIHOST = '<%= global.site.api.prefix %>';
@@ -18,11 +19,12 @@
 
 <body>
     <p id="displayText">
-        正在跳转中，请稍后...
+        正在跳转中，请稍候...
     </p>
     <script>
         // 带 token 的为绑定第三方账号，不带 token 的为第三方登录
-        getRequest("/third-party/callback/<%=platform%>" + location.search + (localStorage.getItem("token") ? ("&token=" + localStorage.getItem("token")) : ""))
+        var token = localStorageUtils.getToken();
+        getRequest("/third-party/callback/<%=platform%>" + location.search + (token ? ("&token=" + token) : ""))
             .then(function (response) {
                 var axiosData = response.data;
                 var status = axiosData.status;
@@ -30,7 +32,7 @@
                 if (status === "success") {
                     console.log(data)
                     // 默认直接跳转 user 后台，如果是管理员则由 user 后台跳转
-                    if(localStorage.getItem("token")) {
+                    if (token) {
                         // 绑定第三方账号
 
                         // 绑定第三方账号成功
@@ -38,13 +40,13 @@
                         location.href = "/dashboard/user/myAccount";
                     } else {
                         // 第三方登录成功
-                        localStorage.setItem("token", data.token);
-                        // alert("登录成功");
-                        if(data.group === "ADMIN") {
-                            localStorage.setItem("is_admin", "true");
+                        localStorageUtils.userLogin({
+                            token: data.token,
+                            is_admin: data.group === "ADMIN",
+                        });
+                        if (localStorageUtils.getIsAdmin()) {
                             window.location.href = "/dashboard/admin/index";
                         } else {
-                            localStorage.setItem("is_admin", "false");
                             window.location.href = "/dashboard/user/index";
                         }
                     }

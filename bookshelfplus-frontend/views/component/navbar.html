@@ -16,8 +16,9 @@
     </div>
 </div>
 <script>
-    if (localStorage.getItem("token"))
+    if (localStorageUtils.getLoginStatus()) {
         $("#dashboard").html("后台");
+    }
 
     function navbarHighlight() {
         // 导航栏中突出当前页面

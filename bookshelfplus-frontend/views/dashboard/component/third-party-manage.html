@@ -8,7 +8,7 @@
 </div>
 <script>
     function thirdPartyWithdraw(platform) {
-        postRequest("/third-party/withdrawThirdPartyBings", { token: localStorage.getItem("token"), platform: platform })
+        postRequest("/third-party/withdrawThirdPartyBings", { token: localStorageUtils.getToken(), platform: platform })
             .then(function (response) {
                 var axiosData = response.data;
                 var status = axiosData.status;
@@ -30,8 +30,8 @@
                 alert("无法连接到服务器，请检查网络连接！");
             });
     }
-    if (localStorage.getItem("token") != null) {
-        getRequest("/third-party/getBindingStatus", { token: localStorage.getItem("token") })
+    if (localStorageUtils.getLoginStatus() != null) {
+        getRequest("/third-party/getBindingStatus", { token: localStorageUtils.getToken() })
             .then(function (response) {
                 var axiosData = response.data;
                 var status = axiosData.status;

@@ -35,23 +35,16 @@
         }
     </style>
     <script>
-        if(!localStorage) {
-            alert("您的浏览器不支持localStorage，请更换浏览器！");
-            window.location.href = "/";
-        }
+        localStorageUtils.checkLocalStorage();
 
-        if(localStorage.getItem("token")) {
+        if(localStorageUtils.getToken()) {
             // 用户已登录
-            if(localStorage.getItem("is_admin") === "true") {
+            if(localStorageUtils.getIsAdmin()) {
                 // 是管理员
                 window.location.href = "/dashboard/admin/index";
-            } else if(localStorage.getItem("is_admin") === "false") {
+            } else {
                 // 是普通用户
                 window.location.href = "/dashboard/user/index";
-            } else {
-                // 未知状态
-                localStorage.removeItem("token");
-                localStorage.removeItem("is_admin");
             }
         }
     </script>
@@ -92,40 +85,45 @@
         // 用户正常登录逻辑
         $("#username").val("xiaomo");
         $("#password").val("123456");
-        $("#username").keydown(function(event) {
-            if(event.keyCode === 13) {
-                if($("#password").val() === "") {
+        $("#username").keydown(function (event) {
+            if (event.keyCode === 13) {
+                if ($("#password").val() === "") {
                     $("#password").focus();
                 } else {
                     $(".btn-submit").click();
                 }
             }
         });
-        $("#password").keydown(function(event) {
-            if(event.keyCode === 13) {
-                if($("#username").val() === "") {
+        $("#password").keydown(function (event) {
+            if (event.keyCode === 13) {
+                if ($("#username").val() === "") {
                     $("#username").focus();
                 } else {
                     $(".btn-submit").click();
                 }
             }
         });
-        $(".btn-submit").click(function() {
-            if($("#username").val() === "" || $("#password").val() === "") {
+        $(".btn-submit").click(function () {
+            if ($("#username").val() === "" || $("#password").val() === "") {
                 alert("用户名或密码不能为空！");
+                if ($("#username").val() === "") {
+                    $("#username").focus();
+                } else {
+                    $("#password").focus();
+                }
                 return;
             }
 
-            if(isOnLogin) return;
-            isOnLogin= true;
+            // 避免用户重复点击
+            if (isOnLogin) return;
+            isOnLogin = true;
 
             var username = $("#username").val();
             var password = $("#password").val();
             // var encryptpwd = hex_sha1(password);
             // var encryptpwd = hex_md5(password);
 
-            localStorage.removeItem("token");
-            localStorage.removeItem("is_admin");
+            localStorageUtils.userLogout();
             postRequest("/user/login", { username: username, password: password })
                 .then(function (response) {
                     var axiosData = response.data;
@@ -134,14 +132,14 @@
 
                     if (status === "success") {
                         console.log(data);
-                        if(data) {
-                            localStorage.setItem("token", data.token);
-                            // alert("登录成功");
-                            if(data.group === "ADMIN") {
-                                localStorage.setItem("is_admin", "true");
+                        if (data) {
+                            localStorageUtils.userLogin({
+                                token: data.token,
+                                is_admin: data.group === "ADMIN",
+                            });
+                            if (localStorageUtils.getIsAdmin()) {
                                 window.location.href = "/dashboard/admin/index";
                             } else {
-                                localStorage.setItem("is_admin", "false");
                                 window.location.href = "/dashboard/user/index";
                             }
                         } else {
