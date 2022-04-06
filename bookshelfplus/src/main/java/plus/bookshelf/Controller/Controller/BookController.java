@@ -169,6 +169,22 @@ public class BookController extends BaseController {
         }
     }
 
+    @ApiOperation(value = "【管理员】删除书籍", notes = "管理员在后台删除书籍")
+    @RequestMapping(value = "delete", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
+    @ResponseBody
+    public CommonReturnType deleteBook(@RequestParam(value = "token", required = false) String token,
+                                       @RequestParam(required = true, value = "id") Integer bookId) throws BusinessException {
+        // 已经在 getUserByToken 方法中判断了 token 为空、不合法；用户不存在情况，此处无需再判断
+        UserModel userModel = userService.getUserByToken(redisTemplate, token);
+
+        Integer affectRows = bookService.deleteBook(bookId);
+        if (affectRows > 0) {
+            return CommonReturnType.create("success");
+        } else {
+            return CommonReturnType.create("failed");
+        }
+    }
+
 
     private BookVO convertFromModel(BookModel bookModel) {
         BookVO bookVO = new BookVO();

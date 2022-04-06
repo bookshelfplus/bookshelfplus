@@ -35,6 +35,11 @@ public class BookServiceImpl implements BookService {
     @Autowired
     ValidatorImpl validator;
 
+    /**
+     * 通过 书籍id 查找图书
+     * @param id
+     * @return
+     */
     @Override
     @Transactional
     public BookModel getBookById(Integer id) {
@@ -44,6 +49,12 @@ public class BookServiceImpl implements BookService {
         return bookModel;
     }
 
+    /**
+     * 查找图书
+     * @param bookModel
+     * @return
+     * @throws BusinessException
+     */
     @Override
     public List<BookModel> searchBooks(BookModel bookModel) throws BusinessException {
 
@@ -72,6 +83,12 @@ public class BookServiceImpl implements BookService {
         return convertFromDataObjecctList(bookDOs);
     }
 
+    /**
+     * 添加图书
+     * @param bookModel
+     * @return
+     * @throws BusinessException
+     */
     @Override
     public Integer addBook(BookModel bookModel) throws BusinessException {
         // 校验入参
@@ -84,6 +101,12 @@ public class BookServiceImpl implements BookService {
         return bookDOMapper.insertSelective(bookDO);
     }
 
+    /**
+     * 修改图书信息
+     * @param bookModel
+     * @return
+     * @throws BusinessException
+     */
     @Override
     public Integer modifyBook(BookModel bookModel) throws BusinessException {
         // 校验入参
@@ -94,6 +117,20 @@ public class BookServiceImpl implements BookService {
 
         BookDO bookDO = convertToDataObjecct(bookModel);
         return bookDOMapper.updateByPrimaryKeySelective(bookDO);
+    }
+
+    /**
+     * 通过 id 删除图书
+     * @param bookId
+     * @return
+     * @throws BusinessException
+     */
+    @Override
+    public Integer deleteBook(Integer bookId) throws BusinessException {
+        if(bookId == null || bookId == 0) {
+            throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "书籍id不能为空");
+        }
+        return bookDOMapper.deleteByPrimaryKey(bookId);
     }
 
     /**

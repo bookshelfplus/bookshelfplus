@@ -41,7 +41,7 @@
                                     </span>`,
                             管理: `<span class="overflow-omit" style="max-width: ${columnWidth[5] * mainDivWidth / 100}vw; max-height: 2em; margin: 0 auto;">
                                         <a href="<%= pageUrl %>detail?id=${element.id}">修改</a>
-                                        <a href="">删除</a>
+                                        <a href="javascript:deleteBook(${element.id});">删除</a>
                                     </span>`,
                         })
                     });
@@ -69,6 +69,34 @@
                     // 渲染后重新获取一次字体
                     if (typeof (fontmin) === "function") {
                         fontmin(getPageText());
+                    }
+                } else {
+                    alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
+                }
+            }).catch(function (error) {
+                console.log(error);
+                alert("无法连接到服务器，请检查网络连接！");
+            });
+    }
+
+    function deleteBook(deleteBookId) {
+        if (!confirm(`确认要删除编号为 ${deleteBookId} 的书籍吗？`)) return;
+
+        postRequest("/book/delete", { token: localStorageUtils.getToken(), id: deleteBookId })
+            .then(function (responseData) {
+                var axiosData = responseData.data;
+                var status = axiosData.status;
+                var data = axiosData.data;
+                if (status === "success") {
+                    console.log(data)
+                    if (data == "success") {
+                        search({
+                            tableElementId: "book-table",
+                            searchText: $("#searchInput").val(),
+                            categoryId: null
+                        });
+                    } else {
+                        alert("删除失败！");
                     }
                 } else {
                     alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);

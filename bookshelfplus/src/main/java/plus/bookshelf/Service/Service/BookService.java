@@ -40,6 +40,14 @@ public interface BookService {
     Integer modifyBook(BookModel bookModel) throws BusinessException;
 
     /**
+     * 删除书籍信息
+     * @param bookId
+     * @return
+     * @throws BusinessException
+     */
+    Integer deleteBook(Integer bookId) throws BusinessException;
+
+    /**
      * 用户收藏书籍
      *
      * @param bookId 书籍id
