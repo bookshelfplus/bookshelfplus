@@ -1,6 +1,3 @@
-// 需要先引入 ./utils/getValidateUtils.js
-var validateUtils = getValidateUtils();
-
 // #######################################################
 // 渲染元素
 // #######################################################
@@ -71,23 +68,4 @@ function renderFormControls({ Controls = [] }) {
     });
     // console.log(controlList);
     return controlList;
-}
-
-// #######################################################
-// 提交表单
-// #######################################################
-function formSubmit({
-    type = 'POST',
-    url = '',
-    data = {},
-    success = (response) => { console.log(response) },
-    error = (error) => { console.log(error) }
-}) {
-    $.ajax({
-        type: type,
-        url: url,
-        data: data,
-        success: success,
-        error: error
-    });
 }

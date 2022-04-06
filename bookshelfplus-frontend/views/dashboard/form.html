@@ -46,10 +46,9 @@
             </div>
         </div>
     </main>
-    <%- include("./component/footer.html"); %>
     <!-- 验证组件用户输入值 -->
     <script src="/assets/javascripts/dashboard/getValidateUtils.js"></script>
-    <!-- 渲染组件 & 提交表单方法 -->
+    <!-- 渲染组件 -->
     <script src="/assets/javascripts/dashboard/renderFormControls.js"></script>
     <% if ( pageTemplate != "" ) { %>
         <!-- 引入对应页面渲染配置 -->
@@ -60,10 +59,11 @@
         var group = '<%= group %>';
         var page = '<%= page %>';
         var title = '<%= title %>';
+        var controlsProfile = {};
 
         async function renderFormControlsFunc() {
             // 获取将要渲染的 Controls
-            var controlsProfile = await getControlsProfile();
+            controlsProfile = await getControlsProfile(getValidateUtils);
 
             // 渲染控件
             var formControls = renderFormControls({ Controls: controlsProfile });
@@ -73,15 +73,78 @@
             var containerControls = document.getElementById('container-controls');
             containerControls.innerHTML = "";
             formControls.forEach(function (item) {
-                let Control
                 containerControls.appendChild(item.label);
                 containerControls.appendChild(item.control);
             });
-
-            // 更新提交按钮显示名称
-            document.getElementById("btn-submit").innerHTML = getSubmitButtonValue() || "提交";
         }
+
+        // 渲染控件
         renderFormControlsFunc();
+
+        // 提交表单事件
+        function formSubmit({
+            type = 'POST',
+            url = '',
+            success = (response) => { console.log(response) }
+        }) {
+            var data = {};
+            for (var i = 0; i < controlsProfile.length; i++) {
+                const controlsProfileItem = controlsProfile[i];
+                var control = document.getElementById(controlsProfileItem.attr.id);
+                // 判断 control 是否为空
+                if (!control) {
+                    alert("控件不存在：" + controlsProfileItem.attr.id);
+                    return;
+                }
+                var name = control.name;
+                var value = control.value;
+                console.log("name:", name, "value:", value, "control:", control);
+                var validateResult = controlsProfileItem.validate(value);
+                if (validateResult.result) {
+                    data[name] = value;
+                } else {
+                    alert(validateResult.msg);
+                    control.focus();
+                    return;
+                }
+            }
+            // var controls = document.getElementsByClassName('form-elements');
+            // for (var i = 0; i < controls.length; i++) {
+            //     var control = controls[i];
+            //     var name = control.name;
+            //     var value = control.value;
+            //     data[name] = value;
+            // }
+            // 添加管理员 token 信息
+            data['token'] = localStorageUtils.getToken();
+            console.log(data);
+
+            postRequest(url, data)
+                .then(function (responseData) {
+                    var axiosData = responseData.data;
+                    var status = axiosData.status;
+                    var data = axiosData.data;
+                    if (status === "success") {
+                        success(data);
+                    } else {
+                        alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
+                        if (data.errCode == "20004") {
+                            // 登陆过期
+                            localStorageUtils.userLogout();
+                            location.href = "/login";
+                        }
+                    }
+                }).catch(function (error) {
+                    console.log(error);
+                    alert("无法连接到服务器，请检查网络连接！");
+                }).finally(function () {
+                    $("#favorties-button").css("visibility", "visible");
+                });
+        }
+
+        // 绑定提交按钮事件
+        $("#btn-submit").click(btnSubmitClick);
     </script>
+    <%- include("./component/footer.html"); %>
 </body>
 </html>

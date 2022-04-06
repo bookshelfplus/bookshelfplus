@@ -1,7 +1,28 @@
+<!-- 是否连续录入复选框 -->
+<p style="text-align: center;">
+    <input type="checkbox" id="isContinuous" checked="checked" />连续录入
+</p>
 <!-- 生成分类结构 -->
 <script src="/assets/javascripts/generateCategoryHierarchy.js"></script>
 <script>
     async function getControlsProfile() {
+    function btnSubmitClick() {
+        formSubmit({
+            type: 'POST',
+            url: '/book/add',
+            success: function (data) {
+                console.log(data);
+                alert("添加成功！");
+                if (document.getElementById("isContinuous").checked) {
+                    location.reload();
+                } else {
+                    // 回到书籍管理页
+                }
+            }
+        });
+    }
+
+    async function getControlsProfile(getValidateUtils) {
         // 获取分类列表
         var categoryOptions = [];
 
@@ -76,12 +97,13 @@
             //         return { result: result, msg: msg };
             //     }
             // },
+            // 必须设置 id, name
+            // 只有设置了 id 才会使用 validate 校验取值
             {
                 "tag": "input",
                 "attr": {
-                    "name": "",
-                    "class": "",
-                    "style": "",
+                    "id": "bookName",
+                    "name": "bookName",
                     "placeholder": "电子书的名称",
                 },
                 "label": {
@@ -89,28 +111,17 @@
                 },
                 "required": true, // 是否必填
                 "innerHTML": "",
-                "validate": function (value) {
-
-                    var validate = validateUtils.setValue(value)
-                        .validate.notNull(value, "书本名称不能为空，请输入书本名称")
-                        .validate.notNull(value, "书本名称不能超过 50 个字符")
-                        .validate.notNull(value, "书本名称不能包含特殊字符")
-                        .result();
-                    console.log(validate);
-
-                    if (validateUtils.isEmpty(value)) {
-                        result = false;
-                        msg = "不能为空";
-                    }
-                    return { result: result, msg: msg };
-                }
+                "validate": (val) => getValidateUtils().setValue(val)
+                    .notString("传入的值为非字符串类型")
+                    .notEmptyAfterTrim("书本名称不能为空，请输入书本名称")
+                    .length(0, 50, "书本名称不能超过 50 个字符")
+                    .isValid()
             },
             {
                 "tag": "input",
                 "attr": {
-                    "name": "",
-                    "class": "",
-                    "style": "",
+                    "id": "author",
+                    "name": "author",
                     "placeholder": "电子书的作者",
                 },
                 "label": {
@@ -118,21 +129,17 @@
                 },
                 "required": true, // 是否必填
                 "innerHTML": "",
-                "validate": function (value) {
-                    var result = true, msg = "";
-                    if (validateUtils.isEmpty(value)) {
-                        result = false;
-                        msg = "不能为空";
-                    }
-                    return { result: result, msg: msg };
-                }
+                "validate": (val) => getValidateUtils().setValue(val)
+                    .notString("传入的值为非字符串类型")
+                    .notEmpty("作者姓名不能为空")
+                    .length(0, 50, "作者姓名不能超过 50 个字符")
+                    .isValid()
             },
             {
                 "tag": "textarea",
                 "attr": {
-                    "id": "",
-                    "name": "",
-                    "class": "",
+                    "id": "description",
+                    "name": "description",
                     "style": "height:100px;",
                     "placeholder": "电子书的简介",
                 },
@@ -141,22 +148,16 @@
                 },
                 "required": false, // 是否必填
                 "innerHTML": "",
-                "validate": function (value) {
-                    var result = true, msg = "";
-                    if (validateUtils.isEmpty(value)) {
-                        result = false;
-                        msg = "不能为空";
-                    }
-                    return { result: result, msg: msg };
-                }
+                "validate": (val) => getValidateUtils().setValue(val)
+                    .notString("传入的值为非字符串类型")
+                    .length(0, 5000, "书籍简介不能超过 5000 个字符")
+                    .isValid()
             },
             {
                 "tag": "select",
                 "attr": {
-                    "id": "",
-                    "name": "",
-                    "class": "",
-                    "style": "",
+                    "id": "language",
+                    "name": "language",
                     "placeholder": "书籍语言",
                 },
                 "label": {
@@ -181,21 +182,15 @@
                     },
                 ],
                 "innerHTML": "",
-                "validate": function (value) {
-                    var result = true, msg = "";
-                    if (validateUtils.isEmpty(value)) {
-                        result = false;
-                        msg = "不能为空";
-                    }
-                    return { result: result, msg: msg };
-                }
+                "validate": (val) => getValidateUtils().setValue(val)
+                    .notNull("书籍语言传入值错误")
+                    .isValid()
             },
             {
                 "tag": "input",
                 "attr": {
-                    "name": "",
-                    "class": "",
-                    "style": "",
+                    "id": "publishingHouse",
+                    "name": "publishingHouse",
                     "placeholder": "出版社",
                 },
                 "label": {
@@ -203,75 +198,44 @@
                 },
                 "required": true, // 是否必填
                 "innerHTML": "",
-                "validate": function (value) {
-                    var result = true, msg = "";
-                    if (validateUtils.isEmpty(value)) {
-                        result = false;
-                        msg = "不能为空";
-                    }
-                    return { result: result, msg: msg };
-                }
+                "validate": (val) => getValidateUtils().setValue(val)
+                    .notString("传入的值为非字符串类型")
+                    .notEmpty("出版社不能为空")
+                    .length(0, 50, "出版社不能超过 50 个字符")
+                    .isValid()
             },
             {
                 "tag": "input",
                 "attr": {
-                    "name": "",
-                    "class": "",
-                    "style": "",
-                    "placeholder": "",
+                    "id": "copyright",
+                    "name": "copyright",
+                    "placeholder": "来源信息 & 版权信息",
                 },
                 "label": {
                     "value": "来源(版权)",
                 },
                 "required": false, // 是否必填
                 "innerHTML": "",
-                "validate": function (value) {
-                    var result = true, msg = "";
-                    if (validateUtils.isEmpty(value)) {
-                        result = false;
-                        msg = "不能为空";
-                    }
-                    return { result: result, msg: msg };
-                }
+                "validate": (val) => getValidateUtils().setValue(val)
+                    .notNull("来源(版权)传入值错误")
+                    .isValid()
             },
             {
                 "tag": "select",
                 "attr": {
-                    "name": "",
-                    "class": "",
-                    "style": "",
+                    "id": "categoryId",
+                    "name": "categoryId",
                 },
                 "label": {
                     "value": "书籍分类",
                 },
                 "required": true, // 是否必填
                 "children": categoryOptions,
-                // [
-                //     {
-                //         "tag": "option",
-                //         "attr": { "value": "1" },
-                //         "innerHTML": "选项1",
-                //     },
-                //     {
-                //         "tag": "option",
-                //         "attr": { "value": "2" },
-                //         "innerHTML": "选项2",
-                //     },
-                // ],
-
-                "validate": function (value) {
-                    var result = true, msg = "";
-                    if (validateUtils.isEmpty(value)) {
-                        result = false;
-                        msg = "不能为空";
-                    }
-                    return { result: result, msg: msg };
-                }
+                "validate": (val) => getValidateUtils().setValue(val)
+                    .notEmpty("请选择书籍分类")
+                    .notStringNumber("书籍分类传入值错误")
+                    .isValid()
             },
         ];
-    }
-
-    function getSubmitButtonValue() {
-        return "提交";
     }
 </script>

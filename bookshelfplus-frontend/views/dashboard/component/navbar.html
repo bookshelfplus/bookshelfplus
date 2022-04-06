@@ -32,11 +32,10 @@
                 } else {
                     alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
                 }
-            })
-            .catch(function (error) {
+            }).catch(function (error) {
                 console.log(error);
                 var choice = confirm("服务器连接失败，无法正常退出登录，是否要强行退出登录？");
-                if(choice) {
+                if (choice) {
                     localStorageUtils.userLogout();
                     location.href = "/login";
                 }
