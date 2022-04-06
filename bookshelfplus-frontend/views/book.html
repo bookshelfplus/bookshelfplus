@@ -100,11 +100,11 @@
                             <h1>${data.bookName}</h1>
                         </div>
                         <div class="grid-item">
-                            <img id="favorties-button" src="./assets/image/svg/favorites_empty.svg" style="visibility: hidden; opacity: 1; transition: all 0.3s;" title="点击收藏/取消收藏" onclick="alert('请先登录！')" />
-                            <!-- 预加载图片 --><img src="./assets/image/svg/favorites_fill.svg" style="display: none;" />
+                            <img id="favorties-button" src="/assets/image/svg/favorites_empty.svg" style="visibility: hidden; opacity: 1; transition: all 0.3s;" title="点击收藏/取消收藏" onclick="alert('请先登录！')" />
+                            <!-- 预加载图片 --><img src="/assets/image/svg/favorites_fill.svg" style="display: none;" />
                         </div>
                         <div class="grid-item">
-                            <a class="download-link" href="/download/?bookId=${data.id}"><img id="download-icon" src="./assets/image/svg/download.svg" /><span>下载这本书</span></a>
+                            <a class="download-link" href="/download/?bookId=${data.id}"><img id="download-icon" src="/assets/image/svg/download.svg" /><span>下载这本书</span></a>
                         </div>
                     </div>
                     <hr style="opacity: 0.3; margin-top: 30px; margin-bottom: 25px;">
@@ -217,10 +217,10 @@
             $("#favorties-button").attr("src", "");
             $("#favorties-button").css("opacity", "1");
             if (favortiesIcon) {
-                $("#favorties-button").attr("src", "./assets/image/svg/favorites_fill.svg");
+                $("#favorties-button").attr("src", "/assets/image/svg/favorites_fill.svg");
                 $("#favorties-button").attr("onclick", "toggleFavorites(false)");
             } else {
-                $("#favorties-button").attr("src", "./assets/image/svg/favorites_empty.svg");
+                $("#favorties-button").attr("src", "/assets/image/svg/favorites_empty.svg");
                 $("#favorties-button").attr("onclick", "toggleFavorites(true)");
             }
         }
