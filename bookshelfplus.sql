@@ -168,8 +168,10 @@ CREATE TABLE `third_party_user_auth_relation`  (
   `user_id` int(11) NOT NULL COMMENT '系统用户ID',
   `third_party_user_id` int(11) NOT NULL COMMENT '社会化用户ID',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `relation`(`user_id`, `third_party_user_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
+  UNIQUE INDEX `relation`(`user_id`, `third_party_user_id`) USING BTREE,
+  INDEX `third_party_user_id`(`third_party_user_id`) USING BTREE,
+  CONSTRAINT `third_party_user_auth_relation_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user_info` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `third_party_user_auth_relation_ibfk_2` FOREIGN KEY (`third_party_user_id`) REFERENCES `third_party_user_info` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 
 -- ----------------------------
 -- Records of third_party_user_auth_relation
@@ -215,7 +217,10 @@ CREATE TABLE `user_book_favorites_relation`  (
   `book_id` int(11) NOT NULL,
   `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `user_id`(`user_id`, `book_id`) USING BTREE
+  UNIQUE INDEX `user_id`(`user_id`, `book_id`) USING BTREE,
+  INDEX `book_id`(`book_id`) USING BTREE,
+  CONSTRAINT `user_book_favorites_relation_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user_info` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT,
+  CONSTRAINT `user_book_favorites_relation_ibfk_2` FOREIGN KEY (`book_id`) REFERENCES `book_info` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
