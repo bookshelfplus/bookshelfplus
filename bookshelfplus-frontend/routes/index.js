@@ -72,7 +72,6 @@ router.get('/callback/:platform', function (req, res) {
 });
 
 router.get('/dashboard/:group/:page/:subpage?', function (req, res) {
-
     // baseTemplate 基于哪个html模板渲染页面
     // pageTemplate 引入这个文件中的页面脚本
     if (req.params.group === "admin") {
@@ -83,13 +82,13 @@ router.get('/dashboard/:group/:page/:subpage?', function (req, res) {
             },
             "book-manage": {
                 title: "书籍管理",
-                baseTemplate: "blank",
+                baseTemplate: "table",
                 pageTemplate: "BookManage",
                 childPage: {
-                    "add": {
-                        title: "添加书籍",
+                    "detail": {
+                        title: req.query.id ? "修改书籍" : "添加书籍",
                         baseTemplate: "form",
-                        pageTemplate: "BookManage_Add",
+                        pageTemplate: "BookManage_Detail",
                     },
                 }
             },
@@ -140,29 +139,17 @@ router.get('/dashboard/:group/:page/:subpage?', function (req, res) {
         var headText = "用户中心";
     }
 
-    // function isChildPage(page) {
-    //     console.log(page);
-    //     // 查找 dashboardPage 中每一项的 childPage 字段，并与 page 比较
-    //     for (var key in dashboardPage) {
-    //         console.log(key);
-    //         if (dashboardPage[key].childPage && dashboardPage[key].childPage[page]) {
-    //             return true;
-    //         }
-    //     }
-    //     return false;
-    // }
-
-    console.log("req.params.page\t\t" + req.params.page)
-    console.log("req.params.subpage\t" + req.params.subpage)
     // 如果请求的页面在 dashboardPage 中
     if (Object.keys(dashboardPage).indexOf(req.params.page) > -1) {
         // 当前请求的页面
         var currentPage = dashboardPage[req.params.page];
 
-        // 如果请求的就是主页面，或者当前页没有子页面，则渲染主页面
-        if (!req.params.subpage || !currentPage.childPage || Object.keys(currentPage.childPage).indexOf(req.params.subpage) === -1) {
-            console.log("page");
+        // 如果请求的就是主页面，或者当前页没有子页面
+        if (!req.params.subpage) {
+            // 渲染主页面
+            console.log("page", req.params.page, req.params.subpage);
             res.render(`dashboard/${currentPage.baseTemplate}`, {
+                pageUrl: (req._parsedUrl.pathname + "/").replace("//", "/"),
                 htmlTitle: getPageTitle(headText),
                 title: currentPage.title,
                 pageTemplate: "./" + req.params.group + "/" + currentPage.pageTemplate + ".html",
@@ -171,10 +158,16 @@ router.get('/dashboard/:group/:page/:subpage?', function (req, res) {
                 page: req.params.page,
             });
         } else {
+            // 渲染子页面
+            if (!currentPage.childPage || Object.keys(currentPage.childPage).indexOf(req.params.subpage) === -1) {
+                // 请求的子页面不存在，直接返回404
+                throw new Error("404 Not Found");
+            }
             // 如果当前 page 有 subpage，则渲染子页面
             var currentSubPage = currentPage.childPage[req.params.subpage];
-            console.log("subpage");
+            console.log("subpage", req.params.page, req.params.subpage);
             res.render(`dashboard/${currentSubPage.baseTemplate}`, {
+                pageUrl: (req._parsedUrl.pathname + "/").replace("//", "/"),
                 htmlTitle: getPageTitle(headText),
                 title: currentSubPage.title,
                 pageTemplate: "./" + req.params.group + "/" + currentSubPage.pageTemplate + ".html",

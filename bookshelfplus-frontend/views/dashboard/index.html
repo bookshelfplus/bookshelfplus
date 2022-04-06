@@ -35,7 +35,9 @@
         </h1>
         <div id="container">
             <% Object.keys(dashboardPage).forEach(item => { %>
-                <a class="mainNav" href="./<%= item %>"><%= dashboardPage[item].title %></a>
+                <% if (item.indexOf("index") == -1) { /* 跳过 仪表盘 */ %>
+                    <a class="mainNav" href="./<%= item %>"><%= dashboardPage[item].title %></a>
+                <% } %>
             <% }); %>
         </div>
     </main>

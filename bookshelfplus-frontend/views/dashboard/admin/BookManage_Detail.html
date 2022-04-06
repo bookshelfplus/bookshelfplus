@@ -1,27 +1,59 @@
 <!-- 是否连续录入复选框 -->
 <p style="text-align: center;">
+    <!-- 只在新增书籍的时候显示 -->
     <input type="checkbox" id="isContinuous" checked="checked" />连续录入
 </p>
 <!-- 生成分类结构 -->
 <script src="/assets/javascripts/generateCategoryHierarchy.js"></script>
 <script>
+    // 如果传入了 id 那么就是修改书籍，否则就是添加书籍
+    var bookId = getParams().id;
+    var isModify = bookId ? true : false;
+    if (!isModify) {
+        // 新增书籍
+        bookId = 0;
+    } else {
+        // 修改书籍
+        $("#isContinuous").parent().remove();
+    }
+
+    // 点击提交按钮
     function btnSubmitClick() {
         formSubmit({
             type: 'POST',
-            url: '/book/add',
+            url: '/book/detail',
+            data: { id: bookId },
             success: function (data) {
                 console.log(data);
-                alert("添加成功！");
-                if (document.getElementById("isContinuous").checked) {
+                alert(isModify ? "修改成功！" : "添加成功！");
+                if (!isModify && document.getElementById("isContinuous").checked) {
                     location.reload();
                 } else {
                     // 回到书籍管理页
+                    location.href = "<%= pageUrl %>../";
                 }
             }
         });
     }
 
+    // 如果是修改书籍，则需要获取书籍详情
+    async function getBookDetail(bookId) {
+        var responseData = await getRequest("/book/get", { id: bookId });
+        var axiosData = responseData.data;
+        var status = axiosData.status;
+        var data = axiosData.data;
+        if (status === "success") {
+            console.log(data)
+            return data;
+        } else {
+            alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
+            // 回到书籍管理页
+            location.href = "<%= pageUrl %>../";
+        }
+    }
+
     async function getControlsProfile(getValidateUtils) {
+
         // 获取分类列表
         var categoryOptions = [];
 
@@ -49,6 +81,15 @@
         }
 
         console.log(categoryOptions);
+
+        // 修改书籍: 获取书籍详情
+        var bookDetail = {};
+        if (isModify) {
+            bookDetail = await getBookDetail(bookId);
+        } else {
+            console.log("新增书籍无需获取书籍详情");
+        }
+
         return [
             // 【模板】
             // {
@@ -104,6 +145,7 @@
                     "id": "bookName",
                     "name": "bookName",
                     "placeholder": "电子书的名称",
+                    "value": bookDetail.bookName || "",
                 },
                 "label": {
                     "value": "书本名称",
@@ -122,6 +164,7 @@
                     "id": "author",
                     "name": "author",
                     "placeholder": "电子书的作者",
+                    "value": bookDetail.author || "",
                 },
                 "label": {
                     "value": "作者姓名",
@@ -146,7 +189,7 @@
                     "value": "书籍简介",
                 },
                 "required": false, // 是否必填
-                "innerHTML": "",
+                "innerHTML": bookDetail.description || "",
                 "validate": (val) => getValidateUtils().setValue(val)
                     .notString("传入的值为非字符串类型")
                     .length(0, 5000, "书籍简介不能超过 5000 个字符")
@@ -158,6 +201,7 @@
                     "id": "language",
                     "name": "language",
                     "placeholder": "书籍语言",
+                    "value": bookDetail.language || "",
                 },
                 "label": {
                     "value": "语言",
@@ -191,6 +235,7 @@
                     "id": "publishingHouse",
                     "name": "publishingHouse",
                     "placeholder": "出版社",
+                    "value": bookDetail.publishingHouse || "",
                 },
                 "label": {
                     "value": "出版社",
@@ -209,6 +254,7 @@
                     "id": "copyright",
                     "name": "copyright",
                     "placeholder": "来源信息 & 版权信息",
+                    "value": bookDetail.copyright || "",
                 },
                 "label": {
                     "value": "来源(版权)",
@@ -224,6 +270,7 @@
                 "attr": {
                     "id": "categoryId",
                     "name": "categoryId",
+                    "value": bookDetail.category.id || "",
                 },
                 "label": {
                     "value": "书籍分类",

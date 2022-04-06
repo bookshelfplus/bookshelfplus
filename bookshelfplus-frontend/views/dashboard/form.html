@@ -38,14 +38,19 @@
     <%- include("./component/navbar.html"); %>
     <main class="main">
         <h1><%= title %></h1>
+        <% if (typeof(subpage) !== "undefined") { %>
+        <p><a href="<%= pageUrl %>../">返回上一级</a></p>
+        <% } %>
         <div id="container">
             <div id="container-controls">页面加载中，请稍候 ...</div>
             <div id="container-submit">
                 <button class="btn" id="btn-submit">提交</button>
-                <button class="btn" id="btn-clear">清空</button>
+                <button class="btn" id="btn-clear" disabled="true">清空</button>
             </div>
         </div>
     </main>
+    <!-- 获取参数 -->
+    <script src="/assets/javascripts/getParams.js"></script>
     <!-- 验证组件用户输入值 -->
     <script src="/assets/javascripts/dashboard/getValidateUtils.js"></script>
     <!-- 渲染组件 -->
@@ -85,9 +90,10 @@
         function formSubmit({
             type = 'POST',
             url = '',
+            data = {},
             success = (response) => { console.log(response) }
         }) {
-            var data = {};
+            var data = data || {};
             for (var i = 0; i < controlsProfile.length; i++) {
                 const controlsProfileItem = controlsProfile[i];
                 var control = document.getElementById(controlsProfileItem.attr.id);
@@ -98,7 +104,7 @@
                 }
                 var name = control.name;
                 var value = control.value;
-                console.log("name:", name, "value:", value, "control:", control);
+                // console.log("name:", name, "value:", value, "control:", control);
                 var validateResult = controlsProfileItem.validate(value);
                 if (validateResult.result) {
                     data[name] = value;

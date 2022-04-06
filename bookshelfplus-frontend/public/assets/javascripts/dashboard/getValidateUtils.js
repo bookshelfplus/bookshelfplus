@@ -186,7 +186,7 @@ function getValidateUtils() {
 
         // 返回结果
         isValid: function () {
-            console.log("验证内容", this.validateValue, "验证结果", this.result, "错误信息", this.msg);
+            // console.log("验证内容", this.validateValue, "验证结果", this.result, "错误信息", this.msg);
             return {
                 result: this.result,
                 msg: this.msg.join("；")

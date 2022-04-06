@@ -4,14 +4,18 @@
     <%- include("./component/header.html"); %>
     <style>
         .main {
-            width: 80vw !important;
+            width: 96vw !important;
             max-width: initial !important;
         }
 
-        #result-table {
+        #book-table {
             width: 100%;
             margin-top: 30px;
             line-height: 2.3em;
+        }
+
+        table, tr, th, td {
+            border: 1px solid black;
         }
 
         tr:hover {
@@ -25,34 +29,42 @@
 </head>
 <body>
     <%- include("./component/navbar.html"); %>
-    <div class="main">
-        <h1><%= headText %></h1>
-        <%- include("./component/searchbox.html"); %>
+    <main class="main">
+        <h1><%= title %></h1>
         <div id="container">
-            <table id="result-table"></table>
-            <!-- <table id="origin-table"></table> -->
+            <% if ( pageTemplate != "" ) { %>
+                <!-- 引入对应页面渲染配置 -->
+                <%- include(pageTemplate); %>
+            <% } %>
+            <input id="searchInput" type="text" />
+            <input id="searchButton" type="button" value="搜索" />
+            <table id="book-table"></table>
         </div>
-    </div>
+    </main>
     <%- include("./component/footer.html"); %>
 
     <!-- 获取参数 -->
     <script src="/assets/javascripts/getParams.js"></script>
     <!-- 渲染表格 -->
     <script src="/assets/javascripts/renderTable.js"></script>
-    <!-- 搜索书籍 -->
-    <script src="/assets/javascripts/searchBooks.js"></script>
     <script>
         var requestParams = getParams();
         var searchbox = document.getElementById("searchInput");
         var keyword = (requestParams["keyword"] || "").trim();
         searchbox.value = keyword;
-        if (keyword === "")
-            searchbox.focus();
         search({
-            tableElementId: "result-table",
-            searchText: keyword,
+            tableElementId: "book-table",
+            searchText: null,
             categoryId: null
         });
+
+        $("#searchButton").click(function () {
+            search({
+                tableElementId: "book-table",
+                searchText: $("#searchInput").val(),
+                categoryId: null
+            });
+        })
     </script>
 </body>
 </html>

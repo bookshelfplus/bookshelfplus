@@ -117,19 +117,21 @@ public class BookController extends BaseController {
         return CommonReturnType.create(favoritesStatus);
     }
 
-    @ApiOperation(value = "【管理员】添加书籍", notes = "管理员在后台添加书籍")
-    @RequestMapping(value = "add", method = {RequestMethod.GET})
+    @ApiOperation(value = "【管理员】添加/修改书籍", notes = "管理员在后台添加/修改书籍（bookId 传 0 或 null 或 不传 即为添加）")
+    @RequestMapping(value = "detail", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
     @ResponseBody
-    public CommonReturnType add(@RequestParam(value = "token", required = false) String token,
-                                @RequestParam(required = false, value = "bookName") String bookName,
-                                @RequestParam(required = false, value = "description") String description,
-                                @RequestParam(required = false, value = "categoryId") Integer categoryId,
-                                @RequestParam(required = false, value = "publishingHouse") String publishingHouse,
-                                @RequestParam(required = false, value = "language") String language,
-                                @RequestParam(required = false, value = "copyright") String copyright,
-                                @RequestParam(required = false, value = "isDelete") Boolean isDelete,
-                                @RequestParam(required = false, value = "thumbnail") String thumbnail,
-                                @RequestParam(required = false, value = "author") String author) throws BusinessException {
+    public CommonReturnType detail(@RequestParam(value = "token", required = false) String token,
+                                   @RequestParam(required = false, value = "id") Integer bookId,
+                                   @RequestParam(required = false, value = "bookName") String bookName,
+                                   @RequestParam(required = false, value = "description") String description,
+                                   @RequestParam(required = false, value = "categoryId") Integer categoryId,
+                                   @RequestParam(required = false, value = "publishingHouse") String publishingHouse,
+                                   @RequestParam(required = false, value = "language") String language,
+                                   @RequestParam(required = false, value = "copyright") String copyright,
+                                   // 【前端未提交到后端的参数】 isDelete thumbnail
+                                   @RequestParam(required = false, value = "isDelete") Boolean isDelete,
+                                   @RequestParam(required = false, value = "thumbnail") String thumbnail,
+                                   @RequestParam(required = false, value = "author") String author) throws BusinessException {
         // 已经在 getUserByToken 方法中判断了 token 为空、不合法；用户不存在情况，此处无需再判断
         UserModel userModel = userService.getUserByToken(redisTemplate, token);
 
@@ -149,7 +151,17 @@ public class BookController extends BaseController {
             bookModel.setCategory(categoryModel);
         }
 
-        Integer affectRows = bookService.addBook(bookModel);
+        Integer affectRows = 0;
+        if (bookId == null || bookId == 0) {
+            // 新增图书
+            isDelete = false;
+            affectRows = bookService.addBook(bookModel);
+        } else {
+            //修改图书
+            bookModel.setId(bookId);
+            affectRows = bookService.modifyBook(bookModel);
+        }
+
         if (affectRows > 0) {
             return CommonReturnType.create("success");
         } else {

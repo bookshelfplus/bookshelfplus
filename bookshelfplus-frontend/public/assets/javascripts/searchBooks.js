@@ -13,7 +13,7 @@ function search({ tableElementId = "", searchText = "", categoryId = 0 }) {
                     var mainDivWidth = 80/*vw*/; // 定义div的宽度（用于计算表格中的数据的显示长度）
                     var columnWidth = [23, 17, 30, 10, 20];
                     renderData.push({
-                        书名: ` <a target="_blank" href="/book?id=${element.category.id}">
+                        书名: ` <a target="_blank" href="/book?id=${element.id}">
                                     <span class="overflow-omit" style="max-width: ${columnWidth[0] * mainDivWidth / 100}vw; max-height: 2em; margin: 0 auto;">
                                         ${element.bookName}
                                     </span>
@@ -56,7 +56,9 @@ function search({ tableElementId = "", searchText = "", categoryId = 0 }) {
                 }
 
                 // 渲染后重新获取一次字体
-                fontmin(getPageText());
+                if (typeof (fontmin) === "function") {
+                    fontmin(getPageText());
+                }
             } else {
                 alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
             }

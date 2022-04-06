@@ -22,6 +22,13 @@ function renderElements(control) {
             element.appendChild(childElement);
         });
     }
+
+    // select 下拉框直接设置 value 会不生效，需要等其插入 DOM 之后再操作
+    if (control.tag == "select") {
+        setTimeout(function () {
+            element.value = control.attr.value;
+        }, 0);
+    }
     return element;
 }
 

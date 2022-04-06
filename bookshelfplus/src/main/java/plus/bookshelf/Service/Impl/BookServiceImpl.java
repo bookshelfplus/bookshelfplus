@@ -74,7 +74,6 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Integer addBook(BookModel bookModel) throws BusinessException {
-
         // 校验入参
         ValidationResult result = validator.validate(bookModel);
         if (result.isHasErrors()) {
@@ -83,6 +82,18 @@ public class BookServiceImpl implements BookService {
 
         BookDO bookDO = convertToDataObjecct(bookModel);
         return bookDOMapper.insertSelective(bookDO);
+    }
+
+    @Override
+    public Integer modifyBook(BookModel bookModel) throws BusinessException {
+        // 校验入参
+        ValidationResult result = validator.validate(bookModel);
+        if (result.isHasErrors()) {
+            throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, result.getErrMsg());
+        }
+
+        BookDO bookDO = convertToDataObjecct(bookModel);
+        return bookDOMapper.updateByPrimaryKeySelective(bookDO);
     }
 
     /**

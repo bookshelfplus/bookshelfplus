@@ -32,6 +32,14 @@ public interface BookService {
     Integer addBook(BookModel bookModel) throws BusinessException;
 
     /**
+     * 修改书籍
+     * @param bookModel
+     * @return
+     * @throws BusinessException
+     */
+    Integer modifyBook(BookModel bookModel) throws BusinessException;
+
+    /**
      * 用户收藏书籍
      *
      * @param bookId 书籍id
