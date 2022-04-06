@@ -65,7 +65,7 @@
             alert("请输入您的密码");
             return;
         }
-        postRequest("/user/cancelAccount", { token: localStorage.token, password: accountCancellationPassword })
+        postRequest("/user/cancelAccount", { token: localStorage.getItem("token"), password: accountCancellationPassword })
             .then(function (response) {
                 var axiosData = response.data;
                 var status = axiosData.status;

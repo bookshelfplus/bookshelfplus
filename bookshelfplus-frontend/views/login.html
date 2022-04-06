@@ -50,8 +50,8 @@
                 window.location.href = "/dashboard/user/index";
             } else {
                 // 未知状态
-                localStorage.clear("token");
-                localStorage.clear("is_admin");
+                localStorage.removeItem("token");
+                localStorage.removeItem("is_admin");
             }
         }
     </script>
@@ -111,6 +111,11 @@
             }
         });
         $(".btn-submit").click(function() {
+            if($("#username").val() === "" || $("#password").val() === "") {
+                alert("用户名或密码不能为空！");
+                return;
+            }
+
             if(isOnLogin) return;
             isOnLogin= true;
 
@@ -119,10 +124,8 @@
             // var encryptpwd = hex_sha1(password);
             // var encryptpwd = hex_md5(password);
 
-            if(localStorage.getItem("token"))
-                localStorage.clearItem("token");
-            if(localStorage.getItem("is_admin"))
-                localStorage.clearItem("is_admin");
+            localStorage.removeItem("token");
+            localStorage.removeItem("is_admin");
             postRequest("/user/login", { username: username, password: password })
                 .then(function (response) {
                     var axiosData = response.data;

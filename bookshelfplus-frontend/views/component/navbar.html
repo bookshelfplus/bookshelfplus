@@ -16,7 +16,7 @@
     </div>
 </div>
 <script>
-    if (localStorage.token)
+    if (localStorage.getItem("token"))
         $("#dashboard").html("后台");
 
     function navbarHighlight() {

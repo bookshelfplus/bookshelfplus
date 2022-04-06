@@ -1,5 +1,5 @@
 <script>
-    postRequest('/debug/status', { token: localStorage.token })
+    postRequest('/debug/status', { token: localStorage.getItem("token") })
         .then(function (response) {
             var axiosData = response.data;
             var status = axiosData.status;

@@ -38,8 +38,8 @@
         }
 
         if(!localStorage.getItem("token") || !localStorage.getItem("is_admin")) {
-            localStorage.clear("token");
-            localStorage.clear("is_admin");
+            localStorage.removeItem("token");
+            localStorage.removeItem("is_admin");
             window.location.href = "/";
         }
 
@@ -57,8 +57,8 @@
                     }
                 } else {
                     if(data.errCode == "20004") { // 登陆过期
-                        localStorage.clear("token");
-                        localStorage.clear("is_admin");
+                        localStorage.removeItem("token");
+                        localStorage.removeItem("is_admin");
                         window.location.href = "/login";
                     }
                     alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);

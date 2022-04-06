@@ -22,7 +22,7 @@
     </p>
     <script>
         // 带 token 的为绑定第三方账号，不带 token 的为第三方登录
-        getRequest("/third-party/callback/<%=platform%>" + location.search + (localStorage.token ? ("&token=" + localStorage.token) : ""))
+        getRequest("/third-party/callback/<%=platform%>" + location.search + (localStorage.getItem("token") ? ("&token=" + localStorage.getItem("token")) : ""))
             .then(function (response) {
                 var axiosData = response.data;
                 var status = axiosData.status;
@@ -30,7 +30,7 @@
                 if (status === "success") {
                     console.log(data)
                     // 默认直接跳转 user 后台，如果是管理员则由 user 后台跳转
-                    if(localStorage.token) {
+                    if(localStorage.getItem("token")) {
                         // 绑定第三方账号
 
                         // 绑定第三方账号成功

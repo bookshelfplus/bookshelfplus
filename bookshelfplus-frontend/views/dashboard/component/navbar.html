@@ -25,8 +25,8 @@
                 if (status === "success") {
                     console.log(data);
                     if (data) {
-                        localStorage.clear("token");
-                        localStorage.clear("is_admin");
+                        localStorage.removeItem("token");
+                        localStorage.removeItem("is_admin");
                         location.href = "/login";
                     } else {
                         alert("退出登录失败");
@@ -39,8 +39,8 @@
                 console.log(error);
                 var choice = confirm("服务器连接失败，无法正常退出登录，是否要强行退出登录？");
                 if(choice) {
-                    localStorage.clear("token");
-                    localStorage.clear("is_admin");
+                    localStorage.removeItem("token");
+                    localStorage.removeItem("is_admin");
                     location.href = "/login";
                 }
             });
