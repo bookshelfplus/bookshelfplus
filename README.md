@@ -25,7 +25,9 @@
 
 ## 开始使用
 
-> 所需环境：Java JDK 8，Maven，MySQL 5.7+，nodejs，Redis等
+> 所需环境：Java JDK 8，Maven，MySQL 5.7+，nodejs，Redis等。
+>
+> MySQL推荐使用8.0以上版本。
 
 > **下面的配置有些没有说明命令的执行目录，请自行判断。**这部分文档后期将会完善。
 

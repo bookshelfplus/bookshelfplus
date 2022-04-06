@@ -1,49 +1,154 @@
 // 表单验证基本函数
 function getValidateUtils() {
     var validateUtils = {
+
+        validateValue: "",
+        result: true,
+        msg: [],
+
+        setValue: function (validateValue) {
+            this.validateValue = validateValue;
+            return this;
+        },
+
         // 验证是否为空
-        isEmpty: function (value) {
-            return value === undefined || value === null || value === '';
+        notNull: function (notValidMsg) {
+            let value = this.validateValue;
+            if (value === null || value === undefined) {
+                this.result = false;
+                this.msg.push(notValidMsg);
+            }
+            return this;
         },
-        // 验证是否为数字
-        isNumber: function (value) {
-            return !isNaN(value);
+
+        // 验证是否为空 或者为空字符串
+        notEmpty: function (notValidMsg) {
+            let value = this.validateValue;
+            if (value === null || value === undefined || value === "") {
+                this.result = false;
+                this.msg.push(notValidMsg);
+            }
+            return this;
         },
+
+        // 验证是否为空 或者为空字符串 或者 trim() 为空字符串
+        notEmpty: function (notValidMsg) {
+            let value = this.validateValue;
+            if (value === null || value === undefined || value === "" || value.trim() === "") {
+                this.result = false;
+                this.msg.push(notValidMsg);
+            }
+            return this;
+        },
+
+        // 不是字符串
+        notString: function (notValidMsg) {
+            let value = this.validateValue;
+            if (typeof value !== "string") {
+                this.result = false;
+                this.msg.push(notValidMsg);
+            }
+            return this;
+        },
+
+        // 不是数字
+        notNumber: function (notValidMsg) {
+            let value = this.validateValue;
+            if (typeof value !== "number" || isNaN(value)) {
+                this.result = false;
+                this.msg.push(notValidMsg);
+            }
+            return this;
+        },
+
         // 验证是否为整数
-        isInteger: function (value) {
-            return this.isNumber(value) && parseInt(value) === value;
+        notInteger: function (notValidMsg) {
+            let value = this.validateValue;
+            // parseInt(value) === value
+            if (typeof value !== "number" || isNaN(value) || value % 1 !== 0) {
+                this.result = false;
+                this.msg.push(notValidMsg);
+            }
+            return this;
         },
+
         // 验证是否为正整数
-        isPositiveInteger: function (value) {
-            return this.isInteger(value) && value > 0;
+        notPositiveInteger: function (notValidMsg) {
+            let value = this.validateValue;
+            if (typeof value !== "number" || isNaN(value) || value % 1 !== 0 || value <= 0) {
+                this.result = false;
+                this.msg.push(notValidMsg);
+            }
+            return this;
         },
-        // 验证是否为对象
-        isObject: function (value) {
-            return typeof value === 'object';
+
+        // 不是数组
+        notArray: function (notValidMsg) {
+            let value = this.validateValue;
+            if (typeof value !== "object" || !Array.isArray(value)) {
+                this.result = false;
+                this.msg.push(notValidMsg);
+            }
+            return this;
         },
-        // 验证是否为数组
-        isArray: function (value) {
-            return Array.isArray(value);
+
+        // 不是对象
+        notObject: function (notValidMsg) {
+            let value = this.validateValue;
+            if (typeof value !== "object") {
+                this.result = false;
+                this.msg.push(notValidMsg);
+            }
+            return this;
         },
-        // 验证是否为字符串
-        isString: function (value) {
-            return typeof value === 'string';
-        },
+
         // 验证是否为布尔值
-        isBoolean: function (value) {
-            return typeof value === 'boolean';
+        notBoolean: function (notValidMsg) {
+            let value = this.validateValue;
+            if (typeof value !== "boolean") {
+                this.result = false;
+                this.msg.push(notValidMsg);
+            }
+            return this;
         },
+
         // 验证是否为函数
-        isFunction: function (value) {
-            return typeof value === 'function';
+        notFunction: function (notValidMsg) {
+            let value = this.validateValue;
+            if (typeof value !== "function") {
+                this.result = false;
+                this.msg.push(notValidMsg);
+            }
+            return this;
         },
+
         // 验证是否为日期
-        isDate: function (value) {
-            return value instanceof Date;
+        notDate: function (notValidMsg) {
+            let value = this.validateValue;
+            if (typeof value !== "object" || !(value instanceof Date)) {
+                this.result = false;
+                this.msg.push(notValidMsg);
+            }
+            return this;
         },
+
         // 验证是否为正则表达式
-        isRegExp: function (value) {
-            return value instanceof RegExp;
+        notRegExp: function (notValidMsg) {
+            let value = this.validateValue;
+            if (typeof value !== "object" || !(value instanceof RegExp)) {
+
+                this.result = false;
+                this.msg.push(notValidMsg);
+            }
+            return this;
+        },
+
+        // 返回结果
+        result: function () {
+            return {
+                result: this.result,
+                msg: this.msg
+            }
         },
     };
 }

@@ -50,7 +50,14 @@
                 innerHTML: "",
 
                 "validate": function (value) {
-                    var result = true, msg = "";
+
+                    var validate = validateUtils.setValue(value)
+                        .validate.notNull(value, "书本名称不能为空，请输入书本名称")
+                        .validate.notNull(value, "书本名称不能超过 50 个字符")
+                        .validate.notNull(value, "书本名称不能包含特殊字符")
+                        .result();
+                    console.log(validate);
+
                     if (validateUtils.isEmpty(value)) {
                         result = false;
                         msg = "不能为空";
