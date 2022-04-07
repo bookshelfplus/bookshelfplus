@@ -1,7 +1,6 @@
 package plus.bookshelf.Service.Service;
 
 import plus.bookshelf.Common.Error.BusinessException;
-import plus.bookshelf.Dao.DO.BookDO;
 import plus.bookshelf.Service.Model.BookModel;
 
 import java.util.List;
@@ -63,6 +62,14 @@ public interface BookService {
      * @throws BusinessException
      */
     Boolean removeFavorites(Integer userId, Integer bookId) throws BusinessException;
+
+    /**
+     * 获取用户收藏书籍列表
+     * @param userId
+     * @return
+     * @throws BusinessException
+     */
+    List<BookModel> getFavoritesList(Integer userId) throws BusinessException;
 
     /**
      * 获取用户收藏状态

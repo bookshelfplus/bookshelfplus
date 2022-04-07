@@ -76,9 +76,9 @@ public class BookController extends BaseController {
     @ApiOperation(value = "【用户】收藏/取消收藏书籍", notes = "用户收藏书籍")
     @RequestMapping(value = "toggleFavorites", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
     @ResponseBody
-    public CommonReturnType addFavorites(@RequestParam(value = "token", required = false) String token,
-                                         @RequestParam(value = "bookId", required = false) Integer bookId,
-                                         @RequestParam(value = "status", required = true) Boolean isFavoritesNow) throws BusinessException {
+    public CommonReturnType toggleFavorites(@RequestParam(value = "token", required = false) String token,
+                                            @RequestParam(value = "bookId", required = false) Integer bookId,
+                                            @RequestParam(value = "status", required = true) Boolean isFavoritesNow) throws BusinessException {
 
         // 已经在 getUserByToken 方法中判断了 token 为空、不合法；用户不存在情况，此处无需再判断
         UserModel userModel = userService.getUserByToken(redisTemplate, token);
@@ -107,14 +107,26 @@ public class BookController extends BaseController {
     @ApiOperation(value = "【用户】收藏/取消收藏书籍", notes = "用户收藏书籍")
     @RequestMapping(value = "getFavoritesStatus", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
     @ResponseBody
-    public CommonReturnType addFavorites(@RequestParam(value = "token", required = false) String token,
-                                         @RequestParam(value = "bookId", required = false) Integer bookId) throws BusinessException {
+    public CommonReturnType getFavoritesStatus(@RequestParam(value = "token", required = false) String token,
+                                               @RequestParam(value = "bookId", required = false) Integer bookId) throws BusinessException {
 
         // 已经在 getUserByToken 方法中判断了 token 为空、不合法；用户不存在情况，此处无需再判断
         UserModel userModel = userService.getUserByToken(redisTemplate, token);
 
         Map favoritesStatus = bookService.getFavoritesStatus(userModel.getId(), bookId);
         return CommonReturnType.create(favoritesStatus);
+    }
+
+    @ApiOperation(value = "【用户】用户收藏书籍列表", notes = "获取用户的收藏书籍列表")
+    @RequestMapping(value = "getFavoritesList", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
+    @ResponseBody
+    public CommonReturnType getFavoritesList(@RequestParam(value = "token", required = false) String token) throws BusinessException {
+
+        // 已经在 getUserByToken 方法中判断了 token 为空、不合法；用户不存在情况，此处无需再判断
+        UserModel userModel = userService.getUserByToken(redisTemplate, token);
+
+        List<BookModel> favoritesList = bookService.getFavoritesList(userModel.getId());
+        return CommonReturnType.create(favoritesList);
     }
 
     @ApiOperation(value = "【管理员】添加/修改书籍", notes = "管理员在后台添加/修改书籍（bookId 传 0 或 null 或 不传 即为添加）")

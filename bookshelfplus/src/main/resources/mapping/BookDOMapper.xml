@@ -286,4 +286,14 @@
       author = #{author,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectFavoritesListByUserId" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select
+    book_info.id, book_name, category_id, publishing_house, `language`, copyright, is_delete, thumbnail
+    <!--<include refid="Base_Column_List" />-->
+    ,
+    <include refid="Blob_Column_List" />,
+    from user_book_favorites_relation
+    left join book_info on user_book_favorites_relation.book_id = book_info.id
+    where user_book_favorites_relation.user_id = #{userId,jdbcType=INTEGER}
+  </select>
 </mapper>

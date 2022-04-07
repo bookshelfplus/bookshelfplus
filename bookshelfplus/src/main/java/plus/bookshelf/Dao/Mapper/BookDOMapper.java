@@ -79,4 +79,11 @@ public interface BookDOMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(BookDO record);
+
+    /**
+     * 通过用户id获取用户收藏书籍列表
+     * @param userId
+     * @return
+     */
+    BookDO[] selectFavoritesListByUserId(Integer userId);
 }

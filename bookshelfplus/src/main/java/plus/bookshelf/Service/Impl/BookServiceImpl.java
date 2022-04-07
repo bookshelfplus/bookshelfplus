@@ -37,6 +37,7 @@ public class BookServiceImpl implements BookService {
 
     /**
      * 通过 书籍id 查找图书
+     *
      * @param id
      * @return
      */
@@ -51,6 +52,7 @@ public class BookServiceImpl implements BookService {
 
     /**
      * 查找图书
+     *
      * @param bookModel
      * @return
      * @throws BusinessException
@@ -85,6 +87,7 @@ public class BookServiceImpl implements BookService {
 
     /**
      * 添加图书
+     *
      * @param bookModel
      * @return
      * @throws BusinessException
@@ -103,6 +106,7 @@ public class BookServiceImpl implements BookService {
 
     /**
      * 修改图书信息
+     *
      * @param bookModel
      * @return
      * @throws BusinessException
@@ -121,13 +125,14 @@ public class BookServiceImpl implements BookService {
 
     /**
      * 通过 id 删除图书
+     *
      * @param bookId
      * @return
      * @throws BusinessException
      */
     @Override
     public Integer deleteBook(Integer bookId) throws BusinessException {
-        if(bookId == null || bookId == 0) {
+        if (bookId == null || bookId == 0) {
             throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "书籍id不能为空");
         }
         return bookDOMapper.deleteByPrimaryKey(bookId);
@@ -163,6 +168,25 @@ public class BookServiceImpl implements BookService {
     public Boolean removeFavorites(Integer userId, Integer bookId) throws BusinessException {
         int affectRows = userFavoritesDOMapper.deleteByUserIdAndBookId(userId, bookId);
         return affectRows > 0;
+    }
+
+    /**
+     * 获取用户收藏书籍列表
+     *
+     * @param userId 用户id
+     * @return
+     * @throws BusinessException
+     */
+    @Override
+    public List<BookModel> getFavoritesList(Integer userId) throws BusinessException {
+        BookDO[] bookDOS = bookDOMapper.selectFavoritesListByUserId(userId);
+
+        List<BookModel> bookModels = new ArrayList<>();
+        for (BookDO bookDO : bookDOS) {
+            BookModel bookModel = convertFromDataObjecct(bookDO);
+            bookModels.add(bookModel);
+        }
+        return bookModels;
     }
 
     /**
@@ -211,6 +235,7 @@ public class BookServiceImpl implements BookService {
 
         return bookModel;
     }
+
 
     private BookDO convertToDataObjecct(BookModel bookModel) {
         if (bookModel == null) {
