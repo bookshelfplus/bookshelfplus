@@ -1,0 +1,6 @@
+output/*
+*.pdf
+*.png
+*.zip
+*.json
+*.bak
