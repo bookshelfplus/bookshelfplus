@@ -1,8 +1,18 @@
 <p>
     <a href="<%= pageUrl %>detail">添加书籍</a>
 </p>
+<input id="searchInput" type="text" />
+<input id="searchButton" type="button" value="搜索" />
 <!-- 搜索书籍 -->
 <script>
+    $("#searchButton").click(function () {
+        search({
+            tableElementId: "book-table",
+            searchText: $("#searchInput").val(),
+            categoryId: null
+        });
+    });
+
     function search({ tableElementId = "", searchText = "", categoryId = 0 }) {
         getRequest("/book/search", { bookName: searchText, categoryId: categoryId })
             .then(function (responseData) {

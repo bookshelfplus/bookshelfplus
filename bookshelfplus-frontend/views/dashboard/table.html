@@ -4,7 +4,7 @@
     <%- include("./component/header.html"); %>
     <style>
         .main {
-            width: 96vw !important;
+            width: 92vw !important;
             max-width: initial !important;
         }
 
@@ -36,8 +36,6 @@
                 <!-- 引入对应页面渲染配置 -->
                 <%- include(pageTemplate); %>
             <% } %>
-            <input id="searchInput" type="text" />
-            <input id="searchButton" type="button" value="搜索" />
             <table id="book-table"></table>
         </div>
     </main>
@@ -51,19 +49,10 @@
         var requestParams = getParams();
         var searchbox = document.getElementById("searchInput");
         var keyword = (requestParams["keyword"] || "").trim();
-        searchbox.value = keyword;
         search({
             tableElementId: "book-table",
             searchText: null,
             categoryId: null
-        });
-
-        $("#searchButton").click(function () {
-            search({
-                tableElementId: "book-table",
-                searchText: $("#searchInput").val(),
-                categoryId: null
-            });
         });
     </script>
 </body>

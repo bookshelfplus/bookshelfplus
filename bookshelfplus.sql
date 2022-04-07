@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 05/04/2022 17:54:17
+ Date: 07/04/2022 11:32:50
 */
 
 SET NAMES utf8mb4;
@@ -172,6 +172,7 @@ CREATE TABLE `third_party_user_auth_relation`  (
   INDEX `third_party_user_id`(`third_party_user_id`) USING BTREE,
   CONSTRAINT `third_party_user_auth_relation_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user_info` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `third_party_user_auth_relation_ibfk_2` FOREIGN KEY (`third_party_user_id`) REFERENCES `third_party_user_info` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of third_party_user_auth_relation

@@ -127,7 +127,7 @@ router.get('/dashboard/:group/:page/:subpage?', function (req, res) {
             // },
             "my-collection": {
                 title: "我的收藏",
-                baseTemplate: "blank",
+                baseTemplate: "table",
                 pageTemplate: "myCollection",
             },
             "my-account": {
