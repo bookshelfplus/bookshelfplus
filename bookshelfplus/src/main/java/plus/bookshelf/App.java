@@ -1,5 +1,6 @@
 package plus.bookshelf;
 
+import com.qcloud.cos.http.HttpMethodName;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -36,6 +37,6 @@ public class App {
     @RequestMapping("/cos")
     public String cos() {
         QCloudCosUtils QCloudCosUtils = new QCloudCosUtils(qCloudCosConfig);
-        return QCloudCosUtils.getUrl("mydemo.jpg", 1);
+        return QCloudCosUtils.getUrl("user-login-token", HttpMethodName.POST, "mydemo.jpg", 5);
     }
 }

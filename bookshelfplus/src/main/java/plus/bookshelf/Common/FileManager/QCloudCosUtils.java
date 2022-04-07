@@ -1,5 +1,6 @@
 package plus.bookshelf.Common.FileManager;
 
+import com.aventrix.jnanoid.jnanoid.NanoIdUtils;
 import com.qcloud.cos.COSClient;
 import com.qcloud.cos.ClientConfig;
 import com.qcloud.cos.auth.BasicCOSCredentials;
@@ -14,9 +15,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * 生成预签名URL
- */
 public class QCloudCosUtils {
     QCloudCosConfig qCloudCosConfig;
 
@@ -60,11 +58,23 @@ public class QCloudCosUtils {
         return new COSClient(cred, clientConfig);
     }
 
-    public String getUrl(String objectKey) {
-        return getUrl(objectKey, 30);
+    public String getUrl(String token, String objectKey) {
+        // 如果不指定失效时间，默认为 30 分钟
+        return getUrl(token, HttpMethodName.GET, objectKey, 30);
     }
 
-    public String getUrl(String objectKey, Integer expireMinute) {
+    /**
+     * 生成预签名URL
+     * <p>
+     * refer: https://cloud.tencent.com/document/product/436/35217
+     *
+     * @param token          当前登录用户的 token
+     * @param httpMethodName 请求的 HTTP 方法，上传请求用 PUT，下载请求用 GET，删除请求用 DELETE
+     * @param objectKey      文件对象的 key
+     * @param expireMinute   过期时间
+     * @return
+     */
+    public String getUrl(String token, HttpMethodName httpMethodName, String objectKey, Integer expireMinute) {
         // 调用 COS 接口之前必须保证本进程存在一个 COSClient 实例，如果没有则创建
         // 详细代码参见本页：简单操作 -> 创建 COSClient
         COSClient cosClient = createCOSClient();
@@ -79,11 +89,16 @@ public class QCloudCosUtils {
         Date expirationDate = new Date(System.currentTimeMillis() + expireMinute * 60 * 1000);
 
         // 填写本次请求的参数，需与实际请求相同，能够防止用户篡改此签名的 HTTP 请求的参数
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("bookshelf", "plus");
+        Map<String, String> params = new HashMap<>();
+        params.put("poweredBy", "bookshelf.plus");
+        params.put("userToken", token);
+
+        String downloadGUID = NanoIdUtils.randomNanoId();
+        params.put("downloadGUID", downloadGUID); // 当次生成下载链接的全局唯一Id
+        params.put("温馨提示", "您的每一次下载都会被详细记录，请不要试图绕过系统获取文件下载直链，这是违法行为，请自重！");
 
         // 填写本次请求的头部，需与实际请求相同，能够防止用户篡改此签名的 HTTP 请求的头部
-        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, String> headers = new HashMap<>();
         // headers.put("header1", "value1");
 
         // 请求的 HTTP 方法，上传请求用 PUT，下载请求用 GET，删除请求用 DELETE
@@ -92,7 +107,7 @@ public class QCloudCosUtils {
         URL url = cosClient.generatePresignedUrl(bucketName, key, expirationDate, method, headers, params);
         System.out.println(url.toString());
 
-        // 确认本进程不再使用 cosClient 实例之后，关闭之
+        // [TODO] 确认本进程不再使用 cosClient 实例之后，关闭之
         cosClient.shutdown();
 
         return url.toString();
