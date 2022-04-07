@@ -1,0 +1,156 @@
+<!--
+    文件选择框
+    refer: https://developer.mozilla.org/zh-CN/docs/web/api/file/using_files_from_web_applications
+ -->
+<style>
+    #dropbox {
+        width: 100%;
+        height: 200px;
+        display: grid;
+        place-items: center;
+        cursor: pointer;
+        transition: all 0.5s;
+        border-radius: 5px;
+    }
+
+    #dropbox:hover {
+        transform: scale(1.03);
+    }
+
+    .lightgrey {
+        background-color: lightgrey;
+    }
+
+    .green {
+        background-color: #39a705;
+        color: #caf6b6;
+    }
+
+    .grey {
+        background-color: grey;
+        color: #b5b5b5;
+    }
+</style>
+<p>
+    <a href="<%= pageUrl %>../">返回上一级</a>
+</p>
+<div id="dropbox" class="lightgrey">
+    <p>
+        点击此处或将文件拖入此处以选择文件<br>
+        <!-- 文件个数: <span id="fileNum">0</span>; -->
+        文件大小: <span id="fileSize">0</span>
+    </p>
+</div>
+<!-- <input type="file" id="input" multiple onchange="handleFiles(this.files)"> -->
+<input type="file" id="fileSelector" style="display: none;">
+<p>
+    建议配合 Python 脚本使用，上传文件更方便
+</p>
+
+<script>
+    var file = null;
+
+    const inputElement = document.getElementById("fileSelector");
+    inputElement.addEventListener("change", fileSelectorHandleFiles, false);
+    function fileSelectorHandleFiles() {
+        const fileList = this.files; /* now you can work with the file list */
+        // console.log(fileList);
+        handleFiles(fileList);
+    }
+    function handleFiles(fileList) {
+        if (fileList.length === 0) {
+            // 还未选择文件
+            file = null;
+            dropbox.classList.remove("green");
+            document.getElementById("fileSize").innerHTML = "0";
+            return;
+        }
+        if (fileList.length > 1) {
+            alert("一次只能选择1个文件！");
+            this.outerHTML = this.outerHTML; // 清除选择的文件
+            file = null;
+            dropbox.classList.remove("green");
+            document.getElementById("fileSize").innerHTML = "0";
+            return;
+        }
+        file = fileList[0];
+
+        // 输出所选文件的总大小
+        let nBytes = 0;
+        for (let nFileId = 0; nFileId < fileList.length; nFileId++) {
+            nBytes += fileList[nFileId].size;
+        }
+        let sOutput = nBytes + " bytes";
+        // optional code for multiples approximation
+        const aMultiples = ["KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB"];
+        for (nMultiple = 0, nApprox = nBytes / 1024; nApprox > 1; nApprox /= 1024, nMultiple++) {
+            sOutput = nApprox.toFixed(2) + " " + aMultiples[nMultiple] + " (" + nBytes + " bytes)";
+        }
+
+        // document.getElementById("fileNum").innerHTML = fileList.length;
+        document.getElementById("fileSize").innerHTML = sOutput;
+
+        dropbox.classList.add("green");
+    }
+
+    // 通过 click() 方法使用隐藏的 file input 元素
+    const fileSelect = document.getElementById("dropbox");
+    fileSelect.addEventListener("click", function (e) {
+        if (inputElement) {
+            inputElement.click();
+        }
+    }, false);
+
+    // 使用拖放来选择文件
+    let dropbox = document.getElementById("dropbox");
+    dropbox.addEventListener("dragenter", dragenter, false);
+    dropbox.addEventListener("dragleave", dragleave, false);
+    dropbox.addEventListener("dragover", dragover, false);
+    dropbox.addEventListener("drop", drop, false);
+
+    var lastenter = null; // refer: https://www.jianshu.com/p/f96b754032a1
+
+    function dragenter(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        lastenter = e.target; // 记录最后进入的元素
+    }
+
+    function dragleave(e) {
+        if (lastenter == e.target)
+            dropbox.classList.remove('grey');
+    }
+
+    function dragover(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        dropbox.classList.add('grey');
+    }
+
+    function drop(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        dropbox.classList.remove('grey');
+
+        var dt = e.dataTransfer;
+        var files = dt.files;
+
+        handleFiles(files);
+    }
+
+    //传入预授权 URL ，将文件上传到这个地址
+    function uploadFile(file, preSignedUrl) {
+        // refer: https://cloud.tencent.com/document/product/436/35651
+
+        // 获取到 Url 后，前端可以这样 ajax 上传
+        var xhr = new XMLHttpRequest();
+        xhr.open('PUT', preSignedUrl, true);
+        xhr.onload = function (e) {
+            console.log('上传成功', xhr.status, xhr.statusText);
+        };
+        xhr.onerror = function (e) {
+            console.log('上传出错', xhr.status, xhr.statusText);
+        };
+        xhr.send(file); // file 是要上传的文件对象
+    }
+</script>

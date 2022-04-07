@@ -80,6 +80,11 @@ router.get('/dashboard/:group/:page/:subpage?', function (req, res) {
                 title: "仪表盘",
                 baseTemplate: "index",
             },
+            "category-manage": {
+                title: "分类管理",
+                baseTemplate: "form",
+                pageTemplate: "CategoryManage",
+            },
             "book-manage": {
                 title: "书籍管理",
                 baseTemplate: "table",
@@ -92,10 +97,17 @@ router.get('/dashboard/:group/:page/:subpage?', function (req, res) {
                     },
                 }
             },
-            "category-manage": {
-                title: "分类管理",
-                baseTemplate: "form",
-                pageTemplate: "CategoryManage",
+            "file-manage": {
+                title: "文件管理",
+                baseTemplate: "blank",
+                pageTemplate: "FileManage",
+                childPage: {
+                    "upload": {
+                        title: "上传文件",
+                        baseTemplate: "blank",
+                        pageTemplate: "FileManage_Upload",
+                    },
+                }
             },
             "user-manage": {
                 title: "用户管理",
