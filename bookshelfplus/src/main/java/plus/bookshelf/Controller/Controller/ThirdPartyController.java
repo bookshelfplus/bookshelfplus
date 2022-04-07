@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import plus.bookshelf.Common.Error.BusinessErrorCode;
 import plus.bookshelf.Common.Error.BusinessException;
 import plus.bookshelf.Common.Response.CommonReturnType;
-import plus.bookshelf.Common.ThirdParty.ThirdPartyConfig;
+import plus.bookshelf.Config.ThirdPartyConfig;
 import plus.bookshelf.Controller.VO.UserVO;
 import plus.bookshelf.Service.Impl.ThirdPartyUserServiceImpl;
 import plus.bookshelf.Service.Model.ThirdPartyUserModel;
@@ -23,7 +23,6 @@ import plus.bookshelf.Service.Model.UserModel;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 @Api(tags = "第三方登录")
 @Controller

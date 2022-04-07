@@ -103,8 +103,8 @@ public class UserServiceImpl implements UserService {
             Integer thirdPartyUserId = thirdPartyUserDO.getId();
             // 删除第三方账号与用户的关联
             // 首先在 Auth 表中删除
-            int affectRows = thirdPartyUserAuthDOMapper.deleteByUserIdAndThirdPartyUserId(userId, thirdPartyUserId);
-            if (affectRows == 0) {
+            int affectRows1 = thirdPartyUserAuthDOMapper.deleteByUserIdAndThirdPartyUserId(userId, thirdPartyUserId);
+            if (affectRows1 == 0) {
                 // 删除失败
                 return false;
             }

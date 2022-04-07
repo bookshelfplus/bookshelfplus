@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import plus.bookshelf.Common.Error.BusinessErrorCode;
 import plus.bookshelf.Common.Error.BusinessException;
 import plus.bookshelf.Common.Response.CommonReturnType;
-import plus.bookshelf.Common.ThirdParty.ThirdPartyConfig;
+import plus.bookshelf.Config.ThirdPartyConfig;
 import plus.bookshelf.Service.Impl.UserServiceImpl;
 import plus.bookshelf.Service.Model.UserModel;
 

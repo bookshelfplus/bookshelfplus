@@ -4,12 +4,10 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import plus.bookshelf.Common.Enum.plus.bookshelf.TencentCloud.COS.CosProperties;
-import plus.bookshelf.Common.TencentCloud.COS.GeneratePresignatureUrl;
+import plus.bookshelf.Common.FileManager.QCloudCosUtils;
+import plus.bookshelf.Config.QCloudCosConfig;
 
 /**
  * Hello world!
@@ -33,11 +31,11 @@ public class App {
     }
 
     @Autowired
-    CosProperties cosProperties;
+    QCloudCosConfig qCloudCosConfig;
 
     @RequestMapping("/cos")
     public String cos() {
-        GeneratePresignatureUrl generatePresignatureUrl = new GeneratePresignatureUrl(cosProperties);
-        return generatePresignatureUrl.getUrl("mydemo.jpg", 1);
+        QCloudCosUtils QCloudCosUtils = new QCloudCosUtils(qCloudCosConfig);
+        return QCloudCosUtils.getUrl("mydemo.jpg", 1);
     }
 }

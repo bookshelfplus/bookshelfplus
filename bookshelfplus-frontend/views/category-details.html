@@ -23,6 +23,11 @@
             cursor: pointer;
             /* cursor: alias; */
         }
+
+        /* 在分类下隐藏书籍的分类 */
+        tr>*:nth-child(2) {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -33,6 +38,7 @@
             <!-- <a href="./book">书本详情页</a> -->
         </div>
         <hr style="margin: 30px 0;">
+        <h3>该分类下的书籍</h3>
         <div id="container-book">
             <table id="book-table" style="width: 100%;"></table>
         </div>

@@ -1,4 +1,4 @@
-package plus.bookshelf.Common.TencentCloud.COS;
+package plus.bookshelf.Common.FileManager;
 
 import com.qcloud.cos.COSClient;
 import com.qcloud.cos.ClientConfig;
@@ -7,17 +7,21 @@ import com.qcloud.cos.auth.COSCredentials;
 import com.qcloud.cos.http.HttpMethodName;
 import com.qcloud.cos.http.HttpProtocol;
 import com.qcloud.cos.region.Region;
+import plus.bookshelf.Config.QCloudCosConfig;
 
 import java.net.URL;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GeneratePresignatureUrl {
-    plus.bookshelf.Common.Enum.plus.bookshelf.TencentCloud.COS.CosProperties cosProperties;
+/**
+ * 生成预签名URL
+ */
+public class QCloudCosUtils {
+    QCloudCosConfig qCloudCosConfig;
 
-    public GeneratePresignatureUrl(plus.bookshelf.Common.Enum.plus.bookshelf.TencentCloud.COS.CosProperties cosProperties) {
-        this.cosProperties = cosProperties;
+    public QCloudCosUtils(QCloudCosConfig qCloudCosConfig) {
+        this.qCloudCosConfig = qCloudCosConfig;
     }
 
     // refer: https://cloud.tencent.com/document/product/436/35217#.E5.88.9B.E5.BB.BA-cosclient
@@ -25,8 +29,8 @@ public class GeneratePresignatureUrl {
     COSClient createCOSClient() {
         // 设置用户身份信息。
         // SECRETID 和 SECRETKEY 请登录访问管理控制台 https://console.cloud.tencent.com/cam/capi 进行查看和管理
-        String secretId = cosProperties.getAccessKey();
-        String secretKey = cosProperties.getSecretKey();
+        String secretId = qCloudCosConfig.getAccessKey();
+        String secretKey = qCloudCosConfig.getSecretKey();
         COSCredentials cred = new BasicCOSCredentials(secretId, secretKey);
 
         // ClientConfig 中包含了后续请求 COS 的客户端设置：
@@ -34,7 +38,7 @@ public class GeneratePresignatureUrl {
 
         // 设置 bucket 的地域
         // COS_REGION 请参照 https://cloud.tencent.com/document/product/436/6224
-        clientConfig.setRegion(new Region(cosProperties.getRegionName()));
+        clientConfig.setRegion(new Region(qCloudCosConfig.getRegionName()));
 
         // 设置请求协议, http 或者 https
         // 5.6.53 及更低的版本，建议设置使用 https 协议
@@ -56,19 +60,22 @@ public class GeneratePresignatureUrl {
         return new COSClient(cred, clientConfig);
     }
 
+    public String getUrl(String objectKey) {
+        return getUrl(objectKey, 30);
+    }
+
     public String getUrl(String objectKey, Integer expireMinute) {
         // 调用 COS 接口之前必须保证本进程存在一个 COSClient 实例，如果没有则创建
         // 详细代码参见本页：简单操作 -> 创建 COSClient
         COSClient cosClient = createCOSClient();
 
         // 存储桶的命名格式为 BucketName-APPID，此处填写的存储桶名称必须为此格式
-        String bucketName = cosProperties.getBucketName();
+        String bucketName = qCloudCosConfig.getBucketName();
         // 对象键(Key)是对象在存储桶中的唯一标识。详情请参见 [对象键](https://cloud.tencent.com/document/product/436/13324)
-        String key = objectKey;
+        String key = qCloudCosConfig.getKeyName() + objectKey;
 
         // 设置签名过期时间(可选), 若未进行设置则默认使用 ClientConfig 中的签名过期时间(1小时)
-        // 这里设置签名在半个小时后过期
-        // Date expirationDate = new Date(System.currentTimeMillis() + 30 * 60 * 1000);
+        // 这里设置签名在 expireMinute 分钟后过期
         Date expirationDate = new Date(System.currentTimeMillis() + expireMinute * 60 * 1000);
 
         // 填写本次请求的参数，需与实际请求相同，能够防止用户篡改此签名的 HTTP 请求的参数

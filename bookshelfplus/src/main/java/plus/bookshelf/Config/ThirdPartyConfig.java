@@ -1,4 +1,4 @@
-package plus.bookshelf.Common.ThirdParty;
+package plus.bookshelf.Config;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
