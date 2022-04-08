@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 07/04/2022 11:32:50
+ Date: 08/04/2022 18:21:08
 */
 
 SET NAMES utf8mb4;
@@ -111,6 +111,25 @@ INSERT INTO `category_info` VALUES (40, 'Java进阶', '简介123', 1, 8, 3, 20);
 INSERT INTO `category_info` VALUES (41, 'Java Web', '简介123', 1, 9, 3, 20);
 INSERT INTO `category_info` VALUES (42, 'Spring Cloud', '简介123', 1, 10, 3, 20);
 INSERT INTO `category_info` VALUES (43, '其他', '简介123', 1, 12, 1, 0);
+
+-- ----------------------------
+-- Table structure for cos_presigned_url_generate_log
+-- ----------------------------
+DROP TABLE IF EXISTS `cos_presigned_url_generate_log`;
+CREATE TABLE `cos_presigned_url_generate_log`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增Id',
+  `user_id` int(11) NOT NULL COMMENT '用户Id',
+  `time` datetime NOT NULL COMMENT '链接生成时间',
+  `expire_minute` int(255) NOT NULL COMMENT '链接有效期（单位：分钟）',
+  `method` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '操作方法（上传请求用 PUT，下载请求用 GET，删除请求用 DELETE）',
+  `file_path` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '下载的文件链接',
+  `url_guid` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '链接生成时创建的全局唯一NanoID，便于出现异常下载记录与腾讯云下载日志做对应',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of cos_presigned_url_generate_log
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for file_info

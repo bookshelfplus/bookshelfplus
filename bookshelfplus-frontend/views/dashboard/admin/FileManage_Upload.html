@@ -349,6 +349,11 @@
         };
         xhr.onload = function (e) {
             console.log('上传成功', xhr.status, xhr.statusText);
+            // 等待进度条走到 100% 否则小文件进度条还没有走完就提示上传完成会让人感觉有点奇怪
+            setTimeout(function(){
+                alert("上传成功！");
+                window.location.reload();
+            }, 300);
         };
         xhr.onerror = function (e) {
             console.log('上传出错', xhr.status, xhr.statusText);

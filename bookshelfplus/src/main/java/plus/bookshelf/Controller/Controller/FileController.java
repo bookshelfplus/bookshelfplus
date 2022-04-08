@@ -13,6 +13,7 @@ import plus.bookshelf.Common.Response.CommonReturnType;
 import plus.bookshelf.Config.QCloudCosConfig;
 import plus.bookshelf.Service.Impl.UserServiceImpl;
 import plus.bookshelf.Service.Model.UserModel;
+import plus.bookshelf.Service.Service.CosPresignedUrlGenerateLogService;
 
 @Api(tags = "文件管理")
 @Controller("file")
@@ -24,6 +25,9 @@ public class FileController extends BaseController {
 
     @Autowired
     UserServiceImpl userService;
+
+    @Autowired
+    CosPresignedUrlGenerateLogService cosPresignedUrlGenerateLogService;
 
     /**
      * 创建文件操作预授权URL
@@ -61,7 +65,7 @@ public class FileController extends BaseController {
             throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "httpMethod 参数不合法");
         }
 
-        QCloudCosUtils qCloudCosUtils = new QCloudCosUtils(qCloudCosConfig);
+        QCloudCosUtils qCloudCosUtils = new QCloudCosUtils(qCloudCosConfig, cosPresignedUrlGenerateLogService);
 
         // 判断对象是否存在
         Boolean isExist = qCloudCosUtils.doesObjectExist(fileName);
@@ -77,7 +81,7 @@ public class FileController extends BaseController {
                 throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "httpMethod 参数暂不支持");
         }
 
-        String url = qCloudCosUtils.generatePresignedUrl(token, httpMethodName, fileName, 30);
+        String url = qCloudCosUtils.generatePresignedUrl(userModel.getId(), httpMethodName, fileName, 30);
 
         return CommonReturnType.create(url);
     }

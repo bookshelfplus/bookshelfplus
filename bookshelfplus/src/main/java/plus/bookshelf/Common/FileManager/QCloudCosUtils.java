@@ -8,7 +8,9 @@ import com.qcloud.cos.auth.COSCredentials;
 import com.qcloud.cos.http.HttpMethodName;
 import com.qcloud.cos.http.HttpProtocol;
 import com.qcloud.cos.region.Region;
+import plus.bookshelf.Common.Error.BusinessException;
 import plus.bookshelf.Config.QCloudCosConfig;
+import plus.bookshelf.Service.Service.CosPresignedUrlGenerateLogService;
 
 import javax.annotation.PreDestroy;
 import java.net.URL;
@@ -21,13 +23,17 @@ public class QCloudCosUtils {
     // 配置信息
     QCloudCosConfig qCloudCosConfig;
 
+    // 记录日志 Service
+    CosPresignedUrlGenerateLogService cosPresignedUrlGenerateLogService;
+
     /**
      * 构造函数
      *
      * @param qCloudCosConfig
      */
-    public QCloudCosUtils(QCloudCosConfig qCloudCosConfig) {
+    public QCloudCosUtils(QCloudCosConfig qCloudCosConfig, CosPresignedUrlGenerateLogService cosPresignedUrlGenerateLogService) {
         this.qCloudCosConfig = qCloudCosConfig;
+        this.cosPresignedUrlGenerateLogService = cosPresignedUrlGenerateLogService;
     }
 
     private static COSClient _cosClient = null;
@@ -93,7 +99,7 @@ public class QCloudCosUtils {
      * @param expireMinute   过期时间
      * @return
      */
-    public String generatePresignedUrl(String token, HttpMethodName httpMethodName, String objectKey, Integer expireMinute) {
+    public String generatePresignedUrl(Integer userId, HttpMethodName httpMethodName, String objectKey, Integer expireMinute) throws BusinessException {
         // 调用 COS 接口之前必须保证本进程存在一个 COSClient 实例，如果没有则创建
         // 详细代码参见本页：简单操作 -> 创建 COSClient
         // COSClient cosClient = createCOSClient();
@@ -110,10 +116,10 @@ public class QCloudCosUtils {
 
         // 填写本次请求的参数，需与实际请求相同，能够防止用户篡改此签名的 HTTP 请求的参数
         Map<String, String> params = new HashMap<>();
-        params.put("poweredBy", "bookshelf.plus");
-        params.put("userToken", token);
-        String downloadGUID = NanoIdUtils.randomNanoId();
-        params.put("downloadGUID", downloadGUID); // 当次生成下载链接的全局唯一Id
+        params.put("by", "书栖网 bookshelf.plus");
+        params.put("userId", String.valueOf(userId));
+        String urlGUID = NanoIdUtils.randomNanoId();
+        params.put("guid", urlGUID); // 当次生成下载链接的全局唯一Id
 
         // 填写本次请求的头部，需与实际请求相同，能够防止用户篡改此签名的 HTTP 请求的头部
         Map<String, String> headers = new HashMap<>();
@@ -124,6 +130,9 @@ public class QCloudCosUtils {
 
         URL url = cosClient.generatePresignedUrl(bucketName, key, expirationDate, method, headers, params);
         // System.out.println(url.toString());
+
+        // 记录用户操作日志
+        cosPresignedUrlGenerateLogService.log(userId, expireMinute, httpMethodName.name(), key, urlGUID);
 
         return url.toString();
     }
