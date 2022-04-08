@@ -10,21 +10,34 @@ import com.qcloud.cos.http.HttpProtocol;
 import com.qcloud.cos.region.Region;
 import plus.bookshelf.Config.QCloudCosConfig;
 
+import javax.annotation.PreDestroy;
 import java.net.URL;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public class QCloudCosUtils {
+
+    // 配置信息
     QCloudCosConfig qCloudCosConfig;
 
+    /**
+     * 构造函数
+     *
+     * @param qCloudCosConfig
+     */
     public QCloudCosUtils(QCloudCosConfig qCloudCosConfig) {
         this.qCloudCosConfig = qCloudCosConfig;
     }
 
+    private static COSClient _cosClient = null;
+
     // refer: https://cloud.tencent.com/document/product/436/35217#.E5.88.9B.E5.BB.BA-cosclient
     // 创建 COSClient 实例，这个实例用来后续调用请求
     COSClient createCOSClient() {
+        if (_cosClient != null) {
+            return _cosClient;
+        }
         // 设置用户身份信息。
         // SECRETID 和 SECRETKEY 请登录访问管理控制台 https://console.cloud.tencent.com/cam/capi 进行查看和管理
         String secretId = qCloudCosConfig.getAccessKey();
@@ -54,13 +67,19 @@ public class QCloudCosUtils {
         // clientConfig.setHttpProxyIp("httpProxyIp");
         // clientConfig.setHttpProxyPort(80);
 
-        // 生成 cos 客户端。
-        return new COSClient(cred, clientConfig);
+        // 生成 cos 客户端
+        _cosClient = new COSClient(cred, clientConfig);
+        System.out.println("cosClient construct success.");
+        return _cosClient;
     }
 
-    public String getUrl(String token, String objectKey) {
-        // 如果不指定失效时间，默认为 30 分钟
-        return getUrl(token, HttpMethodName.GET, objectKey, 30);
+    public Boolean doesObjectExist(String objectKey) {
+        COSClient cosClient = createCOSClient();
+        // 存储桶的命名格式为 BucketName-APPID，此处填写的存储桶名称必须为此格式
+        String bucketName = qCloudCosConfig.getBucketName();
+        // 对象键(Key)是对象在存储桶中的唯一标识。详情请参见 [对象键](https://cloud.tencent.com/document/product/436/13324)
+        String key = qCloudCosConfig.getKeyName() + objectKey;
+        return cosClient.doesObjectExist(bucketName, key);
     }
 
     /**
@@ -74,9 +93,10 @@ public class QCloudCosUtils {
      * @param expireMinute   过期时间
      * @return
      */
-    public String getUrl(String token, HttpMethodName httpMethodName, String objectKey, Integer expireMinute) {
+    public String generatePresignedUrl(String token, HttpMethodName httpMethodName, String objectKey, Integer expireMinute) {
         // 调用 COS 接口之前必须保证本进程存在一个 COSClient 实例，如果没有则创建
         // 详细代码参见本页：简单操作 -> 创建 COSClient
+        // COSClient cosClient = createCOSClient();
         COSClient cosClient = createCOSClient();
 
         // 存储桶的命名格式为 BucketName-APPID，此处填写的存储桶名称必须为此格式
@@ -92,24 +112,27 @@ public class QCloudCosUtils {
         Map<String, String> params = new HashMap<>();
         params.put("poweredBy", "bookshelf.plus");
         params.put("userToken", token);
-
         String downloadGUID = NanoIdUtils.randomNanoId();
         params.put("downloadGUID", downloadGUID); // 当次生成下载链接的全局唯一Id
-        params.put("温馨提示", "您的每一次下载都会被详细记录，请不要试图绕过系统获取文件下载直链，这是违法行为，请自重！");
 
         // 填写本次请求的头部，需与实际请求相同，能够防止用户篡改此签名的 HTTP 请求的头部
         Map<String, String> headers = new HashMap<>();
         // headers.put("header1", "value1");
 
         // 请求的 HTTP 方法，上传请求用 PUT，下载请求用 GET，删除请求用 DELETE
-        HttpMethodName method = HttpMethodName.GET;
+        HttpMethodName method = httpMethodName;
 
         URL url = cosClient.generatePresignedUrl(bucketName, key, expirationDate, method, headers, params);
-        System.out.println(url.toString());
-
-        // [TODO] 确认本进程不再使用 cosClient 实例之后，关闭之
-        cosClient.shutdown();
+        // System.out.println(url.toString());
 
         return url.toString();
+    }
+
+    public static void destoryInstance() {
+        if (_cosClient != null) {
+            // 确认本进程不再使用 cosClient 实例之后，关闭之
+            _cosClient.shutdown();
+            System.out.println("cosClient destory success.");
+        }
     }
 }

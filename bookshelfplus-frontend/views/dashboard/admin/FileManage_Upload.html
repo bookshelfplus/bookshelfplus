@@ -30,6 +30,29 @@
         background-color: grey;
         color: #b5b5b5;
     }
+
+    .process-bar {
+        background-color: #b5b5b5;
+        width: 100%;
+        height: 5px;
+        border-radius: 2px;
+        overflow: hidden;
+    }
+
+    .process-bar-inner {
+        background-color: #39a705;
+        width: 0;
+        height: 100%;
+        transition: all 0.3s;
+    }
+
+    .file-info-paragraph>span {
+        background-color: lightpink;
+        color: darkred;
+        padding: 1px 5px;
+        border-radius: 4px;
+        font-size: 0.8em;
+    }
 </style>
 <p>
     <a href="<%= pageUrl %>../">返回上一级</a>
@@ -44,36 +67,69 @@
 <!-- <input type="file" id="input" multiple onchange="handleFiles(this.files)"> -->
 <input type="file" id="fileSelector" style="display: none;">
 <p>
-    建议配合 Python 脚本使用，上传文件更方便
+    仅支持 Chrome 内核浏览器
 </p>
+<div id="file-detail-container" style="display: none;">
+    <p style="text-align: left;" class="file-info-paragraph">
+        文件名: <span id="file-name"></span><br>
+        文件扩展名：<span id="file-ext"></span><br>
+        文件名（不含扩展名）：<span id="file-name-no-ext"></span><br>
+        文件大小: <span id="file-size"></span><br>
+        文件SHA1: <span id="file-sha1"></span><br>
+    </p>
+    <p>计算文件哈希</p>
+    <div id="processBar1" class="process-bar" style="">
+        <div id="processBar1Inner" class="process-bar-inner"></div>
+    </div>
+</div>
+<button id="beginUpload" disabled="true">开始上传</button>
 
+<script src="/assets/lib/crypto-js/sha1.js"></script>
 <script>
     var file = null;
+    var fileInfo = {
+        fileName: "",
+        fileSize: 0,
+        fileType: "",
+        fileSha1: "",
+        fileExt: "",
+        fileNameWithoutExt: "",
+    };
 
     const inputElement = document.getElementById("fileSelector");
     inputElement.addEventListener("change", fileSelectorHandleFiles, false);
+
+    const beginUpload = document.getElementById("beginUpload");
+    beginUpload.addEventListener("click", upload);
+
+    //##############################################
+    // 选择文件
+    //##############################################
     function fileSelectorHandleFiles() {
         const fileList = this.files; /* now you can work with the file list */
         // console.log(fileList);
         handleFiles(fileList);
     }
-    function handleFiles(fileList) {
+    async function handleFiles(fileList) {
+        updateUI({ isFileEmpty: true });
         if (fileList.length === 0) {
             // 还未选择文件
-            file = null;
-            dropbox.classList.remove("green");
-            document.getElementById("fileSize").innerHTML = "0";
             return;
         }
         if (fileList.length > 1) {
             alert("一次只能选择1个文件！");
-            this.outerHTML = this.outerHTML; // 清除选择的文件
-            file = null;
-            dropbox.classList.remove("green");
-            document.getElementById("fileSize").innerHTML = "0";
             return;
         }
+
+        // 获取用户选择的文件
         file = fileList[0];
+        console.log(file);
+
+        // // 判断用户选择的文件是否为文件夹
+        // if (await isFolder(file)) {
+        //     alert("不支持文件夹，请选择文件！");
+        //     return;
+        // }
 
         // 输出所选文件的总大小
         let nBytes = 0;
@@ -90,10 +146,38 @@
         // document.getElementById("fileNum").innerHTML = fileList.length;
         document.getElementById("fileSize").innerHTML = sOutput;
 
-        dropbox.classList.add("green");
+        updateUI({ isFileEmpty: false });
+
+        // 记录文件信息
+        fileInfo.fileName = file.name;
+        fileInfo.fileSize = file.size;
+        fileInfo.fileType = file.type;
+        // 获取文件扩展名：首先按照 . 拆分，然后删掉第一个元素（考虑无扩展名文件），再取出最后一个元素
+        let fileNameSplit = file.name.split(".");
+        fileNameSplit.shift();
+        fileInfo.fileExt = fileNameSplit.pop() || "";
+        // 获取文件名（不包含扩展名）
+        fileInfo.fileNameWithoutExt = file.name.substr(0, (file.name.length + file.name.lastIndexOf('.')) % (file.name.length));
+
+        // 更新UI
+        document.getElementById("file-name").innerHTML = fileInfo.fileName;
+        document.getElementById("file-ext").innerHTML = fileInfo.fileExt;
+        document.getElementById("file-name-no-ext").innerHTML = fileInfo.fileNameWithoutExt;
+        document.getElementById("file-size").innerHTML = sOutput;
+
+        // 计算文件哈希
+        let sha1 = await sha1File(file, (file) => {
+            document.getElementById("processBar1Inner").style.width = `${file.sha1_progress}%`;
+            // console.log("计算文件哈希 进度", file.sha1_progress);
+        });
+        fileInfo.fileSha1 = sha1;
+        document.getElementById("file-sha1").innerHTML = fileInfo.fileSha1;
+
+        // 完成
+        console.log(fileInfo);
     }
 
-    // 通过 click() 方法使用隐藏的 file input 元素
+    // dropbox 点击时触发 file 的 click 事件
     const fileSelect = document.getElementById("dropbox");
     fileSelect.addEventListener("click", function (e) {
         if (inputElement) {
@@ -101,7 +185,10 @@
         }
     }, false);
 
+
+    //##############################################
     // 使用拖放来选择文件
+    //##############################################
     let dropbox = document.getElementById("dropbox");
     dropbox.addEventListener("dragenter", dragenter, false);
     dropbox.addEventListener("dragleave", dragleave, false);
@@ -135,9 +222,107 @@
         var dt = e.dataTransfer;
         var files = dt.files;
 
+        console.log("dt", dt.items);
+        console.log("dt", dt.items[0]);
+        console.log("dt", dt.items[0].webkitGetAsEntry());
+
+        updateUI({ isFileEmpty: true });
+        if (dt.items.length > 1) {
+            alert("一次只能选择1个文件！");
+            return;
+        }
+        if (dt.items[0].webkitGetAsEntry().isDirectory) {
+            alert("不支持文件夹，请选择文件！");
+            return;
+        }
         handleFiles(files);
     }
 
+
+    // //##############################################
+    // // 判断拖入的文件是否是文件夹 （非 Chrome 内核浏览器逻辑）
+    // // 读取文件的第一个字符，如果能够读取成功，那么就是文件，否则就是文件夹
+    // // refer: https://segmentfault.com/a/1190000013298317
+    // //##############################################
+    // async function isFolder(file) {
+    //     return await new Promise((resolve, reject) => {
+    //         try {
+    //             var fileReader = new FileReader();
+
+    //             fileReader.addEventListener('load', function (e) {
+    //                 console.log(e, 'load');
+    //                 resolve(false);
+    //             }, false);
+
+    //             fileReader.addEventListener('error', function (e) {
+    //                 console.log(e, 'error，不可以上传文件夹');
+    //                 resolve(true);
+    //             }, false);
+
+    //             fileReader.readAsDataURL(file.slice(0, 3));
+    //         } catch (e) {
+    //             console.log(e, 'catch error，不可以上传文件夹');
+    //             resolve(true);
+    //         }
+    //     });
+    // }
+
+
+    //##############################################
+    // 更新界面显示
+    //##############################################
+    function updateUI({ isFileEmpty }) {
+        if (isFileEmpty) {
+            // 未选择文件
+            this.outerHTML = this.outerHTML; // 清除选择的文件
+            file = null;
+            fileInfo = {};
+            document.getElementById("fileSize").innerHTML = "0";
+            document.getElementById("processBar1Inner").style.width = 0;
+            document.getElementById("file-name").innerHTML = "";
+            document.getElementById("file-ext").innerHTML = "";
+            document.getElementById("file-name-no-ext").innerHTML = "";
+            document.getElementById("file-size").innerHTML = "";
+            document.getElementById("file-sha1").innerHTML = "";
+            dropbox.classList.remove("green");
+            beginUpload.setAttribute("disabled", "true");
+            document.getElementById("file-detail-container").style.display = "none";
+        } else {
+            // 已选择文件
+            dropbox.classList.add("green");
+            beginUpload.removeAttribute("disabled");
+            document.getElementById("file-detail-container").style.display = "";
+        }
+    }
+
+    //##############################################
+    // 获取预授权URL
+    //##############################################
+    function upload() {
+        if (!file) {
+            alert("您还未选择文件！");
+            return;
+        }
+        // 获取预授权URL
+        postRequest("/file/cos/put", { token: localStorageUtils.getToken(), fileName: "test.a", expireMinute: 30 })
+            .then(function (response) {
+                var axiosData = response.data;
+                var status = axiosData.status;
+                var data = axiosData.data;
+                if (status === "success") {
+                    console.log(data);
+                    uploadFile(file, data);
+                } else {
+                    alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
+                }
+            }).catch(function (error) {
+                console.log(error);
+                alert("无法连接到服务器，请检查网络连接！");
+            });
+    }
+
+    //##############################################
+    //##############################################
     //传入预授权 URL ，将文件上传到这个地址
     function uploadFile(file, preSignedUrl) {
         // refer: https://cloud.tencent.com/document/product/436/35651
