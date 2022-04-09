@@ -137,6 +137,9 @@ public class QCloudCosUtils {
         return url.toString();
     }
 
+    /**
+     * 销毁 CosClient 对象方法
+     */
     public static void destoryInstance() {
         if (_cosClient != null) {
             // 确认本进程不再使用 cosClient 实例之后，关闭之
