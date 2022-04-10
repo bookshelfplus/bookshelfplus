@@ -1,5 +1,6 @@
 package plus.bookshelf.Controller.Controller;
 
+import com.aventrix.jnanoid.jnanoid.NanoIdUtils;
 import com.qcloud.cos.http.HttpMethodName;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -25,7 +26,9 @@ import plus.bookshelf.Service.Service.CosPresignedUrlGenerateLogService;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Api(tags = "文件管理")
 @Controller("file")
@@ -130,13 +133,21 @@ public class FileController extends BaseController {
 
         QCloudCosUtils qCloudCosUtils = new QCloudCosUtils(qCloudCosConfig, cosPresignedUrlGenerateLogService);
 
+        // 当次生成下载链接的全局唯一Id
+        String urlGUID = NanoIdUtils.randomNanoId();
+        String bookSaveFolder = QCloudCosUtils.BOOK_SAVE_FOLDER;
+
         // 判断对象是否存在
-        Boolean isExist = qCloudCosUtils.doesObjectExist(fileName);
+        Boolean isExist = qCloudCosUtils.doesObjectExist(bookSaveFolder, fileName);
         switch (httpMethodName) {
             case PUT:
                 if (isExist) throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "文件已存在");
+                // 添加一个scheduleTask，用于检测用户是否上传了文件，然后更新数据库中信息
+                fileService.addScheduleTask(expireMinute, bookSaveFolder, urlGUID, userModel.getId());
                 break;
             case GET:
+                if (!isExist) throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "文件不存在");
+                break;
             case DELETE:
                 if (!isExist) throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "文件不存在");
                 break;
@@ -144,8 +155,11 @@ public class FileController extends BaseController {
                 throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "httpMethod 参数暂不支持");
         }
 
-        String url = qCloudCosUtils.generatePresignedUrl(userModel.getId(), httpMethodName, fileName, 30);
+        String url = qCloudCosUtils.generatePresignedUrl(userModel.getId(), httpMethodName, bookSaveFolder, fileName, 30, urlGUID);
 
-        return CommonReturnType.create(url);
+        Map map = new HashMap();
+        map.put("url", url);
+        map.put("urlGUID", urlGUID);
+        return CommonReturnType.create(map);
     }
 }

@@ -59,4 +59,11 @@ public interface FileDOMapper {
      * @return
      */
     FileDO[] selectAll();
+
+    /**
+     * 获取上一次插入的主键Id
+     *
+     * @return
+     */
+    int getLastInsertId();
 }

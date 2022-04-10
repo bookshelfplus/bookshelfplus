@@ -100,5 +100,8 @@
         <!--<table tableName="cos_presigned_url_generate_log" domainObjectName="CosPresignedUrlGenerateLogDO" enableCountByExample="false"-->
         <!--       enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
         <!--       selectByExampleQueryId="false"></table>-->
+        <!--<table tableName="schedule_task" domainObjectName="ScheduleTaskDO" enableCountByExample="false"-->
+        <!--       enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
+        <!--       selectByExampleQueryId="false"></table>-->
     </context>
 </generatorConfiguration>

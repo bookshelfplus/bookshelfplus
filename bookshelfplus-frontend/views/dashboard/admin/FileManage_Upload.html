@@ -317,7 +317,7 @@
                 if (status === "success") {
                     console.log(data);
                     // 取得预授权URL，使用该URL进行文件上传
-                    uploadFile(file, data);
+                    uploadFile(file, data.url);
                 } else {
                     alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
                 }
@@ -328,8 +328,8 @@
     }
 
     //##############################################
-    //##############################################
     //传入预授权 URL ，将文件上传到这个地址
+    //##############################################
     function uploadFile(file, preSignedUrl) {
         // refer: https://cloud.tencent.com/document/product/436/35651
 

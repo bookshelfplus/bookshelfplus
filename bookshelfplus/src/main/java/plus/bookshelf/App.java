@@ -5,6 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import plus.bookshelf.Service.Impl.ScheduleTaskServiceImpl;
 
 @SpringBootApplication(scanBasePackages = {"plus.bookshelf"})
 @RestController
@@ -19,6 +20,10 @@ public class App {
         SpringApplication.run(App.class, args);
 
         System.out.println("backend service started successfully.");
+
+        // 启动定时任务
+        ScheduleTaskServiceImpl scheduleTaskService = new ScheduleTaskServiceImpl();
+        scheduleTaskService.setExecutor();
     }
 
     @RequestMapping("/")

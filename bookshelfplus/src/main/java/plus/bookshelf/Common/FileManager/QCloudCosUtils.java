@@ -8,17 +8,20 @@ import com.qcloud.cos.auth.COSCredentials;
 import com.qcloud.cos.http.HttpMethodName;
 import com.qcloud.cos.http.HttpProtocol;
 import com.qcloud.cos.region.Region;
+import plus.bookshelf.Common.Error.BusinessErrorCode;
 import plus.bookshelf.Common.Error.BusinessException;
 import plus.bookshelf.Config.QCloudCosConfig;
 import plus.bookshelf.Service.Service.CosPresignedUrlGenerateLogService;
 
-import javax.annotation.PreDestroy;
 import java.net.URL;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public class QCloudCosUtils {
+
+    // 定义常量
+    public static final String BOOK_SAVE_FOLDER = "book/"; //一定要以 / 结尾
 
     // 配置信息
     QCloudCosConfig qCloudCosConfig;
@@ -79,7 +82,7 @@ public class QCloudCosUtils {
         return _cosClient;
     }
 
-    public Boolean doesObjectExist(String objectKey) {
+    public Boolean doesObjectExist(String folder, String objectKey) {
         COSClient cosClient = createCOSClient();
         // 存储桶的命名格式为 BucketName-APPID，此处填写的存储桶名称必须为此格式
         String bucketName = qCloudCosConfig.getBucketName();
@@ -93,13 +96,13 @@ public class QCloudCosUtils {
      * <p>
      * refer: https://cloud.tencent.com/document/product/436/35217
      *
-     * @param token          当前登录用户的 token
+     * @param userId         当前登录用户的 id
      * @param httpMethodName 请求的 HTTP 方法，上传请求用 PUT，下载请求用 GET，删除请求用 DELETE
      * @param objectKey      文件对象的 key
      * @param expireMinute   过期时间
      * @return
      */
-    public String generatePresignedUrl(Integer userId, HttpMethodName httpMethodName, String objectKey, Integer expireMinute) throws BusinessException {
+    public String generatePresignedUrl(Integer userId, HttpMethodName httpMethodName, String savePath, String objectKey, Integer expireMinute, String urlGUID) throws BusinessException {
         // 调用 COS 接口之前必须保证本进程存在一个 COSClient 实例，如果没有则创建
         // 详细代码参见本页：简单操作 -> 创建 COSClient
         // COSClient cosClient = createCOSClient();
@@ -118,8 +121,7 @@ public class QCloudCosUtils {
         Map<String, String> params = new HashMap<>();
         params.put("by", "书栖网 bookshelf.plus");
         params.put("userId", String.valueOf(userId));
-        String urlGUID = NanoIdUtils.randomNanoId();
-        params.put("guid", urlGUID); // 当次生成下载链接的全局唯一Id
+        params.put("guid", urlGUID);
 
         // 填写本次请求的头部，需与实际请求相同，能够防止用户篡改此签名的 HTTP 请求的头部
         Map<String, String> headers = new HashMap<>();
@@ -127,6 +129,10 @@ public class QCloudCosUtils {
 
         // 请求的 HTTP 方法，上传请求用 PUT，下载请求用 GET，删除请求用 DELETE
         HttpMethodName method = httpMethodName;
+
+        if (method.equals(HttpMethodName.DELETE)) {
+            throw new BusinessException(BusinessErrorCode.NOT_SUPPORT, "不支持DELETE方法，请在后台文件管理页面删除文件，而非通过此Api");
+        }
 
         URL url = cosClient.generatePresignedUrl(bucketName, key, expirationDate, method, headers, params);
         // System.out.println(url.toString());

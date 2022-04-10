@@ -19,7 +19,7 @@ public class FileModel {
     // 文件存储名称 (文件的实际文件名，含扩展名)
     String fileName;
 
-    // 文件格式
+    // 文件格式 (文件扩展名)
     String fileFormat;
 
     // 总页数
