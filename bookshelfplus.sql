@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 10/04/2022 15:44:26
+ Date: 10/04/2022 17:11:27
 */
 
 SET NAMES utf8mb4;
@@ -145,7 +145,6 @@ CREATE TABLE `file_info`  (
   `watermark` tinyint(1) NOT NULL DEFAULT 0,
   `advertising` tinyint(1) NOT NULL DEFAULT 0 COMMENT '1为已删除项',
   `book_origin` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `thumbnail` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
   `file_create_at` datetime NOT NULL,
   `file_modified_at` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP,
   `file_size` bigint(20) UNSIGNED NOT NULL DEFAULT 0,

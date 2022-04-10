@@ -1,5 +1,23 @@
+<style>
+    /* 限制 来源 列的宽度 */
+    tr>*:nth-child(8),
+    td>*:nth-child(8) {
+        max-width: 100px;
+    }
+    /* 限制 哈希 列的宽度 */
+    tr>*:nth-child(10),
+    td>*:nth-child(10) {
+        max-width: 100px;
+    }
+    /* 限制 时间 列的宽度 */
+    tr>*:nth-child(11),
+    td>*:nth-child(11) {
+        max-width: 100px;
+    }
+</style>
 <p>
-    <a href="<%= pageUrl %>upload">上传文件</a>
+    <a href="<%= pageUrl %>upload">上传文件</a><br>
+    删除文件前必须先删除该文件关联的所有文件对象
 </p>
 <script>
     list({
@@ -21,18 +39,23 @@
                         console.log(element);
                         renderData.push({
                             编号: `${element.id}`,
-                            关联书籍Id: `<a target="_blank" href="/admin/book-manage/detail?id=${element.bookId}">${element.bookId}</a>`,
+                            关联书籍: `<span class="overflow-omit" style="margin: 0 auto;">
+                                        ID: ${element.bookId}
+                                        <a href="/book?id=${element.bookId}">查看</a>
+                                        <a href="/dashboard/admin/book-manage/detail?id=${element.bookId}">修改</a>
+                                    </span>`,
                             文件名: `${element.fileDisplayName}`,
                             格式: `${element.fileFormat}`,
                             页数: `${element.numberOfPages}`,
                             水印: `${element.watermark}`,
                             广告: `${element.advertising}`,
-                            来源: `${element.bookOrigin}`,
+                            来源: `<span class="overflow-omit" style="font-size: 10px;">${element.bookOrigin}</span>`,
                             大小: `${element.fileSize}`,
-                            哈希: `${element.hashSha1}`,
-                            缩略图: `${element.thumbnail}`,
-                            创建时间: `${element.fileCreateAt}`,
-                            修改时间: `${element.fileModifiedAt}`,
+                            "哈希(双击全选)": `<span class="overflow-omit" style="font-size: 10px;">${element.hashSha1}</span>`,
+                            时间: `<span class="overflow-omit" style="font-size: 12px; line-height: 1.2em; display: block;"><nobr>
+                                        创建: ${new Date(element.fileCreateAt).toLocaleString()}<br>
+                                        修改: ${new Date(element.fileModifiedAt).toLocaleString()}
+                                    </nobr></span>`,
                             管理: `<span class="overflow-omit" style="margin: 0 auto;">
                                         <a href="<%= pageUrl %>detail?id=${element.id}">修改</a>
                                         <a href="javascript:deleteBook(${element.id});">删除</a>

@@ -34,9 +34,6 @@ public class FileModel {
     // 文件来源 电子版/扫描版
     String bookOrigin;
 
-    // 缩略图
-    private String thumbnail;
-
     // 文件创建时间
     Date fileCreateAt;
 
