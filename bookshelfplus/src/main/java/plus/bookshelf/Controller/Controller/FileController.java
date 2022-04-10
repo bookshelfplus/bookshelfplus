@@ -7,15 +7,19 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import plus.bookshelf.Common.Enum.FileStorageMediumEnum;
 import plus.bookshelf.Common.Error.BusinessErrorCode;
 import plus.bookshelf.Common.Error.BusinessException;
 import plus.bookshelf.Common.FileManager.QCloudCosUtils;
 import plus.bookshelf.Common.Response.CommonReturnType;
 import plus.bookshelf.Config.QCloudCosConfig;
+import plus.bookshelf.Controller.VO.FileObjectVO;
 import plus.bookshelf.Controller.VO.FileVO;
+import plus.bookshelf.Service.Impl.FileObjectServiceImpl;
 import plus.bookshelf.Service.Impl.FileServiceImpl;
 import plus.bookshelf.Service.Impl.UserServiceImpl;
 import plus.bookshelf.Service.Model.FileModel;
+import plus.bookshelf.Service.Model.FileObjectModel;
 import plus.bookshelf.Service.Model.UserModel;
 import plus.bookshelf.Service.Service.CosPresignedUrlGenerateLogService;
 
@@ -37,25 +41,55 @@ public class FileController extends BaseController {
     @Autowired
     CosPresignedUrlGenerateLogService cosPresignedUrlGenerateLogService;
 
+    @Autowired
+    FileServiceImpl fileService;
+
+    @Autowired
+    FileObjectServiceImpl fileObjectService;
+
     @ApiOperation(value = "查询文件列表", notes = "查询文件列表")
     @RequestMapping(value = "list", method = {RequestMethod.GET})
     @ResponseBody
-    public CommonReturnType list() throws InvocationTargetException, IllegalAccessException {
-        List<FileModel> fileModels = fileService.list();
+    public CommonReturnType list(@RequestParam(value = "token", required = false) String token) throws InvocationTargetException, IllegalAccessException {
+        List<FileModel> fileModels = fileService.list(token);
         List<FileVO> fileVOS = new ArrayList<>();
         for (FileModel fileModel : fileModels) {
-            FileVO fileVO = convertFromModel(fileModel);
+            FileVO fileVO = convertFileVOFromModel(fileModel);
             fileVOS.add(fileVO);
         }
         return CommonReturnType.create(fileVOS);
     }
 
-    private FileVO convertFromModel(FileModel fileModel) {
+    private FileVO convertFileVOFromModel(FileModel fileModel) {
         FileVO fileVO = new FileVO();
         BeanUtils.copyProperties(fileModel, fileVO);
         fileVO.setFileCreateAt(fileModel.getFileCreateAt().getTime());
         fileVO.setFileModifiedAt(fileModel.getFileModifiedAt().getTime());
         return fileVO;
+    }
+
+    @ApiOperation(value = "查询文件对象列表", notes = "查询文件列表")
+    @RequestMapping(value = "object/list", method = {RequestMethod.GET})
+    @ResponseBody
+    public CommonReturnType objectList(@RequestParam(value = "token", required = false) String token) throws InvocationTargetException, IllegalAccessException, BusinessException {
+        List<FileObjectModel> fileObjectModels = fileObjectService.list(token);
+        List<FileObjectVO> fileObjectVOS = new ArrayList<>();
+        for (FileObjectModel fileObjectModel : fileObjectModels) {
+            FileObjectVO fileObjectVO = convertFileObjectVOFromModel(fileObjectModel);
+            fileObjectVOS.add(fileObjectVO);
+        }
+        return CommonReturnType.create(fileObjectVOS);
+    }
+
+    private FileObjectVO convertFileObjectVOFromModel(FileObjectModel fileObjectModel) {
+        FileObjectVO fileObjectVO = new FileObjectVO();
+        BeanUtils.copyProperties(fileObjectModel, fileObjectVO);
+        try {
+            // 尝试将 FileStorageMedium 转为中文，如果没有成功，那么就保留英文
+            fileObjectVO.setStorageMediumType(FileStorageMediumEnum.valueOf(fileObjectModel.getStorageMediumType()).getStorageMediumDisplayName());
+        } catch (Exception e) {
+        }
+        return fileObjectVO;
     }
 
     /**

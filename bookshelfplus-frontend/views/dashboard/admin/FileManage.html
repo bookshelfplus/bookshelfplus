@@ -4,11 +4,13 @@
     td>*:nth-child(8) {
         max-width: 100px;
     }
+
     /* 限制 哈希 列的宽度 */
     tr>*:nth-child(10),
     td>*:nth-child(10) {
         max-width: 100px;
     }
+
     /* 限制 时间 列的宽度 */
     tr>*:nth-child(11),
     td>*:nth-child(11) {
@@ -16,6 +18,8 @@
     }
 </style>
 <p>
+    <a href="<%= pageUrl %>object-manage">文件对象管理</a>
+    &nbsp;
     <a href="<%= pageUrl %>upload">上传文件</a><br>
     删除文件前必须先删除该文件关联的所有文件对象
 </p>
@@ -25,7 +29,7 @@
     });
 
     function list({ tableElementId }) {
-        getRequest("/file/list", {})
+        getRequest("/file/list", { token: localStorageUtils.getToken() })
             .then(function (responseData) {
                 var axiosData = responseData.data;
                 var status = axiosData.status;
@@ -57,7 +61,7 @@
                                         修改: ${new Date(element.fileModifiedAt).toLocaleString()}
                                     </nobr></span>`,
                             管理: `<span class="overflow-omit" style="margin: 0 auto;">
-                                        <a href="<%= pageUrl %>detail?id=${element.id}">修改</a>
+                                        <a href="<%= pageUrl %>detail?id=${element.id}">管理文件对象</a>
                                         <a href="javascript:deleteBook(${element.id});">删除</a>
                                     </span>`,
                         })
@@ -82,4 +86,32 @@
                 alert("无法连接到服务器，请检查网络连接！");
             });
     }
+
+    // function deleteBook(deleteBookId) {
+    //     if (!confirm(`确认要删除编号为 ${deleteBookId} 的书籍吗？`)) return;
+
+    //     postRequest("/book/delete", { token: localStorageUtils.getToken(), id: deleteBookId })
+    //         .then(function (responseData) {
+    //             var axiosData = responseData.data;
+    //             var status = axiosData.status;
+    //             var data = axiosData.data;
+    //             if (status === "success") {
+    //                 console.log(data)
+    //                 if (data == "success") {
+    //                     search({
+    //                         tableElementId: "book-table",
+    //                         searchText: $("#searchInput").val(),
+    //                         categoryId: null
+    //                     });
+    //                 } else {
+    //                     alert("删除失败！");
+    //                 }
+    //             } else {
+    //                 alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
+    //             }
+    //         }).catch(function (error) {
+    //             console.log(error);
+    //             alert("无法连接到服务器，请检查网络连接！");
+    //         });
+    // }
 </script>

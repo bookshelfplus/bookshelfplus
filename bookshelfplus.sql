@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 10/04/2022 17:11:27
+ Date: 10/04/2022 18:06:07
 */
 
 SET NAMES utf8mb4;
@@ -162,12 +162,12 @@ CREATE TABLE `file_info`  (
 DROP TABLE IF EXISTS `file_object_info`;
 CREATE TABLE `file_object_info`  (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '编号',
-  `fileId` int(11) NOT NULL,
-  `storage_medium_type` tinyint(4) NOT NULL DEFAULT 0,
+  `file_id` int(11) NOT NULL,
+  `storage_medium_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0',
   `file_path` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '本地文件保存相对路径（本地维护用，非线上使用）',
   `file_pwd` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
   `file_share_code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
-  `additional_fields` json NULL,
+  `additional_fields` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 

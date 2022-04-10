@@ -11,5 +11,5 @@ public interface FileService {
      *
      * @return
      */
-    List<FileModel> list() throws InvocationTargetException, IllegalAccessException;
+    List<FileModel> list(String token) throws InvocationTargetException, IllegalAccessException;
 }

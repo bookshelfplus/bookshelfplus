@@ -1,9 +1,9 @@
-package plus.bookshelf.Service.Model;
+package plus.bookshelf.Controller.VO;
 
 import lombok.Data;
 
 @Data
-public class FileObjectModel {
+public class FileObjectVO {
 
     // 文件存储介质Id
     private Integer id;

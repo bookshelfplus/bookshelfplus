@@ -102,6 +102,21 @@ router.get('/dashboard/:group/:page/:subpage?', function (req, res) {
                 baseTemplate: "table",
                 pageTemplate: "FileManage",
                 childPage: {
+                    "detail": {
+                        title: "文件详情",
+                        baseTemplate: "blank",
+                        pageTemplate: "FileManage_Detail",
+                    },
+                    "object-manage": {
+                        title: "文件对象管理",
+                        baseTemplate: "table",
+                        pageTemplate: "FileManage_ObjectManage",
+                    },
+                    "object-detail": {
+                        title: "文件对象详情",
+                        baseTemplate: "blank",
+                        pageTemplate: "FileManage_ObjectManage_Detail",
+                    },
                     "upload": {
                         title: "上传文件",
                         baseTemplate: "blank",
