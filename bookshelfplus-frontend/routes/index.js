@@ -99,7 +99,7 @@ router.get('/dashboard/:group/:page/:subpage?', function (req, res) {
             },
             "file-manage": {
                 title: "文件管理",
-                baseTemplate: "blank",
+                baseTemplate: "table",
                 pageTemplate: "FileManage",
                 childPage: {
                     "upload": {

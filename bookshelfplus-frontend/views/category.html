@@ -71,12 +71,12 @@
                     //     var mainDivWidth = 70/*vw*/; // 定义div的宽度（用于计算表格中的数据的显示长度）
                     //     var columnWidth = [60, 40];
                     //     renderData.push({
-                    //         分类名: ` <a target="_blank" href="/category?id=${element.id}">
+                    //         分类: `<a target="_blank" href="/category?id=${element.id}">
                     //                     <span class="overflow-omit" style="max-width: ${columnWidth[0] * mainDivWidth / 100}vw; max-height: 2em; margin: 0 auto;">
                     //                         ${element.name}
                     //                     </span>
                     //                 </a>`,
-                    //         简介: ` <span class="overflow-omit" style="max-width: ${columnWidth[1] * mainDivWidth / 100}vw; max-height: 2em; margin: 0 auto;">
+                    //         简介: `<span class="overflow-omit" style="max-width: ${columnWidth[1] * mainDivWidth / 100}vw; max-height: 2em; margin: 0 auto;">
                     //                     ${element.description}
                     //                 </span>`,
                     //     })
@@ -90,12 +90,12 @@
                             var mainDivWidth = 70/*vw*/; // 定义div的宽度（用于计算表格中的数据的显示长度）
                             var columnWidth = [70, 30];
                             renderData.push({
-                                分类名: ` <a target="_blank" href="/category?id=${category.id}">
+                                分类: `<a target="_blank" href="/category?id=${category.id}">
                                             <span class="overflow-omit" style="max-width: ${columnWidth[0] * mainDivWidth / 100}vw; max-height: 2em; text-align: left;">
                                                 ${"&nbsp;".repeat((category.level-1)*8)}${category.name}
                                             </span>
                                         </a>`,
-                                简介: ` <span class="overflow-omit" style="max-width: ${columnWidth[1] * mainDivWidth / 100}vw; max-height: 2em; text-align: left; text-indent: 1em;">
+                                简介: `<span class="overflow-omit" style="max-width: ${columnWidth[1] * mainDivWidth / 100}vw; max-height: 2em; text-align: left; text-indent: 1em;">
                                             ${category.description}
                                         </span>`,
                             })

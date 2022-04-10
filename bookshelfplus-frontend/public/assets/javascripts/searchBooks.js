@@ -23,10 +23,10 @@ function search({ tableElementId = "", searchText = "", categoryId = 0 }) {
                                         ${element.category.name}
                                     </span>
                                 </a>`,
-                        简介: ` <span class="overflow-omit" style="max-width: ${columnWidth[2] * mainDivWidth / 100}vw; max-height: 2em; margin: 0 auto;">
+                        简介: `<span class="overflow-omit" style="max-width: ${columnWidth[2] * mainDivWidth / 100}vw; max-height: 2em; margin: 0 auto;">
                                     ${element.description}
                                 </span>`,
-                        语言: ` <span class="overflow-omit" style="max-width: ${columnWidth[3] * mainDivWidth / 100}vw; max-height: 2em; margin: 0 auto;">
+                        语言: `<span class="overflow-omit" style="max-width: ${columnWidth[3] * mainDivWidth / 100}vw; max-height: 2em; margin: 0 auto;">
                                     ${element.language}
                                 </span>`,
                         出版社: `<span class="overflow-omit" style="max-width: ${columnWidth[4] * mainDivWidth / 100}vw; max-height: 2em; margin: 0 auto;">

@@ -5,6 +5,15 @@
 <input id="searchButton" type="button" value="搜索" />
 <!-- 搜索书籍 -->
 <script>
+    var requestParams = getParams();
+    var searchbox = document.getElementById("searchInput");
+    var keyword = (requestParams["keyword"] || "").trim();
+    search({
+        tableElementId: "book-table",
+        searchText: null,
+        categoryId: null
+    });
+
     $("#searchButton").click(function () {
         search({
             tableElementId: "book-table",
@@ -29,18 +38,18 @@
                         var columnWidth = [20, 15, 10, 15, 5, 35];
                         renderData.push({
                             编号: `${element.id}`,
-                            书名: ` <a target="_blank" href="/book?id=${element.id}">
+                            书名: `<a target="_blank" href="/book?id=${element.id}">
                                         <span class="overflow-omit" style="max-width: ${columnWidth[0] * mainDivWidth / 100}vw; max-height: 2em; margin: 0 auto;">
                                             ${element.bookName}
                                         </span>
                                     </a>`,
-                            分类: ` <a target="_blank" href="/category?id=${element.category.id}">
+                            分类: `<a target="_blank" href="/category?id=${element.category.id}">
                                         <span class="overflow-omit" style="max-width: ${columnWidth[1] * mainDivWidth / 100}vw; max-height: 2em; margin: 0 auto;">
                                             ${element.category.name}
                                         </span>
                                     </a>`,
                             作者: `${element.author}`,
-                            语言: ` <span class="overflow-omit" style="max-width: ${columnWidth[2] * mainDivWidth / 100}vw; max-height: 2em; margin: 0 auto;">
+                            语言: `<span class="overflow-omit" style="max-width: ${columnWidth[2] * mainDivWidth / 100}vw; max-height: 2em; margin: 0 auto;">
                                         ${element.language}
                                     </span>`,
                             出版社: `<span class="overflow-omit" style="max-width: ${columnWidth[3] * mainDivWidth / 100}vw; max-height: 2em; margin: 0 auto;">
@@ -74,11 +83,6 @@
                         }
                     } else {
                         renderTable({ data: renderData, tableId: tableElementId, renderTableHead: true });
-                    }
-
-                    // 渲染后重新获取一次字体
-                    if (typeof (fontmin) === "function") {
-                        fontmin(getPageText());
                     }
                 } else {
                     alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);

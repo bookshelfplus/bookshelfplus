@@ -29,6 +29,10 @@
 </head>
 <body>
     <%- include("./component/navbar.html"); %>
+    <!-- 获取参数 -->
+    <script src="/assets/javascripts/getParams.js"></script>
+    <!-- 渲染表格 -->
+    <script src="/assets/javascripts/renderTable.js"></script>
     <main class="main">
         <h1><%= title %></h1>
         <div id="container">
@@ -40,20 +44,5 @@
         </div>
     </main>
     <%- include("./component/footer.html"); %>
-
-    <!-- 获取参数 -->
-    <script src="/assets/javascripts/getParams.js"></script>
-    <!-- 渲染表格 -->
-    <script src="/assets/javascripts/renderTable.js"></script>
-    <script>
-        var requestParams = getParams();
-        var searchbox = document.getElementById("searchInput");
-        var keyword = (requestParams["keyword"] || "").trim();
-        search({
-            tableElementId: "book-table",
-            searchText: null,
-            categoryId: null
-        });
-    </script>
 </body>
 </html>
