@@ -28,13 +28,13 @@
             <!--<property name="addRemarkComments" value="true"/>-->
         </commentGenerator>
 
-        <!-- 数据库链接配置 -->
-        <!--<jdbcConnection driverClass="com.mysql.jdbc.Driver"-->
-        <!--                connectionURL="jdbc:mysql://127.0.0.1:3306/bookshelfplus?serverTimezone=Asia/Shanghai&amp;useSSL=false"-->
-        <!--                userId="root"-->
-        <!--                password="111111">-->
-        <!--</jdbcConnection>-->
-        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="${spring.datasource.url}"
+        <!-- 数据库连接配置 -->
+        <!--
+        升级依赖后 driverClass 由 com.mysql.jdbc.Driver 改为 com.mysql.cj.jdbc.Driver
+        Loading class `com.mysql.jdbc.Driver'. This is deprecated. The new driver class is `com.mysql.cj.jdbc.Driver'.
+        The driver is automatically registered via the SPI and manual loading of the driver class is generally unnecessary.
+        -->
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver" connectionURL="${spring.datasource.url}"
                         userId="${spring.datasource.username}" password="${spring.datasource.password}">
             <!--
             禁止MyBatis使用其他数据库中的同名数据表

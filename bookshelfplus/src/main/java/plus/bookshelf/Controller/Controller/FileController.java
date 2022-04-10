@@ -143,7 +143,8 @@ public class FileController extends BaseController {
             case PUT:
                 if (isExist) throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "文件已存在");
                 // 添加一个scheduleTask，用于检测用户是否上传了文件，然后更新数据库中信息
-                fileService.addScheduleTask(expireMinute, bookSaveFolder, urlGUID, userModel.getId());
+                // TODO
+                // fileService.addScheduleTask(expireMinute, bookSaveFolder, urlGUID, userModel.getId());
                 break;
             case GET:
                 if (!isExist) throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "文件不存在");

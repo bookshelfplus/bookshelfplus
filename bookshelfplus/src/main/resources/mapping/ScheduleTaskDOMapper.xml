@@ -158,14 +158,14 @@
       fail_time = #{failTime,jdbcType=TINYINT}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="selectTodoTask" parameterType="plus.bookshelf.Dao.DO.BookDOExample" resultMap="ResultMap">
+  <select id="selectTodoTask" parameterType="plus.bookshelf.Dao.DO.BookDOExample" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from schedule_task
     where <![CDATA[ schedule_time <= CURRENT_TIMESTAMP ]]>
     order by schedule_time asc
   </select>
-  <select id="selectByGuid" parameterType="plus.bookshelf.Dao.DO.BookDOExample" resultMap="ResultMap">
+  <select id="selectByGuid" parameterType="plus.bookshelf.Dao.DO.BookDOExample" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from schedule_task

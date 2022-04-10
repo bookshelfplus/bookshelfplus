@@ -60,7 +60,8 @@ public class ScheduleTaskServiceImpl {
             ScheduleTaskModel scheduleTaskModel = convertToModel(task);
             switch (scheduleTaskModel.getAction()) {
                 case CHECK_FILE_IS_UPLOADED:
-                    fileService.doScheduleTask(scheduleTaskModel);
+                    // TODO
+                    // fileService.doScheduleTask(scheduleTaskModel);
                     break;
                 default:
                     throw new BusinessException(BusinessErrorCode.UNKNOWN_ERROR, "未知的定时任务类型");
