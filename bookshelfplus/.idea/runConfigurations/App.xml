@@ -8,7 +8,7 @@
       </pattern>
     </extension>
     <option name="SPRING_BOOT_MAIN_CLASS" value="plus.bookshelf.App" />
-    <option name="VM_PARAMETERS" value="-XX:+AlwaysPreTouch -Xms2048m -Xmx5240m -Dspring.jmx.enabled=false -client -DarchetypeCatalog=internal" />
+    <option name="VM_PARAMETERS" value="-XX:+AlwaysPreTouch -Xms128m -Xmx2048m -Dspring.jmx.enabled=false -client -DarchetypeCatalog=internal" />
     <option name="ALTERNATIVE_JRE_PATH" />
     <method v="2">
       <option name="Make" enabled="true" />
