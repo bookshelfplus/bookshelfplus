@@ -52,4 +52,11 @@ public interface FileDOMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(FileDO record);
+
+    /**
+     * 查询系统中的所有文件
+     *
+     * @return
+     */
+    FileDO[] selectAll();
 }

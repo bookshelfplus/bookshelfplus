@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 08/04/2022 18:21:08
+ Date: 10/04/2022 15:44:26
 */
 
 SET NAMES utf8mb4;
@@ -144,14 +144,12 @@ CREATE TABLE `file_info`  (
   `number_of_pages` int(11) NOT NULL DEFAULT 0,
   `watermark` tinyint(1) NOT NULL DEFAULT 0,
   `advertising` tinyint(1) NOT NULL DEFAULT 0 COMMENT '1为已删除项',
-  `book_origin` tinyint(4) NOT NULL,
+  `book_origin` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `thumbnail` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
   `file_create_at` datetime NOT NULL,
   `file_modified_at` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP,
-  `file_size` int(18) NOT NULL DEFAULT 0,
-  `hash_md5` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
+  `file_size` bigint(20) UNSIGNED NOT NULL DEFAULT 0,
   `hash_sha1` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
-  `hash_sha256` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
@@ -176,6 +174,28 @@ CREATE TABLE `file_object_info`  (
 
 -- ----------------------------
 -- Records of file_object_info
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for schedule_task
+-- ----------------------------
+DROP TABLE IF EXISTS `schedule_task`;
+CREATE TABLE `schedule_task`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增id',
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '插入时间',
+  `schedule_time` datetime NOT NULL COMMENT '更新时间',
+  `action` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '任务名称',
+  `data` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '数据字段',
+  `task_guid` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'GUID唯一标识',
+  `associated_user_id` int(11) NOT NULL COMMENT '和此任务关联的用户',
+  `fail_time` tinyint(4) NOT NULL DEFAULT 0 COMMENT '失败次数',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `task_guid`(`task_guid`) USING BTREE,
+  INDEX `schedule_time`(`schedule_time`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of schedule_task
 -- ----------------------------
 
 -- ----------------------------

@@ -3,6 +3,7 @@ package plus.bookshelf.Controller.Controller;
 import com.qcloud.cos.http.HttpMethodName;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -11,9 +12,16 @@ import plus.bookshelf.Common.Error.BusinessException;
 import plus.bookshelf.Common.FileManager.QCloudCosUtils;
 import plus.bookshelf.Common.Response.CommonReturnType;
 import plus.bookshelf.Config.QCloudCosConfig;
+import plus.bookshelf.Controller.VO.FileVO;
+import plus.bookshelf.Service.Impl.FileServiceImpl;
 import plus.bookshelf.Service.Impl.UserServiceImpl;
+import plus.bookshelf.Service.Model.FileModel;
 import plus.bookshelf.Service.Model.UserModel;
 import plus.bookshelf.Service.Service.CosPresignedUrlGenerateLogService;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Api(tags = "文件管理")
 @Controller("file")
@@ -28,6 +36,27 @@ public class FileController extends BaseController {
 
     @Autowired
     CosPresignedUrlGenerateLogService cosPresignedUrlGenerateLogService;
+
+    @ApiOperation(value = "查询文件列表", notes = "查询文件列表")
+    @RequestMapping(value = "list", method = {RequestMethod.GET})
+    @ResponseBody
+    public CommonReturnType list() throws InvocationTargetException, IllegalAccessException {
+        List<FileModel> fileModels = fileService.list();
+        List<FileVO> fileVOS = new ArrayList<>();
+        for (FileModel fileModel : fileModels) {
+            FileVO fileVO = convertFromModel(fileModel);
+            fileVOS.add(fileVO);
+        }
+        return CommonReturnType.create(fileVOS);
+    }
+
+    private FileVO convertFromModel(FileModel fileModel) {
+        FileVO fileVO = new FileVO();
+        BeanUtils.copyProperties(fileModel, fileVO);
+        fileVO.setFileCreateAt(fileModel.getFileCreateAt().getTime());
+        fileVO.setFileModifiedAt(fileModel.getFileModifiedAt().getTime());
+        return fileVO;
+    }
 
     /**
      * 创建文件操作预授权URL

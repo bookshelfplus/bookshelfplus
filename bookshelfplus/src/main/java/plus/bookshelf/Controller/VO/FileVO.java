@@ -1,11 +1,11 @@
-package plus.bookshelf.Service.Model;
+package plus.bookshelf.Controller.VO;
 
 import lombok.Data;
 
 import java.util.Date;
 
 @Data
-public class FileModel {
+public class FileVO {
 
     // 文件Id
     Integer id;
@@ -38,10 +38,10 @@ public class FileModel {
     private String thumbnail;
 
     // 文件创建时间
-    Date fileCreateAt;
+    long fileCreateAt;
 
     // 文件修改时间
-    Date fileModifiedAt;
+    long fileModifiedAt;
 
     // 文件大小
     long fileSize;

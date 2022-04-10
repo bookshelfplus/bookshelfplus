@@ -14,14 +14,12 @@
     <result column="number_of_pages" jdbcType="INTEGER" property="numberOfPages" />
     <result column="watermark" jdbcType="BIT" property="watermark" />
     <result column="advertising" jdbcType="BIT" property="advertising" />
-    <result column="book_origin" jdbcType="TINYINT" property="bookOrigin" />
+    <result column="book_origin" jdbcType="VARCHAR" property="bookOrigin" />
     <result column="thumbnail" jdbcType="VARCHAR" property="thumbnail" />
     <result column="file_create_at" jdbcType="TIMESTAMP" property="fileCreateAt" />
     <result column="file_modified_at" jdbcType="TIMESTAMP" property="fileModifiedAt" />
-    <result column="file_size" jdbcType="INTEGER" property="fileSize" />
-    <result column="hash_md5" jdbcType="VARCHAR" property="hashMd5" />
+    <result column="file_size" jdbcType="BIGINT" property="fileSize" />
     <result column="hash_sha1" jdbcType="VARCHAR" property="hashSha1" />
-    <result column="hash_sha256" jdbcType="VARCHAR" property="hashSha256" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
@@ -30,7 +28,7 @@
     -->
     id, book_id, file_display_name, file_name, file_format, number_of_pages, watermark, 
     advertising, book_origin, thumbnail, file_create_at, file_modified_at, file_size, 
-    hash_md5, hash_sha1, hash_sha256
+    hash_sha1
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     <!--
@@ -59,14 +57,12 @@
       file_name, file_format, number_of_pages, 
       watermark, advertising, book_origin, 
       thumbnail, file_create_at, file_modified_at, 
-      file_size, hash_md5, hash_sha1, 
-      hash_sha256)
+      file_size, hash_sha1)
     values (#{id,jdbcType=INTEGER}, #{bookId,jdbcType=INTEGER}, #{fileDisplayName,jdbcType=VARCHAR}, 
       #{fileName,jdbcType=VARCHAR}, #{fileFormat,jdbcType=VARCHAR}, #{numberOfPages,jdbcType=INTEGER}, 
-      #{watermark,jdbcType=BIT}, #{advertising,jdbcType=BIT}, #{bookOrigin,jdbcType=TINYINT}, 
+      #{watermark,jdbcType=BIT}, #{advertising,jdbcType=BIT}, #{bookOrigin,jdbcType=VARCHAR}, 
       #{thumbnail,jdbcType=VARCHAR}, #{fileCreateAt,jdbcType=TIMESTAMP}, #{fileModifiedAt,jdbcType=TIMESTAMP}, 
-      #{fileSize,jdbcType=INTEGER}, #{hashMd5,jdbcType=VARCHAR}, #{hashSha1,jdbcType=VARCHAR}, 
-      #{hashSha256,jdbcType=VARCHAR})
+      #{fileSize,jdbcType=BIGINT}, #{hashSha1,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="plus.bookshelf.Dao.DO.FileDO">
     <!--
@@ -114,14 +110,8 @@
       <if test="fileSize != null">
         file_size,
       </if>
-      <if test="hashMd5 != null">
-        hash_md5,
-      </if>
       <if test="hashSha1 != null">
         hash_sha1,
-      </if>
-      <if test="hashSha256 != null">
-        hash_sha256,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -150,7 +140,7 @@
         #{advertising,jdbcType=BIT},
       </if>
       <if test="bookOrigin != null">
-        #{bookOrigin,jdbcType=TINYINT},
+        #{bookOrigin,jdbcType=VARCHAR},
       </if>
       <if test="thumbnail != null">
         #{thumbnail,jdbcType=VARCHAR},
@@ -162,16 +152,10 @@
         #{fileModifiedAt,jdbcType=TIMESTAMP},
       </if>
       <if test="fileSize != null">
-        #{fileSize,jdbcType=INTEGER},
-      </if>
-      <if test="hashMd5 != null">
-        #{hashMd5,jdbcType=VARCHAR},
+        #{fileSize,jdbcType=BIGINT},
       </if>
       <if test="hashSha1 != null">
         #{hashSha1,jdbcType=VARCHAR},
-      </if>
-      <if test="hashSha256 != null">
-        #{hashSha256,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -204,7 +188,7 @@
         advertising = #{advertising,jdbcType=BIT},
       </if>
       <if test="bookOrigin != null">
-        book_origin = #{bookOrigin,jdbcType=TINYINT},
+        book_origin = #{bookOrigin,jdbcType=VARCHAR},
       </if>
       <if test="thumbnail != null">
         thumbnail = #{thumbnail,jdbcType=VARCHAR},
@@ -216,16 +200,10 @@
         file_modified_at = #{fileModifiedAt,jdbcType=TIMESTAMP},
       </if>
       <if test="fileSize != null">
-        file_size = #{fileSize,jdbcType=INTEGER},
-      </if>
-      <if test="hashMd5 != null">
-        hash_md5 = #{hashMd5,jdbcType=VARCHAR},
+        file_size = #{fileSize,jdbcType=BIGINT},
       </if>
       <if test="hashSha1 != null">
         hash_sha1 = #{hashSha1,jdbcType=VARCHAR},
-      </if>
-      <if test="hashSha256 != null">
-        hash_sha256 = #{hashSha256,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -243,14 +221,17 @@
       number_of_pages = #{numberOfPages,jdbcType=INTEGER},
       watermark = #{watermark,jdbcType=BIT},
       advertising = #{advertising,jdbcType=BIT},
-      book_origin = #{bookOrigin,jdbcType=TINYINT},
+      book_origin = #{bookOrigin,jdbcType=VARCHAR},
       thumbnail = #{thumbnail,jdbcType=VARCHAR},
       file_create_at = #{fileCreateAt,jdbcType=TIMESTAMP},
       file_modified_at = #{fileModifiedAt,jdbcType=TIMESTAMP},
-      file_size = #{fileSize,jdbcType=INTEGER},
-      hash_md5 = #{hashMd5,jdbcType=VARCHAR},
-      hash_sha1 = #{hashSha1,jdbcType=VARCHAR},
-      hash_sha256 = #{hashSha256,jdbcType=VARCHAR}
+      file_size = #{fileSize,jdbcType=BIGINT},
+      hash_sha1 = #{hashSha1,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from file_info
+  </select>
 </mapper>
