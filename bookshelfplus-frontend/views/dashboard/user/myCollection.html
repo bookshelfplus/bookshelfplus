@@ -1,5 +1,11 @@
 <!-- 搜索书籍 -->
 <script>
+    search({
+        tableElementId: "book-table",
+        searchText: null,
+        categoryId: null
+    });
+
     function search({ tableElementId = "" }) {
         postRequest("/book/getFavoritesList", { token: localStorageUtils.getToken() })
             .then(function (responseData) {
