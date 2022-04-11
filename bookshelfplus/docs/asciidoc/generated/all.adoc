@@ -20,6 +20,7 @@ __域名__ : localhost:8090
 
 * 书籍信息 : Book Controller
 * 书籍分类信息 : Category Controller
+* 文件管理 : File Controller
 * 用户操作 : User Controller
 * 第三方登录 : Third Party Controller
 * 系统调试接口 : Debug Controller
@@ -258,7 +259,78 @@ __必填__|id|integer (int32)
 ----
 
 
-[[_addfavoritesusingpost_1]]
+[[_getfavoriteslistusingpost]]
+==== 【用户】用户收藏书籍列表
+....
+POST /api/book/getFavoritesList
+....
+
+
+===== 说明
+获取用户的收藏书籍列表
+
+
+===== 参数
+
+[options="header", cols=".^2a,.^3a,.^4a"]
+|===
+|类型|名称|类型
+|**FormData**|**token** +
+__可选__|string
+|===
+
+
+===== 响应
+
+[options="header", cols=".^2a,.^14a,.^4a"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_commonreturntype,CommonReturnType>>
+|**201**|Created|无内容
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+===== 消耗
+
+* `application/x-www-form-urlencoded`
+
+
+===== 生成
+
+* `\*/*`
+
+
+===== HTTP请求示例
+
+====== 请求 path
+----
+/api/book/getFavoritesList
+----
+
+
+====== 请求 formData
+[source,json]
+----
+"string"
+----
+
+
+===== HTTP响应示例
+
+====== 响应 200
+[source,json]
+----
+{
+  "data" : "object",
+  "status" : "string"
+}
+----
+
+
+[[_getfavoritesstatususingpost]]
 ==== 【用户】收藏/取消收藏书籍
 ....
 POST /api/book/getFavoritesStatus
@@ -399,7 +471,7 @@ __可选__|publishingHouse|string
 ----
 
 
-[[_addfavoritesusingpost]]
+[[_togglefavoritesusingpost]]
 ==== 【用户】收藏/取消收藏书籍
 ....
 POST /api/book/toggleFavorites
@@ -570,6 +642,200 @@ GET /api/category/list
 ====== 请求 path
 ----
 /api/category/list
+----
+
+
+===== HTTP响应示例
+
+====== 响应 200
+[source,json]
+----
+{
+  "data" : "object",
+  "status" : "string"
+}
+----
+
+
+[[_5505c91c7c23d55a117904f2a3fe6081]]
+=== 文件管理
+File Controller
+
+
+[[_cosusingpost]]
+==== 创建腾讯云 COS 预授权 URL
+....
+POST /api/file/cos/{httpMethod}
+....
+
+
+===== 参数
+
+[options="header", cols=".^2a,.^3a,.^9a,.^4a"]
+|===
+|类型|名称|说明|类型
+|**Path**|**httpMethod** +
+__必填__|httpMethod|string
+|**FormData**|**expireMinute** +
+__可选__||integer (int32)
+|**FormData**|**fileName** +
+__可选__||string
+|**FormData**|**token** +
+__可选__||string
+|===
+
+
+===== 响应
+
+[options="header", cols=".^2a,.^14a,.^4a"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_commonreturntype,CommonReturnType>>
+|**201**|Created|无内容
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+===== 消耗
+
+* `application/x-www-form-urlencoded`
+
+
+===== 生成
+
+* `\*/*`
+
+
+===== HTTP请求示例
+
+====== 请求 path
+----
+/api/file/cos/string
+----
+
+
+====== 请求 formData
+[source,json]
+----
+"string"
+----
+
+
+===== HTTP响应示例
+
+====== 响应 200
+[source,json]
+----
+{
+  "data" : "object",
+  "status" : "string"
+}
+----
+
+
+[[_listusingget]]
+==== 查询文件列表
+....
+GET /api/file/list
+....
+
+
+===== 说明
+查询文件列表
+
+
+===== 参数
+
+[options="header", cols=".^2a,.^3a,.^9a,.^4a"]
+|===
+|类型|名称|说明|类型
+|**Query**|**token** +
+__可选__|token|string
+|===
+
+
+===== 响应
+
+[options="header", cols=".^2a,.^14a,.^4a"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_commonreturntype,CommonReturnType>>
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+===== 生成
+
+* `\*/*`
+
+
+===== HTTP请求示例
+
+====== 请求 path
+----
+/api/file/list
+----
+
+
+===== HTTP响应示例
+
+====== 响应 200
+[source,json]
+----
+{
+  "data" : "object",
+  "status" : "string"
+}
+----
+
+
+[[_objectlistusingget]]
+==== 查询文件对象列表
+....
+GET /api/file/object/list
+....
+
+
+===== 说明
+查询文件列表
+
+
+===== 参数
+
+[options="header", cols=".^2a,.^3a,.^9a,.^4a"]
+|===
+|类型|名称|说明|类型
+|**Query**|**token** +
+__可选__|token|string
+|===
+
+
+===== 响应
+
+[options="header", cols=".^2a,.^14a,.^4a"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_commonreturntype,CommonReturnType>>
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+===== 生成
+
+* `\*/*`
+
+
+===== HTTP请求示例
+
+====== 请求 path
+----
+/api/file/object/list
 ----
 
 

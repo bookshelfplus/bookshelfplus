@@ -1,3 +1,9 @@
+<p>
+    查看后端项目配置是否配置正确
+</p>
+<p>
+    请按 F12 查看详情
+</p>
 <script>
     postRequest('/debug/status', { token: localStorageUtils.getToken() })
         .then(function (response) {
@@ -7,7 +13,6 @@
 
             if (status === "success") {
                 console.log(data);
-                $(".main").html("请在 F12 查看");
             } else {
                 alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
             }

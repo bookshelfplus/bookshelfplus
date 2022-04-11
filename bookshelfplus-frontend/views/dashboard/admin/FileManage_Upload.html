@@ -53,6 +53,35 @@
         border-radius: 4px;
         font-size: 0.8em;
     }
+
+    /* 上传按钮样式 */
+    #beginUpload {
+        margin-top: 30px;
+        padding: 5px 12px;
+        transition: all 0.25s;
+        border: 0;
+    }
+
+    #beginUpload:hover {
+        transform: scale(1.1);
+        background-color: #39a705;
+        color: #caf6b6;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    #beginUpload[disabled]:hover {
+        transform: initial;
+        background-color: initial;
+        color: initial;
+        border-radius: initial;
+        cursor: initial;
+    }
+
+    #fileAssociator {
+        padding: 3px 12px;
+        min-width: 200px;
+    }
 </style>
 <p>
     <a href="<%= pageUrl %>../">返回文件管理</a>
@@ -86,7 +115,18 @@
         <div id="processBar2Inner" class="process-bar-inner"></div>
     </div>
 </div>
+<div>
+    <p>关联文件</p>
+    <select id="fileAssociator">
+        <option value="0">新建文件</option>
+    </select>
+</div>
 <button id="beginUpload" disabled="true">开始上传</button>
+
+<p>
+    <input type="checkbox" id="checkbox-auto-upload" checked="true">
+    <label for="checkbox-auto-upload">连续上传（上传完成后留在本页）</label>
+</p>
 
 <script src="/assets/lib/crypto-js/sha1.js"></script>
 <script>
@@ -350,7 +390,7 @@
         xhr.onload = function (e) {
             console.log('上传成功', xhr.status, xhr.statusText);
             // 等待进度条走到 100% 否则小文件进度条还没有走完就提示上传完成会让人感觉有点奇怪
-            setTimeout(function(){
+            setTimeout(function () {
                 alert("上传成功！");
                 window.location.reload();
             }, 300);
@@ -360,4 +400,30 @@
         };
         xhr.send(file); // file 是要上传的文件对象
     }
+</script>
+<script>
+    var fileAssociator = document.getElementById("fileAssociator");
+    // 下拉框列表
+    getRequest("/file/list", { token: localStorageUtils.getToken() })
+        .then(function (responseData) {
+            var axiosData = responseData.data;
+            var status = axiosData.status;
+            var data = axiosData.data;
+            if (status === "success") {
+                // console.log(data);
+                // 数据进行转换
+                var optionHTML = "";
+                for (var i = 0; i < data.length; i++) {
+                    const element = data[i];
+                    optionHTML += `<option value="${element.id}">[${element.id}] ${element.fileDisplayName}.${element.fileFormat}</option>`;
+                }
+                // 渲染到下拉框内
+                fileAssociator.innerHTML += optionHTML;
+            } else {
+                alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
+            }
+        }).catch(function (error) {
+            console.log(error);
+            alert("无法连接到服务器，请检查网络连接！");
+        });
 </script>

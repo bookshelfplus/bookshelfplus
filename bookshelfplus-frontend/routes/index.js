@@ -135,7 +135,7 @@ router.get('/dashboard/:group/:page/:subpage?', function (req, res) {
                 pageTemplate: "Account",
             },
             "debug": {
-                title: "调试",
+                title: "系统配置",
                 baseTemplate: "blank",
                 pageTemplate: "Debug",
             }
