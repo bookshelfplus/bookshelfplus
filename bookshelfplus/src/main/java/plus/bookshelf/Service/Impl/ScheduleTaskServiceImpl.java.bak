@@ -125,6 +125,9 @@ public class ScheduleTaskServiceImpl {
     }
 
     private static ScheduleTaskDO convertToDataObject(ScheduleTaskModel scheduleTaskModel) {
+        if (scheduleTaskModel == null) {
+            return null;
+        }
         ScheduleTaskDO scheduleTaskDO = new ScheduleTaskDO();
         BeanUtils.copyProperties(scheduleTaskModel, scheduleTaskDO);
         scheduleTaskDO.setAction(String.valueOf(scheduleTaskModel.getAction()));
@@ -132,6 +135,9 @@ public class ScheduleTaskServiceImpl {
     }
 
     private static ScheduleTaskModel convertToModel(ScheduleTaskDO scheduleTaskDO) {
+        if (scheduleTaskDO == null) {
+            return null;
+        }
         ScheduleTaskModel scheduleTaskModel = new ScheduleTaskModel();
         BeanUtils.copyProperties(scheduleTaskDO, scheduleTaskModel);
         scheduleTaskModel.setAction(ScheduleTaskActionEnum.valueOf(scheduleTaskDO.getAction()));

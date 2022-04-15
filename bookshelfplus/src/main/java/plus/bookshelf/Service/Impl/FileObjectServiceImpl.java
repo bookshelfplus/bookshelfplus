@@ -59,6 +59,9 @@ public class FileObjectServiceImpl implements FileObjectService {
     }
 
     private FileObjectModel convertFromDataObject(FileObjectDO fileObjectDO) throws InvocationTargetException, IllegalAccessException {
+        if(fileObjectDO == null) {
+            return null;
+        }
         FileObjectModel fileObjectModel = new FileObjectModel();
         BeanUtils.copyProperties(fileObjectDO, fileObjectModel);
         return fileObjectModel;
@@ -80,7 +83,10 @@ public class FileObjectServiceImpl implements FileObjectService {
         return affectRows > 0;
     }
 
-    private FileObjectDO convertFromFileObjectModel(FileObjectModel fileObjectModel) throws InvocationTargetException, IllegalAccessException {
+    private FileObjectDO convertFromFileObjectModel(FileObjectModel fileObjectModel) {
+        if(fileObjectModel == null) {
+            return null;
+        }
         FileObjectDO fileObjectDO = new FileObjectDO();
         BeanUtils.copyProperties(fileObjectModel, fileObjectDO);
         return fileObjectDO;

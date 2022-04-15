@@ -61,7 +61,10 @@ public class FileServiceImpl implements FileService {
         return fileModels;
     }
 
-    private FileModel convertFromDataObject(FileDO fileDO) throws InvocationTargetException, IllegalAccessException {
+    private FileModel convertFromDataObject(FileDO fileDO) {
+        if(fileDO == null) {
+            return null;
+        }
         FileModel fileModel = new FileModel();
         BeanUtils.copyProperties(fileDO, fileModel);
         return fileModel;

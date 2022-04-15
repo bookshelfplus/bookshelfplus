@@ -70,6 +70,9 @@ public class FileController extends BaseController {
     }
 
     private FileVO convertFileVOFromModel(FileModel fileModel) {
+        if (fileModel == null) {
+            return null;
+        }
         FileVO fileVO = new FileVO();
         BeanUtils.copyProperties(fileModel, fileVO);
         fileVO.setFileCreateAt(fileModel.getFileCreateAt().getTime());
@@ -97,6 +100,9 @@ public class FileController extends BaseController {
     }
 
     private FileObjectVO convertFileObjectVOFromModel(FileObjectModel fileObjectModel) {
+        if (fileObjectModel == null) {
+            return null;
+        }
         FileObjectVO fileObjectVO = new FileObjectVO();
         BeanUtils.copyProperties(fileObjectModel, fileObjectVO);
         try {
@@ -159,13 +165,13 @@ public class FileController extends BaseController {
         String bookSaveFolder = QCloudCosUtils.BOOK_SAVE_FOLDER;
 
         // 判断对象是否存在
-        Boolean isExist = qCloudCosUtils.doesObjectExist(bookSaveFolder, fileName);
+        Boolean isExist = qCloudCosUtils.doesObjectExist(bookSaveFolder, fileSha1);
         switch (httpMethodName) {
             case PUT:
                 // 上传文件
                 if (isExist) throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "文件已存在");
 
-                fileObjectService.uploadFile(fileId, fileName, bookSaveFolder + fileName, fileSize,
+                fileObjectService.uploadFile(fileId, fileName, bookSaveFolder + fileSha1, fileSize,
                         fileSha1, fileExt, fileName, FileStorageMediumEnum.QCLOUD_COS, "", lastModified);
                 break;
             case GET:
@@ -178,7 +184,7 @@ public class FileController extends BaseController {
                 throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "httpMethod 参数暂不支持");
         }
 
-        String url = qCloudCosUtils.generatePresignedUrl(userModel.getId(), httpMethodName, bookSaveFolder, fileName, 30, urlGUID);
+        String url = qCloudCosUtils.generatePresignedUrl(userModel.getId(), httpMethodName, bookSaveFolder, fileSha1, 30, urlGUID);
 
         Map map = new HashMap();
         map.put("url", url);
@@ -201,7 +207,7 @@ public class FileController extends BaseController {
             // @RequestParam() Map<String, String> params,
             @RequestParam(value = "event") String eventStr,
             @RequestParam(value = "context", required = false) String contextStr
-    ) throws BusinessException {
+    ) throws BusinessException, InvocationTargetException, IllegalAccessException {
 
         JSONObject eventObject;
 
@@ -211,6 +217,7 @@ public class FileController extends BaseController {
             throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "event参数不合法");
         }
 
+        String cosBucketName, appid, cosRegion, eventName, key;
         try {
             // 获取 Records 节点
             JSONArray records = eventObject.getJSONArray("Records");
@@ -218,41 +225,47 @@ public class FileController extends BaseController {
 
             JSONObject cos = record.getJSONObject("cos");
             JSONObject cosBucket = cos.getJSONObject("cosBucket");
-            String appid = cosBucket.getString("appid");
-            String cosBucketName = cosBucket.getString("name");
+            appid = cosBucket.getString("appid");
+            cosBucketName = cosBucket.getString("name");
             if (Objects.equals(appid, "1253970026") && Objects.equals(cosBucketName, "testpic")) {
                 // 执行的是腾讯云云函数的测试请求
                 return CommonReturnType.create("您的云函数配置成功。");
             }
-            String cosRegion = cosBucket.getString("cosRegion");
+            cosRegion = cosBucket.getString("cosRegion");
 
             JSONObject cosObject = cos.getJSONObject("cosObject");
-            String key = cosObject.getString("key");
-            // 获取 /1000000000/bookshelfplus/fileName 中的 fileName 部分
+            key = cosObject.getString("key");
+            // 获取 /1000000000/bookshelfplus/fileSha1 中的 fileSha1 部分
             key = key.substring(key.indexOf("/", key.indexOf("/", key.indexOf("/") + 1) + 1) + 1);
 
             JSONObject event = record.getJSONObject("event");
-            String eventName = event.getString("eventName");
+            eventName = event.getString("eventName");
 
-            // 判断是否是由系统的存储桶触发
-            if (qCloudCosConfig.getBucketName().equals(cosBucketName + "-" + appid) &&
-                    qCloudCosConfig.getRegionName().equals(cosRegion)) {
-                // 是由系统的存储桶触发的，则认为是文件上传成功
-
-                // 通过文件 key 获取文件对象
-                FileObjectModel fileObject = fileObjectService.getFileObjectByFilePath(QCloudCosUtils.BOOK_SAVE_FOLDER + key);
-
-                // 更新文件状态
-                Boolean isSuccess = fileObjectService.updateFileStatus(fileObject.getId(), "SUCCESS");
-                if (!isSuccess) {
-                    throw new BusinessException(BusinessErrorCode.UNKNOWN_ERROR, "更新文件状态失败");
-                }
-            } else {
-                // 不是由系统的存储桶触发的
-                return CommonReturnType.create("Not triggered by the bucket specified in the configuration file, skip.");
-            }
         } catch (Exception e) {
             throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "JSON解析出错！");
+        }
+
+        // 判断是否是由系统的存储桶触发
+        if (qCloudCosConfig.getBucketName().equals(cosBucketName + "-" + appid) &&
+                qCloudCosConfig.getRegionName().equals(cosRegion) &&
+                "cos:ObjectCreated:Put".equals(eventName)) {
+            // 是由系统的存储桶触发的，则认为是文件上传成功
+
+            // 通过文件 key 获取文件对象
+            FileObjectModel fileObject = fileObjectService.getFileObjectByFilePath(QCloudCosUtils.BOOK_SAVE_FOLDER + key);
+
+            // 如果找不到，就抛出异常
+            if (fileObject == null) {
+                throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "文件不存在！");
+            }
+            // 更新文件状态
+            Boolean isSuccess = fileObjectService.updateFileStatus(fileObject.getId(), "SUCCESS");
+            if (!isSuccess) {
+                throw new BusinessException(BusinessErrorCode.UNKNOWN_ERROR, "更新文件状态失败");
+            }
+        } else {
+            // 不是由系统的存储桶触发的
+            return CommonReturnType.create("Not triggered by the bucket specified in the configuration file, skip.");
         }
         return CommonReturnType.create("success");
     }

@@ -1,10 +1,10 @@
 package plus.bookshelf.Dao.Mapper;
 
-import java.util.List;
-
 import org.springframework.stereotype.Repository;
 import plus.bookshelf.Dao.DO.BookDO;
 import plus.bookshelf.Dao.DO.BookDOExample;
+
+import java.util.List;
 
 @Repository // 添加这个注解，Autowired的时候idea就不会报错了
 public interface BookDOMapper {

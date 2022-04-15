@@ -256,6 +256,9 @@ public class BookServiceImpl implements BookService {
     }
 
     private List<BookModel> convertFromDataObjecctList(List<BookDO> bookDOs) {
+        if(bookDOs == null) {
+            return null;
+        }
         List<BookModel> bookModels = new ArrayList<>();
         for (BookDO bookDO : bookDOs) {
             bookModels.add(convertFromDataObjecct(bookDO));

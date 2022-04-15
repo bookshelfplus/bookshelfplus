@@ -216,7 +216,10 @@ public class ThirdPartyUserServiceImpl implements ThirdPartyUserService {
         return false;
     }
 
-    private ThirdPartyUserModel convertThirdPartyUserDOToModel(ThirdPartyUserDO thirdPartyUserDO) throws InvocationTargetException, IllegalAccessException {
+    private ThirdPartyUserModel convertThirdPartyUserDOToModel(ThirdPartyUserDO thirdPartyUserDO) {
+        if (thirdPartyUserDO == null) {
+            return null;
+        }
         ThirdPartyUserModel thirdPartyUserModel = new ThirdPartyUserModel();
         BeanUtils.copyProperties(thirdPartyUserDO, thirdPartyUserModel);
         return thirdPartyUserModel;

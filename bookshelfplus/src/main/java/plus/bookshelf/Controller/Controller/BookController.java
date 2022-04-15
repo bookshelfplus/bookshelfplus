@@ -199,6 +199,9 @@ public class BookController extends BaseController {
 
 
     private BookVO convertFromModel(BookModel bookModel) {
+        if(bookModel == null) {
+            return null;
+        }
         BookVO bookVO = new BookVO();
         BeanUtils.copyProperties(bookModel, bookVO);
         return bookVO;
