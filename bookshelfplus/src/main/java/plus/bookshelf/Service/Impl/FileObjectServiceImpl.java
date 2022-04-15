@@ -116,7 +116,7 @@ public class FileObjectServiceImpl implements FileObjectService {
 
             fileModel.setFileName(fileName);
             fileModel.setFileSize(fileSize);
-            fileModel.setHashSha1(fileSHA1);
+            fileModel.setFileSha1(fileSHA1);
             fileModel.setFileFormat(fileExt);
             fileModel.setFileDisplayName(fileNameWithoutExt);
             fileModel.setBookOrigin(bookOrigin);
@@ -151,7 +151,7 @@ public class FileObjectServiceImpl implements FileObjectService {
         fileObjectModel.setFileType(fileExt);
         fileObjectModel.setStorageMediumType(fileStorageMediumEnum.getStorageMediumName());
         fileObjectModel.setFilePath(filePath);
-        fileObjectModel.setHashSha1(fileSHA1);
+        fileObjectModel.setFileSha1(fileSHA1);
         fileObjectModel.setUploadStatus("UPLOADING");
 
         // 其余使用默认设置

@@ -44,5 +44,5 @@ public class FileModel {
     long fileSize;
 
     // 文件哈希 - SHA1
-    String hashSha1;
+    String fileSha1;
 }

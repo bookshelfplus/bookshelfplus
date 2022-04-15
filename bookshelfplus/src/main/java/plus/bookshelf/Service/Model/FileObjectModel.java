@@ -37,7 +37,7 @@ public class FileObjectModel {
     String uploadStatus;
 
     // 文件哈希 - SHA1
-    String hashSha1;
+    String fileSha1;
 
     // 附加字段(JSON存储)
     String additionalFields;

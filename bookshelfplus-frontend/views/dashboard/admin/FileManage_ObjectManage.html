@@ -1,3 +1,10 @@
+<style>
+    /* 限制 哈希 列的宽度 */
+    tr>*:nth-child(7),
+    td>*:nth-child(7) {
+        max-width: 100px;
+    }
+</style>
 <p>
     <a href="<%= pageUrl %>../">返回上一级</a>
     &nbsp;
@@ -28,18 +35,25 @@
                                         ID: ${element.fileId}
                                         <a href="<%= pageUrl %>../detail?id=${element.bookId}">查看</a>
                                     </span>`,
-                            文件路径: `${element.filePath}`,
-                            文件密码: `${element.filePwd}`,
-                            提取码: `${element.fileShareCode}`,
+                            文件名: `${element.fileName}`,
+                            格式: `${element.fileType}`,
+                            密码: `<span class="overflow-omit" style="font-size: 12px; line-height: 1.2em; display: block;"><nobr>
+                                        文件密码: ${element.filePwd}<br>
+                                        提取码: ${element.fileShareCode}
+                                    </nobr></span>`,
+                            // 文件密码: `${element.filePwd}`,
+                            // 提取码: `${element.fileShareCode}`,
                             存储介质: `${element.storageMediumType}`,
-                            // 时间: `<span class="overflow-omit" style="font-size: 12px; line-height: 1.2em; display: block;"><nobr>
-                            //             创建: ${new Date(element.fileCreateAt).toLocaleString()}<br>
-                            //             修改: ${new Date(element.fileModifiedAt).toLocaleString()}
-                            //         </nobr></span>`,
-                            管理: `<span class="overflow-omit" style="margin: 0 auto;">
+                            "哈希(双击全选)": `<span class="overflow-omit" style="font-size: 10px;">${element.fileSha1}</span>`,
+                            状态: `${(element.uploadStatus ? element.uploadStatus : "<span style='color: grey; font-weight: bold;'>未知</span>")
+                                .replace("SUCCESS", "<span style='color: green; font-weight: bold;'>成功</span>")
+                                .replace("UPLOADING", "<span style='color: orange; font-weight: bold;'>正在上传</span>")
+                                .replace("TERMINATED", "<span style='color: red; font-weight: bold;'>上传失败</span>")}`,
+                            管理: `<span span class= "overflow-omit" style = "margin: 0 auto;" >
+                                        <a href="javascript:refreshFileObjectStatus(${element.id});">刷新状态</a>
                                         <a href="<%= pageUrl %>../object-detail?id=${element.id}">修改</a>
                                         <a href="javascript:deleteBook(${element.id});">删除</a>
-                                    </span>`,
+                                    </span > `,
                         })
                     });
                     if (renderData.length == 0) {
@@ -55,7 +69,7 @@
                         renderTable({ data: renderData, tableId: tableElementId, renderTableHead: true });
                     }
                 } else {
-                    alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
+                    alert(`出错啦！${data.errMsg}(错误码: ${data.errCode}) `);
                 }
             }).catch(function (error) {
                 console.log(error);

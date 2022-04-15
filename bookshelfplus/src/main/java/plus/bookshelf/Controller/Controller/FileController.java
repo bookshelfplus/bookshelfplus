@@ -130,7 +130,7 @@ public class FileController extends BaseController {
 
                                 // 以下为 PUT 请求必传参数
                                 @RequestParam(value = "fileSize", required = false) Long fileSize,
-                                @RequestParam(value = "fileType", required = false) String fileType,
+                                // @RequestParam(value = "fileType", required = false) String fileType,
                                 @RequestParam(value = "fileSha1", required = false) String fileSha1,
                                 @RequestParam(value = "fileExt", required = false) String fileExt,
                                 @RequestParam(value = "fileId", required = false) Integer fileId // 关联的文件ID，创建新文件则为0
