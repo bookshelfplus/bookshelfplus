@@ -1,7 +1,7 @@
 <style>
     /* 限制 哈希 列的宽度 */
-    tr>*:nth-child(7),
-    td>*:nth-child(7) {
+    tr>*:nth-child(8),
+    td>*:nth-child(8) {
         max-width: 100px;
     }
 </style>
@@ -33,18 +33,23 @@
                             编号: `${element.id}`,
                             关联文件: `<span class="overflow-omit" style="margin: 0 auto;">
                                         ID: ${element.fileId}
-                                        <a href="<%= pageUrl %>../detail?id=${element.bookId}">查看</a>
+                                        <a href="<%= pageUrl %>../detail?id=${element.fileId}">查看</a>
                                     </span>`,
                             文件名: `${element.fileName}`,
-                            格式: `${element.fileType}`,
+                            修改日期: element.lastModified === 0 ? "未知" : `<span class="overflow-omit" style="font-size: 12px; line-height: 1.2em; display: block;"><nobr>
+                                        ${new Date(element.lastModified).toISOString().replace(/T/, ' ').replace(/\..+/, '')}
+                                    </nobr></span>`,
+                            格式: `<span class="overflow-omit" style="font-size: 12px; line-height: 1.2em; display: block;"><nobr>
+                                        ${element.fileType ? element.fileType : "未知"}
+                                    </nobr></span>`,
                             密码: `<span class="overflow-omit" style="font-size: 12px; line-height: 1.2em; display: block;"><nobr>
                                         文件密码: ${element.filePwd}<br>
                                         提取码: ${element.fileShareCode}
                                     </nobr></span>`,
-                            // 文件密码: `${element.filePwd}`,
-                            // 提取码: `${element.fileShareCode}`,
-                            存储介质: `${element.storageMediumType}`,
-                            "哈希(双击全选)": `<span class="overflow-omit" style="font-size: 10px;">${element.fileSha1}</span>`,
+                            存储介质: `<span class="overflow-omit" style="font-size: 12px; line-height: 1.2em; display: block;"><nobr>
+                                        ${element.storageMediumType}
+                                    </nobr></span>`,
+                            "哈希(双击全选)": `<span class="overflow-omit" style="font-size: 10px;">${element.fileSha1 ? element.fileSha1 : "未知"}</span>`,
                             状态: `${(element.uploadStatus ? element.uploadStatus : "<span style='color: grey; font-weight: bold;'>未知</span>")
                                 .replace("SUCCESS", "<span style='color: green; font-weight: bold;'>成功</span>")
                                 .replace("UPLOADING", "<span style='color: orange; font-weight: bold;'>正在上传</span>")

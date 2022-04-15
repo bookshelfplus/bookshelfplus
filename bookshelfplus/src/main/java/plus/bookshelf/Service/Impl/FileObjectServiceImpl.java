@@ -107,7 +107,7 @@ public class FileObjectServiceImpl implements FileObjectService {
     @Transactional
     public Boolean uploadFile(Integer fileId, String fileName, String filePath, Long fileSize, String fileSHA1,
                               String fileExt, String fileNameWithoutExt, FileStorageMediumEnum fileStorageMediumEnum,
-                              String bookOrigin
+                              String bookOrigin, Long lastModified
     ) throws InvocationTargetException, IllegalAccessException, BusinessException {
 
         if (fileId == 0) {
@@ -153,6 +153,7 @@ public class FileObjectServiceImpl implements FileObjectService {
         fileObjectModel.setFilePath(filePath);
         fileObjectModel.setFileSha1(fileSHA1);
         fileObjectModel.setUploadStatus("UPLOADING");
+        fileObjectModel.setLastModified(lastModified);
 
         // 其余使用默认设置
         fileObjectModel.setFilePwd("");

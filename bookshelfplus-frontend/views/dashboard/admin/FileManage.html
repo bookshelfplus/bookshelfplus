@@ -43,7 +43,7 @@
                         console.log(element);
                         renderData.push({
                             编号: `${element.id}`,
-                            关联书籍: `<span class="overflow-omit" style="margin: 0 auto;">
+                            关联书籍: element.bookId === 0 ? "未关联书籍" : `<span class="overflow-omit" style="margin: 0 auto;">
                                         ID: ${element.bookId}
                                         <a href="/book?id=${element.bookId}">查看</a>
                                         <a href="/dashboard/admin/book-manage/detail?id=${element.bookId}">修改</a>

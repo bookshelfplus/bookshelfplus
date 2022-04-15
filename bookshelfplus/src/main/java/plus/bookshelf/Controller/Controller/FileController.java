@@ -50,9 +50,6 @@ public class FileController extends BaseController {
     @Autowired
     FileObjectServiceImpl fileObjectService;
 
-    // @Autowired
-    // ScheduleTaskServiceImpl scheduleTaskService;
-
     @ApiOperation(value = "【管理员】查询文件列表", notes = "查询文件列表")
     @RequestMapping(value = "list", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
     @ResponseBody
@@ -131,6 +128,7 @@ public class FileController extends BaseController {
                                 // 以下为 PUT 请求必传参数
                                 @RequestParam(value = "fileSize", required = false) Long fileSize,
                                 // @RequestParam(value = "fileType", required = false) String fileType,
+                                @RequestParam(value = "lastModified", required = false) Long lastModified,
                                 @RequestParam(value = "fileSha1", required = false) String fileSha1,
                                 @RequestParam(value = "fileExt", required = false) String fileExt,
                                 @RequestParam(value = "fileId", required = false) Integer fileId // 关联的文件ID，创建新文件则为0
@@ -168,7 +166,7 @@ public class FileController extends BaseController {
                 if (isExist) throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "文件已存在");
 
                 fileObjectService.uploadFile(fileId, fileName, bookSaveFolder + fileName, fileSize,
-                        fileSha1, fileExt, fileName, FileStorageMediumEnum.QCLOUD_COS, "");
+                        fileSha1, fileExt, fileName, FileStorageMediumEnum.QCLOUD_COS, "", lastModified);
                 break;
             case GET:
                 if (!isExist) throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "文件不存在");
@@ -190,6 +188,7 @@ public class FileController extends BaseController {
 
     /**
      * 腾讯云 COS 文件上传成功回调方法
+     *
      * @param eventStr
      * @param contextStr
      * @return

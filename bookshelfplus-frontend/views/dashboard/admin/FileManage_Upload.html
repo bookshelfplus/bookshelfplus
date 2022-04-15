@@ -104,6 +104,7 @@
         文件扩展名：<span id="file-ext"></span><br>
         文件名（不含扩展名）：<span id="file-name-no-ext"></span><br>
         文件大小: <span id="file-size"></span><br>
+        修改日期: <span id="file-lastModified"></span><br>
         文件SHA1: <span id="file-sha1"></span><br>
     </p>
     <p>计算文件哈希进度</p>
@@ -135,6 +136,7 @@
         fileName: "",
         fileSize: 0,
         fileType: "",
+        lastModified: "",
         fileSha1: "",
         fileExt: "",
         fileNameWithoutExt: "",
@@ -196,6 +198,7 @@
         fileInfo.fileName = file.name;
         fileInfo.fileSize = file.size;
         fileInfo.fileType = file.type;
+        fileInfo.lastModified = file.lastModified;
         // 获取文件扩展名：首先按照 . 拆分，然后删掉第一个元素（考虑无扩展名文件），再取出最后一个元素
         let fileNameSplit = file.name.split(".");
         fileNameSplit.shift();
@@ -208,6 +211,7 @@
         document.getElementById("file-ext").innerHTML = fileInfo.fileExt;
         document.getElementById("file-name-no-ext").innerHTML = fileInfo.fileNameWithoutExt;
         document.getElementById("file-size").innerHTML = sOutput;
+        document.getElementById("file-lastModified").innerHTML = new Date(fileInfo.lastModified).toISOString().replace(/T/, ' ').replace(/\..+/, '');
 
         // 计算文件哈希
         let sha1 = await sha1File(file, (file) => {
@@ -354,6 +358,7 @@
             fileName: fileInfo.fileNameWithoutExt,
             fileSize: fileInfo.fileSize,
             // fileType: fileInfo.fileType,
+            lastModified: fileInfo.lastModified,
             fileSha1: fileInfo.fileSha1,
             fileExt: fileInfo.fileExt,
             fileId: $("#fileAssociator").val() // 关联的文件ID，创建新文件则为0

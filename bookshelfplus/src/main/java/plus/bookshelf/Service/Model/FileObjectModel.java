@@ -33,6 +33,9 @@ public class FileObjectModel {
     // 文件提取码
     String fileShareCode;
 
+    // 文件最后修改时间戳
+    Long lastModified;
+
     // 文件上传状态
     String uploadStatus;
 
