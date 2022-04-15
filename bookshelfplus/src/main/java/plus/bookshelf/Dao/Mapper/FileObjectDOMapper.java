@@ -1,7 +1,6 @@
 package plus.bookshelf.Dao.Mapper;
 
 import org.springframework.stereotype.Repository;
-import plus.bookshelf.Dao.DO.FileDO;
 import plus.bookshelf.Dao.DO.FileObjectDO;
 
 @Repository // 添加这个注解，Autowired的时候idea就不会报错了
@@ -60,4 +59,12 @@ public interface FileObjectDOMapper {
      * @return
      */
     FileObjectDO[] selectAll();
+
+    /**
+     * 通过文件路径获取文件
+     *
+     * @param filePath 文件路径
+     * @return
+     */
+    FileObjectDO selectByFilePath(String filePath);
 }

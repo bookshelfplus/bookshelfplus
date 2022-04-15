@@ -2487,10 +2487,10 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 </div>
 <div class="sect3">
-<h4 id="_listusingget">2.3.2. 查询文件列表</h4>
+<h4 id="_listusingpost">2.3.2. 查询文件列表</h4>
 <div class="literalblock">
 <div class="content">
-<pre>GET /api/file/list</pre>
+<pre>POST /api/file/list</pre>
 </div>
 </div>
 <div class="sect4">
@@ -2503,30 +2503,25 @@ table.CodeRay td.code>pre{padding:0}
 <h5 id="_参数_10">参数</h5>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
-<col style="width: 11.1111%;">
-<col style="width: 16.6666%;">
-<col style="width: 50%;">
-<col style="width: 22.2223%;">
+<col style="width: 22.2222%;">
+<col style="width: 33.3333%;">
+<col style="width: 44.4445%;">
 </colgroup>
 <thead>
 <tr>
 <th class="tableblock halign-left valign-middle">类型</th>
 <th class="tableblock halign-left valign-middle">名称</th>
-<th class="tableblock halign-left valign-middle">说明</th>
 <th class="tableblock halign-left valign-middle">类型</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-middle"><div><div class="paragraph">
-<p><strong>Query</strong></p>
+<p><strong>FormData</strong></p>
 </div></div></td>
 <td class="tableblock halign-left valign-middle"><div><div class="paragraph">
 <p><strong>token</strong><br>
 <em>可选</em></p>
-</div></div></td>
-<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
-<p>token</p>
 </div></div></td>
 <td class="tableblock halign-left valign-middle"><div><div class="paragraph">
 <p>string</p>
@@ -2564,6 +2559,17 @@ table.CodeRay td.code>pre{padding:0}
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p><strong>201</strong></p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p>Created</p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p>无内容</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
 <p><strong>401</strong></p>
 </div></div></td>
 <td class="tableblock halign-left valign-middle"><div><div class="paragraph">
@@ -2599,6 +2605,16 @@ table.CodeRay td.code>pre{padding:0}
 </table>
 </div>
 <div class="sect4">
+<h5 id="_消耗_7">消耗</h5>
+<div class="ulist">
+<ul>
+<li>
+<p><code>application/x-www-form-urlencoded</code></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
 <h5 id="_生成_11">生成</h5>
 <div class="ulist">
 <ul>
@@ -2615,6 +2631,14 @@ table.CodeRay td.code>pre{padding:0}
 <div class="listingblock">
 <div class="content">
 <pre>/api/file/list</pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_请求_formdata_7">请求 formData</h6>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="json"><span class="string"><span class="delimiter">&quot;</span><span class="content">string</span><span class="delimiter">&quot;</span></span></code></pre>
 </div>
 </div>
 </div>
@@ -2635,10 +2659,10 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 </div>
 <div class="sect3">
-<h4 id="_objectlistusingget">2.3.3. 查询文件对象列表</h4>
+<h4 id="_objectlistusingpost">2.3.3. 查询文件对象列表</h4>
 <div class="literalblock">
 <div class="content">
-<pre>GET /api/file/object/list</pre>
+<pre>POST /api/file/object/list</pre>
 </div>
 </div>
 <div class="sect4">
@@ -2651,30 +2675,25 @@ table.CodeRay td.code>pre{padding:0}
 <h5 id="_参数_11">参数</h5>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
-<col style="width: 11.1111%;">
-<col style="width: 16.6666%;">
-<col style="width: 50%;">
-<col style="width: 22.2223%;">
+<col style="width: 22.2222%;">
+<col style="width: 33.3333%;">
+<col style="width: 44.4445%;">
 </colgroup>
 <thead>
 <tr>
 <th class="tableblock halign-left valign-middle">类型</th>
 <th class="tableblock halign-left valign-middle">名称</th>
-<th class="tableblock halign-left valign-middle">说明</th>
 <th class="tableblock halign-left valign-middle">类型</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-middle"><div><div class="paragraph">
-<p><strong>Query</strong></p>
+<p><strong>FormData</strong></p>
 </div></div></td>
 <td class="tableblock halign-left valign-middle"><div><div class="paragraph">
 <p><strong>token</strong><br>
 <em>可选</em></p>
-</div></div></td>
-<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
-<p>token</p>
 </div></div></td>
 <td class="tableblock halign-left valign-middle"><div><div class="paragraph">
 <p>string</p>
@@ -2712,6 +2731,17 @@ table.CodeRay td.code>pre{padding:0}
 </tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p><strong>201</strong></p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p>Created</p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p>无内容</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
 <p><strong>401</strong></p>
 </div></div></td>
 <td class="tableblock halign-left valign-middle"><div><div class="paragraph">
@@ -2747,6 +2777,16 @@ table.CodeRay td.code>pre{padding:0}
 </table>
 </div>
 <div class="sect4">
+<h5 id="_消耗_8">消耗</h5>
+<div class="ulist">
+<ul>
+<li>
+<p><code>application/x-www-form-urlencoded</code></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
 <h5 id="_生成_12">生成</h5>
 <div class="ulist">
 <ul>
@@ -2766,6 +2806,14 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 </div>
 </div>
+<div class="sect5">
+<h6 id="_请求_formdata_8">请求 formData</h6>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="json"><span class="string"><span class="delimiter">&quot;</span><span class="content">string</span><span class="delimiter">&quot;</span></span></code></pre>
+</div>
+</div>
+</div>
 </div>
 <div class="sect4">
 <h5 id="_http响应示例_12">HTTP响应示例</h5>
@@ -2782,23 +2830,17 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 </div>
 </div>
-</div>
-<div class="sect2">
-<h3 id="_9083a36b9e1b060bcb75ff62bb4bda37">2.4. 用户操作</h3>
-<div class="paragraph">
-<p>User Controller</p>
-</div>
 <div class="sect3">
-<h4 id="_cancelaccountusingpost">2.4.1. 账号注销</h4>
+<h4 id="_cosfinishuploadusingpost">2.3.4. cosFinishUpload</h4>
 <div class="literalblock">
 <div class="content">
-<pre>POST /api/user/cancelAccount</pre>
+<pre>POST /api/file/upload/finish-upload</pre>
 </div>
 </div>
 <div class="sect4">
 <h5 id="_说明_12">说明</h5>
 <div class="paragraph">
-<p>传入用户 token ，以及密码明文，后台计算密码SHA1值，进行注销</p>
+<p>客户端向腾讯云 COS 存储桶上传文件完毕</p>
 </div>
 </div>
 <div class="sect4">
@@ -2822,7 +2864,7 @@ table.CodeRay td.code>pre{padding:0}
 <p><strong>FormData</strong></p>
 </div></div></td>
 <td class="tableblock halign-left valign-middle"><div><div class="paragraph">
-<p><strong>password</strong><br>
+<p><strong>fileName</strong><br>
 <em>可选</em></p>
 </div></div></td>
 <td class="tableblock halign-left valign-middle"><div><div class="paragraph">
@@ -2834,7 +2876,7 @@ table.CodeRay td.code>pre{padding:0}
 <p><strong>FormData</strong></p>
 </div></div></td>
 <td class="tableblock halign-left valign-middle"><div><div class="paragraph">
-<p><strong>token</strong><br>
+<p><strong>urlGUID</strong><br>
 <em>可选</em></p>
 </div></div></td>
 <td class="tableblock halign-left valign-middle"><div><div class="paragraph">
@@ -2919,7 +2961,7 @@ table.CodeRay td.code>pre{padding:0}
 </table>
 </div>
 <div class="sect4">
-<h5 id="_消耗_7">消耗</h5>
+<h5 id="_消耗_9">消耗</h5>
 <div class="ulist">
 <ul>
 <li>
@@ -2944,12 +2986,12 @@ table.CodeRay td.code>pre{padding:0}
 <h6 id="_请求_path_13">请求 path</h6>
 <div class="listingblock">
 <div class="content">
-<pre>/api/user/cancelAccount</pre>
+<pre>/api/file/upload/finish-upload</pre>
 </div>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_请求_formdata_7">请求 formData</h6>
+<h6 id="_请求_formdata_9">请求 formData</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="json"><span class="string"><span class="delimiter">&quot;</span><span class="content">string</span><span class="delimiter">&quot;</span></span></code></pre>
@@ -2972,17 +3014,23 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 </div>
 </div>
+</div>
+<div class="sect2">
+<h3 id="_9083a36b9e1b060bcb75ff62bb4bda37">2.4. 用户操作</h3>
+<div class="paragraph">
+<p>User Controller</p>
+</div>
 <div class="sect3">
-<h4 id="_getuserstatususingpost">2.4.2. 获取用户登录状态</h4>
+<h4 id="_cancelaccountusingpost">2.4.1. 账号注销</h4>
 <div class="literalblock">
 <div class="content">
-<pre>POST /api/user/getUserStatus</pre>
+<pre>POST /api/user/cancelAccount</pre>
 </div>
 </div>
 <div class="sect4">
 <h5 id="_说明_13">说明</h5>
 <div class="paragraph">
-<p>获取用户登录状态</p>
+<p>传入用户 token ，以及密码明文，后台计算密码SHA1值，进行注销</p>
 </div>
 </div>
 <div class="sect4">
@@ -3001,6 +3049,18 @@ table.CodeRay td.code>pre{padding:0}
 </tr>
 </thead>
 <tbody>
+<tr>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p><strong>FormData</strong></p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p><strong>password</strong><br>
+<em>可选</em></p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p>string</p>
+</div></div></td>
+</tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><div><div class="paragraph">
 <p><strong>FormData</strong></p>
@@ -3091,7 +3151,7 @@ table.CodeRay td.code>pre{padding:0}
 </table>
 </div>
 <div class="sect4">
-<h5 id="_消耗_8">消耗</h5>
+<h5 id="_消耗_10">消耗</h5>
 <div class="ulist">
 <ul>
 <li>
@@ -3116,12 +3176,12 @@ table.CodeRay td.code>pre{padding:0}
 <h6 id="_请求_path_14">请求 path</h6>
 <div class="listingblock">
 <div class="content">
-<pre>/api/user/getUserStatus</pre>
+<pre>/api/user/cancelAccount</pre>
 </div>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_请求_formdata_8">请求 formData</h6>
+<h6 id="_请求_formdata_10">请求 formData</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="json"><span class="string"><span class="delimiter">&quot;</span><span class="content">string</span><span class="delimiter">&quot;</span></span></code></pre>
@@ -3145,16 +3205,16 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 </div>
 <div class="sect3">
-<h4 id="_loginusingpost">2.4.3. 用户登录</h4>
+<h4 id="_getuserstatususingpost">2.4.2. 获取用户登录状态</h4>
 <div class="literalblock">
 <div class="content">
-<pre>POST /api/user/login</pre>
+<pre>POST /api/user/getUserStatus</pre>
 </div>
 </div>
 <div class="sect4">
 <h5 id="_说明_14">说明</h5>
 <div class="paragraph">
-<p>传入用户名，以及密码明文，后台计算密码SHA1值，进行登录</p>
+<p>获取用户登录状态</p>
 </div>
 </div>
 <div class="sect4">
@@ -3178,19 +3238,7 @@ table.CodeRay td.code>pre{padding:0}
 <p><strong>FormData</strong></p>
 </div></div></td>
 <td class="tableblock halign-left valign-middle"><div><div class="paragraph">
-<p><strong>password</strong><br>
-<em>可选</em></p>
-</div></div></td>
-<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
-<p>string</p>
-</div></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
-<p><strong>FormData</strong></p>
-</div></div></td>
-<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
-<p><strong>username</strong><br>
+<p><strong>token</strong><br>
 <em>可选</em></p>
 </div></div></td>
 <td class="tableblock halign-left valign-middle"><div><div class="paragraph">
@@ -3275,7 +3323,7 @@ table.CodeRay td.code>pre{padding:0}
 </table>
 </div>
 <div class="sect4">
-<h5 id="_消耗_9">消耗</h5>
+<h5 id="_消耗_11">消耗</h5>
 <div class="ulist">
 <ul>
 <li>
@@ -3300,12 +3348,12 @@ table.CodeRay td.code>pre{padding:0}
 <h6 id="_请求_path_15">请求 path</h6>
 <div class="listingblock">
 <div class="content">
-<pre>/api/user/login</pre>
+<pre>/api/user/getUserStatus</pre>
 </div>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_请求_formdata_9">请求 formData</h6>
+<h6 id="_请求_formdata_11">请求 formData</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="json"><span class="string"><span class="delimiter">&quot;</span><span class="content">string</span><span class="delimiter">&quot;</span></span></code></pre>
@@ -3329,16 +3377,16 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 </div>
 <div class="sect3">
-<h4 id="_logoutusingpost">2.4.4. 用户登出</h4>
+<h4 id="_loginusingpost">2.4.3. 用户登录</h4>
 <div class="literalblock">
 <div class="content">
-<pre>POST /api/user/logout</pre>
+<pre>POST /api/user/login</pre>
 </div>
 </div>
 <div class="sect4">
 <h5 id="_说明_15">说明</h5>
 <div class="paragraph">
-<p>用户退出登录</p>
+<p>传入用户名，以及密码明文，后台计算密码SHA1值，进行登录</p>
 </div>
 </div>
 <div class="sect4">
@@ -3362,7 +3410,19 @@ table.CodeRay td.code>pre{padding:0}
 <p><strong>FormData</strong></p>
 </div></div></td>
 <td class="tableblock halign-left valign-middle"><div><div class="paragraph">
-<p><strong>token</strong><br>
+<p><strong>password</strong><br>
+<em>可选</em></p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p>string</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p><strong>FormData</strong></p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p><strong>username</strong><br>
 <em>可选</em></p>
 </div></div></td>
 <td class="tableblock halign-left valign-middle"><div><div class="paragraph">
@@ -3447,7 +3507,7 @@ table.CodeRay td.code>pre{padding:0}
 </table>
 </div>
 <div class="sect4">
-<h5 id="_消耗_10">消耗</h5>
+<h5 id="_消耗_12">消耗</h5>
 <div class="ulist">
 <ul>
 <li>
@@ -3472,12 +3532,12 @@ table.CodeRay td.code>pre{padding:0}
 <h6 id="_请求_path_16">请求 path</h6>
 <div class="listingblock">
 <div class="content">
-<pre>/api/user/logout</pre>
+<pre>/api/user/login</pre>
 </div>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_请求_formdata_10">请求 formData</h6>
+<h6 id="_请求_formdata_12">请求 formData</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="json"><span class="string"><span class="delimiter">&quot;</span><span class="content">string</span><span class="delimiter">&quot;</span></span></code></pre>
@@ -3501,16 +3561,16 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 </div>
 <div class="sect3">
-<h4 id="_registerusingpost">2.4.5. 用户注册</h4>
+<h4 id="_logoutusingpost">2.4.4. 用户登出</h4>
 <div class="literalblock">
 <div class="content">
-<pre>POST /api/user/register</pre>
+<pre>POST /api/user/logout</pre>
 </div>
 </div>
 <div class="sect4">
 <h5 id="_说明_16">说明</h5>
 <div class="paragraph">
-<p>传入用户名，以及密码明文，后台计算密码SHA1值，进行注册</p>
+<p>用户退出登录</p>
 </div>
 </div>
 <div class="sect4">
@@ -3534,19 +3594,7 @@ table.CodeRay td.code>pre{padding:0}
 <p><strong>FormData</strong></p>
 </div></div></td>
 <td class="tableblock halign-left valign-middle"><div><div class="paragraph">
-<p><strong>password</strong><br>
-<em>可选</em></p>
-</div></div></td>
-<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
-<p>string</p>
-</div></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
-<p><strong>FormData</strong></p>
-</div></div></td>
-<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
-<p><strong>username</strong><br>
+<p><strong>token</strong><br>
 <em>可选</em></p>
 </div></div></td>
 <td class="tableblock halign-left valign-middle"><div><div class="paragraph">
@@ -3631,7 +3679,7 @@ table.CodeRay td.code>pre{padding:0}
 </table>
 </div>
 <div class="sect4">
-<h5 id="_消耗_11">消耗</h5>
+<h5 id="_消耗_13">消耗</h5>
 <div class="ulist">
 <ul>
 <li>
@@ -3656,12 +3704,12 @@ table.CodeRay td.code>pre{padding:0}
 <h6 id="_请求_path_17">请求 path</h6>
 <div class="listingblock">
 <div class="content">
-<pre>/api/user/register</pre>
+<pre>/api/user/logout</pre>
 </div>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_请求_formdata_11">请求 formData</h6>
+<h6 id="_请求_formdata_13">请求 formData</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="json"><span class="string"><span class="delimiter">&quot;</span><span class="content">string</span><span class="delimiter">&quot;</span></span></code></pre>
@@ -3673,6 +3721,190 @@ table.CodeRay td.code>pre{padding:0}
 <h5 id="_http响应示例_17">HTTP响应示例</h5>
 <div class="sect5">
 <h6 id="_响应_200_17">响应 200</h6>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="json">{
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">data</span><span class="delimiter">&quot;</span></span> : <span class="string"><span class="delimiter">&quot;</span><span class="content">object</span><span class="delimiter">&quot;</span></span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">status</span><span class="delimiter">&quot;</span></span> : <span class="string"><span class="delimiter">&quot;</span><span class="content">string</span><span class="delimiter">&quot;</span></span>
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_registerusingpost">2.4.5. 用户注册</h4>
+<div class="literalblock">
+<div class="content">
+<pre>POST /api/user/register</pre>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_说明_17">说明</h5>
+<div class="paragraph">
+<p>传入用户名，以及密码明文，后台计算密码SHA1值，进行注册</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_参数_17">参数</h5>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 22.2222%;">
+<col style="width: 33.3333%;">
+<col style="width: 44.4445%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-middle">类型</th>
+<th class="tableblock halign-left valign-middle">名称</th>
+<th class="tableblock halign-left valign-middle">类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p><strong>FormData</strong></p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p><strong>password</strong><br>
+<em>可选</em></p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p>string</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p><strong>FormData</strong></p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p><strong>username</strong><br>
+<em>可选</em></p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p>string</p>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect4">
+<h5 id="_响应_18">响应</h5>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 10%;">
+<col style="width: 70%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-middle">HTTP代码</th>
+<th class="tableblock halign-left valign-middle">说明</th>
+<th class="tableblock halign-left valign-middle">类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p><strong>200</strong></p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p>OK</p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p><a href="#_commonreturntype">CommonReturnType</a></p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p><strong>201</strong></p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p>Created</p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p>无内容</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p><strong>401</strong></p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p>Unauthorized</p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p>无内容</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p><strong>403</strong></p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p>Forbidden</p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p>无内容</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p><strong>404</strong></p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p>Not Found</p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p>无内容</p>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect4">
+<h5 id="_消耗_14">消耗</h5>
+<div class="ulist">
+<ul>
+<li>
+<p><code>application/x-www-form-urlencoded</code></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_生成_18">生成</h5>
+<div class="ulist">
+<ul>
+<li>
+<p><code>*/*</code></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_http请求示例_18">HTTP请求示例</h5>
+<div class="sect5">
+<h6 id="_请求_path_18">请求 path</h6>
+<div class="listingblock">
+<div class="content">
+<pre>/api/user/register</pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_请求_formdata_14">请求 formData</h6>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="json"><span class="string"><span class="delimiter">&quot;</span><span class="content">string</span><span class="delimiter">&quot;</span></span></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_http响应示例_18">HTTP响应示例</h5>
+<div class="sect5">
+<h6 id="_响应_200_18">响应 200</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="json">{
@@ -3698,13 +3930,13 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 </div>
 <div class="sect4">
-<h5 id="_说明_17">说明</h5>
+<h5 id="_说明_18">说明</h5>
 <div class="paragraph">
 <p>如果传入 token 那么就是绑定第三方账号到当前登录账号，否则就是通过第三方授权登录</p>
 </div>
 </div>
 <div class="sect4">
-<h5 id="_参数_17">参数</h5>
+<h5 id="_参数_18">参数</h5>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 11.1111%;">
@@ -3833,154 +4065,6 @@ table.CodeRay td.code>pre{padding:0}
 </table>
 </div>
 <div class="sect4">
-<h5 id="_响应_18">响应</h5>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 10%;">
-<col style="width: 70%;">
-<col style="width: 20%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-middle">HTTP代码</th>
-<th class="tableblock halign-left valign-middle">说明</th>
-<th class="tableblock halign-left valign-middle">类型</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
-<p><strong>200</strong></p>
-</div></div></td>
-<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
-<p>OK</p>
-</div></div></td>
-<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
-<p><a href="#_commonreturntype">CommonReturnType</a></p>
-</div></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
-<p><strong>401</strong></p>
-</div></div></td>
-<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
-<p>Unauthorized</p>
-</div></div></td>
-<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
-<p>无内容</p>
-</div></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
-<p><strong>403</strong></p>
-</div></div></td>
-<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
-<p>Forbidden</p>
-</div></div></td>
-<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
-<p>无内容</p>
-</div></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
-<p><strong>404</strong></p>
-</div></div></td>
-<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
-<p>Not Found</p>
-</div></div></td>
-<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
-<p>无内容</p>
-</div></div></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect4">
-<h5 id="_生成_18">生成</h5>
-<div class="ulist">
-<ul>
-<li>
-<p><code>*/*</code></p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_http请求示例_18">HTTP请求示例</h5>
-<div class="sect5">
-<h6 id="_请求_path_18">请求 path</h6>
-<div class="listingblock">
-<div class="content">
-<pre>/api/third-party/callback/string</pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_http响应示例_18">HTTP响应示例</h5>
-<div class="sect5">
-<h6 id="_响应_200_18">响应 200</h6>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="json">{
-  <span class="key"><span class="delimiter">&quot;</span><span class="content">data</span><span class="delimiter">&quot;</span></span> : <span class="string"><span class="delimiter">&quot;</span><span class="content">object</span><span class="delimiter">&quot;</span></span>,
-  <span class="key"><span class="delimiter">&quot;</span><span class="content">status</span><span class="delimiter">&quot;</span></span> : <span class="string"><span class="delimiter">&quot;</span><span class="content">string</span><span class="delimiter">&quot;</span></span>
-}</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_getbindingstatususingget">2.5.2. 获取用户已绑定的第三方平台</h4>
-<div class="literalblock">
-<div class="content">
-<pre>GET /api/third-party/getBindingStatus</pre>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_说明_18">说明</h5>
-<div class="paragraph">
-<p>传入当前登录用户 token ，返回已绑定的第三方平台</p>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_参数_18">参数</h5>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 11.1111%;">
-<col style="width: 16.6666%;">
-<col style="width: 50%;">
-<col style="width: 22.2223%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-middle">类型</th>
-<th class="tableblock halign-left valign-middle">名称</th>
-<th class="tableblock halign-left valign-middle">说明</th>
-<th class="tableblock halign-left valign-middle">类型</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
-<p><strong>Query</strong></p>
-</div></div></td>
-<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
-<p><strong>token</strong><br>
-<em>可选</em></p>
-</div></div></td>
-<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
-<p>token</p>
-</div></div></td>
-<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
-<p>string</p>
-</div></div></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect4">
 <h5 id="_响应_19">响应</h5>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
@@ -4059,7 +4143,7 @@ table.CodeRay td.code>pre{padding:0}
 <h6 id="_请求_path_19">请求 path</h6>
 <div class="listingblock">
 <div class="content">
-<pre>/api/third-party/getBindingStatus</pre>
+<pre>/api/third-party/callback/string</pre>
 </div>
 </div>
 </div>
@@ -4080,16 +4164,16 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 </div>
 <div class="sect3">
-<h4 id="_loginusingget">2.5.3. 第三方用户登录跳转地址</h4>
+<h4 id="_getbindingstatususingget">2.5.2. 获取用户已绑定的第三方平台</h4>
 <div class="literalblock">
 <div class="content">
-<pre>GET /api/third-party/login</pre>
+<pre>GET /api/third-party/getBindingStatus</pre>
 </div>
 </div>
 <div class="sect4">
 <h5 id="_说明_19">说明</h5>
 <div class="paragraph">
-<p>传入需要登录的第三方平台（大小写均可），返回跳转url</p>
+<p>传入当前登录用户 token ，返回已绑定的第三方平台</p>
 </div>
 </div>
 <div class="sect4">
@@ -4115,11 +4199,11 @@ table.CodeRay td.code>pre{padding:0}
 <p><strong>Query</strong></p>
 </div></div></td>
 <td class="tableblock halign-left valign-middle"><div><div class="paragraph">
-<p><strong>platform</strong><br>
-<em>必填</em></p>
+<p><strong>token</strong><br>
+<em>可选</em></p>
 </div></div></td>
 <td class="tableblock halign-left valign-middle"><div><div class="paragraph">
-<p>platform</p>
+<p>token</p>
 </div></div></td>
 <td class="tableblock halign-left valign-middle"><div><div class="paragraph">
 <p>string</p>
@@ -4207,7 +4291,7 @@ table.CodeRay td.code>pre{padding:0}
 <h6 id="_请求_path_20">请求 path</h6>
 <div class="listingblock">
 <div class="content">
-<pre>/api/third-party/login?platform=string</pre>
+<pre>/api/third-party/getBindingStatus</pre>
 </div>
 </div>
 </div>
@@ -4228,53 +4312,46 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 </div>
 <div class="sect3">
-<h4 id="_unbindthirdpartaccountusingpost">2.5.4. 取消第三方平台绑定</h4>
+<h4 id="_loginusingget">2.5.3. 第三方用户登录跳转地址</h4>
 <div class="literalblock">
 <div class="content">
-<pre>POST /api/third-party/withdrawThirdPartyBings</pre>
+<pre>GET /api/third-party/login</pre>
 </div>
 </div>
 <div class="sect4">
 <h5 id="_说明_20">说明</h5>
 <div class="paragraph">
-<p>传入当前登录用户 token 和平台 platform （不区分大小写），返回 bool 值，true 为取消绑定成功</p>
+<p>传入需要登录的第三方平台（大小写均可），返回跳转url</p>
 </div>
 </div>
 <div class="sect4">
 <h5 id="_参数_20">参数</h5>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
-<col style="width: 22.2222%;">
-<col style="width: 33.3333%;">
-<col style="width: 44.4445%;">
+<col style="width: 11.1111%;">
+<col style="width: 16.6666%;">
+<col style="width: 50%;">
+<col style="width: 22.2223%;">
 </colgroup>
 <thead>
 <tr>
 <th class="tableblock halign-left valign-middle">类型</th>
 <th class="tableblock halign-left valign-middle">名称</th>
+<th class="tableblock halign-left valign-middle">说明</th>
 <th class="tableblock halign-left valign-middle">类型</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-middle"><div><div class="paragraph">
-<p><strong>FormData</strong></p>
+<p><strong>Query</strong></p>
 </div></div></td>
 <td class="tableblock halign-left valign-middle"><div><div class="paragraph">
 <p><strong>platform</strong><br>
-<em>可选</em></p>
+<em>必填</em></p>
 </div></div></td>
 <td class="tableblock halign-left valign-middle"><div><div class="paragraph">
-<p>string</p>
-</div></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
-<p><strong>FormData</strong></p>
-</div></div></td>
-<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
-<p><strong>token</strong><br>
-<em>可选</em></p>
+<p>platform</p>
 </div></div></td>
 <td class="tableblock halign-left valign-middle"><div><div class="paragraph">
 <p>string</p>
@@ -4308,17 +4385,6 @@ table.CodeRay td.code>pre{padding:0}
 </div></div></td>
 <td class="tableblock halign-left valign-middle"><div><div class="paragraph">
 <p><a href="#_commonreturntype">CommonReturnType</a></p>
-</div></div></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
-<p><strong>201</strong></p>
-</div></div></td>
-<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
-<p>Created</p>
-</div></div></td>
-<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
-<p>无内容</p>
 </div></div></td>
 </tr>
 <tr>
@@ -4358,16 +4424,6 @@ table.CodeRay td.code>pre{padding:0}
 </table>
 </div>
 <div class="sect4">
-<h5 id="_消耗_12">消耗</h5>
-<div class="ulist">
-<ul>
-<li>
-<p><code>application/x-www-form-urlencoded</code></p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect4">
 <h5 id="_生成_21">生成</h5>
 <div class="ulist">
 <ul>
@@ -4383,15 +4439,7 @@ table.CodeRay td.code>pre{padding:0}
 <h6 id="_请求_path_21">请求 path</h6>
 <div class="listingblock">
 <div class="content">
-<pre>/api/third-party/withdrawThirdPartyBings</pre>
-</div>
-</div>
-</div>
-<div class="sect5">
-<h6 id="_请求_formdata_12">请求 formData</h6>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="json"><span class="string"><span class="delimiter">&quot;</span><span class="content">string</span><span class="delimiter">&quot;</span></span></code></pre>
+<pre>/api/third-party/login?platform=string</pre>
 </div>
 </div>
 </div>
@@ -4411,23 +4459,17 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 </div>
 </div>
-</div>
-<div class="sect2">
-<h3 id="_aca0f16a4237edba915fe70c9b07871c">2.6. 系统调试接口</h3>
-<div class="paragraph">
-<p>Debug Controller</p>
-</div>
 <div class="sect3">
-<h4 id="_statususingpost">2.6.1. 获取系统配置</h4>
+<h4 id="_unbindthirdpartaccountusingpost">2.5.4. 取消第三方平台绑定</h4>
 <div class="literalblock">
 <div class="content">
-<pre>POST /api/debug/status</pre>
+<pre>POST /api/third-party/withdrawThirdPartyBings</pre>
 </div>
 </div>
 <div class="sect4">
 <h5 id="_说明_21">说明</h5>
 <div class="paragraph">
-<p>仅限管理员登录状态下可获取</p>
+<p>传入当前登录用户 token 和平台 platform （不区分大小写），返回 bool 值，true 为取消绑定成功</p>
 </div>
 </div>
 <div class="sect4">
@@ -4446,6 +4488,18 @@ table.CodeRay td.code>pre{padding:0}
 </tr>
 </thead>
 <tbody>
+<tr>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p><strong>FormData</strong></p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p><strong>platform</strong><br>
+<em>可选</em></p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p>string</p>
+</div></div></td>
+</tr>
 <tr>
 <td class="tableblock halign-left valign-middle"><div><div class="paragraph">
 <p><strong>FormData</strong></p>
@@ -4536,7 +4590,7 @@ table.CodeRay td.code>pre{padding:0}
 </table>
 </div>
 <div class="sect4">
-<h5 id="_消耗_13">消耗</h5>
+<h5 id="_消耗_15">消耗</h5>
 <div class="ulist">
 <ul>
 <li>
@@ -4561,12 +4615,12 @@ table.CodeRay td.code>pre{padding:0}
 <h6 id="_请求_path_22">请求 path</h6>
 <div class="listingblock">
 <div class="content">
-<pre>/api/debug/status</pre>
+<pre>/api/third-party/withdrawThirdPartyBings</pre>
 </div>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_请求_formdata_13">请求 formData</h6>
+<h6 id="_请求_formdata_15">请求 formData</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="json"><span class="string"><span class="delimiter">&quot;</span><span class="content">string</span><span class="delimiter">&quot;</span></span></code></pre>
@@ -4578,6 +4632,184 @@ table.CodeRay td.code>pre{padding:0}
 <h5 id="_http响应示例_22">HTTP响应示例</h5>
 <div class="sect5">
 <h6 id="_响应_200_22">响应 200</h6>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="json">{
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">data</span><span class="delimiter">&quot;</span></span> : <span class="string"><span class="delimiter">&quot;</span><span class="content">object</span><span class="delimiter">&quot;</span></span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">status</span><span class="delimiter">&quot;</span></span> : <span class="string"><span class="delimiter">&quot;</span><span class="content">string</span><span class="delimiter">&quot;</span></span>
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_aca0f16a4237edba915fe70c9b07871c">2.6. 系统调试接口</h3>
+<div class="paragraph">
+<p>Debug Controller</p>
+</div>
+<div class="sect3">
+<h4 id="_statususingpost">2.6.1. 获取系统配置</h4>
+<div class="literalblock">
+<div class="content">
+<pre>POST /api/debug/status</pre>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_说明_22">说明</h5>
+<div class="paragraph">
+<p>仅限管理员登录状态下可获取</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_参数_22">参数</h5>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 22.2222%;">
+<col style="width: 33.3333%;">
+<col style="width: 44.4445%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-middle">类型</th>
+<th class="tableblock halign-left valign-middle">名称</th>
+<th class="tableblock halign-left valign-middle">类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p><strong>FormData</strong></p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p><strong>token</strong><br>
+<em>可选</em></p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p>string</p>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect4">
+<h5 id="_响应_23">响应</h5>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 10%;">
+<col style="width: 70%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-middle">HTTP代码</th>
+<th class="tableblock halign-left valign-middle">说明</th>
+<th class="tableblock halign-left valign-middle">类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p><strong>200</strong></p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p>OK</p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p><a href="#_commonreturntype">CommonReturnType</a></p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p><strong>201</strong></p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p>Created</p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p>无内容</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p><strong>401</strong></p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p>Unauthorized</p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p>无内容</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p><strong>403</strong></p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p>Forbidden</p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p>无内容</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p><strong>404</strong></p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p>Not Found</p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p>无内容</p>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect4">
+<h5 id="_消耗_16">消耗</h5>
+<div class="ulist">
+<ul>
+<li>
+<p><code>application/x-www-form-urlencoded</code></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_生成_23">生成</h5>
+<div class="ulist">
+<ul>
+<li>
+<p><code>*/*</code></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_http请求示例_23">HTTP请求示例</h5>
+<div class="sect5">
+<h6 id="_请求_path_23">请求 path</h6>
+<div class="listingblock">
+<div class="content">
+<pre>/api/debug/status</pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_请求_formdata_16">请求 formData</h6>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="json"><span class="string"><span class="delimiter">&quot;</span><span class="content">string</span><span class="delimiter">&quot;</span></span></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_http响应示例_23">HTTP响应示例</h5>
+<div class="sect5">
+<h6 id="_响应_200_23">响应 200</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="json">{
@@ -4603,13 +4835,13 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 </div>
 <div class="sect4">
-<h5 id="_说明_22">说明</h5>
+<h5 id="_说明_23">说明</h5>
 <div class="paragraph">
 <p>获取服务器当前系统负载。SystemLoadAverage返回-1时代表不支持。</p>
 </div>
 </div>
 <div class="sect4">
-<h5 id="_响应_23">响应</h5>
+<h5 id="_响应_24">响应</h5>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 10%;">
@@ -4672,7 +4904,7 @@ table.CodeRay td.code>pre{padding:0}
 </table>
 </div>
 <div class="sect4">
-<h5 id="_生成_23">生成</h5>
+<h5 id="_生成_24">生成</h5>
 <div class="ulist">
 <ul>
 <li>
@@ -4682,9 +4914,9 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 </div>
 <div class="sect4">
-<h5 id="_http请求示例_23">HTTP请求示例</h5>
+<h5 id="_http请求示例_24">HTTP请求示例</h5>
 <div class="sect5">
-<h6 id="_请求_path_23">请求 path</h6>
+<h6 id="_请求_path_24">请求 path</h6>
 <div class="listingblock">
 <div class="content">
 <pre>/api/status/get</pre>
@@ -4693,9 +4925,9 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 </div>
 <div class="sect4">
-<h5 id="_http响应示例_23">HTTP响应示例</h5>
+<h5 id="_http响应示例_24">HTTP响应示例</h5>
 <div class="sect5">
-<h6 id="_响应_200_23">响应 200</h6>
+<h6 id="_响应_200_24">响应 200</h6>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="json">{
@@ -4761,7 +4993,7 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-04-11 09:14:14 SGT
+Last updated 2022-04-15 15:53:50 SGT
 </div>
 </div>
 </body>

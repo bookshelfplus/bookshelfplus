@@ -1,18 +1,20 @@
 package plus.bookshelf.Common.Enum;
 
 public enum FileStorageMediumEnum {
-    LOCAL (10000, "本地"),
-    BAIDU_NETDISK (20001, "百度网盘"),
-    ALIYUN_DRIVE (20002, "阿里网盘");
+    LOCAL("LOCAL", "本地"),
+    QCLOUD_COS("QCLOUD_COS", "腾讯云对象存储"),
+    BAIDU_NETDISK("BAIDU_NETDISK", "百度网盘"),
+    ALIYUN_DRIVE("ALIYUN_DRIVE", "阿里网盘");
 
-    private FileStorageMediumEnum(int storageMediumIndex, String storageMediumDisplayName) {
+    private FileStorageMediumEnum(String storageMediumIndex, String storageMediumDisplayName) {
         this.storageMediumIndex = storageMediumIndex;
         this.storageMediumDisplayName = storageMediumDisplayName;
     }
-    private Integer storageMediumIndex;
+
+    private String storageMediumIndex;
     private String storageMediumDisplayName;
 
-    public Integer getStorageMediumIndex() {
+    public String getStorageMediumName() {
         return storageMediumIndex;
     }
 

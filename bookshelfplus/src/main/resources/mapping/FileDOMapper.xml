@@ -222,4 +222,7 @@
     <include refid="Base_Column_List" />
     from file_info
   </select>
+  <select id="getLastInsertId" resultType="java.lang.Integer">
+    SELECT LAST_INSERT_ID();
+  </select>
 </mapper>

@@ -1,5 +1,6 @@
 package plus.bookshelf.Service.Service;
 
+import plus.bookshelf.Common.Error.BusinessException;
 import plus.bookshelf.Service.Model.FileModel;
 
 import java.lang.reflect.InvocationTargetException;
@@ -11,14 +12,23 @@ public interface FileService {
      *
      * @return
      */
+    List<FileModel> list(String token) throws InvocationTargetException, IllegalAccessException, BusinessException;
 
-    // /**
-    //  * 向数据库中添加一个 scheduleTask
-    //  *
-    //  * @param expireMinute
-    //  * @param fileName
-    //  * @param urlGUID
-    //  * @param userId
-    //  */
-    // void addScheduleTask(Integer expireMinute, String fileName, String urlGUID, Integer userId);
+    /**
+     * 添加文件信息
+     * 返回是否添加成功
+     *
+     * @param fileModel
+     * @return
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException
+     */
+    Boolean addFile(FileModel fileModel) throws InvocationTargetException, IllegalAccessException;
+
+    /**
+     * 获取上一步添加的文件Id
+     *
+     * @return
+     */
+    Integer getLastInsertId();
 }

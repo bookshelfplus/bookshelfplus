@@ -348,8 +348,19 @@
             alert("您还未选择文件！");
             return;
         }
+        var postParams = {
+            token: localStorageUtils.getToken(),
+            expireMinute: 30,
+            fileName: fileInfo.fileNameWithoutExt,
+            fileSize: fileInfo.fileSize,
+            fileType: fileInfo.fileType,
+            fileSha1: fileInfo.fileSha1,
+            fileExt: fileInfo.fileExt,
+            fileId: $("#fileAssociator").val() // 关联的文件ID，创建新文件则为0
+        };
+        console.log(postParams);
         // 获取预授权URL
-        postRequest("/file/cos/put", { token: localStorageUtils.getToken(), fileName: fileInfo.fileSha1, expireMinute: 30 })
+        postRequest("/file/cos/put", postParams)
             .then(function (response) {
                 var axiosData = response.data;
                 var status = axiosData.status;
@@ -392,7 +403,11 @@
             // 等待进度条走到 100% 否则小文件进度条还没有走完就提示上传完成会让人感觉有点奇怪
             setTimeout(function () {
                 alert("上传成功！");
-                window.location.reload();
+                if ($("#checkbox-auto-upload").is(":checked")) {
+                    window.location.reload();
+                } else {
+                    location.href = "<%= pageUrl %>../";
+                }
             }, 300);
         };
         xhr.onerror = function (e) {
@@ -404,7 +419,7 @@
 <script>
     var fileAssociator = document.getElementById("fileAssociator");
     // 下拉框列表
-    getRequest("/file/list", { token: localStorageUtils.getToken() })
+    postRequest("/file/list", { token: localStorageUtils.getToken() })
         .then(function (responseData) {
             var axiosData = responseData.data;
             var status = axiosData.status;

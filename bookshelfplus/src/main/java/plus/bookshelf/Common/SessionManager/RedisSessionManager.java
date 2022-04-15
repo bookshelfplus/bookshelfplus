@@ -2,7 +2,6 @@ package plus.bookshelf.Common.SessionManager;
 
 import org.springframework.data.redis.core.RedisTemplate;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.concurrent.TimeUnit;
 
 public class RedisSessionManager implements SessionManager {

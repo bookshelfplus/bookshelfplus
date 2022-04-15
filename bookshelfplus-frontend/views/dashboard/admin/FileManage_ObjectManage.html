@@ -10,7 +10,7 @@
     });
 
     function list({ tableElementId }) {
-        getRequest("/file/object/list", { token: localStorageUtils.getToken() })
+        postRequest("/file/object/list", { token: localStorageUtils.getToken() })
             .then(function (responseData) {
                 var axiosData = responseData.data;
                 var status = axiosData.status;

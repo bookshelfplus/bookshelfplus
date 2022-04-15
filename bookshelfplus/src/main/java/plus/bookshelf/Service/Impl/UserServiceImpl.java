@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 import plus.bookshelf.Common.Error.BusinessErrorCode;
 import plus.bookshelf.Common.Error.BusinessException;
 import plus.bookshelf.Common.SessionManager.RedisSessionManager;
-import plus.bookshelf.Controller.VO.UserVO;
 import plus.bookshelf.Dao.DO.ThirdPartyUserDO;
 import plus.bookshelf.Dao.DO.UserDO;
 import plus.bookshelf.Dao.Mapper.ThirdPartyUserAuthDOMapper;
@@ -18,7 +17,6 @@ import plus.bookshelf.Service.Service.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class UserServiceImpl implements UserService {

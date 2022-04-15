@@ -1,5 +1,8 @@
 package plus.bookshelf.Controller.Controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.aventrix.jnanoid.jnanoid.NanoIdUtils;
 import com.qcloud.cos.http.HttpMethodName;
 import io.swagger.annotations.Api;
@@ -25,10 +28,7 @@ import plus.bookshelf.Service.Model.UserModel;
 import plus.bookshelf.Service.Service.CosPresignedUrlGenerateLogService;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Api(tags = "文件管理")
 @Controller("file")
@@ -42,10 +42,10 @@ public class FileController extends BaseController {
     UserServiceImpl userService;
 
     @Autowired
-    CosPresignedUrlGenerateLogService cosPresignedUrlGenerateLogService;
+    FileServiceImpl fileService;
 
     @Autowired
-    FileServiceImpl fileService;
+    CosPresignedUrlGenerateLogService cosPresignedUrlGenerateLogService;
 
     @Autowired
     FileObjectServiceImpl fileObjectService;
@@ -54,7 +54,7 @@ public class FileController extends BaseController {
     // ScheduleTaskServiceImpl scheduleTaskService;
 
     @ApiOperation(value = "查询文件列表", notes = "查询文件列表")
-    @RequestMapping(value = "list", method = {RequestMethod.GET})
+    @RequestMapping(value = "list", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
     @ResponseBody
     public CommonReturnType list(@RequestParam(value = "token", required = false) String token) throws InvocationTargetException, IllegalAccessException, BusinessException {
         List<FileModel> fileModels = fileService.list(token);
@@ -75,7 +75,7 @@ public class FileController extends BaseController {
     }
 
     @ApiOperation(value = "查询文件对象列表", notes = "查询文件列表")
-    @RequestMapping(value = "object/list", method = {RequestMethod.GET})
+    @RequestMapping(value = "object/list", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
     @ResponseBody
     public CommonReturnType objectList(@RequestParam(value = "token", required = false) String token) throws InvocationTargetException, IllegalAccessException, BusinessException {
         List<FileObjectModel> fileObjectModels = fileObjectService.list(token);
@@ -113,8 +113,16 @@ public class FileController extends BaseController {
     @ResponseBody
     public CommonReturnType cos(@PathVariable(value = "httpMethod") String httpMethod,
                                 @RequestParam(value = "token") String token,
-                                @RequestParam(value = "fileName") String fileName,
-                                @RequestParam(value = "expireMinute", required = false) Integer expireMinute) throws BusinessException {
+                                @RequestParam(value = "fileName") String fileName, // 不含扩展名
+                                @RequestParam(value = "expireMinute", required = false) Integer expireMinute,
+
+                                // 以下为 PUT 请求必传参数
+                                @RequestParam(value = "fileSize", required = false) Long fileSize,
+                                @RequestParam(value = "fileType", required = false) String fileType,
+                                @RequestParam(value = "fileSha1", required = false) String fileSha1,
+                                @RequestParam(value = "fileExt", required = false) String fileExt,
+                                @RequestParam(value = "fileId", required = false) Integer fileId // 关联的文件ID，创建新文件则为0
+    ) throws BusinessException, InvocationTargetException, IllegalAccessException {
         if (expireMinute == null) {
             expireMinute = 30;
         } else if (expireMinute > 60) {
@@ -144,10 +152,11 @@ public class FileController extends BaseController {
         Boolean isExist = qCloudCosUtils.doesObjectExist(bookSaveFolder, fileName);
         switch (httpMethodName) {
             case PUT:
+                // 上传文件
                 if (isExist) throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "文件已存在");
-                // 添加一个scheduleTask，用于检测用户是否上传了文件，然后更新数据库中信息
-                // TODO
-                // fileService.addScheduleTask(expireMinute, bookSaveFolder, urlGUID, userModel.getId());
+
+                fileObjectService.uploadFile(fileId, fileName, bookSaveFolder + fileName, fileSize,
+                        fileSha1, fileExt, fileName, FileStorageMediumEnum.QCLOUD_COS, "");
                 break;
             case GET:
                 if (!isExist) throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "文件不存在");
@@ -163,26 +172,135 @@ public class FileController extends BaseController {
 
         Map map = new HashMap();
         map.put("url", url);
-        map.put("urlGUID", urlGUID);
+        map.put("guid", urlGUID);
         return CommonReturnType.create(map);
     }
 
-    @ApiOperation(value = "", notes = "客户端向腾讯云 COS 存储桶上传文件完毕")
-    @RequestMapping(value = "/upload/finish-upload", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
+    @ApiOperation(value = "【COS】腾讯云 COS 文件上传成功回调", notes = "客户端向腾讯云 COS 存储桶上传文件完毕，有云函数触发此请求")
+    @RequestMapping(value = "/upload/cos-check-file-state", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
     @ResponseBody
-    public CommonReturnType cosFinishUpload(@RequestParam(value = "fileName") String fileName,
-                                            @RequestParam(value = "urlGUID") String urlGUID) throws BusinessException {
-        // // 从数据库中找到该任务
-        // ScheduleTaskModel task = scheduleTaskService.findTaskByGuid(urlGUID);
-        // if (task == null) {
-        //     throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "urlGUID 参数校验失败");
-        // }
-        //
-        // // 完成这个任务
-        // Boolean isSuccess = scheduleTaskService.doneScheduleTask(task.getId());
+    public CommonReturnType cosCheckFileStatus(
+            // @RequestParam() Map<String, String> params,
+            @RequestParam(value = "event") String eventStr,
+            @RequestParam(value = "context", required = false) String contextStr
+    ) throws BusinessException {
 
-        // TODO
-        Boolean isSuccess = true;
-        return CommonReturnType.create(isSuccess);
+        JSONObject eventObject;
+
+        try {
+            eventObject = JSON.parseObject(eventStr);
+        } catch (Exception e) {
+            throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "event参数不合法");
+        }
+
+        try {
+            // 获取 Records 节点
+            JSONArray records = eventObject.getJSONArray("Records");
+            JSONObject record = records.getJSONObject(0);
+
+            JSONObject cos = record.getJSONObject("cos");
+            JSONObject cosBucket = cos.getJSONObject("cosBucket");
+            String appid = cosBucket.getString("appid");
+            String cosBucketName = cosBucket.getString("name");
+            if (Objects.equals(appid, "1253970026") && Objects.equals(cosBucketName, "testpic")) {
+                // 执行的是腾讯云云函数的测试请求
+                return CommonReturnType.create("您的云函数配置成功。");
+            }
+            String cosRegion = cosBucket.getString("cosRegion");
+
+            JSONObject cosObject = cos.getJSONObject("cosObject");
+            String key = cosObject.getString("key");
+            // 获取 /1000000000/bookshelfplus/fileName 中的 fileName 部分
+            key = key.substring(key.indexOf("/", key.indexOf("/", key.indexOf("/") + 1) + 1) + 1);
+
+            JSONObject event = record.getJSONObject("event");
+            String eventName = event.getString("eventName");
+
+            // 判断是否是由系统的存储桶触发
+            if (qCloudCosConfig.getBucketName().equals(cosBucketName + "-" + appid) &&
+                    qCloudCosConfig.getRegionName().equals(cosRegion)) {
+                // 是由系统的存储桶触发的，则认为是文件上传成功
+
+                // 通过文件 key 获取文件对象
+                FileObjectModel fileObject = fileObjectService.getFileObjectByFilePath(QCloudCosUtils.BOOK_SAVE_FOLDER + key);
+
+                // 更新文件状态
+                Boolean isSuccess = fileObjectService.updateFileStatus(fileObject.getId(), "SUCCESS");
+                if (!isSuccess) {
+                    throw new BusinessException(BusinessErrorCode.UNKNOWN_ERROR, "更新文件状态失败");
+                }
+            } else {
+                // 不是由系统的存储桶触发的
+                return CommonReturnType.create("Not triggered by the bucket specified in the configuration file, skip.");
+            }
+        } catch (Exception e) {
+            throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "JSON解析出错！");
+        }
+        return CommonReturnType.create("success");
     }
 }
+
+/*
+示例返回
+event
+{
+    "Records": [
+        {
+            "cos": {
+                "cosBucket": {
+                    "appid": "1302260381",
+                    "cosRegion": "ap-shanghai",
+                    "name": "bookshelfplus",
+                    "region": "sh",
+                    "s3Region": "ap-shanghai"
+                },
+                "cosNotificationId": "unkown",
+                "cosObject": {
+                    "key": "/1302260381/bookshelfplus/!!!!!!!",
+                    "meta": {
+                        "Content-Type": "text/plain",
+                        "ETag": "\"0d7316832fef232e5dcdcf81f39bfdba\"",
+                        "x-cos-request-id": "NjI1OTNmOWNfNGIzN2YyMDlfMmJhZjVfNDJkZTBmYQ==",
+                        "x-cos-storage-class": "Standard"
+                    },
+                    "size": 557,
+                    "url": "http://bookshelfplus-1302260381.cos.ap-shanghai.myqcloud.com/%21%21%21%21%21%21%21",
+                    "vid": ""
+                },
+                "cosSchemaVersion": "1.0"
+            },
+            "event": {
+                "eventName": "cos:ObjectCreated:Put",
+                "eventQueue": "qcs:0:scf:ap-shanghai:appid/1302260381:default.bookshelf-scf.$DEFAULT",
+                "eventSource": "qcs::cos",
+                "eventTime": 1650016156,
+                "eventVersion": "1.0",
+                "reqid": 0,
+                "requestParameters": {
+                    "requestHeaders": {
+                        "Authorization": "q-sign-algorithm=sha1&q-ak=AKIDgEWYJo2yd7KGvIPFn45pJWT9YgX8RTEi&q-sign-time=1650016155;1650017955&q-key-time=1650016155;1650017955&q-header-list=host&q-url-param-list=by;guid;userid&q-signature=0ceb85180d6b0b665662d5d139d4276cdc0fbbbd"
+                    },
+                    "requestSourceIP": "117.154.65.144"
+                },
+                "reservedInfo": ""
+            }
+        }
+    ]
+}
+
+context
+{
+    "callbackWaitsForEmptyEventLoop": true,
+    "memory_limit_in_mb": 512,
+    "time_limit_in_ms": 3000,
+    "request_id": "279ba5cc-e435-4af9-8ede-baa71373d75b",
+    "environment": "{\"SCF_NAMESPACE\":\"default\"}",
+    "environ": "SCF_NAMESPACE=default;SCF_NAMESPACE=default",
+    "function_version": "$LATEST",
+    "function_name": "bookshelf-scf",
+    "namespace": "default",
+    "tencentcloud_region": "ap-shanghai",
+    "tencentcloud_appid": "1302260381",
+    "tencentcloud_uin": "100014397291"
+}
+ */

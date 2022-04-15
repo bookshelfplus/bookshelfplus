@@ -4,9 +4,10 @@ import com.sun.management.OperatingSystemMXBean;
 import com.sun.management.ThreadMXBean;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import plus.bookshelf.Common.Response.CommonReturnType;
 
 import java.lang.management.ManagementFactory;

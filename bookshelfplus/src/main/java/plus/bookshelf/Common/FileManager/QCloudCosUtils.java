@@ -1,6 +1,5 @@
 package plus.bookshelf.Common.FileManager;
 
-import com.aventrix.jnanoid.jnanoid.NanoIdUtils;
 import com.qcloud.cos.COSClient;
 import com.qcloud.cos.ClientConfig;
 import com.qcloud.cos.auth.BasicCOSCredentials;
