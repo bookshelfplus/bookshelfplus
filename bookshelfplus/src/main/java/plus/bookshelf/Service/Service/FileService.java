@@ -11,5 +11,14 @@ public interface FileService {
      *
      * @return
      */
-    List<FileModel> list(String token) throws InvocationTargetException, IllegalAccessException;
+
+    // /**
+    //  * 向数据库中添加一个 scheduleTask
+    //  *
+    //  * @param expireMinute
+    //  * @param fileName
+    //  * @param urlGUID
+    //  * @param userId
+    //  */
+    // void addScheduleTask(Integer expireMinute, String fileName, String urlGUID, Integer userId);
 }

@@ -50,10 +50,13 @@ public class FileController extends BaseController {
     @Autowired
     FileObjectServiceImpl fileObjectService;
 
+    // @Autowired
+    // ScheduleTaskServiceImpl scheduleTaskService;
+
     @ApiOperation(value = "查询文件列表", notes = "查询文件列表")
     @RequestMapping(value = "list", method = {RequestMethod.GET})
     @ResponseBody
-    public CommonReturnType list(@RequestParam(value = "token", required = false) String token) throws InvocationTargetException, IllegalAccessException {
+    public CommonReturnType list(@RequestParam(value = "token", required = false) String token) throws InvocationTargetException, IllegalAccessException, BusinessException {
         List<FileModel> fileModels = fileService.list(token);
         List<FileVO> fileVOS = new ArrayList<>();
         for (FileModel fileModel : fileModels) {
@@ -162,5 +165,24 @@ public class FileController extends BaseController {
         map.put("url", url);
         map.put("urlGUID", urlGUID);
         return CommonReturnType.create(map);
+    }
+
+    @ApiOperation(value = "", notes = "客户端向腾讯云 COS 存储桶上传文件完毕")
+    @RequestMapping(value = "/upload/finish-upload", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
+    @ResponseBody
+    public CommonReturnType cosFinishUpload(@RequestParam(value = "fileName") String fileName,
+                                            @RequestParam(value = "urlGUID") String urlGUID) throws BusinessException {
+        // // 从数据库中找到该任务
+        // ScheduleTaskModel task = scheduleTaskService.findTaskByGuid(urlGUID);
+        // if (task == null) {
+        //     throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "urlGUID 参数校验失败");
+        // }
+        //
+        // // 完成这个任务
+        // Boolean isSuccess = scheduleTaskService.doneScheduleTask(task.getId());
+
+        // TODO
+        Boolean isSuccess = true;
+        return CommonReturnType.create(isSuccess);
     }
 }

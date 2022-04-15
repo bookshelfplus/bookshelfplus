@@ -27,6 +27,10 @@ public class FileServiceImpl implements FileService {
     @Autowired
     UserServiceImpl userService;
 
+
+    // @Autowired
+    // ScheduleTaskServiceImpl scheduleTaskService;
+
     /**
      * 列出所有文件
      *
@@ -55,4 +59,27 @@ public class FileServiceImpl implements FileService {
         BeanUtils.copyProperties(fileDO, fileModel);
         return fileModel;
     }
+
+    // /**
+    //  * 向数据库中添加一个 scheduleTask
+    //  *
+    //  * @param expireMinute
+    //  * @param fileName
+    //  * @param urlGUID
+    //  * @param userId
+    //  */
+    // @Override
+    // public void addScheduleTask(Integer expireMinute, String fileName, String urlGUID, Integer userId) {
+    //     ScheduleTaskModel scheduleTaskModel = new ScheduleTaskModel();
+    //     Calendar now = Calendar.getInstance();
+    //     scheduleTaskModel.setCreateTime(now.getTime());
+    //     now.add(Calendar.MILLISECOND, expireMinute * 60 * 1000);
+    //     scheduleTaskModel.setScheduleTime(now.getTime());
+    //     scheduleTaskModel.setAction(ScheduleTaskActionEnum.CHECK_FILE_IS_UPLOADED);
+    //     scheduleTaskModel.setData(fileName);
+    //     scheduleTaskModel.setTaskGuid(urlGUID);
+    //     scheduleTaskModel.setAssociatedUserId(userId);
+    //     scheduleTaskModel.setFailTime((byte) 0);
+    //     scheduleTaskService.insertScheduleTask(scheduleTaskModel);
+    // }
 }
