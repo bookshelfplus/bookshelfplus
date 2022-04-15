@@ -80,7 +80,7 @@ public class ThirdPartyController extends BaseController {
         }
     }
 
-    @ApiOperation(value = "获取用户已绑定的第三方平台", notes = "传入当前登录用户 token ，返回已绑定的第三方平台")
+    @ApiOperation(value = "【用户|管理员】获取用户已绑定的第三方平台", notes = "传入当前登录用户 token ，返回已绑定的第三方平台")
     @RequestMapping(value = "getBindingStatus", method = {RequestMethod.GET})
     @ResponseBody
     public CommonReturnType getBindingStatus(@RequestParam(value = "token", required = false) String token) throws BusinessException, InvocationTargetException, IllegalAccessException {
@@ -92,7 +92,7 @@ public class ThirdPartyController extends BaseController {
         return CommonReturnType.create(bindingPlatformList);
     }
 
-    @ApiOperation(value = "取消第三方平台绑定", notes = "传入当前登录用户 token 和平台 platform （不区分大小写），返回 bool 值，true 为取消绑定成功")
+    @ApiOperation(value = "【用户|管理员】取消第三方平台绑定", notes = "传入当前登录用户 token 和平台 platform （不区分大小写），返回 bool 值，true 为取消绑定成功")
     @RequestMapping(value = "withdrawThirdPartyBings", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
     @ResponseBody
     public CommonReturnType unbindThirdPartAccount(@RequestParam(value = "token", required = true) String token,

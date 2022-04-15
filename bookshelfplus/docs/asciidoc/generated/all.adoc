@@ -23,7 +23,7 @@ __域名__ : localhost:8090
 * 文件管理 : File Controller
 * 用户操作 : User Controller
 * 第三方登录 : Third Party Controller
-* 系统调试接口 : Debug Controller
+* 系统调试接口 : System Controller
 * 网站后台状态检测 : Status Controller
 
 
@@ -663,7 +663,7 @@ File Controller
 
 
 [[_cosusingpost]]
-==== 创建腾讯云 COS 预授权 URL
+==== 【用户|管理员】创建腾讯云 COS 预授权 URL
 ....
 POST /api/file/cos/{httpMethod}
 ....
@@ -678,7 +678,17 @@ POST /api/file/cos/{httpMethod}
 __必填__|httpMethod|string
 |**FormData**|**expireMinute** +
 __可选__||integer (int32)
+|**FormData**|**fileExt** +
+__可选__||string
+|**FormData**|**fileId** +
+__可选__||integer (int32)
 |**FormData**|**fileName** +
+__可选__||string
+|**FormData**|**fileSha1** +
+__可选__||string
+|**FormData**|**fileSize** +
+__可选__||integer (int64)
+|**FormData**|**fileType** +
 __可选__||string
 |**FormData**|**token** +
 __可选__||string
@@ -736,7 +746,7 @@ __可选__||string
 
 
 [[_listusingpost]]
-==== 查询文件列表
+==== 【管理员】查询文件列表
 ....
 POST /api/file/list
 ....
@@ -807,7 +817,7 @@ __可选__|string
 
 
 [[_objectlistusingpost]]
-==== 查询文件对象列表
+==== 【管理员】查询文件对象列表
 ....
 POST /api/file/object/list
 ....
@@ -877,15 +887,15 @@ __可选__|string
 ----
 
 
-[[_cosfinishuploadusingpost]]
-==== cosFinishUpload
+[[_coscheckfilestatususingpost]]
+==== 【COS】腾讯云 COS 文件上传成功回调
 ....
-POST /api/file/upload/finish-upload
+POST /api/file/upload/cos-check-file-state
 ....
 
 
 ===== 说明
-客户端向腾讯云 COS 存储桶上传文件完毕
+客户端向腾讯云 COS 存储桶上传文件完毕，有云函数触发此请求
 
 
 ===== 参数
@@ -893,9 +903,9 @@ POST /api/file/upload/finish-upload
 [options="header", cols=".^2a,.^3a,.^4a"]
 |===
 |类型|名称|类型
-|**FormData**|**fileName** +
+|**FormData**|**context** +
 __可选__|string
-|**FormData**|**urlGUID** +
+|**FormData**|**event** +
 __可选__|string
 |===
 
@@ -927,7 +937,7 @@ __可选__|string
 
 ====== 请求 path
 ----
-/api/file/upload/finish-upload
+/api/file/upload/cos-check-file-state
 ----
 
 
@@ -956,7 +966,7 @@ User Controller
 
 
 [[_cancelaccountusingpost]]
-==== 账号注销
+==== 【用户】账号注销
 ....
 POST /api/user/cancelAccount
 ....
@@ -1173,7 +1183,7 @@ __可选__|string
 
 
 [[_logoutusingpost]]
-==== 用户登出
+==== 【用户|管理员】用户登出
 ....
 POST /api/user/logout
 ....
@@ -1394,7 +1404,7 @@ __可选__|token|string
 
 
 [[_getbindingstatususingget]]
-==== 获取用户已绑定的第三方平台
+==== 【用户|管理员】获取用户已绑定的第三方平台
 ....
 GET /api/third-party/getBindingStatus
 ....
@@ -1510,7 +1520,7 @@ __必填__|platform|string
 
 
 [[_unbindthirdpartaccountusingpost]]
-==== 取消第三方平台绑定
+==== 【用户|管理员】取消第三方平台绑定
 ....
 POST /api/third-party/withdrawThirdPartyBings
 ....
@@ -1584,13 +1594,13 @@ __可选__|string
 
 [[_aca0f16a4237edba915fe70c9b07871c]]
 === 系统调试接口
-Debug Controller
+System Controller
 
 
 [[_statususingpost]]
-==== 获取系统配置
+==== 【管理员】获取系统配置
 ....
-POST /api/debug/status
+POST /api/system/status
 ....
 
 
@@ -1635,7 +1645,7 @@ __可选__|string
 
 ====== 请求 path
 ----
-/api/debug/status
+/api/system/status
 ----
 
 

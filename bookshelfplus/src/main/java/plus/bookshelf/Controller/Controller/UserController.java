@@ -66,7 +66,7 @@ public class UserController extends BaseController {
         return login(username, password);
     }
 
-    @ApiOperation(value = "用户登出", notes = "用户退出登录")
+    @ApiOperation(value = "【用户|管理员】用户登出", notes = "用户退出登录")
     // @ApiImplicitParams({
     //         @ApiImplicitParam(name = "token", value = "用户token", required = true, dataType = "String")
     // })
@@ -94,7 +94,7 @@ public class UserController extends BaseController {
         return CommonReturnType.create(userVO);
     }
 
-    @ApiOperation(value = "账号注销", notes = "传入用户 token ，以及密码明文，后台计算密码SHA1值，进行注销")
+    @ApiOperation(value = "【用户】账号注销", notes = "传入用户 token ，以及密码明文，后台计算密码SHA1值，进行注销")
     @RequestMapping(value = "cancelAccount", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
     @ResponseBody
     public CommonReturnType cancelAccount(@RequestParam(value = "token", required = false) String token,

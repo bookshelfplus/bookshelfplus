@@ -587,7 +587,7 @@ table.CodeRay td.code>pre{padding:0}
 <p>第三方登录 : Third Party Controller</p>
 </li>
 <li>
-<p>系统调试接口 : Debug Controller</p>
+<p>系统调试接口 : System Controller</p>
 </li>
 <li>
 <p>网站后台状态检测 : Status Controller</p>
@@ -2277,7 +2277,7 @@ table.CodeRay td.code>pre{padding:0}
 <p>File Controller</p>
 </div>
 <div class="sect3">
-<h4 id="_cosusingpost">2.3.1. 创建腾讯云 COS 预授权 URL</h4>
+<h4 id="_cosusingpost">2.3.1. 【用户|管理员】创建腾讯云 COS 预授权 URL</h4>
 <div class="literalblock">
 <div class="content">
 <pre>POST /api/file/cos/{httpMethod}</pre>
@@ -2334,7 +2334,72 @@ table.CodeRay td.code>pre{padding:0}
 <p><strong>FormData</strong></p>
 </div></div></td>
 <td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p><strong>fileExt</strong><br>
+<em>可选</em></p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><div></div></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p>string</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p><strong>FormData</strong></p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p><strong>fileId</strong><br>
+<em>可选</em></p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><div></div></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p>integer (int32)</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p><strong>FormData</strong></p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
 <p><strong>fileName</strong><br>
+<em>可选</em></p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><div></div></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p>string</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p><strong>FormData</strong></p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p><strong>fileSha1</strong><br>
+<em>可选</em></p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><div></div></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p>string</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p><strong>FormData</strong></p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p><strong>fileSize</strong><br>
+<em>可选</em></p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><div></div></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p>integer (int64)</p>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p><strong>FormData</strong></p>
+</div></div></td>
+<td class="tableblock halign-left valign-middle"><div><div class="paragraph">
+<p><strong>fileType</strong><br>
 <em>可选</em></p>
 </div></div></td>
 <td class="tableblock halign-left valign-middle"><div></div></td>
@@ -2487,7 +2552,7 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 </div>
 <div class="sect3">
-<h4 id="_listusingpost">2.3.2. 查询文件列表</h4>
+<h4 id="_listusingpost">2.3.2. 【管理员】查询文件列表</h4>
 <div class="literalblock">
 <div class="content">
 <pre>POST /api/file/list</pre>
@@ -2659,7 +2724,7 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 </div>
 <div class="sect3">
-<h4 id="_objectlistusingpost">2.3.3. 查询文件对象列表</h4>
+<h4 id="_objectlistusingpost">2.3.3. 【管理员】查询文件对象列表</h4>
 <div class="literalblock">
 <div class="content">
 <pre>POST /api/file/object/list</pre>
@@ -2831,16 +2896,16 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 </div>
 <div class="sect3">
-<h4 id="_cosfinishuploadusingpost">2.3.4. cosFinishUpload</h4>
+<h4 id="_coscheckfilestatususingpost">2.3.4. 【COS】腾讯云 COS 文件上传成功回调</h4>
 <div class="literalblock">
 <div class="content">
-<pre>POST /api/file/upload/finish-upload</pre>
+<pre>POST /api/file/upload/cos-check-file-state</pre>
 </div>
 </div>
 <div class="sect4">
 <h5 id="_说明_12">说明</h5>
 <div class="paragraph">
-<p>客户端向腾讯云 COS 存储桶上传文件完毕</p>
+<p>客户端向腾讯云 COS 存储桶上传文件完毕，有云函数触发此请求</p>
 </div>
 </div>
 <div class="sect4">
@@ -2864,7 +2929,7 @@ table.CodeRay td.code>pre{padding:0}
 <p><strong>FormData</strong></p>
 </div></div></td>
 <td class="tableblock halign-left valign-middle"><div><div class="paragraph">
-<p><strong>fileName</strong><br>
+<p><strong>context</strong><br>
 <em>可选</em></p>
 </div></div></td>
 <td class="tableblock halign-left valign-middle"><div><div class="paragraph">
@@ -2876,7 +2941,7 @@ table.CodeRay td.code>pre{padding:0}
 <p><strong>FormData</strong></p>
 </div></div></td>
 <td class="tableblock halign-left valign-middle"><div><div class="paragraph">
-<p><strong>urlGUID</strong><br>
+<p><strong>event</strong><br>
 <em>可选</em></p>
 </div></div></td>
 <td class="tableblock halign-left valign-middle"><div><div class="paragraph">
@@ -2986,7 +3051,7 @@ table.CodeRay td.code>pre{padding:0}
 <h6 id="_请求_path_13">请求 path</h6>
 <div class="listingblock">
 <div class="content">
-<pre>/api/file/upload/finish-upload</pre>
+<pre>/api/file/upload/cos-check-file-state</pre>
 </div>
 </div>
 </div>
@@ -3021,7 +3086,7 @@ table.CodeRay td.code>pre{padding:0}
 <p>User Controller</p>
 </div>
 <div class="sect3">
-<h4 id="_cancelaccountusingpost">2.4.1. 账号注销</h4>
+<h4 id="_cancelaccountusingpost">2.4.1. 【用户】账号注销</h4>
 <div class="literalblock">
 <div class="content">
 <pre>POST /api/user/cancelAccount</pre>
@@ -3561,7 +3626,7 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 </div>
 <div class="sect3">
-<h4 id="_logoutusingpost">2.4.4. 用户登出</h4>
+<h4 id="_logoutusingpost">2.4.4. 【用户|管理员】用户登出</h4>
 <div class="literalblock">
 <div class="content">
 <pre>POST /api/user/logout</pre>
@@ -4164,7 +4229,7 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 </div>
 <div class="sect3">
-<h4 id="_getbindingstatususingget">2.5.2. 获取用户已绑定的第三方平台</h4>
+<h4 id="_getbindingstatususingget">2.5.2. 【用户|管理员】获取用户已绑定的第三方平台</h4>
 <div class="literalblock">
 <div class="content">
 <pre>GET /api/third-party/getBindingStatus</pre>
@@ -4460,7 +4525,7 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 </div>
 <div class="sect3">
-<h4 id="_unbindthirdpartaccountusingpost">2.5.4. 取消第三方平台绑定</h4>
+<h4 id="_unbindthirdpartaccountusingpost">2.5.4. 【用户|管理员】取消第三方平台绑定</h4>
 <div class="literalblock">
 <div class="content">
 <pre>POST /api/third-party/withdrawThirdPartyBings</pre>
@@ -4647,13 +4712,13 @@ table.CodeRay td.code>pre{padding:0}
 <div class="sect2">
 <h3 id="_aca0f16a4237edba915fe70c9b07871c">2.6. 系统调试接口</h3>
 <div class="paragraph">
-<p>Debug Controller</p>
+<p>System Controller</p>
 </div>
 <div class="sect3">
-<h4 id="_statususingpost">2.6.1. 获取系统配置</h4>
+<h4 id="_statususingpost">2.6.1. 【管理员】获取系统配置</h4>
 <div class="literalblock">
 <div class="content">
-<pre>POST /api/debug/status</pre>
+<pre>POST /api/system/status</pre>
 </div>
 </div>
 <div class="sect4">
@@ -4793,7 +4858,7 @@ table.CodeRay td.code>pre{padding:0}
 <h6 id="_请求_path_23">请求 path</h6>
 <div class="listingblock">
 <div class="content">
-<pre>/api/debug/status</pre>
+<pre>/api/system/status</pre>
 </div>
 </div>
 </div>
@@ -4993,7 +5058,7 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-04-15 15:53:50 SGT
+Last updated 2022-04-15 21:52:10 SGT
 </div>
 </div>
 </body>

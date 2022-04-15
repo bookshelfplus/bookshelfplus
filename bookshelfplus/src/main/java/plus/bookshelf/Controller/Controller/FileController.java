@@ -53,10 +53,16 @@ public class FileController extends BaseController {
     // @Autowired
     // ScheduleTaskServiceImpl scheduleTaskService;
 
-    @ApiOperation(value = "查询文件列表", notes = "查询文件列表")
+    @ApiOperation(value = "【管理员】查询文件列表", notes = "查询文件列表")
     @RequestMapping(value = "list", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
     @ResponseBody
     public CommonReturnType list(@RequestParam(value = "token", required = false) String token) throws InvocationTargetException, IllegalAccessException, BusinessException {
+
+        UserModel userModel = userService.getUserByToken(redisTemplate, token);
+        if (userModel == null || !Objects.equals(userModel.getGroup(), "ADMIN")) {
+            throw new BusinessException(BusinessErrorCode.OPERATION_NOT_ALLOWED, "非管理员用户无权进行此操作");
+        }
+
         List<FileModel> fileModels = fileService.list(token);
         List<FileVO> fileVOS = new ArrayList<>();
         for (FileModel fileModel : fileModels) {
@@ -74,10 +80,16 @@ public class FileController extends BaseController {
         return fileVO;
     }
 
-    @ApiOperation(value = "查询文件对象列表", notes = "查询文件列表")
+    @ApiOperation(value = "【管理员】查询文件对象列表", notes = "查询文件列表")
     @RequestMapping(value = "object/list", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
     @ResponseBody
     public CommonReturnType objectList(@RequestParam(value = "token", required = false) String token) throws InvocationTargetException, IllegalAccessException, BusinessException {
+
+        UserModel userModel = userService.getUserByToken(redisTemplate, token);
+        if (userModel == null || !Objects.equals(userModel.getGroup(), "ADMIN")) {
+            throw new BusinessException(BusinessErrorCode.OPERATION_NOT_ALLOWED, "非管理员用户无权进行此操作");
+        }
+
         List<FileObjectModel> fileObjectModels = fileObjectService.list(token);
         List<FileObjectVO> fileObjectVOS = new ArrayList<>();
         for (FileObjectModel fileObjectModel : fileObjectModels) {
@@ -108,7 +120,7 @@ public class FileController extends BaseController {
      * @return
      * @throws BusinessException
      */
-    @ApiOperation(value = "创建腾讯云 COS 预授权 URL", notes = "")
+    @ApiOperation(value = "【用户|管理员】创建腾讯云 COS 预授权 URL", notes = "")
     @RequestMapping(value = "/cos/{httpMethod}", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
     @ResponseBody
     public CommonReturnType cos(@PathVariable(value = "httpMethod") String httpMethod,
@@ -176,6 +188,13 @@ public class FileController extends BaseController {
         return CommonReturnType.create(map);
     }
 
+    /**
+     * 腾讯云 COS 文件上传成功回调方法
+     * @param eventStr
+     * @param contextStr
+     * @return
+     * @throws BusinessException
+     */
     @ApiOperation(value = "【COS】腾讯云 COS 文件上传成功回调", notes = "客户端向腾讯云 COS 存储桶上传文件完毕，有云函数触发此请求")
     @RequestMapping(value = "/upload/cos-check-file-state", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
     @ResponseBody

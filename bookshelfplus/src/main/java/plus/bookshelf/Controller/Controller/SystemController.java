@@ -18,9 +18,9 @@ import plus.bookshelf.Service.Model.UserModel;
 import java.util.Objects;
 
 @Api(tags = "系统调试接口")
-@Controller("debug")
-@RequestMapping("/debug")
-public class DebugController extends BaseController {
+@Controller("system")
+@RequestMapping("/system")
+public class SystemController extends BaseController {
 
     @Autowired
     ThirdPartyConfig thirdPartyConfig;
@@ -28,7 +28,7 @@ public class DebugController extends BaseController {
     @Autowired
     UserServiceImpl userService;
 
-    @ApiOperation(value = "获取系统配置", notes = "仅限管理员登录状态下可获取")
+    @ApiOperation(value = "【管理员】获取系统配置", notes = "仅限管理员登录状态下可获取")
     @RequestMapping(value = "status", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
     @ResponseBody
     public CommonReturnType status(@RequestParam(value = "token", required = false) String token) throws BusinessException {

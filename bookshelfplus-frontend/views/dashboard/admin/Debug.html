@@ -5,7 +5,7 @@
     请按 F12 查看详情
 </p>
 <script>
-    postRequest('/debug/status', { token: localStorageUtils.getToken() })
+    postRequest('/system/status', { token: localStorageUtils.getToken() })
         .then(function (response) {
             var axiosData = response.data;
             var status = axiosData.status;
