@@ -46,8 +46,8 @@
                 var data = axiosData.data;
                 if (status === "success") {
                     console.log(data)
-                    if(data) {
-
+                    if (data) {
+                        document.getElementById("nickname").innerHTML = "当前登录用户：" + data.nickname;
                     } else {
                         window.location.href = "/login";
                     }

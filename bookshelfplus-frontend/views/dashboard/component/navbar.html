@@ -1,3 +1,22 @@
+<style>
+    #btn-logout {
+        color: grey;
+        vertical-align: middle;
+        float: right;
+        transition: all 0.25s;
+    }
+
+    #btn-logout:hover {
+        color: #ddd;
+    }
+
+    #nickname {
+        color: rgb(176, 176, 176);
+        vertical-align: middle;
+        float: right;
+        font-size: 13px;
+    }
+</style>
 <div class="navbar">
     <div class="navbar-grid">
         <div class="grid-item"></div>
@@ -8,7 +27,8 @@
             <% Object.keys(dashboardPage).forEach(item => { %>
                 <a href="/dashboard/<%= group %>/<%= item %>" style="vertical-align: middle;"><%= dashboardPage[item].title %></a>
             <% }); %>
-            <a href="javascript:logout();" style="color: grey; vertical-align: middle; float: right;">退出登录</a>
+            <a id="btn-logout" href="javascript:logout();">退出登录</a>
+            <span id="nickname"><!-- 用户昵称 --></span>
         </div>
         <div class="grid-item"></div>
     </div>
