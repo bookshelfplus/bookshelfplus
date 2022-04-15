@@ -29,19 +29,19 @@
         return res;
     }
     function fontmin(text) {
-        axios.post('../fontmin/getfont', { text: text, font: "" })
+        axios.post('../fontmin/getfont', { text: text, font: "" }, { timeout: 1000 })
             .then(function (response) {
                 // 当接口成功返回时，动态设置css
                 loadFont(response.data.url);
                 $("html,body").css("transition", ".05s");
-                setTimeout(()=>{
+                setTimeout(() => {
                     $("html,body").css("opacity", "1");
                 }, 100)
             })
             .catch(function (error) {
                 console.log("字体加载失败", error);
                 $("html,body").css("transition", ".05s");
-                setTimeout(()=>{
+                setTimeout(() => {
                     $("html,body").css("opacity", "1");
                 }, 100)
             });
