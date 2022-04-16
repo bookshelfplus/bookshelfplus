@@ -50,6 +50,20 @@ public class FileController extends BaseController {
     @Autowired
     FileObjectServiceImpl fileObjectService;
 
+    @ApiOperation(value = "书籍下载页面获取文件提供的下载方式", notes = "")
+    @RequestMapping(value = "getFile", method = {RequestMethod.GET})
+    @ResponseBody
+    public CommonReturnType getFile(@RequestParam(value = "bookId", required = false) Integer bookId) throws BusinessException {
+
+        List<FileModel> fileModels = fileService.getFile(bookId);
+        List<FileVO> fileVOS = new ArrayList<>();
+        for (FileModel fileModel : fileModels) {
+            FileVO fileVO = convertFileVOFromModel(fileModel);
+            fileVOS.add(fileVO);
+        }
+        return CommonReturnType.create(fileVOS);
+    }
+
     @ApiOperation(value = "【管理员】查询文件列表", notes = "查询文件列表")
     @RequestMapping(value = "list", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
     @ResponseBody

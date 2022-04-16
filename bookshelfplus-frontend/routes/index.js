@@ -8,14 +8,15 @@ function getPageTitle(title) {
 router.get('/', function (req, res) {
     res.render('index', {
         title: site.title,
-        headText: "书栖网"
+        headText: "书栖网",
     });
 });
 
 router.get('/search', function (req, res) {
     res.render('search', {
         title: getPageTitle("搜一下"),
-        headText: "搜一下"
+        headText: "搜一下",
+        minfontOnLoad: false,
     });
 });
 
@@ -24,13 +25,15 @@ router.get('/category', function (req, res) {
         // 分类详情页
         res.render('category-details', {
             title: getPageTitle("书籍分类"),
-            headText: "书籍分类"
+            headText: "书籍分类",
+            minfontOnLoad: false,
         });
     } else {
         // 分类首页
         res.render('category', {
             title: getPageTitle("书籍分类"),
-            headText: "书籍分类"
+            headText: "书籍分类",
+            minfontOnLoad: false,
         });
     }
 });
@@ -38,7 +41,15 @@ router.get('/category', function (req, res) {
 router.get('/book', function (req, res) {
     res.render('book', {
         title: getPageTitle("书籍详情"),
-        headText: "书籍详情"
+        headText: "书籍详情",
+        minfontOnLoad: false,
+    });
+});
+
+router.get('/download', function (req, res) {
+    res.render('download', {
+        title: getPageTitle("下载书籍"),
+        headText: "下载书籍"
     });
 });
 

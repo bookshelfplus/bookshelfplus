@@ -61,6 +61,13 @@ public interface FileDOMapper {
     FileDO[] selectAll();
 
     /**
+     * 列出文件支持的下载方式
+     *
+     * @return
+     */
+    FileDO[] selectAvailableByBookId(Integer bookId);
+
+    /**
      * 获取上一次插入的主键Id
      *
      * @return

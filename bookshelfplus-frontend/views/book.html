@@ -2,6 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <%- include("./component/header.html"); %>
+    <!-- 书籍信息部分 -->
     <style>
         .main {
             width: 80vw !important;
@@ -57,6 +58,88 @@
             margin: 0;
         }
     </style>
+    <!-- 文件下载部分 -->
+    <style>
+        .download-container {
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
+
+        #file-container {
+            width: min(80vw, 650px);
+            margin: 0 auto;
+
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-gap: 10px;
+            padding: 10px;
+        }
+
+        .file-item {
+            text-align: left;
+            background-color: #e6e6e6;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .file-item:hover {
+            text-align: left;
+            background-color: #dfdfdf;
+            border-radius: 12px;
+        }
+
+        .file-detail {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .file-object {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            place-items: center;
+            gap: 10px;
+        }
+
+        .file-object>.file-object-item {
+            font-size: 14px;
+            display: inline-block;
+            transition: all 0.2s;
+        }
+
+        .file-object>.file-object-item:hover {
+            transform: scale(1.03);
+            font-weight: bold;
+        }
+
+        /* 统一 */
+        .bold {
+            font-weight: bold;
+        }
+
+        .size12 {
+            font-size: 12px;
+        }
+
+        .size14 {
+            font-size: 14px;
+        }
+
+        .size16 {
+            font-size: 16px;
+        }
+
+        .size20 {
+            font-size: 20px;
+        }
+
+        .overflow-hide {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            display: block;
+        }
+    </style>
 </head>
 <body>
     <%- include("./component/navbar.html"); %>
@@ -65,6 +148,37 @@
         <div id="container">
 
         </div>
+        <hr>
+        <div class="download-container">
+            <h3 id="scrollTarget">下载这本书</h3>
+            <div id="file-container">
+                <!-- <div class="file-item">
+                    <div class="file-title">
+                        <span class="file-name size20">bookshelf</span><span class="file-ext size16">.json</span>
+                        <span class="file-size size14" style="padding-left: 30px;">10.02MB</span>
+                    </div>
+                    <div class="file-detail">
+                        <span class="size14 overflow-hide">SHA1：<span class="file-sha1 size12">07b12eb2a5915282bf086a7913b0fd9720fc012c</span></span>
+                        <span class="file-copyright size14 overflow-hide">来源信息：中国地质大学（武汉）</span>
+                        <span class="file-copyright size14" style="margin-top: 12px; display: block;">下载地址：</span>
+                    </div>
+                    <div class="file-object">
+                        <div class="file-object-item">
+                            <a href="" target="_blank">百度网盘</a>
+                        </div>
+                        <div class="file-object-item">
+                            <a href="" target="_blank">阿里云盘</a>
+                        </div>
+                        <div class="file-object-item">
+                            <a href="" download="文件名.pdf">直链下载</a>
+                        </div>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+        <p style="font-size: 12px;">
+            * 由于直链下载成本很高，为降低运营成本，目前仅提供给登录用户使用。
+        </p>
     </main>
     <%- include("./component/footer.html"); %>
 
@@ -79,6 +193,16 @@
         }
     </script>
     <script>
+        // 由于多个请求之后都需要调用该方法，为避免多次压缩，使用计数器，等最后一个请求完成后执行一次
+        var requestCount = 2;
+        function doFontmin() {
+            console.log("所有请求完毕，开始获取字体");
+            if (--requestCount == 0) {
+                fontmin(getPageText());
+            }
+        }
+    </script>
+    <script>
         // 获取书籍信息
         getRequest("/book/get", { id: bookId })
             .then(function (response) {
@@ -87,7 +211,6 @@
                 var data = axiosData.data;
                 if (status === "success") {
                     console.log(data)
-                    data.thumbnail = "https://img14.360buyimg.com/pop/jfs/t1/141705/31/25225/853702/61a85f89Ef68c838b/929ded96a4a7579e.png";
                     if (data.description == "") {
                         data.description = "暂无描述";
                     }
@@ -104,12 +227,12 @@
                             <!-- 预加载图片 --><img src="/assets/image/svg/favorites_fill.svg" style="display: none;" />
                         </div>
                         <div class="grid-item">
-                            <a class="download-link" href="/download/?bookId=${data.id}"><img id="download-icon" src="/assets/image/svg/download.svg" /><span>下载这本书</span></a>
+                            <a class="download-link" href="javaScript:scrollToTarget()"><img id="download-icon" src="/assets/image/svg/download.svg" /><span>下载这本书</span></a>
+                            <!--<a class="download-link" href="/download/?bookId=${data.id}"><img id="download-icon" src="/assets/image/svg/download.svg" /><span>下载这本书</span></a>-->
                         </div>
                     </div>
                     <hr style="opacity: 0.3; margin-top: 30px; margin-bottom: 25px;">
                     <div>
-                        <h2>基本信息</h2>
                         <div class="grid-item" id="book-details">
                             <p>作者：${data.author}</p>
                             <p>所属分类：<a href="/category?id=${data.category.id}">${data.category.name}</a></p>
@@ -125,15 +248,14 @@
 
                     // 获取用户收藏信息
                     getUserFavouritesStatus();
-
-                    // 渲染后重新获取一次字体
-                    fontmin(getPageText());
                 } else {
                     alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
                 }
             }).catch(function (error) {
                 console.log(error);
                 alert("无法连接到服务器，请检查网络连接！");
+            }).finally(function () {
+                doFontmin();
             });
     </script>
     <script>
@@ -230,6 +352,95 @@
                 $("#favorties-button").attr("onclick", "toggleFavorites(true)");
             }
         }
+    </script>
+    <!-- 页面滚动 -->
+    <script>
+        $(".download-container").css("transition", "0.5s");
+        $(".download-container").css("border-radius", "20px");
+        function scrollToTarget() {
+            $('html, body').animate({
+                scrollTop: $("#scrollTarget").offset().top
+            }, 600);
+            setTimeout(function () {
+                $(".download-container").css("background-color", "#6DA122");
+                $(".download-container").css("transform", "scale(1.05)");
+                setTimeout(function () {
+                    $(".download-container").css("background-color", "");
+                    $(".download-container").css("transform", "");
+                }, 500);
+            }, 500);
+        }
+    </script>
+    <!-- 获取文件下载链接信息 -->
+    <script>
+        // 获取文件信息
+        function getFileInfo() {
+            function stringifyFileSize(nBytes = 0) {
+                // 美化输出文件大小
+                let sOutput = nBytes + " bytes";
+                const aMultiples = ["KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+                for (nMultiple = 0, nApprox = nBytes / 1024; nApprox > 1; nApprox /= 1024, nMultiple++) {
+                    sOutput = nApprox.toFixed(2) + " " + aMultiples[nMultiple];
+                }
+                return sOutput;
+            }
+            getRequest("/file/getFile", { bookId: bookId })
+                .then(function (response) {
+                    var axiosData = response.data;
+                    var status = axiosData.status;
+                    var data = axiosData.data;
+                    if (status === "success") {
+                        console.log(data);
+
+                        var fileContainer = document.getElementById("file-container");
+                        var innerHTML = [];
+                        for (let i = 0; i < data.length; i++) {
+                            const fileInfo = data[i];
+                            innerHTML.push(`
+                                <div class="file-item">
+                                    <div class="file-title">
+                                        <span class="file-name size20">${fileInfo.fileName}</span><span class="file-ext size16">${fileInfo.fileFormat == "" ? "" : ("." + fileInfo.fileFormat)}</span>
+                                        <span class="file-size size14" style="padding-left: 30px;">${stringifyFileSize(fileInfo.fileSize)}</span>
+                                    </div>
+                                    <div class="file-detail">
+                                        <span class="overflow-hide file-sha1 size12">SHA1：<span class="">${fileInfo.fileSha1}</span></span>
+                                        <span class="file-copyright size14 overflow-hide">${fileInfo.bookOrigin == "" ? "" : ("来源信息：" + fileInfo.bookOrigin) }</span>
+                                        <span class="file-copyright size14" style="margin-top: 12px; display: block;">下载地址：</span>
+                                    </div>
+                                    <div class="file-object">
+                                        <div class="file-object-item">
+                                            <a href="" target="_blank">百度网盘</a>
+                                        </div>
+                                        <div class="file-object-item">
+                                            <a href="" target="_blank">阿里云盘</a>
+                                        </div>
+                                        <div class="file-object-item">
+                                            <a href="" download="文件名.pdf">直链下载</a>
+                                        </div>
+                                    </div>
+                                </div>`
+                            );
+                        }
+                        fileContainer.innerHTML = innerHTML.join("");
+
+                        if (data.length == 0) {
+                            var fileItem = document.createElement("div");
+                            fileItem.className = "file-item";
+                            fileItem.style.textAlign = "center";
+                            fileItem.innerHTML = "暂无可用文件源";
+                            fileContainer.appendChild(fileItem);
+                        }
+                    } else {
+                        alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
+                    }
+                }).catch(function (error) {
+                    console.log(error);
+                    alert("无法连接到服务器，请检查网络连接！");
+                }).finally(function () {
+                    doFontmin();
+                });
+        }
+        getFileInfo();
     </script>
 </body>
 </html>

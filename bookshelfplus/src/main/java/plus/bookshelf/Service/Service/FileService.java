@@ -8,6 +8,17 @@ import java.util.List;
 
 public interface FileService {
     /**
+     * 列出文件支持的下载方式
+     *
+     * @param bookId
+     * @return
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException
+     * @throws BusinessException
+     */
+    List<FileModel> getFile(Integer bookId) throws InvocationTargetException, IllegalAccessException, BusinessException;
+
+    /**
      * 列出所有文件
      *
      * @return

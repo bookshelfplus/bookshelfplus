@@ -65,6 +65,10 @@
     $(document).ready(function () {
         var allText = getPageText();
         // console.log(allText);
-        fontmin(allText);
+        if ('<%= typeof(minfontOnLoad) === "undefined" ? "true" : minfontOnLoad %>' != "false") {
+            fontmin(allText);
+        } else {
+            // $("html,body").css("opacity", "1");
+        }
     });
 </script>

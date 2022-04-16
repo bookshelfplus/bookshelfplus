@@ -4,6 +4,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import plus.bookshelf.Common.Error.BusinessErrorCode;
 import plus.bookshelf.Common.Error.BusinessException;
 import plus.bookshelf.Config.QCloudCosConfig;
 import plus.bookshelf.Dao.DO.FileDO;
@@ -40,6 +41,29 @@ public class FileServiceImpl implements FileService {
     CosPresignedUrlGenerateLogService cosPresignedUrlGenerateLogService;
 
     /**
+     * 列出文件支持的下载方式
+     *
+     * @return
+     */
+    @Override
+    public List<FileModel> getFile(Integer bookId) throws BusinessException {
+
+        if (bookId == 0 || bookId == null) {
+            throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "bookId不能为空");
+        }
+
+        FileDO[] fileDOS = fileDOMapper.selectAvailableByBookId(bookId);
+
+        List<FileModel> fileModels = new ArrayList<>();
+        for (FileDO fileDO : fileDOS) {
+            FileModel fileModel = convertFromDataObject(fileDO);
+            fileModels.add(fileModel);
+        }
+
+        return fileModels;
+    }
+
+    /**
      * 列出所有文件
      *
      * @return
@@ -62,7 +86,7 @@ public class FileServiceImpl implements FileService {
     }
 
     private FileModel convertFromDataObject(FileDO fileDO) {
-        if(fileDO == null) {
+        if (fileDO == null) {
             return null;
         }
         FileModel fileModel = new FileModel();
