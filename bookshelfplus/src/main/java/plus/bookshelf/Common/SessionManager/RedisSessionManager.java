@@ -39,10 +39,8 @@ public class RedisSessionManager implements SessionManager {
 
     @Override
     public void setValue(String key, Object value) {
-        redisTemplate.expire(key, 1, TimeUnit.HOURS);
-
         // 建立token和用户登录态之间的联系
-        redisTemplate.opsForValue().set(key, value);
+        redisTemplate.opsForValue().set(key, value, 1, TimeUnit.HOURS);
     }
 
     @Override
