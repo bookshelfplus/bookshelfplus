@@ -684,12 +684,14 @@ __可选__||string
 __可选__||integer (int32)
 |**FormData**|**fileName** +
 __可选__||string
+|**FormData**|**fileNameAndExt** +
+__可选__||string
 |**FormData**|**fileSha1** +
 __可选__||string
 |**FormData**|**fileSize** +
 __可选__||integer (int64)
-|**FormData**|**fileType** +
-__可选__||string
+|**FormData**|**lastModified** +
+__可选__||integer (int64)
 |**FormData**|**token** +
 __可选__||string
 |===
@@ -730,6 +732,60 @@ __可选__||string
 [source,json]
 ----
 "string"
+----
+
+
+===== HTTP响应示例
+
+====== 响应 200
+[source,json]
+----
+{
+  "data" : "object",
+  "status" : "string"
+}
+----
+
+
+[[_getfileusingget]]
+==== 书籍下载页面获取文件提供的下载方式
+....
+GET /api/file/getFile
+....
+
+
+===== 参数
+
+[options="header", cols=".^2a,.^3a,.^9a,.^4a"]
+|===
+|类型|名称|说明|类型
+|**Query**|**bookId** +
+__可选__|bookId|integer (int32)
+|===
+
+
+===== 响应
+
+[options="header", cols=".^2a,.^14a,.^4a"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_commonreturntype,CommonReturnType>>
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+===== 生成
+
+* `\*/*`
+
+
+===== HTTP请求示例
+
+====== 请求 path
+----
+/api/file/getFile
 ----
 
 

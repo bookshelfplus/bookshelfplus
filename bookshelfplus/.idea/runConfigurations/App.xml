@@ -1,15 +1,15 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="App" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+    <option name="ACTIVE_PROFILES" />
     <module name="bookshelfplus" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="plus.bookshelf.App" />
+    <option name="VM_PARAMETERS" value="-XX:+AlwaysPreTouch -Xms128m -Xmx2048m -Dspring.jmx.enabled=false -client -DarchetypeCatalog=internal -Ddruid.mysql.usePingMethod=false" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="plus.bookshelf.*" />
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>
-    <option name="SPRING_BOOT_MAIN_CLASS" value="plus.bookshelf.App" />
-    <option name="VM_PARAMETERS" value="-XX:+AlwaysPreTouch -Xms128m -Xmx2048m -Dspring.jmx.enabled=false -client -DarchetypeCatalog=internal" />
-    <option name="ALTERNATIVE_JRE_PATH" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>
