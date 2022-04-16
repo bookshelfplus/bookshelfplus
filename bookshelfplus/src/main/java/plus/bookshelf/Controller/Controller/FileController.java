@@ -53,7 +53,7 @@ public class FileController extends BaseController {
     @ApiOperation(value = "书籍下载页面获取文件提供的下载方式", notes = "")
     @RequestMapping(value = "getFile", method = {RequestMethod.GET})
     @ResponseBody
-    public CommonReturnType getFile(@RequestParam(value = "bookId", required = false) Integer bookId) throws BusinessException {
+    public CommonReturnType getFile(@RequestParam(value = "bookId", required = false) Integer bookId) throws BusinessException, InvocationTargetException, IllegalAccessException {
 
         List<FileModel> fileModels = fileService.getFile(bookId);
         List<FileVO> fileVOS = new ArrayList<>();
@@ -61,7 +61,19 @@ public class FileController extends BaseController {
             FileVO fileVO = convertFileVOFromModel(fileModel);
             fileVOS.add(fileVO);
         }
-        return CommonReturnType.create(fileVOS);
+
+        List<FileObjectModel> fileObjectModels = fileObjectService.getFileObjectByBookId(bookId);
+        List<FileObjectVO> fileObjectVOS = new ArrayList<>();
+        for (FileObjectModel fileObjectModel : fileObjectModels) {
+            FileObjectVO fileObjectVO = convertFileObjectVOFromModel(fileObjectModel);
+            fileObjectVOS.add(fileObjectVO);
+        }
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("file", fileVOS);
+        map.put("fileObject", fileObjectVOS);
+
+        return CommonReturnType.create(map);
     }
 
     @ApiOperation(value = "【管理员】查询文件列表", notes = "查询文件列表")
@@ -142,16 +154,19 @@ public class FileController extends BaseController {
     @ResponseBody
     public CommonReturnType cos(@PathVariable(value = "httpMethod") String httpMethod,
                                 @RequestParam(value = "token") String token,
-                                @RequestParam(value = "fileName") String fileName, // 不含扩展名
+                                @RequestParam(value = "fileSha1") String fileSha1,
                                 @RequestParam(value = "expireMinute", required = false) Integer expireMinute,
 
                                 // 以下为 PUT 请求必传参数
+                                @RequestParam(value = "fileName", required = false) String fileName, // 不含扩展名
                                 @RequestParam(value = "fileSize", required = false) Long fileSize,
                                 // @RequestParam(value = "fileType", required = false) String fileType,
                                 @RequestParam(value = "lastModified", required = false) Long lastModified,
-                                @RequestParam(value = "fileSha1", required = false) String fileSha1,
                                 @RequestParam(value = "fileExt", required = false) String fileExt,
-                                @RequestParam(value = "fileId", required = false) Integer fileId // 关联的文件ID，创建新文件则为0
+                                @RequestParam(value = "fileId", required = false) Integer fileId, // 关联的文件ID，创建新文件则为0
+
+                                // 以下为 GET 请求必传参数
+                                @RequestParam(value = "fileNameAndExt", required = false) String fileNameAndExt
     ) throws BusinessException, InvocationTargetException, IllegalAccessException {
         if (expireMinute == null) {
             expireMinute = 30;
@@ -180,25 +195,27 @@ public class FileController extends BaseController {
 
         // 判断对象是否存在
         Boolean isExist = qCloudCosUtils.doesObjectExist(bookSaveFolder, fileSha1);
-        switch (httpMethodName) {
+        String url = null;
+                switch (httpMethodName) {
             case PUT:
                 // 上传文件
                 if (isExist) throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "文件已存在");
 
                 fileObjectService.uploadFile(fileId, fileName, bookSaveFolder + fileSha1, fileSize,
                         fileSha1, fileExt, fileName, FileStorageMediumEnum.QCLOUD_COS, "", lastModified);
+                url = qCloudCosUtils.generatePresignedUrl(userModel.getId(), httpMethodName, bookSaveFolder, fileSha1, expireMinute, urlGUID);
                 break;
             case GET:
                 if (!isExist) throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "文件不存在");
+                url = qCloudCosUtils.generatePresignedUrlForGET(userModel.getId(), bookSaveFolder, fileSha1, expireMinute, urlGUID, fileNameAndExt);
                 break;
             case DELETE:
                 if (!isExist) throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "文件不存在");
+                url = qCloudCosUtils.generatePresignedUrl(userModel.getId(), httpMethodName, bookSaveFolder, fileSha1, expireMinute, urlGUID);
                 break;
             default:
                 throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "httpMethod 参数暂不支持");
         }
-
-        String url = qCloudCosUtils.generatePresignedUrl(userModel.getId(), httpMethodName, bookSaveFolder, fileSha1, 30, urlGUID);
 
         Map map = new HashMap();
         map.put("url", url);

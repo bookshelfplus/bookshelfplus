@@ -37,6 +37,25 @@ public class FileObjectServiceImpl implements FileObjectService {
     FileServiceImpl fileService;
 
     /**
+     * 通过书本Id获取关联文件，进而获取所有关联文件对应的文件对象
+     *
+     * @return
+     */
+    @Override
+    public List<FileObjectModel> getFileObjectByBookId(Integer bookId) throws InvocationTargetException, IllegalAccessException {
+
+        FileObjectDO[] fileObjectDOS = fileObjectDOMapper.selectFileObjectByBookId(bookId);
+
+        List<FileObjectModel> fileObjectModels = new ArrayList<>();
+        for (FileObjectDO fileObjectDO : fileObjectDOS) {
+            FileObjectModel fileObjectModel = convertFromDataObject(fileObjectDO);
+            fileObjectModels.add(fileObjectModel);
+        }
+
+        return fileObjectModels;
+    }
+
+    /**
      * 列出所有文件对象
      *
      * @return

@@ -11,6 +11,16 @@ import java.util.List;
 public interface FileObjectService {
 
     /**
+     * 通过书本Id获取关联文件，进而获取所有关联文件对应的文件对象
+     *
+     * @param bookId
+     * @return
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException
+     */
+    List<FileObjectModel> getFileObjectByBookId(Integer bookId) throws InvocationTargetException, IllegalAccessException;
+
+    /**
      * 列出所有文件对象
      *
      * @return

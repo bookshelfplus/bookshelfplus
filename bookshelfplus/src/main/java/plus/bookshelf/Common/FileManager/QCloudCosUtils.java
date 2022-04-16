@@ -2,10 +2,13 @@ package plus.bookshelf.Common.FileManager;
 
 import com.qcloud.cos.COSClient;
 import com.qcloud.cos.ClientConfig;
+import com.qcloud.cos.Headers;
 import com.qcloud.cos.auth.BasicCOSCredentials;
 import com.qcloud.cos.auth.COSCredentials;
 import com.qcloud.cos.http.HttpMethodName;
 import com.qcloud.cos.http.HttpProtocol;
+import com.qcloud.cos.model.GeneratePresignedUrlRequest;
+import com.qcloud.cos.model.ResponseHeaderOverrides;
 import com.qcloud.cos.region.Region;
 import plus.bookshelf.Common.Error.BusinessErrorCode;
 import plus.bookshelf.Common.Error.BusinessException;
@@ -86,7 +89,7 @@ public class QCloudCosUtils {
         // 存储桶的命名格式为 BucketName-APPID，此处填写的存储桶名称必须为此格式
         String bucketName = qCloudCosConfig.getBucketName();
         // 对象键(Key)是对象在存储桶中的唯一标识。详情请参见 [对象键](https://cloud.tencent.com/document/product/436/13324)
-        String key = qCloudCosConfig.getKeyName() + objectKey;
+        String key = qCloudCosConfig.getKeyName() + folder + objectKey;
         return cosClient.doesObjectExist(bucketName, key);
     }
 
@@ -104,13 +107,12 @@ public class QCloudCosUtils {
     public String generatePresignedUrl(Integer userId, HttpMethodName httpMethodName, String savePath, String objectKey, Integer expireMinute, String urlGUID) throws BusinessException {
         // 调用 COS 接口之前必须保证本进程存在一个 COSClient 实例，如果没有则创建
         // 详细代码参见本页：简单操作 -> 创建 COSClient
-        // COSClient cosClient = createCOSClient();
         COSClient cosClient = createCOSClient();
 
         // 存储桶的命名格式为 BucketName-APPID，此处填写的存储桶名称必须为此格式
         String bucketName = qCloudCosConfig.getBucketName();
         // 对象键(Key)是对象在存储桶中的唯一标识。详情请参见 [对象键](https://cloud.tencent.com/document/product/436/13324)
-        String key = qCloudCosConfig.getKeyName() + objectKey;
+        String key = qCloudCosConfig.getKeyName() + savePath + objectKey;
 
         // 设置签名过期时间(可选), 若未进行设置则默认使用 ClientConfig 中的签名过期时间(1小时)
         // 这里设置签名在 expireMinute 分钟后过期
@@ -138,6 +140,61 @@ public class QCloudCosUtils {
 
         // 记录用户操作日志
         cosPresignedUrlGenerateLogService.log(userId, expireMinute, httpMethodName.name(), key, urlGUID);
+
+        return url.toString();
+    }
+
+    /**
+     * 生成预签名URL (下载使用，用于下载时指定下载的文件名)
+     * <p>
+     * refer: https://cloud.tencent.com/document/product/436/35217
+     *
+     * @param userId          当前登录用户的 id
+     * @param savePath
+     * @param objectKey       文件对象的 key
+     * @param expireMinute    过期时间
+     * @param urlGUID
+     * @param fileNameForUser
+     * @return
+     * @throws BusinessException
+     */
+    public String generatePresignedUrlForGET(Integer userId, String savePath, String objectKey, Integer expireMinute, String urlGUID, String fileNameForUser) throws BusinessException {
+        // 调用 COS 接口之前必须保证本进程存在一个 COSClient 实例，如果没有则创建
+        // 详细代码参见本页：简单操作 -> 创建 COSClient
+        COSClient cosClient = createCOSClient();
+
+        // 存储桶的命名格式为 BucketName-APPID，此处填写的存储桶名称必须为此格式
+        String bucketName = qCloudCosConfig.getBucketName();
+        // 对象键(Key)是对象在存储桶中的唯一标识。详情请参见 [对象键](https://cloud.tencent.com/document/product/436/13324)
+        String key = qCloudCosConfig.getKeyName() + savePath + objectKey;
+
+        GeneratePresignedUrlRequest req = new GeneratePresignedUrlRequest(bucketName, key, HttpMethodName.GET);
+
+        // 设置下载时返回的 http 头
+        ResponseHeaderOverrides responseHeaders = new ResponseHeaderOverrides();
+        responseHeaders.setContentDisposition("attachment; filename=\"" + fileNameForUser + "\""); // 作为附件下载；设置返回头部里包含文件名信息
+        responseHeaders.setCacheControl("no-cache");
+        req.setResponseHeaders(responseHeaders);
+
+        // 设置签名过期时间(可选)，若未进行设置，则默认使用 ClientConfig 中的签名过期时间(1小时)
+        // 这里设置签名在半个小时后过期
+        Date expirationDate = new Date(System.currentTimeMillis() + 30L * 60L * 1000L);
+        req.setExpiration(expirationDate);
+
+        // 填写本次请求的参数，需与实际请求相同，能够防止用户篡改此签名的 HTTP 请求的参数
+        Map<String, String> params = new HashMap<>();
+        req.addRequestParameter("by", "书栖网 bookshelf.plus");
+        req.addRequestParameter("userId", String.valueOf(userId));
+        req.addRequestParameter("guid", urlGUID);
+        // 填写本次请求的头部
+        // host 必填
+        req.putCustomRequestHeader(Headers.HOST, cosClient.getClientConfig().getEndpointBuilder().buildGeneralApiEndpoint(bucketName));
+        // req.putCustomRequestHeader("header1", "value1");
+
+        URL url = cosClient.generatePresignedUrl(req);
+
+        // 记录用户操作日志
+        cosPresignedUrlGenerateLogService.log(userId, expireMinute, HttpMethodName.GET.name(), key, urlGUID);
 
         return url.toString();
     }

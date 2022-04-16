@@ -67,4 +67,12 @@ public interface FileObjectDOMapper {
      * @return
      */
     FileObjectDO selectByFilePath(String filePath);
+
+    /**
+     * 通过书本Id获取关联文件，进而获取所有关联文件对应的文件对象
+     *
+     * @param bookId 书本Id
+     * @return
+     */
+    FileObjectDO[] selectFileObjectByBookId(Integer bookId);
 }

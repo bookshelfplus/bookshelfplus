@@ -196,8 +196,8 @@
         // 由于多个请求之后都需要调用该方法，为避免多次压缩，使用计数器，等最后一个请求完成后执行一次
         var requestCount = 2;
         function doFontmin() {
-            console.log("所有请求完毕，开始获取字体");
             if (--requestCount == 0) {
+                console.log("开始获取字体");
                 fontmin(getPageText());
             }
         }
@@ -373,6 +373,7 @@
     </script>
     <!-- 获取文件下载链接信息 -->
     <script>
+        var direckLinkInfo = {};
         // 获取文件信息
         function getFileInfo() {
             function stringifyFileSize(nBytes = 0) {
@@ -384,6 +385,20 @@
                 }
                 return sOutput;
             }
+            function getLinkDOM(fileObjectInfo) {
+                // 获取文件下载链接DOM
+                var div = document.createElement("div");
+                div.className = "file-object-item";
+                switch (fileObjectInfo.storageMediumType) {
+                    case "腾讯云对象存储":
+                        div.innerHTML = `<a style="cursor: pointer;" onclick="getDirectLink(${fileObjectInfo.id});">直链下载</a>`;
+                        break;
+                    default:
+                        div.innerHTML = `<a href="${fileObjectInfo.filePath}" target="_blank">${fileObjectInfo.storageMediumType}${fileShareCode == "" ? "" : "(提取码:" + fileShareCode + ")"}</a>`;
+                        break;
+                }
+                return div.outerHTML;
+            }
             getRequest("/file/getFile", { bookId: bookId })
                 .then(function (response) {
                     var axiosData = response.data;
@@ -392,10 +407,23 @@
                     if (status === "success") {
                         console.log(data);
 
+                        // 先处理文件对象
+                        var fileObjectList = {};
+                        for (let i = 0; i < data.fileObject.length; i++) {
+                            const element = data.fileObject[i];
+                            if (!fileObjectList[element.fileId])
+                                fileObjectList[element.fileId] = [];
+                            fileObjectList[element.fileId].push(getLinkDOM(element));
+
+                            direckLinkInfo[element.id] = element;
+                        }
+                        console.log(fileObjectList);
+
+                        // 再处理文件
                         var fileContainer = document.getElementById("file-container");
                         var innerHTML = [];
-                        for (let i = 0; i < data.length; i++) {
-                            const fileInfo = data[i];
+                        for (let i = 0; i < data.file.length; i++) {
+                            const fileInfo = data.file[i];
                             innerHTML.push(`
                                 <div class="file-item">
                                     <div class="file-title">
@@ -408,15 +436,7 @@
                                         <span class="file-copyright size14" style="margin-top: 12px; display: block;">下载地址：</span>
                                     </div>
                                     <div class="file-object">
-                                        <div class="file-object-item">
-                                            <a href="" target="_blank">百度网盘</a>
-                                        </div>
-                                        <div class="file-object-item">
-                                            <a href="" target="_blank">阿里云盘</a>
-                                        </div>
-                                        <div class="file-object-item">
-                                            <a href="" download="文件名.pdf">直链下载</a>
-                                        </div>
+                                        ${fileObjectList[fileInfo.id] ? fileObjectList[fileInfo.id].join('') : ""}
                                     </div>
                                 </div>`
                             );
@@ -441,6 +461,41 @@
                 });
         }
         getFileInfo();
+    </script>
+    <script>
+        // 获取直链下载链接，并下载该文件
+        function getDirectLink(fileObjectId) {
+            var fileObject = direckLinkInfo[fileObjectId];
+            console.log("fileObject", fileObject);
+
+            if(!localStorageUtils.getLoginStatus()) {
+                alert("请先登录！");
+                return;
+            }
+
+            var fileNameForUser = `${fileObject.fileName}.${fileObject.fileType}`;
+            var fileKeyForCos = fileObject.filePath;
+            postRequest("/file/cos/get", { fileSha1: fileObject.fileSha1, fileNameAndExt: fileNameForUser, token: localStorageUtils.getToken(), expireMinute: 30 })
+                .then(function (response) {
+                    var axiosData = response.data;
+                    var status = axiosData.status;
+                    var data = axiosData.data;
+                    if (status === "success") {
+                        console.log(data);
+                        // let guid = data.guid;
+                        var downloadLink = document.createElement("a");
+                        downloadLink.href = data.url;
+                        downloadLink.target = "_blank";
+                        console.log(downloadLink);
+                        downloadLink.click();
+                    } else {
+                        alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
+                    }
+                }).catch(function (error) {
+                    console.log(error);
+                    alert("无法连接到服务器，请检查网络连接！");
+                });
+        }
     </script>
 </body>
 </html>
