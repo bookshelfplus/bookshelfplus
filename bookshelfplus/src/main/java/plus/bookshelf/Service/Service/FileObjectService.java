@@ -72,4 +72,14 @@ public interface FileObjectService {
      * @return
      */
     FileObjectModel getFileObjectByFilePath(String filePath) throws InvocationTargetException, IllegalAccessException;
+
+    /**
+     * 通过 Id 获取文件对象
+     *
+     * @param fileObjectId 文件对象 Id
+     * @return
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException
+     */
+    FileObjectModel getFileObjectById(Integer fileObjectId) throws InvocationTargetException, IllegalAccessException;
 }

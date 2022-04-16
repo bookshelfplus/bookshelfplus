@@ -12,9 +12,7 @@
     您现在在「文件管理 > 文件对象管理」，以下是系统所有文件对象信息
 </p>
 <script>
-    list({
-        tableElementId: "book-table"
-    });
+    list({ tableElementId: "book-table" });
 
     function list({ tableElementId }) {
         postRequest("/file/object/list", { token: localStorageUtils.getToken() })
@@ -53,11 +51,11 @@
                             状态: `${(element.uploadStatus ? element.uploadStatus : "<span style='color: grey; font-weight: bold;'>未知</span>")
                                 .replace("SUCCESS", "<span style='color: green; font-weight: bold;'>成功</span>")
                                 .replace("UPLOADING", "<span style='color: orange; font-weight: bold;'>正在上传</span>")
-                                .replace("TERMINATED", "<span style='color: red; font-weight: bold;'>上传失败</span>")}`,
-                            管理: `<span span class= "overflow-omit" style = "margin: 0 auto;" >
+                                .replace("NOT_EXIST", "<span style='color: red; font-weight: bold;'>不存在</span>")}`,
+                            管理: `<span span class="overflow-omit" style="margin: 0 auto;">
                                         <a href="javascript:refreshFileObjectStatus(${element.id});">刷新状态</a>
-                                        <a href="<%= pageUrl %>../object-detail?id=${element.id}">修改</a>
-                                        <a href="javascript:deleteBook(${element.id});">删除</a>
+                                        <a href="<%= pageUrl %>../object-detail?id=${element.id}">修改(TODO)</a>
+                                        <a href="javascript:deleteBook(${element.id});">删除(TODO)</a>
                                     </span > `,
                         })
                     });
@@ -75,6 +73,25 @@
                     }
                 } else {
                     alert(`出错啦！${data.errMsg}(错误码: ${data.errCode}) `);
+                }
+            }).catch(function (error) {
+                console.log(error);
+                alert("无法连接到服务器，请检查网络连接！");
+            });
+    }
+
+    function refreshFileObjectStatus(fileObjectId) {
+        postRequest("/file/object/refreshFileObjectStatus", { token: localStorageUtils.getToken(), fileObjectId: fileObjectId })
+            .then(function (responseData) {
+                var axiosData = responseData.data;
+                var status = axiosData.status;
+                var data = axiosData.data;
+                if (status === "success") {
+                    console.log(data);
+                    alert("刷新成功！");
+                    list({ tableElementId: "book-table" });
+                } else {
+                    alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
                 }
             }).catch(function (error) {
                 console.log(error);

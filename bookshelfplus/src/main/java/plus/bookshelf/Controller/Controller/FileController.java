@@ -95,17 +95,6 @@ public class FileController extends BaseController {
         return CommonReturnType.create(fileVOS);
     }
 
-    private FileVO convertFileVOFromModel(FileModel fileModel) {
-        if (fileModel == null) {
-            return null;
-        }
-        FileVO fileVO = new FileVO();
-        BeanUtils.copyProperties(fileModel, fileVO);
-        fileVO.setFileCreateAt(fileModel.getFileCreateAt().getTime());
-        fileVO.setFileModifiedAt(fileModel.getFileModifiedAt().getTime());
-        return fileVO;
-    }
-
     @ApiOperation(value = "【管理员】查询文件对象列表", notes = "查询文件列表")
     @RequestMapping(value = "object/list", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
     @ResponseBody
@@ -125,18 +114,56 @@ public class FileController extends BaseController {
         return CommonReturnType.create(fileObjectVOS);
     }
 
-    private FileObjectVO convertFileObjectVOFromModel(FileObjectModel fileObjectModel) {
-        if (fileObjectModel == null) {
-            return null;
+    @ApiOperation(value = "【管理员】更新文件对象上传状态", notes = "重新从 COS 对象存储中获取文件对象上传状态")
+    @RequestMapping(value = "object/refreshFileObjectStatus", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
+    @ResponseBody
+    public CommonReturnType refreshFileObjectStatus(@RequestParam(value = "token", required = false) String token,
+                                                    @RequestParam(value = "fileObjectId") Integer fileObjectId) throws InvocationTargetException, IllegalAccessException, BusinessException {
+
+        // 验证用户权限
+        UserModel userModel = userService.getUserByToken(redisTemplate, token);
+        if (userModel == null || !Objects.equals(userModel.getGroup(), "ADMIN")) {
+            throw new BusinessException(BusinessErrorCode.OPERATION_NOT_ALLOWED, "非管理员用户无权进行此操作");
         }
-        FileObjectVO fileObjectVO = new FileObjectVO();
-        BeanUtils.copyProperties(fileObjectModel, fileObjectVO);
-        try {
-            // 尝试将 FileStorageMedium 转为中文，如果没有成功，那么就保留英文
-            fileObjectVO.setStorageMediumType(FileStorageMediumEnum.valueOf(fileObjectModel.getStorageMediumType()).getStorageMediumDisplayName());
-        } catch (Exception e) {
+
+        // 获取旧文件权限
+        FileObjectModel fileObjectModel = fileObjectService.getFileObjectById(fileObjectId);
+        String fileSha1 = fileObjectModel.getFileSha1();
+        String oldUploadStatus = fileObjectModel.getUploadStatus();
+
+        QCloudCosUtils qCloudCosUtils = new QCloudCosUtils(qCloudCosConfig, cosPresignedUrlGenerateLogService);
+
+        // 判断对象是否存在
+        Boolean isExist = qCloudCosUtils.doesObjectExist(QCloudCosUtils.BOOK_SAVE_FOLDER, fileSha1);
+
+        Boolean isSuccess = false;
+
+        if (!isExist) {
+            // 现在文件不存在
+            switch (oldUploadStatus) {
+                case "NOT_EXIST": // 文件不存在，不需要更新
+                default:
+                    isSuccess = true;
+                    break;
+                case "SUCCESS": // 上传成功，但是文件不存在了，更新为不存在
+                case "UPLOADING": // 上传中，更新为不存在
+                    isSuccess = fileObjectService.updateFileStatus(fileObjectModel.getId(), "NOT_EXIST");
+                    break;
+            }
+        } else {
+            // 现在文件存在
+            switch (oldUploadStatus) {
+                case "SUCCESS": // 之前上传成功，现在存在，不做任何操作
+                default:
+                    isSuccess = true;
+                    break;
+                case "NOT_EXIST": // 之前不存在，现在存在，更新为上传成功
+                case "UPLOADING": // 之前上传中，现在存在，更新为上传成功
+                    isSuccess = fileObjectService.updateFileStatus(fileObjectModel.getId(), "SUCCESS");
+                    break;
+            }
         }
-        return fileObjectVO;
+        return CommonReturnType.create(isSuccess);
     }
 
     /**
@@ -196,7 +223,7 @@ public class FileController extends BaseController {
         // 判断对象是否存在
         Boolean isExist = qCloudCosUtils.doesObjectExist(bookSaveFolder, fileSha1);
         String url = null;
-                switch (httpMethodName) {
+        switch (httpMethodName) {
             case PUT:
                 // 上传文件
                 if (isExist) throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "文件已存在");
@@ -299,6 +326,31 @@ public class FileController extends BaseController {
             return CommonReturnType.create("Not triggered by the bucket specified in the configuration file, skip.");
         }
         return CommonReturnType.create("success");
+    }
+
+    private FileVO convertFileVOFromModel(FileModel fileModel) {
+        if (fileModel == null) {
+            return null;
+        }
+        FileVO fileVO = new FileVO();
+        BeanUtils.copyProperties(fileModel, fileVO);
+        fileVO.setFileCreateAt(fileModel.getFileCreateAt().getTime());
+        fileVO.setFileModifiedAt(fileModel.getFileModifiedAt().getTime());
+        return fileVO;
+    }
+
+    private FileObjectVO convertFileObjectVOFromModel(FileObjectModel fileObjectModel) {
+        if (fileObjectModel == null) {
+            return null;
+        }
+        FileObjectVO fileObjectVO = new FileObjectVO();
+        BeanUtils.copyProperties(fileObjectModel, fileObjectVO);
+        try {
+            // 尝试将 FileStorageMedium 转为中文，如果没有成功，那么就保留英文
+            fileObjectVO.setStorageMediumType(FileStorageMediumEnum.valueOf(fileObjectModel.getStorageMediumType()).getStorageMediumDisplayName());
+        } catch (Exception e) {
+        }
+        return fileObjectVO;
     }
 }
 

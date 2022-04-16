@@ -78,7 +78,7 @@ public class FileObjectServiceImpl implements FileObjectService {
     }
 
     private FileObjectModel convertFromDataObject(FileObjectDO fileObjectDO) throws InvocationTargetException, IllegalAccessException {
-        if(fileObjectDO == null) {
+        if (fileObjectDO == null) {
             return null;
         }
         FileObjectModel fileObjectModel = new FileObjectModel();
@@ -103,7 +103,7 @@ public class FileObjectServiceImpl implements FileObjectService {
     }
 
     private FileObjectDO convertFromFileObjectModel(FileObjectModel fileObjectModel) {
-        if(fileObjectModel == null) {
+        if (fileObjectModel == null) {
             return null;
         }
         FileObjectDO fileObjectDO = new FileObjectDO();
@@ -213,7 +213,7 @@ public class FileObjectServiceImpl implements FileObjectService {
     }
 
     /**
-     * 通过文件路径获取文件
+     * 通过文件路径获取文件对象
      *
      * @param filePath 文件路径
      * @return
@@ -221,6 +221,21 @@ public class FileObjectServiceImpl implements FileObjectService {
     @Override
     public FileObjectModel getFileObjectByFilePath(String filePath) throws InvocationTargetException, IllegalAccessException {
         FileObjectDO fileObjectDO = fileObjectDOMapper.selectByFilePath(filePath);
+        FileObjectModel fileObjectModel = convertFromDataObject(fileObjectDO);
+        return fileObjectModel;
+    }
+
+    /**
+     * 通过 Id 获取文件对象
+     *
+     * @param fileObjectId 文件对象 Id
+     * @return
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException
+     */
+    @Override
+    public FileObjectModel getFileObjectById(Integer fileObjectId) throws InvocationTargetException, IllegalAccessException {
+        FileObjectDO fileObjectDO = fileObjectDOMapper.selectByPrimaryKey(fileObjectId);
         FileObjectModel fileObjectModel = convertFromDataObject(fileObjectDO);
         return fileObjectModel;
     }
