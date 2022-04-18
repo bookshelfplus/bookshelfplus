@@ -78,6 +78,8 @@
 
     <!-- <script src="/assets/lib/cryptography/2.2/md5-min.js"></script> -->
     <!-- <script src="/assets/lib/cryptography/2.2/sha1-min.js"></script> -->
+    <!-- 获取参数 -->
+    <script src="/assets/javascripts/getParams.js"></script>
     <script>
         // 避免重复点击
         var isOnLogin = false;
@@ -137,6 +139,17 @@
                                 token: data.token,
                                 is_admin: data.group === "ADMIN",
                             });
+                            // 用户登录成功
+
+                            // 如果指定了 Redirect 链接，则跳到指定链接
+                            var requestParams = getParams();
+                            var redirectUrl = requestParams["redirect"] ?? "";
+                            if (redirectUrl) {
+                                location.href = location.origin + redirectUrl;
+                                return;
+                            }
+
+                            // 如果没有指定 Redirect 链接，则跳到后台
                             if (localStorageUtils.getIsAdmin()) {
                                 window.location.href = "/dashboard/admin/index";
                             } else {

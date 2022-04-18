@@ -368,7 +368,7 @@
                         toggleDisplayButton();
                     } else {
                         if (data.errCode == "20004") {
-                            // 登陆过期，小问题，这里不弹窗显示
+                            // 登录过期，小问题，这里不弹窗显示
                             localStorageUtils.userLogout();
                         } else {
                             alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
@@ -501,11 +501,11 @@
                             <div class="file-object-item-content">${content}</div>
                             <div class="file-object-item-link">${downloadLink}</div>
                             <div class="outdated-feedback">
-                                <img src="/assets/image/svg/feedback.svg"/>
+                                <img src="/assets/image/svg/feedback.svg" onclick="linkFeedback(${fileObjectInfo.fileId},${fileObjectInfo.id});"/>
                                 <span class="outdated-feedback-tip">链接失效？点击反馈！</span>
                             </div>
                         </div>`.replace(/\ [ ]+?/g,"").replace(/[\n]/g,"") //去掉多余空格、换行
-                console.log(dom);
+                // console.log(dom);
                 return dom;
             }
             getRequest("/file/getFile", { bookId: bookId })
@@ -550,7 +550,7 @@
                                 </div>`
                             );
                         }
-                        fileContainer.innerHTML += innerHTML.join("");
+                        fileContainer.innerHTML = innerHTML.join("");
 
                         if (innerHTML.length == 0) {
                             var fileItem = document.createElement("div");
@@ -614,6 +614,40 @@
                         downloadLink.target = "_blank";
                         console.log(downloadLink);
                         downloadLink.click();
+                    } else {
+                        alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
+                    }
+                }).catch(function (error) {
+                    console.log(error);
+                    alert("无法连接到服务器，请检查网络连接！");
+                });
+        }
+    </script>
+    <script>
+        // 链接失效反馈
+        function linkFeedback(fileId, fileObjectId) {
+            if (!confirm("确定这个下载链接失效了吗？（没失效的链接不可以乱点着玩儿哦）"))
+                return;
+
+            if (!localStorageUtils.getLoginStatus()) {
+                if (confirm("您尚未登录，登录后反馈处理更快，是否前往登录？")) {
+                    location.href = "/login?redirect=" + encodeURIComponent(location.pathname + location.search);
+                    return;
+                }
+            }
+
+            postRequest("/file/object/FailureFeedback", { bookId: bookId, fileId: fileId, fileObjectId: fileObjectId, token: localStorageUtils.getToken() })
+                .then(function (response) {
+                    var axiosData = response.data;
+                    var status = axiosData.status;
+                    var data = axiosData.data;
+                    if (status === "success") {
+                        // console.log(data);
+                        if (data) {
+                            alert("真棒！反馈成功！");
+                        } else {
+                            alert("反馈失败，请稍后再试！");
+                        }
                     } else {
                         alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
                     }

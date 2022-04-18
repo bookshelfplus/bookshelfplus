@@ -4,7 +4,7 @@
 
 ## 第1种：创建子用户
 
-登陆腾讯云后台，进入访问管理下的用户列表页：https://console.cloud.tencent.com/cam
+登录腾讯云后台，进入访问管理下的用户列表页：https://console.cloud.tencent.com/cam
 
 点击新建用户
 

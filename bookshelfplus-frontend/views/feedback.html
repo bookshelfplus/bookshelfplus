@@ -3,11 +3,6 @@
 <head>
     <%- include("./component/header.html"); %>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-        }
-
         .wrap {
             margin: 20px auto;
             position: relative;
@@ -53,7 +48,7 @@
             user-select: all;
         }
 
-        p {
+        .main p {
             font-size: 14px !important;
             font-family: initial !important;
         }
@@ -65,7 +60,7 @@
         <h1><%= headText %></h1>
         <div id="container">
             <p>
-                <br>反馈前请选择正确的分类，否则反馈经过二次转接，响应时间将会变长。
+                反馈前请选择正确的分类，否则反馈经过二次转接，响应时间将会变长。
             </p>
             <div class="wrap">
                 <label>
@@ -95,7 +90,7 @@
                             <br>
                         </p>
                         <p>
-                            请点击链接旁的 <img src="/assets/image/svg/feedback.svg" style="width: 1em; height: 1em;"/> 按钮进行反馈。
+                            请前往下载页面，点击链接旁的 <img src="/assets/image/svg/feedback.svg" style="width: 1em; height: 1em;"/> 按钮进行反馈。
                         </p>
                     </div>
                 </label>
@@ -141,16 +136,8 @@
     </main>
     <%- include("./component/footer.html"); %>
 
-    <!-- 获取参数 -->
-    <script src="/assets/javascripts/getParams.js"></script>
     <!-- 点击复制及反馈样式 -->
     <script src="/assets/javascripts/cssUtils.js"></script>
-    <script>
-        var requestParams = getParams();
-        // var searchbox = document.getElementById("searchInput");
-        // var categoryId = requestParams["id"] ?? "";
-        // console.log("categoryId", categoryId);
-    </script>
     <script>
         // 点击复制
         $(".click2copy").click(function (e) {

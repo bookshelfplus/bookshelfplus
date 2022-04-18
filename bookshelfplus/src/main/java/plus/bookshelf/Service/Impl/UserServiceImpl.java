@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
         // token 已过期
         Object userIdObject = RedisSessionManager.getInstance(redisTemplate).getValue(token);
         if (userIdObject == null) {
-            throw new BusinessException(BusinessErrorCode.USER_TOKEN_EXPIRED, "登陆过期啦，请重新登录");
+            throw new BusinessException(BusinessErrorCode.USER_TOKEN_EXPIRED, "登录过期啦，请重新登录");
         }
 
         Integer userId = (Integer) userIdObject;

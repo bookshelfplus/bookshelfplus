@@ -103,5 +103,8 @@
         <!--<table tableName="schedule_task" domainObjectName="ScheduleTaskDO" enableCountByExample="false"-->
         <!--       enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
         <!--       selectByExampleQueryId="false"></table>-->
+        <!--<table tableName="failure_feedback" domainObjectName="FailureFeedbackDO" enableCountByExample="false"-->
+        <!--       enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
+        <!--       selectByExampleQueryId="false"></table>-->
     </context>
 </generatorConfiguration>

@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 16/04/2022 23:29:53
+ Date: 18/04/2022 17:54:01
 */
 
 SET NAMES utf8mb4;
@@ -129,6 +129,22 @@ CREATE TABLE `cos_presigned_url_generate_log`  (
 
 -- ----------------------------
 -- Records of cos_presigned_url_generate_log
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for failure_feedback
+-- ----------------------------
+DROP TABLE IF EXISTS `failure_feedback`;
+CREATE TABLE `failure_feedback`  (
+  `book_id` int(11) NOT NULL DEFAULT 0,
+  `file_id` int(11) NOT NULL DEFAULT 0,
+  `file_object_id` int(11) NOT NULL DEFAULT 0,
+  `user_id` int(11) NOT NULL DEFAULT 0,
+  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '失效反馈' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of failure_feedback
 -- ----------------------------
 
 -- ----------------------------

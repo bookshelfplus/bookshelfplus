@@ -135,7 +135,7 @@
                     } else {
                         alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
                         if (data.errCode == "20004") {
-                            // 登陆过期
+                            // 登录过期
                             localStorageUtils.userLogout();
                             location.href = "/login";
                         }

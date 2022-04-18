@@ -19,9 +19,11 @@ import plus.bookshelf.Common.Response.CommonReturnType;
 import plus.bookshelf.Config.QCloudCosConfig;
 import plus.bookshelf.Controller.VO.FileObjectVO;
 import plus.bookshelf.Controller.VO.FileVO;
+import plus.bookshelf.Service.Impl.FailureFeedbackServiceImpl;
 import plus.bookshelf.Service.Impl.FileObjectServiceImpl;
 import plus.bookshelf.Service.Impl.FileServiceImpl;
 import plus.bookshelf.Service.Impl.UserServiceImpl;
+import plus.bookshelf.Service.Model.FailureFeedbackModel;
 import plus.bookshelf.Service.Model.FileModel;
 import plus.bookshelf.Service.Model.FileObjectModel;
 import plus.bookshelf.Service.Model.UserModel;
@@ -49,6 +51,9 @@ public class FileController extends BaseController {
 
     @Autowired
     FileObjectServiceImpl fileObjectService;
+
+    @Autowired
+    FailureFeedbackServiceImpl failureFeedbackService;
 
     @ApiOperation(value = "书籍下载页面获取文件提供的下载方式", notes = "")
     @RequestMapping(value = "getFile", method = {RequestMethod.GET})
@@ -93,6 +98,37 @@ public class FileController extends BaseController {
             fileVOS.add(fileVO);
         }
         return CommonReturnType.create(fileVOS);
+    }
+
+    @ApiOperation(value = "链接失效反馈", notes = "查询文件列表")
+    @RequestMapping(value = "object/FailureFeedback", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
+    @ResponseBody
+    public CommonReturnType failureFeedback(@RequestParam(value = "token", required = false) String token,
+                                            @RequestParam(value = "bookId", required = false) Integer bookId,
+                                            @RequestParam(value = "fileId", required = false) Integer fileId,
+                                            @RequestParam(value = "fileObjectId", required = false) Integer fileObjectId) throws BusinessException {
+        Integer userId = null;
+        if (token != null) {
+            try {
+                UserModel userModel = userService.getUserByToken(redisTemplate, token);
+                userId = userModel.getId();
+            } catch (BusinessException e) {
+                // 用户未登录，不返回错误信息
+            }
+        }
+
+        FailureFeedbackModel failureFeedbackModel = new FailureFeedbackModel();
+        failureFeedbackModel.setBookId(bookId);
+        failureFeedbackModel.setFileId(fileId);
+        failureFeedbackModel.setFileObjectId(fileObjectId);
+        failureFeedbackModel.setUserId(userId);
+        failureFeedbackModel.setCreateTime(Calendar.getInstance().getTime());
+
+        Boolean isSuccess = failureFeedbackService.addFailureFeedback(failureFeedbackModel);
+        if (!isSuccess) {
+            throw new BusinessException(BusinessErrorCode.UNKNOWN_ERROR, "反馈失败");
+        }
+        return CommonReturnType.create(isSuccess);
     }
 
     @ApiOperation(value = "【管理员】查询文件对象列表", notes = "查询文件列表")

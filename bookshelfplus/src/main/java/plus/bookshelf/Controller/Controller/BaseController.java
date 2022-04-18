@@ -34,7 +34,7 @@ public class BaseController {
     public static final Integer COMMON_PAGE_SIZE = 10;
 
     /**
-     * 获取用户登陆状态
+     * 获取用户登录状态
      */
     public Boolean isLogin() {
         SessionManager sessionManager = RedisSessionManager.getInstance(redisTemplate);

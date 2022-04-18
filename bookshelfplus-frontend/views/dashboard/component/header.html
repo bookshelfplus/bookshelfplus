@@ -52,7 +52,7 @@
                         window.location.href = "/login";
                     }
                 } else {
-                    if(data.errCode == "20004") { // 登陆过期
+                    if(data.errCode == "20004") { // 登录过期
                         localStorageUtils.userLogout();
                         window.location.href = "/login";
                     }

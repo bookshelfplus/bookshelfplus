@@ -872,6 +872,83 @@ __可选__|string
 ----
 
 
+[[_failurefeedbackusingpost]]
+==== 链接失效反馈
+....
+POST /api/file/object/FailureFeedback
+....
+
+
+===== 说明
+查询文件列表
+
+
+===== 参数
+
+[options="header", cols=".^2a,.^3a,.^4a"]
+|===
+|类型|名称|类型
+|**FormData**|**bookId** +
+__可选__|integer (int32)
+|**FormData**|**fileId** +
+__可选__|integer (int32)
+|**FormData**|**fileObjectId** +
+__可选__|integer (int32)
+|**FormData**|**token** +
+__可选__|string
+|===
+
+
+===== 响应
+
+[options="header", cols=".^2a,.^14a,.^4a"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_commonreturntype,CommonReturnType>>
+|**201**|Created|无内容
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+===== 消耗
+
+* `application/x-www-form-urlencoded`
+
+
+===== 生成
+
+* `\*/*`
+
+
+===== HTTP请求示例
+
+====== 请求 path
+----
+/api/file/object/FailureFeedback
+----
+
+
+====== 请求 formData
+[source,json]
+----
+"string"
+----
+
+
+===== HTTP响应示例
+
+====== 响应 200
+[source,json]
+----
+{
+  "data" : "object",
+  "status" : "string"
+}
+----
+
+
 [[_objectlistusingpost]]
 ==== 【管理员】查询文件对象列表
 ....
@@ -921,6 +998,79 @@ __可选__|string
 ====== 请求 path
 ----
 /api/file/object/list
+----
+
+
+====== 请求 formData
+[source,json]
+----
+"string"
+----
+
+
+===== HTTP响应示例
+
+====== 响应 200
+[source,json]
+----
+{
+  "data" : "object",
+  "status" : "string"
+}
+----
+
+
+[[_refreshfileobjectstatususingpost]]
+==== 【管理员】更新文件对象上传状态
+....
+POST /api/file/object/refreshFileObjectStatus
+....
+
+
+===== 说明
+重新从 COS 对象存储中获取文件对象上传状态
+
+
+===== 参数
+
+[options="header", cols=".^2a,.^3a,.^4a"]
+|===
+|类型|名称|类型
+|**FormData**|**fileObjectId** +
+__可选__|integer (int32)
+|**FormData**|**token** +
+__可选__|string
+|===
+
+
+===== 响应
+
+[options="header", cols=".^2a,.^14a,.^4a"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_commonreturntype,CommonReturnType>>
+|**201**|Created|无内容
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+===== 消耗
+
+* `application/x-www-form-urlencoded`
+
+
+===== 生成
+
+* `\*/*`
+
+
+===== HTTP请求示例
+
+====== 请求 path
+----
+/api/file/object/refreshFileObjectStatus
 ----
 
 
