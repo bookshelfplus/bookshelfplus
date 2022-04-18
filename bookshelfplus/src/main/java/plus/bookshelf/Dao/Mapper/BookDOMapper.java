@@ -82,8 +82,16 @@ public interface BookDOMapper {
 
     /**
      * 通过用户id获取用户收藏书籍列表
+     *
      * @param userId
      * @return
      */
     BookDO[] selectFavoritesListByUserId(Integer userId);
+
+    /**
+     * 查询所有书籍
+     *
+     * @return
+     */
+    BookDO[] selectAll();
 }
