@@ -38,17 +38,17 @@ CREATE TABLE `book_info`  (
 -- ----------------------------
 -- Records of book_info
 -- ----------------------------
-INSERT INTO `book_info` VALUES (1, '程序员小墨', '这是书栖网的第1本书', 3, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, '', '小墨');
-INSERT INTO `book_info` VALUES (2, '程序员小墨', '这是书栖网的第2本书', 2, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, '', '小墨');
-INSERT INTO `book_info` VALUES (3, '程序员小墨', '这是书栖网的第3本书', 1, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, '', '小墨');
-INSERT INTO `book_info` VALUES (4, '程序员小墨', '这是书栖网的第4本书', 5, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, '', '小墨');
-INSERT INTO `book_info` VALUES (5, '程序员小墨', '这是书栖网的第5本书', 4, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, '', '小墨');
-INSERT INTO `book_info` VALUES (6, '程序员小墨', '这是书栖网的第6本书', 6, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, '', '小墨');
-INSERT INTO `book_info` VALUES (7, '程序员小墨', '这是书栖网的第7本书', 7, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, '', '小墨');
-INSERT INTO `book_info` VALUES (8, '程序员小墨', '这是书栖网的第8本书', 8, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, '', '小墨');
-INSERT INTO `book_info` VALUES (9, '程序员小墨', '这是书栖网的第9本书', 9, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, '', '小墨');
-INSERT INTO `book_info` VALUES (10, '这是一本名字肥肠肥肠滴长滴书', '这是书栖网的第10本书，外加一个超级超级超级超级超级超级超级超级超级超级超级超级超级超级超级超级长的简介', 10, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, '', '小墨');
-INSERT INTO `book_info` VALUES (11, '书本名称', '这是一本很有意义的书', 1, '中国地质大学（武汉）出版社出版', 'Chinese', '版权没有', 1, 'http://localhost/api/swagger-ui/index.html#/%E4%B9%A6%E7%B1%8D%E4%BF%A1%E6%81%AF/addUsingGET', '消息');
+INSERT INTO `book_info` VALUES (1, '程序员小墨1', '这是书栖网的第1本书', 38, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, 'https://img14.360buyimg.com/pop/jfs/t1/141705/31/25225/853702/61a85f89Ef68c838b/929ded96a4a7579e.png', '小墨');
+INSERT INTO `book_info` VALUES (2, '程序员小墨2', '这是书栖网的第2本书', 20, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, 'https://img14.360buyimg.com/pop/jfs/t1/141705/31/25225/853702/61a85f89Ef68c838b/929ded96a4a7579e.png', '小墨');
+INSERT INTO `book_info` VALUES (3, '程序员小墨3', '这是书栖网的第3本书', 1, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, 'https://img14.360buyimg.com/pop/jfs/t1/141705/31/25225/853702/61a85f89Ef68c838b/929ded96a4a7579e.png', '小墨');
+INSERT INTO `book_info` VALUES (4, '程序员小墨4', '这是书栖网的第4本书', 5, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, 'https://img14.360buyimg.com/pop/jfs/t1/141705/31/25225/853702/61a85f89Ef68c838b/929ded96a4a7579e.png', '小墨');
+INSERT INTO `book_info` VALUES (5, '程序员小墨5', '这是书栖网的第5本书', 4, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, 'https://img14.360buyimg.com/pop/jfs/t1/141705/31/25225/853702/61a85f89Ef68c838b/929ded96a4a7579e.png', '小墨');
+INSERT INTO `book_info` VALUES (6, '程序员小墨6', '这是书栖网的第6本书', 6, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, 'https://img14.360buyimg.com/pop/jfs/t1/141705/31/25225/853702/61a85f89Ef68c838b/929ded96a4a7579e.png', '小墨');
+INSERT INTO `book_info` VALUES (7, '程序员小墨7', '这是书栖网的第7本书', 7, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, 'https://img14.360buyimg.com/pop/jfs/t1/141705/31/25225/853702/61a85f89Ef68c838b/929ded96a4a7579e.png', '小墨');
+INSERT INTO `book_info` VALUES (8, '程序员小墨8', '这是书栖网的第8本书', 8, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, 'https://img14.360buyimg.com/pop/jfs/t1/141705/31/25225/853702/61a85f89Ef68c838b/929ded96a4a7579e.png', '小墨');
+INSERT INTO `book_info` VALUES (9, '程序员小墨9', '这是书栖网的第9本书', 9, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, 'https://img14.360buyimg.com/pop/jfs/t1/141705/31/25225/853702/61a85f89Ef68c838b/929ded96a4a7579e.png', '小墨');
+INSERT INTO `book_info` VALUES (10, '这是一本名字肥肠肥肠滴长滴书', '这是书栖网的第10本书，外加一个超级超级超级超级超级超级超级超级超级超级超级超级超级超级超级超级长的简介', 10, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, 'https://img14.360buyimg.com/pop/jfs/t1/141705/31/25225/853702/61a85f89Ef68c838b/929ded96a4a7579e.png', '小墨');
+INSERT INTO `book_info` VALUES (11, '书本名称', '这是一本很有意义的书', 1, '中国地质大学（武汉）出版社出版', 'Chinese', '版权没有', 1, 'https://img14.360buyimg.com/pop/jfs/t1/141705/31/25225/853702/61a85f89Ef68c838b/929ded96a4a7579e.png', '消息');
 
 -- ----------------------------
 -- Table structure for category_info
@@ -173,7 +173,7 @@ CREATE TABLE `file_object_info`  (
   `upload_status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '上传状态（上传成功 SUCCESS，正在上传 UPLOADING，上传终止 NOT_EXIST）',
   `file_sha1` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '文件SHA1哈希',
   `last_modified` bigint(20) UNSIGNED NOT NULL DEFAULT 0 COMMENT '文件最后修改时间戳',
-  `additional_fields` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `additional_fields` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 

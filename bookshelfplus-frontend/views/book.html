@@ -78,7 +78,7 @@
         .file-item {
             text-align: left;
             background-color: #e6e6e6;
-            padding: 10px 20px;
+            padding: 15px 20px;
             border-radius: 5px;
             transition: all 0.3s;
         }
@@ -96,20 +96,84 @@
 
         .file-object {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
             place-items: center;
             gap: 10px;
         }
 
         .file-object>.file-object-item {
+            border: solid 2px #c6c6c6;
+            border-radius: 5px;
+            padding: 5px 8px;
+            min-width: 135px;
+            /* max-width: 150px; */
+            width: 80%;
+            height: 60px;
+            position: relative;
             font-size: 14px;
             display: inline-block;
             transition: all 0.2s;
+            user-select: none;
         }
 
         .file-object>.file-object-item:hover {
-            transform: scale(1.03);
-            font-weight: bold;
+            /* transform: scale(1.03); */
+            border-color: #5e5e5e;
+        }
+
+        .file-object>.file-object-item>.file-object-item-title {
+            height: 20px;
+        }
+        .file-object>.file-object-item>.file-object-item-title>* {
+            vertical-align: middle;
+        }
+
+        .file-object>.file-object-item img {
+            width: 18px;
+            height: 18px;
+        }
+
+        .file-object>.file-object-item .outdated-feedback {
+            width: 20px;
+            height: 20px;
+            position: absolute;
+            right: 2px;
+            top: 2px;
+            cursor: pointer;
+        }
+        .file-object>.file-object-item .outdated-feedback>.outdated-feedback-tip {
+            display: none;
+            position: absolute;
+            width: max-content;
+            background: aliceblue;
+            padding: 3px 5px;
+            border: 2px solid grey;
+            border-radius: 4px;
+            z-index: 99999;
+            margin-left: 5px;
+            font-family: initial;
+        }
+        .file-object>.file-object-item .outdated-feedback:hover .outdated-feedback-tip {
+            display: initial;
+        }
+        .file-object>.file-object-item .outdated-feedback img {
+            opacity: 0.5;
+            transition: all 0.18s;
+        }
+        .file-object>.file-object-item .outdated-feedback:hover img {
+            opacity: 1;
+        }
+
+        .file-object>.file-object-item>.file-object-item-content {
+            height: 20px;
+            display: grid;
+            place-items: center;
+        }
+
+        .file-object>.file-object-item>.file-object-item-link {
+            height: 20px;
+            display: grid;
+            place-items: center;
         }
 
         /* 统一 */
@@ -151,7 +215,7 @@
         <hr>
         <div class="download-container">
             <h3 id="scrollTarget">下载这本书</h3>
-            <div id="file-container">
+            <div id="file-container"><% /*
                 <!-- <div class="file-item">
                     <div class="file-title">
                         <span class="file-name size20">bookshelf</span><span class="file-ext size16">.json</span>
@@ -160,11 +224,24 @@
                     <div class="file-detail">
                         <span class="size14 overflow-hide">SHA1：<span class="file-sha1 size12">07b12eb2a5915282bf086a7913b0fd9720fc012c</span></span>
                         <span class="file-copyright size14 overflow-hide">来源信息：中国地质大学（武汉）</span>
-                        <span class="file-copyright size14" style="margin-top: 12px; display: block;">下载地址：</span>
+                        <span class="file-copyright size14" style="margin-top: 12px; display: block;">下载方式：</span>
                     </div>
                     <div class="file-object">
                         <div class="file-object-item">
-                            <a href="" target="_blank">百度网盘</a>
+                            <div class="file-object-item-title">
+                                <img src="/assets/image/svg/baidu_netdisk.svg"/>
+                                <span>百度网盘</span>
+                            </div>
+                            <div class="file-object-item-content">
+                                提取码：abcd
+                            </div>
+                            <div class="file-object-item-link">
+                                <a href="" target="_blank">百度网盘</a>
+                            </div>
+                            <div class="outdated-feedback">
+                                <img src="/assets/image/svg/feedback.svg"/>
+                                <span class="outdated-feedback-tip">链接失效？点击反馈！</span>
+                            </div>
                         </div>
                         <div class="file-object-item">
                             <a href="" target="_blank">阿里云盘</a>
@@ -173,7 +250,7 @@
                             <a href="" download="文件名.pdf">直链下载</a>
                         </div>
                     </div>
-                </div> -->
+                </div> --> */ %>
             </div>
         </div>
         <p style="font-size: 12px;">
@@ -184,6 +261,8 @@
 
     <!-- 获取参数 -->
     <script src="/assets/javascripts/getParams.js"></script>
+    <!-- 点击复制及反馈样式 -->
+    <script src="/assets/javascripts/cssUtils.js"></script>
     <script>
         var requestParams = getParams();
         var searchbox = document.getElementById("searchInput");
@@ -387,17 +466,47 @@
             }
             function getLinkDOM(fileObjectInfo) {
                 // 获取文件下载链接DOM
-                var div = document.createElement("div");
-                div.className = "file-object-item";
+                var iconSrc = "/assets/image/svg/direct_link.svg", title = fileObjectInfo.storageMediumType, content = "", downloadLink = "";
+                if(fileObjectInfo.fileShareCode != "" && fileObjectInfo.fileShareCode != null) {
+                    content = `<span>提取码: <span class="click2copy" style="user-select: all; cursor: pointer;">${fileObjectInfo.fileShareCode}</span>&nbsp;</span>`; // 最后一个 &nbsp; 是为了保证选中时不会选中后面的回车
+                    downloadLink = `<a class="baiduNetdiskLink" share-code="${fileObjectInfo.fileShareCode}" share-link="${fileObjectInfo.filePath}" style="cursor: pointer;" title="复制提取码并前往">前往</a>`;
+                } else {
+                    downloadLink = `<a href="${fileObjectInfo.filePath}" target="_blank">前往</a>`;
+                }
                 switch (fileObjectInfo.storageMediumType) {
                     case "腾讯云对象存储":
-                        div.innerHTML = `<a style="cursor: pointer;" onclick="getDirectLink(${fileObjectInfo.id});">直链下载</a>`;
+                        title = "直链下载";
+                        if (!localStorageUtils.getLoginStatus()) {
+                            downloadLink = "登录后方可使用";
+                        } else {
+                            content = `<span style="font-size: 12px;"><nobr>每次点击都会扣减下载次数</nobr></span>`;
+                            downloadLink = `<a style="cursor: pointer;" onclick="getDirectLink(${fileObjectInfo.id});">下载</a>`;
+                        }
+                        break;
+                    case "百度网盘":
+                        iconSrc = "/assets/image/svg/baidu_netdisk.svg";
+                        break;
+                    case "阿里云盘":
+                        iconSrc = "/assets/image/svg/aliyun_drive.svg";
                         break;
                     default:
-                        div.innerHTML = `<a href="${fileObjectInfo.filePath}" target="_blank">${fileObjectInfo.storageMediumType}${fileShareCode == "" ? "" : "(提取码:" + fileShareCode + ")"}</a>`;
+                        title = fileObjectInfo.storageMediumType;
+                        downloadLink = `<a href="${fileObjectInfo.filePath}" target="_blank">前往</a>`;
                         break;
                 }
-                return div.outerHTML;
+                var dom = `<div class="file-object-item">
+                            <div class="file-object-item-title">
+                                <img src="${iconSrc}"/> <span>${title}</span>
+                            </div>
+                            <div class="file-object-item-content">${content}</div>
+                            <div class="file-object-item-link">${downloadLink}</div>
+                            <div class="outdated-feedback">
+                                <img src="/assets/image/svg/feedback.svg"/>
+                                <span class="outdated-feedback-tip">链接失效？点击反馈！</span>
+                            </div>
+                        </div>`.replace(/\ [ ]+?/g,"").replace(/[\n]/g,"") //去掉多余空格、换行
+                console.log(dom);
+                return dom;
             }
             getRequest("/file/getFile", { bookId: bookId })
                 .then(function (response) {
@@ -441,15 +550,32 @@
                                 </div>`
                             );
                         }
-                        fileContainer.innerHTML = innerHTML.join("");
+                        fileContainer.innerHTML += innerHTML.join("");
 
-                        if (data.length == 0) {
+                        if (innerHTML.length == 0) {
                             var fileItem = document.createElement("div");
                             fileItem.className = "file-item";
                             fileItem.style.textAlign = "center";
                             fileItem.innerHTML = "暂无可用文件源";
                             fileContainer.appendChild(fileItem);
                         }
+
+                        // 最后绑定点击复制事件
+                        // 点击复制
+                        $(".click2copy").click(function (e) {
+                            copyToClipboard($(this).text());
+                            showTip(e, "复制成功");
+                        });
+
+                        //
+                        $(".baiduNetdiskLink").click(function (e) {
+                            copyToClipboard($(this).attr("share-code"));
+                            showTip(e, "提取码已复制到剪切板");
+                            var shareLink = $(this).attr("share-link");
+                            setTimeout(function () {
+                                window.open(shareLink);
+                            }, 500);
+                        });
                     } else {
                         alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
                     }

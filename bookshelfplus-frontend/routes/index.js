@@ -60,6 +60,13 @@ router.get('/about', function (req, res) {
     });
 });
 
+router.get('/feedback', function (req, res) {
+    res.render('feedback', {
+        title: getPageTitle("用户反馈"),
+        headText: "用户反馈"
+    });
+});
+
 router.get('/login', function (req, res) {
     res.render('login', {
         title: getPageTitle("用户登录"),
