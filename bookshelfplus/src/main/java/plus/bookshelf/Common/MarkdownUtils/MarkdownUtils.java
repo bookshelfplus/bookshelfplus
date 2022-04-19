@@ -119,6 +119,14 @@ public class MarkdownUtils {
     }
 
     /**
+     * n级标题
+     */
+    public MarkdownUtils h(int n, String str) {
+        this.append(StringUtils.repeat("#", n) + " " + str);
+        return this;
+    }
+
+    /**
      * 加粗
      *
      * @param text
@@ -285,7 +293,7 @@ public class MarkdownUtils {
      * @return
      */
     public MarkdownUtils table(MarkdownTable table) {
-        this.append(table.toString());
+        this.append(table.getMarkdown());
         return this;
     }
 }

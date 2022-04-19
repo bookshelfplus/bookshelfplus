@@ -13,6 +13,7 @@ public class MarkdownTable {
             this.format = format;
         }
 
+        @Override
         public String toString() {
             return format;
         }
@@ -30,11 +31,22 @@ public class MarkdownTable {
     // 表格的样式
     private Alignment[] alignments;
 
-    private MarkdownTable(Integer numOfColumns) {
+    // 表格为空时是否输出
+    private Boolean notExportWhenEmpty = true;
+
+    public MarkdownTable doNotExportWhenEmpty(Boolean notExportWhenEmpty) {
+        this.notExportWhenEmpty = notExportWhenEmpty;
+        return this;
+    }
+
+    private MarkdownTable() {
+    }
+
+    private void init(Integer numOfColumns) {
         this.numOfColumns = numOfColumns;
-        headers = new String[numOfColumns];
-        alignments = new Alignment[numOfColumns];
-        rows = new ArrayList<>();
+        this.headers = new String[numOfColumns];
+        this.alignments = new Alignment[numOfColumns];
+        this.rows = new ArrayList<>();
     }
 
     /**
@@ -48,7 +60,15 @@ public class MarkdownTable {
      * @return
      */
     public static MarkdownTable create(Integer numOfColumns) {
-        return new MarkdownTable(numOfColumns);
+        MarkdownTable markdownTable = new MarkdownTable();
+        if (numOfColumns > 0) {
+            markdownTable.init(numOfColumns);
+        }
+        return markdownTable;
+    }
+
+    public static MarkdownTable create() {
+        return new MarkdownTable();
     }
 
     /**
@@ -57,14 +77,17 @@ public class MarkdownTable {
      * @param header
      * @return
      */
-    public MarkdownTable setHeader(Object... header) {
+    public MarkdownTable setHeader(String... header) {
+        if (numOfColumns == 0) {
+            init(header.length);
+        }
         if (header.length != numOfColumns) {
             throw new IllegalArgumentException("表格的列数不匹配");
         }
 
         int i = 0;
-        for (Object o : header) {
-            headers[i++] = o.toString();
+        for (String o : header) {
+            this.headers[i++] = o;
         }
         return this;
     }
@@ -76,6 +99,9 @@ public class MarkdownTable {
      * @return
      */
     public MarkdownTable setAlignment(Alignment... alignments) {
+        if (numOfColumns == 0) {
+            init(alignments.length);
+        }
         if (alignments.length != numOfColumns) {
             throw new IllegalArgumentException("表格的列数不匹配");
         }
@@ -97,6 +123,9 @@ public class MarkdownTable {
      * @return
      */
     public MarkdownTable addRow(String... row) {
+        if (numOfColumns == 0) {
+            init(row.length);
+        }
         if (row.length != numOfColumns) {
             throw new IllegalArgumentException("表格的列数不匹配");
         }
@@ -109,12 +138,11 @@ public class MarkdownTable {
      *
      * @return
      */
-    @Override
-    public String toString() {
-        return toStringBuilder().toString();
-    }
+    public String getMarkdown() {
+        if (notExportWhenEmpty && rows.size() == 0) {
+            return "";
+        }
 
-    public StringBuilder toStringBuilder() {
         StringBuilder stringBuilder = new StringBuilder();
 
         // 表头
@@ -140,6 +168,7 @@ public class MarkdownTable {
             // stringBuilder.append(" |\n");
 
             for (String o : row) {
+                if (o == null) o = "";
                 stringBuilder.append(" ");
                 stringBuilder.append(o.replace("\n", "<br>")
                         .replace("|", "\\|"));
@@ -150,6 +179,6 @@ public class MarkdownTable {
 
         // 删除最后一个换行符
         stringBuilder.deleteCharAt(stringBuilder.lastIndexOf("\n"));
-        return stringBuilder;
+        return stringBuilder.toString();
     }
 }
