@@ -11,7 +11,6 @@ import plus.bookshelf.Dao.DO.FileDO;
 import plus.bookshelf.Dao.Mapper.FileDOMapper;
 import plus.bookshelf.Dao.Mapper.FileObjectDOMapper;
 import plus.bookshelf.Service.Model.FileModel;
-import plus.bookshelf.Service.Model.UserModel;
 import plus.bookshelf.Service.Service.CosPresignedUrlGenerateLogService;
 import plus.bookshelf.Service.Service.FileService;
 
@@ -130,6 +129,16 @@ public class FileServiceImpl implements FileService {
         FileDO fileDO = new FileDO();
         BeanUtils.copyProperties(fileModel, fileDO);
         return fileDO;
+    }
+
+    /**
+     * 取消文件和书籍的关联
+     *
+     * @return
+     */
+    @Override
+    public Integer unbindBook(Integer bookId) {
+        return fileDOMapper.unbindBook(bookId);
     }
 
     /**

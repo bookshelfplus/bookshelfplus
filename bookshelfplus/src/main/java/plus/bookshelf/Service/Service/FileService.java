@@ -44,6 +44,13 @@ public interface FileService {
     Boolean addFile(FileModel fileModel) throws InvocationTargetException, IllegalAccessException;
 
     /**
+     * 取消文件和书籍的关联
+     *
+     * @return
+     */
+    Integer unbindBook(Integer bookId);
+
+    /**
      * 获取上一步添加的文件Id
      *
      * @return

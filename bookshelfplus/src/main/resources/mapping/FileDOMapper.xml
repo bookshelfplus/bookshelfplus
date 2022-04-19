@@ -237,4 +237,9 @@
   <select id="getLastInsertId" resultType="java.lang.Integer">
     SELECT LAST_INSERT_ID();
   </select>
+  <update id="unbindBook" parameterType="java.lang.Integer">
+    update file_info
+    set book_id = 0
+    where book_id = #{bookId,jdbcType=INTEGER}
+  </update>
 </mapper>

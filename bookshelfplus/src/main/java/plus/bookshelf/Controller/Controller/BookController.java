@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,6 +14,7 @@ import plus.bookshelf.Common.Error.BusinessErrorCode;
 import plus.bookshelf.Common.Error.BusinessException;
 import plus.bookshelf.Common.Response.CommonReturnType;
 import plus.bookshelf.Controller.VO.BookVO;
+import plus.bookshelf.Service.Impl.FileServiceImpl;
 import plus.bookshelf.Service.Impl.UserServiceImpl;
 import plus.bookshelf.Service.Model.BookModel;
 import plus.bookshelf.Service.Model.CategoryModel;
@@ -32,6 +34,9 @@ public class BookController extends BaseController {
 
     @Autowired
     UserServiceImpl userService;
+
+    @Autowired
+    FileServiceImpl fileService;
 
     @ApiOperation(value = "获取书籍信息", notes = "获取书籍信息")
     // @ApiImplicitParam(name = "book", value = "图书详细实体", required = true, dataType = "Book")
@@ -184,13 +189,19 @@ public class BookController extends BaseController {
     @ApiOperation(value = "【管理员】删除书籍", notes = "管理员在后台删除书籍")
     @RequestMapping(value = "delete", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
     @ResponseBody
+    @Transactional
     public CommonReturnType deleteBook(@RequestParam(value = "token", required = false) String token,
                                        @RequestParam(required = true, value = "id") Integer bookId) throws BusinessException {
         // 已经在 getUserByToken 方法中判断了 token 为空、不合法；用户不存在情况，此处无需再判断
         UserModel userModel = userService.getUserByToken(redisTemplate, token);
 
-        Integer affectRows = bookService.deleteBook(bookId);
-        if (affectRows > 0) {
+        // 取消书籍与文件的关联
+        fileService.unbindBook(bookId);
+
+        // 删除书籍
+        Integer affectRows2 = bookService.deleteBook(bookId);
+
+        if (affectRows2 > 0) {
             return CommonReturnType.create("success");
         } else {
             return CommonReturnType.create("failed");
@@ -199,7 +210,7 @@ public class BookController extends BaseController {
 
 
     private BookVO convertFromModel(BookModel bookModel) {
-        if(bookModel == null) {
+        if (bookModel == null) {
             return null;
         }
         BookVO bookVO = new BookVO();

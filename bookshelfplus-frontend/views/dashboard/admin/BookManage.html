@@ -94,7 +94,7 @@
     }
 
     function deleteBook(deleteBookId) {
-        if (!confirm(`确认要删除编号为 ${deleteBookId} 的书籍吗？`)) return;
+        if (!confirm(`确认要删除编号为 ${deleteBookId} 的书籍吗？（关联文件不会被删除）`)) return;
 
         postRequest("/book/delete", { token: localStorageUtils.getToken(), id: deleteBookId })
             .then(function (responseData) {

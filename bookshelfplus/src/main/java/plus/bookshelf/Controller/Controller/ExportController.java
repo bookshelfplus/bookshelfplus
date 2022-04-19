@@ -141,9 +141,8 @@ public class ExportController extends BaseController {
     @ResponseBody
     public CommonReturnType exportMarkdown(@RequestParam(value = "token", required = false) String token) throws BusinessException {
 
-        // TODO 暂时注释掉
-        // // 已经在 getUserByToken 方法中判断了 token 为空、不合法；用户不存在情况，此处无需再判断
-        // UserModel userModel = userService.getUserByToken(redisTemplate, token);
+        // 已经在 getUserByToken 方法中判断了 token 为空、不合法；用户不存在情况，此处无需再判断
+        UserModel userModel = userService.getUserByToken(redisTemplate, token);
 
         // 查询出系统中所有的分类、书籍、文件、文件对象数据
         CategoryDO[] allCategorys = categoryDOMapper.selectAll();

@@ -75,6 +75,13 @@ public interface FileDOMapper {
     FileDO[] selectAvailableByBookId(Integer bookId);
 
     /**
+     * 取消文件和书籍的关联
+     *
+     * @return
+     */
+    int unbindBook(Integer bookId);
+
+    /**
      * 获取上一次插入的主键Id
      *
      * @return
