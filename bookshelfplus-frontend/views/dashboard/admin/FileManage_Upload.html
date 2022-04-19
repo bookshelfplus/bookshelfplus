@@ -115,11 +115,9 @@
     <div id="processBar2" class="process-bar">
         <div id="processBar2Inner" class="process-bar-inner"></div>
     </div>
-</div>
-<div>
-    <p>关联文件</p>
+    <p>关联文件<br><span style="font-size: 12px;">（仅可关联系统中未设置SHA1，或SHA1值相同的文件记录）</span></p>
     <select id="fileAssociator">
-        <option value="0">新建文件</option>
+        <!-- <option value="0">新建文件</option> -->
     </select>
 </div>
 <button id="beginUpload" disabled="true">开始上传</button>
@@ -220,6 +218,9 @@
         });
         fileInfo.fileSha1 = sha1;
         document.getElementById("file-sha1").innerHTML = fileInfo.fileSha1;
+
+        // 获取关联文件下拉框列表并渲染
+        getFileAssociatorList(sha1);
 
         // 完成
         console.log(fileInfo);
@@ -422,28 +423,32 @@
     }
 </script>
 <script>
-    var fileAssociator = document.getElementById("fileAssociator");
-    // 下拉框列表
-    postRequest("/file/list", { token: localStorageUtils.getToken() })
-        .then(function (responseData) {
-            var axiosData = responseData.data;
-            var status = axiosData.status;
-            var data = axiosData.data;
-            if (status === "success") {
-                // console.log(data);
-                // 数据进行转换
-                var optionHTML = "";
-                for (var i = 0; i < data.length; i++) {
-                    const element = data[i];
-                    optionHTML += `<option value="${element.id}">[${element.id}] ${element.fileDisplayName}.${element.fileFormat}</option>`;
+    // 关联文件下拉框列表
+    function getFileAssociatorList(fileSha1) {
+        var fileAssociator = document.getElementById("fileAssociator");
+        // 下拉框列表
+        postRequest("/file/list/MatchfileHash", { token: localStorageUtils.getToken(), fileSha1: fileSha1 })
+            .then(function (responseData) {
+                var axiosData = responseData.data;
+                var status = axiosData.status;
+                var data = axiosData.data;
+                if (status === "success") {
+                    // console.log(data);
+                    // 数据进行转换
+                    var optionHTML = "";
+                    for (var i = 0; i < data.length; i++) {
+                        const element = data[i];
+                        optionHTML += `<option value="${element.id}">[${element.id}] ${element.fileDisplayName}.${element.fileFormat}</option>`;
+                    }
+                    // 渲染到下拉框内
+                    // fileAssociator.innerHTML += optionHTML;
+                    fileAssociator.innerHTML = `<option value="0">新建文件</option>` + optionHTML;
+                } else {
+                    alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
                 }
-                // 渲染到下拉框内
-                fileAssociator.innerHTML += optionHTML;
-            } else {
-                alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
-            }
-        }).catch(function (error) {
-            console.log(error);
-            alert("无法连接到服务器，请检查网络连接！");
-        });
+            }).catch(function (error) {
+                console.log(error);
+                alert("无法连接到服务器，请检查网络连接！");
+            });
+    }
 </script>

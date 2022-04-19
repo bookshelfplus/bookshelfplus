@@ -23,7 +23,14 @@ public interface FileService {
      *
      * @return
      */
-    List<FileModel> list(String token) throws InvocationTargetException, IllegalAccessException, BusinessException;
+    List<FileModel> list();
+
+    /**
+     * 列出所有SHA1匹配或者未设置SHA1的文件
+     *
+     * @return
+     */
+    List<FileModel> selectBySha1WithNullValue(String token) throws InvocationTargetException, IllegalAccessException, BusinessException;
 
     /**
      * 添加文件信息

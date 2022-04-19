@@ -228,6 +228,12 @@
     <include refid="Base_Column_List" />
     from file_info
   </select>
+  <select id="selectBySha1WithNullValue" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from file_info
+    where file_sha1 = #{fileSha1,jdbcType=VARCHAR} or file_sha1 is null or file_sha1 = ''
+  </select>
   <select id="getLastInsertId" resultType="java.lang.Integer">
     SELECT LAST_INSERT_ID();
   </select>

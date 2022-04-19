@@ -69,12 +69,28 @@ public class FileServiceImpl implements FileService {
      * @return
      */
     @Override
-    public List<FileModel> list(String token) throws InvocationTargetException, IllegalAccessException, BusinessException {
-
-        // 已经在 getUserByToken 方法中判断了 token 为空、不合法；用户不存在情况，此处无需再判断
-        UserModel userModel = userService.getUserByToken(redisTemplate, token);
+    public List<FileModel> list() {
 
         FileDO[] fileDOS = fileDOMapper.selectAll();
+
+        List<FileModel> fileModels = new ArrayList<>();
+        for (FileDO fileDO : fileDOS) {
+            FileModel fileModel = convertFromDataObject(fileDO);
+            fileModels.add(fileModel);
+        }
+
+        return fileModels;
+    }
+
+    /**
+     * 列出所有 SHA1匹配 和 未设置SHA1 的文件
+     *
+     * @return
+     */
+    @Override
+    public List<FileModel> selectBySha1WithNullValue(String fileSha1) {
+
+        FileDO[] fileDOS = fileDOMapper.selectBySha1WithNullValue(fileSha1);
 
         List<FileModel> fileModels = new ArrayList<>();
         for (FileDO fileDO : fileDOS) {

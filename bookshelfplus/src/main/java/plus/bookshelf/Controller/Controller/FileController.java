@@ -91,7 +91,27 @@ public class FileController extends BaseController {
             throw new BusinessException(BusinessErrorCode.OPERATION_NOT_ALLOWED, "非管理员用户无权进行此操作");
         }
 
-        List<FileModel> fileModels = fileService.list(token);
+        List<FileModel> fileModels = fileService.list();
+        List<FileVO> fileVOS = new ArrayList<>();
+        for (FileModel fileModel : fileModels) {
+            FileVO fileVO = convertFileVOFromModel(fileModel);
+            fileVOS.add(fileVO);
+        }
+        return CommonReturnType.create(fileVOS);
+    }
+
+    @ApiOperation(value = "【管理员】查询文件列表（匹配文件哈希）", notes = "查询文件列表，返回文件哈希为空或者相同的文件")
+    @RequestMapping(value = "list/MatchfileHash", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
+    @ResponseBody
+    public CommonReturnType matchfileHash(@RequestParam(value = "token", required = false) String token,
+                                          @RequestParam(value = "fileSha1", required = true) String fileSha1) throws InvocationTargetException, IllegalAccessException, BusinessException {
+
+        UserModel userModel = userService.getUserByToken(redisTemplate, token);
+        if (userModel == null || !Objects.equals(userModel.getGroup(), "ADMIN")) {
+            throw new BusinessException(BusinessErrorCode.OPERATION_NOT_ALLOWED, "非管理员用户无权进行此操作");
+        }
+
+        List<FileModel> fileModels = fileService.selectBySha1WithNullValue(fileSha1);
         List<FileVO> fileVOS = new ArrayList<>();
         for (FileModel fileModel : fileModels) {
             FileVO fileVO = convertFileVOFromModel(fileModel);

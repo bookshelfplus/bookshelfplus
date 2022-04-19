@@ -61,6 +61,13 @@ public interface FileDOMapper {
     FileDO[] selectAll();
 
     /**
+     * 查询系统中的所有文件
+     *
+     * @return
+     */
+    FileDO[] selectBySha1WithNullValue(String fileSha1);
+
+    /**
      * 列出文件支持的下载方式
      *
      * @return
