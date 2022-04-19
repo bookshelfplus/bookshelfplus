@@ -15,6 +15,7 @@ import plus.bookshelf.Common.Error.BusinessException;
 import plus.bookshelf.Common.Response.CommonReturnType;
 import plus.bookshelf.Controller.VO.UserVO;
 import plus.bookshelf.Service.Impl.UserServiceImpl;
+import plus.bookshelf.Service.Impl.VisitorFingerprintLogServiceImpl;
 import plus.bookshelf.Service.Model.UserModel;
 
 @Api(tags = "用户操作")
@@ -25,6 +26,9 @@ public class UserController extends BaseController {
     @Autowired
     UserServiceImpl userService;
 
+    @Autowired
+    VisitorFingerprintLogServiceImpl visitorFingerprintService;
+
     @ApiOperation(value = "用户登录", notes = "传入用户名，以及密码明文，后台计算密码SHA1值，进行登录")
     // @ApiImplicitParams(value = {
     //         @ApiImplicitParam(name = "username", value = "用户名", example = "username1", paramType = "form", dataType = "String", required = true, dataTypeClass = String.class),
@@ -33,8 +37,9 @@ public class UserController extends BaseController {
     @RequestMapping(value = "login", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
     @ResponseBody
     public CommonReturnType login(@RequestParam(value = "username") String username,
-                                  @RequestParam(value = "password") String password) throws BusinessException {
-        if (username == null || password == null) {
+                                  @RequestParam(value = "password") String password,
+                                  @RequestParam(value = "visitorId") String visitorFingerprint) throws BusinessException {
+        if (username == null || password == null || visitorFingerprint == null) {
             throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR);
         }
         String encryptPwd = DigestUtils.sha1Hex(password);
@@ -43,8 +48,15 @@ public class UserController extends BaseController {
         UserVO userVO = convertFromService(userModel);
 
         if (userModel != null) {
+            if (!visitorFingerprintService.saveFingerprint("Login Success", userModel.getId(), visitorFingerprint)) {
+                throw new BusinessException(BusinessErrorCode.OPERATION_NOT_ALLOWED, "参数错误，请联系管理员处理");
+            }
             String token = onLogin(userModel);
             userVO.setToken(token); // token 仅在用户登录时传一次，后面获取用户状态接口中不重复返回 token 信息
+        } else {
+            if (!visitorFingerprintService.saveFingerprint("Login Failed", null, visitorFingerprint)) {
+                throw new BusinessException(BusinessErrorCode.OPERATION_NOT_ALLOWED, "参数错误，请联系管理员处理");
+            }
         }
         return CommonReturnType.create(userVO);
     }
@@ -53,7 +65,8 @@ public class UserController extends BaseController {
     @RequestMapping(value = "register", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
     @ResponseBody
     public CommonReturnType register(@RequestParam(value = "username") String username,
-                                     @RequestParam(value = "password") String password) throws BusinessException {
+                                     @RequestParam(value = "password") String password,
+                                     @RequestParam(value = "visitorId") String visitorFingerprint) throws BusinessException {
         if (username == null || password == null) {
             return null;
         }
@@ -62,8 +75,9 @@ public class UserController extends BaseController {
         if (!userService.userRegister(username, encryptPwd)) {
             throw new BusinessException(BusinessErrorCode.UNKNOWN_ERROR, "未知错误，注册失败");
         }
+
         // 注册成功后，进行登录
-        return login(username, password);
+        return login(username, password, visitorFingerprint);
     }
 
     @ApiOperation(value = "【用户|管理员】用户登出", notes = "用户退出登录")
@@ -102,7 +116,7 @@ public class UserController extends BaseController {
         // 已经在 getUserByToken 方法中判断了 token 为空、不合法；用户不存在情况，此处无需再判断
         UserModel userModel = userService.getUserByToken(redisTemplate, token);
 
-        if(password == null || "".equals(password)){
+        if (password == null || "".equals(password)) {
             throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "参数不合法，缺少密码");
         }
 

@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 18/04/2022 17:54:01
+ Date: 19/04/2022 22:46:17
 */
 
 SET NAMES utf8mb4;
@@ -310,6 +310,22 @@ CREATE TABLE `user_info`  (
 -- Records of user_info
 -- ----------------------------
 INSERT INTO `user_info` VALUES (1, 'admin', '7c4a8d09ca3762af61e59520943dc26494f8941b', '小小墨', 'ADMIN', '/密码/123456/', '', '', '', '');
-INSERT INTO `user_info` VALUES (2, 'xiaomo', '7c4a8d09ca3762af61e59520943dc26494f8941b', '小小墨', 'USER', '/密码/123456/', '', '', '', '');
+
+-- ----------------------------
+-- Table structure for visitor_fingerprint_log
+-- ----------------------------
+DROP TABLE IF EXISTS `visitor_fingerprint_log`;
+CREATE TABLE `visitor_fingerprint_log`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `visitor_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user_id` int(11) NULL DEFAULT NULL COMMENT '未登录用户 userId 为 0',
+  `create_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `action` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '注意，用户浏览器指纹有概率重复，所以仅供参考，不能作为判断的依据\r\n\r\n获取不到浏览器指纹的将使用浏览器UA代替' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of visitor_fingerprint_log
+-- ----------------------------
 
 SET FOREIGN_KEY_CHECKS = 1;

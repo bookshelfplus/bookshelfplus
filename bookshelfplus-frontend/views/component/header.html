@@ -19,3 +19,35 @@
     /* 字体加载前先隐藏，不然文字会闪一下 */
     html, body { opacity: 0; }
 </style>
+
+<script>
+    /**
+     * 获取用户浏览器指纹
+     *
+     * refer:
+     * - https://fingerprintjs.com/
+     * - https://github.com/fingerprintjs/fingerprintjs
+     *
+     */
+    // Initialize the agent at application startup.
+    const fpPromise = import('/assets/lib/fingerprintjs/3.3.3/esm.min.js')
+        // const fpPromise = import('https://openfpcdn.io/fingerprintjs/v3')
+        .then(FingerprintJS => FingerprintJS.load())
+
+    // // Get the visitor identifier when you need it.
+    // fpPromise
+    //     .then(fp => fp.get())
+    //     .then(result => {
+    //         // This is the visitor identifier:
+    //         const visitorId = result.visitorId
+    //         console.log(visitorId)
+    //     });
+
+    async function getVisitorId() {
+        try {
+            return (await fpPromise.then(fp => fp.get())).visitorId;
+        } catch (error) {
+            return JSON.stringify(navigator.userAgent);
+        }
+    }
+</script>

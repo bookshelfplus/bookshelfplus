@@ -106,5 +106,8 @@
         <!--<table tableName="failure_feedback" domainObjectName="FailureFeedbackDO" enableCountByExample="false"-->
         <!--       enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
         <!--       selectByExampleQueryId="false"></table>-->
+        <!--<table tableName="visitor_fingerprint_log" domainObjectName="VisitorFingerprintLogDO" enableCountByExample="false"-->
+        <!--       enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
+        <!--       selectByExampleQueryId="false"></table>-->
     </context>
 </generatorConfiguration>

@@ -64,11 +64,12 @@
 
         $("#username").val("xiaomo");
         $("#password").val("123456");
-        $(".btn-register").click(function() {
+        $(".btn-register").click(async function() {
             var username = $("#username").val();
             var password = $("#password").val();
 
-            postRequest("/user/register", { username: username, password: password })
+            var visitorId = await getVisitorId();
+            postRequest("/user/register", { username: username, password: password, visitorId: visitorId })
                 .then(function (response) {
                     var axiosData = response.data;
                     var status = axiosData.status;

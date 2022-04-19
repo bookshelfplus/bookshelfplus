@@ -13,7 +13,11 @@
 
 前项目为书栖网官网开源项目，你也可以通过这个项目搭建一个属于自己的电子书分享与管理平台。
 
-> 如需获取计算机类电子书，请访问https://bookshelf.plus/ ，或前往Git仓库👉（[GitHub](https://github.com/only-4/computer-related-books)、[Gitee](https://gitee.com/only4/computer-related-books)）
+> 目前项目已上线，网址：https://bookshelf.plus/
+>
+> 也可前往Git仓库👉[GitHub](https://github.com/only-4/computer-related-books)、[Gitee](https://gitee.com/only4/computer-related-books)
+
+> 项目部分功能仍在开发中，另外文档部分内容尚未更新，部署使用需要掌握一定的技术，如果项目后期看好的人多，将会花精力完善文档以及适当增添新功能。
 
 
 
@@ -408,6 +412,6 @@ chmod -R 755 bookshelf.plus/
 
 目前该项目由 程序员小墨 独立开发，你可以在 [GitHub](https://github.com/coder-xiaomo)、[Gitee](https://gitee.com/coder-xiaomo)、[B站](https://space.bilibili.com/457109942)或微信公众号等平台找到我（所有平台都是“程序员小墨”这个名字）。
 
-如您希望合作，或者共同维护本项目，可以通过 `admin@only4.work` 与我取得联系。邮件主题中请注明 `[书栖网开源项目]` 方便我们快速了解您的来意，谢谢。
+如您希望合作，或者共同维护本项目，可以通过 `admin@only4.work` 与我取得联系。邮件主题中请注明 `[书栖网丨开源项目]` 方便我们快速了解您的来意，谢谢。
 
 精力有限，暂不提供免费客服服务，如您遇到问题，请自行搜索解决。这类相关邮件我们将不予回复，望理解！

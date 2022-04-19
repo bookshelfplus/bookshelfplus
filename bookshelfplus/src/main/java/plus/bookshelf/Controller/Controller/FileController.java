@@ -19,10 +19,7 @@ import plus.bookshelf.Common.Response.CommonReturnType;
 import plus.bookshelf.Config.QCloudCosConfig;
 import plus.bookshelf.Controller.VO.FileObjectVO;
 import plus.bookshelf.Controller.VO.FileVO;
-import plus.bookshelf.Service.Impl.FailureFeedbackServiceImpl;
-import plus.bookshelf.Service.Impl.FileObjectServiceImpl;
-import plus.bookshelf.Service.Impl.FileServiceImpl;
-import plus.bookshelf.Service.Impl.UserServiceImpl;
+import plus.bookshelf.Service.Impl.*;
 import plus.bookshelf.Service.Model.FailureFeedbackModel;
 import plus.bookshelf.Service.Model.FileModel;
 import plus.bookshelf.Service.Model.FileObjectModel;
@@ -54,6 +51,9 @@ public class FileController extends BaseController {
 
     @Autowired
     FailureFeedbackServiceImpl failureFeedbackService;
+
+    @Autowired
+    VisitorFingerprintLogServiceImpl visitorFingerprintLogService;
 
     @ApiOperation(value = "书籍下载页面获取文件提供的下载方式", notes = "")
     @RequestMapping(value = "getFile", method = {RequestMethod.GET})
@@ -106,7 +106,9 @@ public class FileController extends BaseController {
     public CommonReturnType failureFeedback(@RequestParam(value = "token", required = false) String token,
                                             @RequestParam(value = "bookId", required = false) Integer bookId,
                                             @RequestParam(value = "fileId", required = false) Integer fileId,
-                                            @RequestParam(value = "fileObjectId", required = false) Integer fileObjectId) throws BusinessException {
+                                            @RequestParam(value = "fileObjectId", required = false) Integer fileObjectId,
+                                            @RequestParam(value = "visitorId", required = true) String visitorFingerprint) throws BusinessException {
+
         Integer userId = null;
         if (token != null) {
             try {
@@ -115,6 +117,10 @@ public class FileController extends BaseController {
             } catch (BusinessException e) {
                 // 用户未登录，不返回错误信息
             }
+        }
+
+        if (!visitorFingerprintLogService.saveFingerprint("Failure Feedback", userId, visitorFingerprint)) {
+            throw new BusinessException(BusinessErrorCode.OPERATION_NOT_ALLOWED, "参数错误，请联系管理员处理");
         }
 
         FailureFeedbackModel failureFeedbackModel = new FailureFeedbackModel();
@@ -229,7 +235,8 @@ public class FileController extends BaseController {
                                 @RequestParam(value = "fileId", required = false) Integer fileId, // 关联的文件ID，创建新文件则为0
 
                                 // 以下为 GET 请求必传参数
-                                @RequestParam(value = "fileNameAndExt", required = false) String fileNameAndExt
+                                @RequestParam(value = "fileNameAndExt", required = false) String fileNameAndExt,
+                                @RequestParam(value = "visitorId", required = false) String visitorFingerprint
     ) throws BusinessException, InvocationTargetException, IllegalAccessException {
         if (expireMinute == null) {
             expireMinute = 30;
@@ -270,6 +277,9 @@ public class FileController extends BaseController {
                 break;
             case GET:
                 if (!isExist) throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "文件不存在");
+                if (visitorFingerprint == null || !visitorFingerprintLogService.saveFingerprint("FailureFeedback", userModel.getId(), visitorFingerprint)) {
+                    throw new BusinessException(BusinessErrorCode.OPERATION_NOT_ALLOWED, "参数错误，请联系管理员处理");
+                }
                 url = qCloudCosUtils.generatePresignedUrlForGET(userModel.getId(), bookSaveFolder, fileSha1, expireMinute, urlGUID, fileNameAndExt);
                 break;
             case DELETE:

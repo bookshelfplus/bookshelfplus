@@ -477,7 +477,7 @@
                     case "腾讯云对象存储":
                         title = "直链下载";
                         if (!localStorageUtils.getLoginStatus()) {
-                            downloadLink = "登录后方可使用";
+                            downloadLink = "<span><a href='{}'>登录</a>后方可使用</span>".replace("{}", "/login?redirect=" + encodeURIComponent(location.pathname + location.search));
                         } else {
                             content = `<span style="font-size: 12px;"><nobr>每次点击都会扣减下载次数</nobr></span>`;
                             downloadLink = `<a style="cursor: pointer;" onclick="getDirectLink(${fileObjectInfo.id});">下载</a>`;
@@ -590,7 +590,7 @@
     </script>
     <script>
         // 获取直链下载链接，并下载该文件
-        function getDirectLink(fileObjectId) {
+        async function getDirectLink(fileObjectId) {
             var fileObject = direckLinkInfo[fileObjectId];
             console.log("fileObject", fileObject);
 
@@ -601,7 +601,9 @@
 
             var fileNameForUser = `${fileObject.fileName}.${fileObject.fileType}`;
             var fileKeyForCos = fileObject.filePath;
-            postRequest("/file/cos/get", { fileSha1: fileObject.fileSha1, fileNameAndExt: fileNameForUser, token: localStorageUtils.getToken(), expireMinute: 30 })
+
+            var visitorId = await getVisitorId();
+            postRequest("/file/cos/get", { fileSha1: fileObject.fileSha1, fileNameAndExt: fileNameForUser, token: localStorageUtils.getToken(), visitorId: visitorId, expireMinute: 30 })
                 .then(function (response) {
                     var axiosData = response.data;
                     var status = axiosData.status;
@@ -625,7 +627,7 @@
     </script>
     <script>
         // 链接失效反馈
-        function linkFeedback(fileId, fileObjectId) {
+        async function linkFeedback(fileId, fileObjectId) {
             if (!confirm("确定这个下载链接失效了吗？（没失效的链接不可以乱点着玩儿哦）"))
                 return;
 
@@ -636,7 +638,8 @@
                 }
             }
 
-            postRequest("/file/object/FailureFeedback", { bookId: bookId, fileId: fileId, fileObjectId: fileObjectId, token: localStorageUtils.getToken() })
+            var visitorId = await getVisitorId();
+            postRequest("/file/object/FailureFeedback", { bookId: bookId, fileId: fileId, fileObjectId: fileObjectId, token: localStorageUtils.getToken(), visitorId: visitorId })
                 .then(function (response) {
                     var axiosData = response.data;
                     var status = axiosData.status;

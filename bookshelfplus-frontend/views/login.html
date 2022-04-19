@@ -105,7 +105,7 @@
                 }
             }
         });
-        $(".btn-submit").click(function () {
+        $(".btn-submit").click(async function () {
             if ($("#username").val() === "" || $("#password").val() === "") {
                 alert("用户名或密码不能为空！");
                 if ($("#username").val() === "") {
@@ -126,7 +126,8 @@
             // var encryptpwd = hex_md5(password);
 
             localStorageUtils.userLogout();
-            postRequest("/user/login", { username: username, password: password })
+            var visitorId = await getVisitorId();
+            postRequest("/user/login", { username: username, password: password, visitorId: visitorId })
                 .then(function (response) {
                     var axiosData = response.data;
                     var status = axiosData.status;
