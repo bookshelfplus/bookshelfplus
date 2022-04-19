@@ -123,14 +123,14 @@ public class FileObjectServiceImpl implements FileObjectService {
      * @param fileNameWithoutExt    文件名（不包含扩展名）
      * @param fileStorageMediumEnum 文件存储介质
      * @param bookOrigin            文件来源
-     * @return 是否插入成功
+     * @return 返回文件Id
      * @throws InvocationTargetException
      * @throws IllegalAccessException
      * @throws BusinessException
      */
     @Override
     @Transactional
-    public Boolean uploadFile(Integer fileId, String fileName, String filePath, Long fileSize, String fileSHA1,
+    public Integer uploadFile(Integer fileId, String fileName, String filePath, Long fileSize, String fileSHA1,
                               String fileExt, String fileNameWithoutExt, FileStorageMediumEnum fileStorageMediumEnum,
                               String bookOrigin, Long lastModified
     ) throws InvocationTargetException, IllegalAccessException, BusinessException {
@@ -189,7 +189,7 @@ public class FileObjectServiceImpl implements FileObjectService {
         if (!isSuccess) {
             throw new BusinessException(BusinessErrorCode.UNKNOWN_ERROR, "文件对象创建失败");
         }
-        return true;
+        return fileId;
     }
 
     /**

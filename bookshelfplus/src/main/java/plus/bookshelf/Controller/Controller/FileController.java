@@ -286,13 +286,18 @@ public class FileController extends BaseController {
         // 判断对象是否存在
         Boolean isExist = qCloudCosUtils.doesObjectExist(bookSaveFolder, fileSha1);
         String url = null;
+        Map resultMap = new HashMap();
+        resultMap.put("guid", urlGUID);
         switch (httpMethodName) {
             case PUT:
                 // 上传文件
                 if (isExist) throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "文件已存在");
 
-                fileObjectService.uploadFile(fileId, fileName, bookSaveFolder + fileSha1, fileSize,
+                Integer realFileId = fileObjectService.uploadFile(fileId, fileName, bookSaveFolder + fileSha1, fileSize,
                         fileSha1, fileExt, fileName, FileStorageMediumEnum.QCLOUD_COS, "", lastModified);
+                // fileId 可能为 0 （创建新文件）
+                // realFileId 是从数据库中查询出来的，真实的文件id
+                resultMap.put("fileId", realFileId);
                 url = qCloudCosUtils.generatePresignedUrl(userModel.getId(), httpMethodName, bookSaveFolder, fileSha1, expireMinute, urlGUID);
                 break;
             case GET:
@@ -310,10 +315,8 @@ public class FileController extends BaseController {
                 throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "httpMethod 参数暂不支持");
         }
 
-        Map map = new HashMap();
-        map.put("url", url);
-        map.put("guid", urlGUID);
-        return CommonReturnType.create(map);
+        resultMap.put("url", url);
+        return CommonReturnType.create(resultMap);
     }
 
     /**

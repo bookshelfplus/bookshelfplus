@@ -123,8 +123,8 @@
 <button id="beginUpload" disabled="true">开始上传</button>
 
 <p>
-    <input type="checkbox" id="checkbox-auto-upload" checked="true">
-    <label for="checkbox-auto-upload">连续上传（上传完成后留在本页）</label>
+    <input type="checkbox" id="checkbox-auto-upload"><!-- checked -->
+    <label for="checkbox-auto-upload" style="font-size: small;">连续上传（上传完成后留在本页）</label>
 </p>
 
 <script src="/assets/lib/crypto-js/sha1.js"></script>
@@ -372,9 +372,9 @@
                 var status = axiosData.status;
                 var data = axiosData.data;
                 if (status === "success") {
-                    console.log(data);
+                    console.log("data", data);
                     // 取得预授权URL，使用该URL进行文件上传
-                    uploadFile(file, data.url);
+                    uploadFile(file, data.url, data.fileId);
                 } else {
                     alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
                 }
@@ -387,7 +387,7 @@
     //##############################################
     //传入预授权 URL ，将文件上传到这个地址
     //##############################################
-    function uploadFile(file, preSignedUrl) {
+    function uploadFile(file, preSignedUrl, fileId) {
         // refer: https://cloud.tencent.com/document/product/436/35651
 
         // 获取到 Url 后，前端可以这样 ajax 上传
@@ -412,7 +412,8 @@
                 if ($("#checkbox-auto-upload").is(":checked")) {
                     window.location.reload();
                 } else {
-                    location.href = "<%= pageUrl %>../";
+                    // location.href = "<%= pageUrl %>../";
+                    location.href = "<%= pageUrl %>../detail?id=" + fileId;
                 }
             }, 300);
         };
