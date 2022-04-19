@@ -270,7 +270,7 @@
                 "attr": {
                     "id": "categoryId",
                     "name": "categoryId",
-                    "value": bookDetail.category.id || "",
+                    "value": (bookDetail.category && bookDetail.category.id) ? bookDetail.category.id : "",
                 },
                 "label": {
                     "value": "书籍分类",

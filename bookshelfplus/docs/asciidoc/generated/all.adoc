@@ -20,6 +20,7 @@ __域名__ : localhost:8090
 
 * 书籍信息 : Book Controller
 * 书籍分类信息 : Category Controller
+* 导出数据 : Export Controller
 * 文件管理 : File Controller
 * 用户操作 : User Controller
 * 第三方登录 : Third Party Controller
@@ -657,6 +658,82 @@ GET /api/category/list
 ----
 
 
+[[_631bcafa70826116dc02af62f26b6587]]
+=== 导出数据
+Export Controller
+
+
+[[_exportmarkdownusingpost]]
+==== 【管理员】导出系统数据
+....
+POST /api/export/markdown
+....
+
+
+===== 说明
+将系统中的所有数据导出为markdown
+
+
+===== 参数
+
+[options="header", cols=".^2a,.^3a,.^4a"]
+|===
+|类型|名称|类型
+|**FormData**|**token** +
+__可选__|string
+|===
+
+
+===== 响应
+
+[options="header", cols=".^2a,.^14a,.^4a"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_commonreturntype,CommonReturnType>>
+|**201**|Created|无内容
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+===== 消耗
+
+* `application/x-www-form-urlencoded`
+
+
+===== 生成
+
+* `\*/*`
+
+
+===== HTTP请求示例
+
+====== 请求 path
+----
+/api/export/markdown
+----
+
+
+====== 请求 formData
+[source,json]
+----
+"string"
+----
+
+
+===== HTTP响应示例
+
+====== 响应 200
+[source,json]
+----
+{
+  "data" : "object",
+  "status" : "string"
+}
+----
+
+
 [[_5505c91c7c23d55a117904f2a3fe6081]]
 === 文件管理
 File Controller
@@ -693,6 +770,8 @@ __可选__||integer (int64)
 |**FormData**|**lastModified** +
 __可选__||integer (int64)
 |**FormData**|**token** +
+__可选__||string
+|**FormData**|**visitorId** +
 __可选__||string
 |===
 
@@ -872,6 +951,79 @@ __可选__|string
 ----
 
 
+[[_matchfilehashusingpost]]
+==== 【管理员】查询文件列表（匹配文件哈希）
+....
+POST /api/file/list/MatchfileHash
+....
+
+
+===== 说明
+查询文件列表，返回文件哈希为空或者相同的文件
+
+
+===== 参数
+
+[options="header", cols=".^2a,.^3a,.^4a"]
+|===
+|类型|名称|类型
+|**FormData**|**fileSha1** +
+__可选__|string
+|**FormData**|**token** +
+__可选__|string
+|===
+
+
+===== 响应
+
+[options="header", cols=".^2a,.^14a,.^4a"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_commonreturntype,CommonReturnType>>
+|**201**|Created|无内容
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+===== 消耗
+
+* `application/x-www-form-urlencoded`
+
+
+===== 生成
+
+* `\*/*`
+
+
+===== HTTP请求示例
+
+====== 请求 path
+----
+/api/file/list/MatchfileHash
+----
+
+
+====== 请求 formData
+[source,json]
+----
+"string"
+----
+
+
+===== HTTP响应示例
+
+====== 响应 200
+[source,json]
+----
+{
+  "data" : "object",
+  "status" : "string"
+}
+----
+
+
 [[_failurefeedbackusingpost]]
 ==== 链接失效反馈
 ....
@@ -895,6 +1047,8 @@ __可选__|integer (int32)
 |**FormData**|**fileObjectId** +
 __可选__|integer (int32)
 |**FormData**|**token** +
+__可选__|string
+|**FormData**|**visitorId** +
 __可选__|string
 |===
 
@@ -1335,6 +1489,8 @@ POST /api/user/login
 __可选__|string
 |**FormData**|**username** +
 __可选__|string
+|**FormData**|**visitorId** +
+__可选__|string
 |===
 
 
@@ -1478,6 +1634,8 @@ POST /api/user/register
 |**FormData**|**password** +
 __可选__|string
 |**FormData**|**username** +
+__可选__|string
+|**FormData**|**visitorId** +
 __可选__|string
 |===
 
