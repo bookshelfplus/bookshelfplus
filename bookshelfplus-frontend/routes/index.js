@@ -152,6 +152,11 @@ router.get('/dashboard/:group/:page/:subpage?', function (req, res) {
                 baseTemplate: "blank",
                 pageTemplate: "Account",
             },
+            "export": {
+                title: "导出数据",
+                baseTemplate: "blank",
+                pageTemplate: "Export",
+            },
             "debug": {
                 title: "系统配置",
                 baseTemplate: "blank",
