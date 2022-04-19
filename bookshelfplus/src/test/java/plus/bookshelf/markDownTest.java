@@ -1,6 +1,7 @@
 package plus.bookshelf;
 
 import org.junit.Test;
+import plus.bookshelf.Common.MarkdownUtils.MarkdownTable;
 import plus.bookshelf.Common.MarkdownUtils.MarkdownUtils;
 
 public class markDownTest {
@@ -42,12 +43,38 @@ public class markDownTest {
                 .ol("这是一段有序列表的段落", 5)
                 .ol("这是一段有序列表的段落", 6)
                 .ol("这是一段有序列表的段落", 7)
-                .table("这是一段表格的段落")
+                .table(MarkdownTable.create(3)
+                        .setHeader("标题1", "标题2", "标题3")
+                        .setAlignment(MarkdownTable.Alignment.CENTER)
+                        .addRow("1", "2", "3")
+                        .addRow("1", "2", "3")
+                        .addRow("1", "2", "3")
+                )
+                .table(MarkdownTable.create(3)
+                        .setHeader("标题1", "标题2", "标题3")
+                        .setAlignment(MarkdownTable.Alignment.CENTER, MarkdownTable.Alignment.LEFT, MarkdownTable.Alignment.RIGHT)
+                        .addRow("1", "2", "3\n4")
+                        .addRow("1", "2", "3|||wew")
+                        .addRow("1", "2", "3")
+                        .addRow("1", "2", MarkdownUtils.getInstance()
+                                .inlineCode("222")
+                                .getMarkdown()
+                        )
+                )
                 .link("这是一段链接的段落", "https://www.baidu.com")
                 .image("https://t7.baidu.com/it/u=1595072465,3644073269&fm=193&f=GIF")
                 .blockquote(MarkdownUtils.getInstance()
                         .p("这是一段段落")
-                        .p("这是一段段落"))
+                        .p("这是一段段落")
+                        .blockquote(MarkdownUtils.getInstance()
+                                .p("这是一段段落")
+                                .p("这是一段段落")
+                                .blockquote(MarkdownUtils.getInstance()
+                                        .p("这是一段段落")
+                                        .p("这是一段段落")
+                                )
+                        )
+                )
                 .getMarkdown();
         System.out.println(markdown);
     }

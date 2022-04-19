@@ -44,9 +44,11 @@ public class MarkdownUtils {
      * @return String
      */
     public String getMarkdown() {
+        // // 去除最后的一个换行符 (保留一个换行符)
+        // return markdown.deleteCharAt(markdown.length() - 1).toString();
+
         // 去除最后的两个换行符
-        markdown.delete(markdown.length() - 2, markdown.length());
-        return markdown.toString();
+        return markdown.delete(markdown.length() - 2, markdown.length()).toString();
     }
 
     /**
@@ -277,12 +279,13 @@ public class MarkdownUtils {
     }
 
     /**
-     * 表格 TODO
+     * 表格
      *
-     * @param text
+     * @param table
      * @return
      */
-    public MarkdownUtils table(String text) {
+    public MarkdownUtils table(MarkdownTable table) {
+        this.append(table.toString());
         return this;
     }
 }
