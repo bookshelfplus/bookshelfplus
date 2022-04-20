@@ -112,6 +112,20 @@ public class FileObjectController extends BaseController {
         return CommonReturnType.create(fileObjectVOS);
     }
 
+    @ApiOperation(value = "查询指定文件的文件对象列表", notes = "传入文件Id，返回文件对象列表")
+    @RequestMapping(value = "getByFileId", method = {RequestMethod.GET})
+    @ResponseBody
+    public CommonReturnType getFileObjectByFileId(@RequestParam(value = "fileId", required = false) Integer fileId) throws InvocationTargetException, IllegalAccessException, BusinessException {
+
+        List<FileObjectModel> fileObjectModels = fileObjectService.getFileObjectListByFileId(fileId);
+        List<FileObjectVO> fileObjectVOS = new ArrayList<>();
+        for (FileObjectModel fileObjectModel : fileObjectModels) {
+            FileObjectVO fileObjectVO = convertFileObjectVOFromModel(fileObjectModel);
+            fileObjectVOS.add(fileObjectVO);
+        }
+        return CommonReturnType.create(fileObjectVOS);
+    }
+
     @ApiOperation(value = "【管理员】更新文件对象上传状态", notes = "重新从 COS 对象存储中获取文件对象上传状态")
     @RequestMapping(value = "refreshFileObjectStatus", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
     @ResponseBody

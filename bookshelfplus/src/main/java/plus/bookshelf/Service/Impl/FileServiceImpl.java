@@ -42,10 +42,12 @@ public class FileServiceImpl implements FileService {
     /**
      * 列出文件支持的下载方式
      *
+     * @param bookId
      * @return
+     * @throws BusinessException
      */
     @Override
-    public List<FileModel> getFile(Integer bookId) throws BusinessException {
+    public List<FileModel> getFileByBookId(Integer bookId) throws BusinessException {
 
         if (bookId == 0 || bookId == null) {
             throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "bookId不能为空");
@@ -60,6 +62,25 @@ public class FileServiceImpl implements FileService {
         }
 
         return fileModels;
+    }
+
+    /**
+     * 根据文件ID获取文件信息
+     *
+     * @param fileId
+     * @return
+     * @throws BusinessException
+     */
+    @Override
+    public FileModel getFileById(Integer fileId) throws BusinessException {
+
+        if (fileId == 0 || fileId == null) {
+            throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "fileId不能为空");
+        }
+
+        FileDO fileDO = fileDOMapper.selectByPrimaryKey(fileId);
+        FileModel fileModel = convertFromDataObject(fileDO);
+        return fileModel;
     }
 
     /**

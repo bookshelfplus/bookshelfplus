@@ -233,4 +233,23 @@ public class FileObjectServiceImpl implements FileObjectService {
         FileObjectModel fileObjectModel = convertFromDataObject(fileObjectDO);
         return fileObjectModel;
     }
+
+    /**
+     * 列出指定文件的所有文件对象
+     *
+     * @return
+     */
+    @Override
+    public List<FileObjectModel> getFileObjectListByFileId(Integer fileId) throws InvocationTargetException, IllegalAccessException, BusinessException {
+
+        FileObjectDO[] fileObjectDOS = fileObjectDOMapper.selectByFileId(fileId);
+
+        List<FileObjectModel> fileObjectModels = new ArrayList<>();
+        for (FileObjectDO fileObjectDO : fileObjectDOS) {
+            FileObjectModel fileObjectModel = convertFromDataObject(fileObjectDO);
+            fileObjectModels.add(fileObjectModel);
+        }
+
+        return fileObjectModels;
+    }
 }

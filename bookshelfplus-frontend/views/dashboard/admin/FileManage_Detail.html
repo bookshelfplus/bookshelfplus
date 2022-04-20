@@ -1,5 +1,112 @@
-<p>
-    <h3>文件详情</h3>
-    <hr>
-    <h3>关联文件对象</h3>
-</p>
+<h3>文件详情</h3>
+<div id="file-detail-container">
+</div>
+<hr>
+<h3>关联文件对象</h3>
+<div id="file-object-container">
+
+</div>
+
+<!-- 获取参数 -->
+<script src="/assets/javascripts/getParams.js"></script>
+<script>
+    var requestParams = getParams();
+    var fileId = Number(requestParams["id"]) ?? "";
+    if (fileId === "") {
+        location.href = "<%= pageUrl %>../";
+    }
+</script>
+<script>
+    // 获取文件信息
+    function getFileInfo() {
+        function stringifyFileSize(nBytes = 0) {
+            // 美化输出文件大小
+            let sOutput = nBytes + " bytes";
+            const aMultiples = ["KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+            for (nMultiple = 0, nApprox = nBytes / 1024; nApprox > 1; nApprox /= 1024, nMultiple++) {
+                sOutput = nApprox.toFixed(2) + " " + aMultiples[nMultiple];
+            }
+            return sOutput;
+        }
+        getRequest("/file/getFileById", { fileId: fileId })
+            .then(function (response) {
+                var axiosData = response.data;
+                var status = axiosData.status;
+                var data = axiosData.data;
+                if (status === "success") {
+                    console.log("file", data);
+                    document.getElementById("file-detail-container").innerHTML =
+                        `<table border="1" style="margin: 0 auto;">
+                            <tr><th>key</th><th>value</th></tr>
+                            <tr><td>文件名</td><td>${data.fileName}</td></tr>
+                            <tr><td>文件扩展名</td><td>${data.fileExt}</td></tr>
+                            <tr><td>文件大小</td><td>${stringifyFileSize(data.fileSize)}</td></tr>
+                            <tr><td>SHA1</td><td>${data.fileSha1}</td></tr>
+                            <tr><td>文件Id</td><td>${data.id}</td></tr>
+                            <tr><td>关联书籍Id</td><td>${data.bookId}</td></tr>
+                            <tr><td>是否有广告</td><td>${data.advertising ? "是" : "否"}</td></tr>
+                            <tr><td>是否有水印</td><td>${data.watermark ? "是" : "否"}</td></tr>
+                            <tr><td>文件创建日期</td><td>${data.fileCreateAt}</td></tr>
+                            <tr><td>文件修改日期</td><td>${data.fileModifiedAt}</td></tr>
+                            <tr><td>页数</td><td>${data.numberOfPages}</td></tr>
+                            <tr><td>来源信息</td><td>${data.source}</td></tr>
+                        </table>`;
+
+                } else {
+                    alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
+                }
+            }).catch(function (error) {
+                console.log(error);
+                alert("无法连接到服务器，请检查网络连接！");
+            });
+    }
+    getFileInfo();
+
+
+    // 获取文件对象信息
+    function getFileObjectInfo() {
+        getRequest("/file/object/getByFileId", { fileId: fileId })
+            .then(function (response) {
+                var axiosData = response.data;
+                var status = axiosData.status;
+                var data = axiosData.data;
+                if (status === "success") {
+                    console.log("fileObject", data);
+
+                    var items = [];
+                    for (var i = 0; i < data.length; i++) {
+                        var item = data[i];
+                        items.push(`<tr>
+                            <td>${item.id}</td>
+                            <td>${item.lastModified === 0 ? "未知" : new Date(item.lastModified).toISOString().replace(/T/, ' ').replace(/\..+/, '')}</td>
+                            <td>${item.storageMedium}</td>
+                            <td>${item.filePwd}</td>
+                            <td>${item.fileShareCode}</td>
+                            <td>${(item.uploadStatus ? item.uploadStatus : "<span style='color: grey; font-weight: bold;'>未知</span>")
+                                .replace("SUCCESS", "<span style='color: green; font-weight: bold;'>成功</span>")
+                                .replace("UPLOADING", "<span style='color: orange; font-weight: bold;'>正在上传</span>")
+                                .replace("NOT_EXIST", "<span style='color: red; font-weight: bold;'>不存在</span>")}</td>
+                        </tr>`);
+                    }
+                    document.getElementById("file-object-container").innerHTML =
+                        `<table border="1" style="margin: 0 auto;">
+                            <tr>
+                                <th>文件对象Id</th>
+                                <th>文件修改日期</th>
+                                <th>存储介质</th>
+                                <th>文件密码</th>
+                                <th>提取码</th>
+                                <th>状态</th>
+                            </tr>
+                            ${items.join("")}
+                        </table>`;
+                } else {
+                    alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
+                }
+            }).catch(function (error) {
+                console.log(error);
+                alert("无法连接到服务器，请检查网络连接！");
+            });
+    }
+    getFileObjectInfo();
+</script>

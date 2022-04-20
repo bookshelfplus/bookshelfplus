@@ -55,11 +55,11 @@ public class FileController extends BaseController {
     VisitorFingerprintLogServiceImpl visitorFingerprintLogService;
 
     @ApiOperation(value = "书籍下载页面获取文件提供的下载方式", notes = "")
-    @RequestMapping(value = "getFile", method = {RequestMethod.GET})
+    @RequestMapping(value = "getFileByBookId", method = {RequestMethod.GET})
     @ResponseBody
-    public CommonReturnType getFile(@RequestParam(value = "bookId", required = false) Integer bookId) throws BusinessException, InvocationTargetException, IllegalAccessException {
+    public CommonReturnType getFileByBookId(@RequestParam(value = "bookId", required = false) Integer bookId) throws BusinessException, InvocationTargetException, IllegalAccessException {
 
-        List<FileModel> fileModels = fileService.getFile(bookId);
+        List<FileModel> fileModels = fileService.getFileByBookId(bookId);
         List<FileVO> fileVOS = new ArrayList<>();
         for (FileModel fileModel : fileModels) {
             FileVO fileVO = convertFileVOFromModel(fileModel);
@@ -78,6 +78,15 @@ public class FileController extends BaseController {
         map.put("fileObject", fileObjectVOS);
 
         return CommonReturnType.create(map);
+    }
+
+    @ApiOperation(value = "通过 fileId 获取文件信息", notes = "")
+    @RequestMapping(value = "getFileById", method = {RequestMethod.GET})
+    @ResponseBody
+    public CommonReturnType getFileById(@RequestParam(value = "fileId", required = false) Integer fileId) throws BusinessException, InvocationTargetException, IllegalAccessException {
+        FileModel fileModel = fileService.getFileById(fileId);
+        FileVO fileVO = convertFileVOFromModel(fileModel);
+        return CommonReturnType.create(fileVO);
     }
 
     @ApiOperation(value = "【管理员】查询文件列表", notes = "查询文件列表")

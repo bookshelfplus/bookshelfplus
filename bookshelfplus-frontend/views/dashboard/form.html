@@ -137,7 +137,7 @@
                         if (data.errCode == "20004") {
                             // 登录过期
                             localStorageUtils.userLogout();
-                            location.href = "/login";
+                            location.href = "/login?redirect=" + encodeURIComponent(location.pathname + location.search);
                         }
                     }
                 }).catch(function (error) {

@@ -29,9 +29,6 @@
                             修改日期: element.lastModified === 0 ? "未知" : `<span class="overflow-omit" style="font-size: 12px; line-height: 1.2em; display: block;"><nobr>
                                         ${new Date(element.lastModified).toISOString().replace(/T/, ' ').replace(/\..+/, '')}
                                     </nobr></span>`,
-                            格式: `<span class="overflow-omit" style="font-size: 12px; line-height: 1.2em; display: block;"><nobr>
-                                        ${element.fileType ? element.fileType : "未知"}
-                                    </nobr></span>`,
                             密码: `<span class="overflow-omit" style="font-size: 12px; line-height: 1.2em; display: block;"><nobr>
                                         文件密码: ${element.filePwd}<br>
                                         提取码: ${element.fileShareCode}
@@ -47,7 +44,7 @@
                                         <a href="javascript:refreshFileObjectStatus(${element.id});">刷新状态</a>
                                         <a href="<%= pageUrl %>../object-detail?id=${element.id}">修改(TODO)</a>
                                         <a href="javascript:deleteBook(${element.id});">删除(TODO)</a>
-                                    </span > `,
+                                    </span >`,
                         })
                     });
                     if (renderData.length == 0) {

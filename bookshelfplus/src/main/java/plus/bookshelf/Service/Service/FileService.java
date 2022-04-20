@@ -16,7 +16,16 @@ public interface FileService {
      * @throws IllegalAccessException
      * @throws BusinessException
      */
-    List<FileModel> getFile(Integer bookId) throws InvocationTargetException, IllegalAccessException, BusinessException;
+    List<FileModel> getFileByBookId(Integer bookId) throws InvocationTargetException, IllegalAccessException, BusinessException;
+
+    /**
+     * 根据文件ID获取文件信息
+     *
+     * @param fileId
+     * @return
+     * @throws BusinessException
+     */
+    FileModel getFileById(Integer fileId) throws BusinessException;
 
     /**
      * 列出所有文件

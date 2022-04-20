@@ -82,4 +82,15 @@ public interface FileObjectService {
      * @throws IllegalAccessException
      */
     FileObjectModel getFileObjectById(Integer fileObjectId) throws InvocationTargetException, IllegalAccessException;
+
+    /**
+     * 列出指定文件的所有文件对象
+     *
+     * @param fileId
+     * @return
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException
+     * @throws BusinessException
+     */
+    List<FileObjectModel> getFileObjectListByFileId(Integer fileId) throws InvocationTargetException, IllegalAccessException, BusinessException;
 }

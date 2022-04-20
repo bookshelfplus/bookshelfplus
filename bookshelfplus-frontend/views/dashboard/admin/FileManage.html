@@ -1,19 +1,19 @@
 <style>
     /* 限制 来源 列的宽度 */
-    tr>*:nth-child(8),
-    td>*:nth-child(8) {
+    tr>*:nth-child(7),
+    td>*:nth-child(7) {
         max-width: 100px;
     }
 
     /* 限制 哈希 列的宽度 */
-    tr>*:nth-child(10),
-    td>*:nth-child(10) {
+    tr>*:nth-child(9),
+    td>*:nth-child(9) {
         max-width: 100px;
     }
 
     /* 限制 时间 列的宽度 */
-    tr>*:nth-child(11),
-    td>*:nth-child(11) {
+    tr>*:nth-child(10),
+    td>*:nth-child(10) {
         max-width: 100px;
     }
 </style>
@@ -67,7 +67,7 @@
                                         创建: ${new Date(element.fileCreateAt).toLocaleString()}<br>
                                         修改: ${new Date(element.fileModifiedAt).toLocaleString()}
                                     </nobr></span>`,
-                            管理: `<span class="overflow-omit" style="margin: 0 auto;">
+                            管理: `<span style="margin: 0 auto;">
                                         <a href="<%= pageUrl %>detail?id=${element.id}">详情(TODO)</a>
                                         <a href="javascript:deleteBook(${element.id});">删除(TODO)</a>
                                     </span>`,

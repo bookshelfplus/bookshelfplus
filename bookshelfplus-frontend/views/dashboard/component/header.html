@@ -54,7 +54,7 @@
                 } else {
                     if(data.errCode == "20004") { // 登录过期
                         localStorageUtils.userLogout();
-                        window.location.href = "/login";
+                        window.location.href = "/login?redirect=" + encodeURIComponent(location.pathname + location.search);
                     }
                     alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
                 }
