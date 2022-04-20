@@ -100,10 +100,10 @@ public class FileController extends BaseController {
     }
 
     @ApiOperation(value = "【管理员】查询文件列表（匹配文件哈希）", notes = "查询文件列表，返回文件哈希为空或者相同的文件")
-    @RequestMapping(value = "list/MatchfileHash", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
+    @RequestMapping(value = "list/MatchfileHashWithNullValue", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
     @ResponseBody
-    public CommonReturnType matchfileHash(@RequestParam(value = "token", required = false) String token,
-                                          @RequestParam(value = "fileSha1", required = true) String fileSha1) throws InvocationTargetException, IllegalAccessException, BusinessException {
+    public CommonReturnType matchfileHashWithNullValue(@RequestParam(value = "token", required = false) String token,
+                                                       @RequestParam(value = "fileSha1", required = true) String fileSha1) throws InvocationTargetException, IllegalAccessException, BusinessException {
 
         UserModel userModel = userService.getUserByToken(redisTemplate, token);
         if (userModel == null || !Objects.equals(userModel.getGroup(), "ADMIN")) {
@@ -117,6 +117,22 @@ public class FileController extends BaseController {
             fileVOS.add(fileVO);
         }
         return CommonReturnType.create(fileVOS);
+    }
+
+    @ApiOperation(value = "【管理员】通过文件SHA1哈希查找文件Id", notes = "查询文件列表，返回文件哈希匹配的文件Id")
+    @RequestMapping(value = "getFileByHash", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
+    @ResponseBody
+    public CommonReturnType getFileByHash(@RequestParam(value = "token", required = false) String token,
+                                          @RequestParam(value = "fileSha1", required = true) String fileSha1) throws InvocationTargetException, IllegalAccessException, BusinessException {
+
+        UserModel userModel = userService.getUserByToken(redisTemplate, token);
+        if (userModel == null || !Objects.equals(userModel.getGroup(), "ADMIN")) {
+            throw new BusinessException(BusinessErrorCode.OPERATION_NOT_ALLOWED, "非管理员用户无权进行此操作");
+        }
+
+        FileModel fileModel = fileService.selectBySha1(fileSha1);
+        FileVO fileVO = convertFileVOFromModel(fileModel);
+        return CommonReturnType.create(fileVO);
     }
 
     /**
@@ -182,13 +198,17 @@ public class FileController extends BaseController {
         switch (httpMethodName) {
             case PUT:
                 // 上传文件
-                if (isExist) throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "文件已存在");
+                if (isExist) throw new BusinessException(BusinessErrorCode.FILE_ALREADY_EXIST, "文件已存在");
 
-                Integer realFileId = fileObjectService.uploadFile(fileId, fileName, bookSaveFolder + fileSha1, fileSize,
+                Integer[] integers = fileObjectService.uploadFile(fileId, fileName, bookSaveFolder + fileSha1, fileSize,
                         fileSha1, fileExt, FileStorageMediumEnum.QCLOUD_COS, "", lastModified);
+                Integer realFileId = integers[0];
+                Integer fileObjectId = integers[1];
+
                 // fileId 可能为 0 （创建新文件）
                 // realFileId 是从数据库中查询出来的，真实的文件id
                 resultMap.put("fileId", realFileId);
+                resultMap.put("fileObjectId", fileObjectId);
                 url = qCloudCosUtils.generatePresignedUrl(userModel.getId(), httpMethodName, bookSaveFolder, fileSha1, expireMinute, urlGUID);
                 break;
             case GET:

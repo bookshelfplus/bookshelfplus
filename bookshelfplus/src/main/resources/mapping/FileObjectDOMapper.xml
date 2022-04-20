@@ -176,4 +176,7 @@
     WHERE file_id IN (SELECT id AS file_id FROM `file_info` WHERE book_id = 1)
       AND upload_status = 'SUCCESS'
   </select>
+  <select id="getLastInsertId" resultType="java.lang.Integer">
+    SELECT LAST_INSERT_ID();
+  </select>
 </mapper>

@@ -116,7 +116,7 @@ public class FileObjectServiceImpl implements FileObjectService {
      * @param fileSize              文件大小
      * @param fileSHA1              文件SHA1
      * @param fileExt               文件扩展名
-     * @param fileNameWithoutExt    文件名（不包含扩展名）
+     * @param fileName              文件名（不包含扩展名）
      * @param fileStorageMediumEnum 文件存储介质
      * @param source                文件来源
      * @return 返回文件Id
@@ -126,9 +126,9 @@ public class FileObjectServiceImpl implements FileObjectService {
      */
     @Override
     @Transactional
-    public Integer uploadFile(Integer fileId, String fileName, String filePath, Long fileSize, String fileSHA1,
-                              String fileExt, FileStorageMediumEnum fileStorageMediumEnum,
-                              String source, Long lastModified
+    public Integer[] uploadFile(Integer fileId, String fileName, String filePath, Long fileSize, String fileSHA1,
+                                String fileExt, FileStorageMediumEnum fileStorageMediumEnum,
+                                String source, Long lastModified
     ) throws InvocationTargetException, IllegalAccessException, BusinessException {
 
         if (fileId == 0) {
@@ -179,7 +179,11 @@ public class FileObjectServiceImpl implements FileObjectService {
         if (!isSuccess) {
             throw new BusinessException(BusinessErrorCode.UNKNOWN_ERROR, "文件对象创建失败");
         }
-        return fileId;
+
+        int lastInsertId = fileObjectDOMapper.getLastInsertId();
+
+        // fileId, fileObjectId
+        return new Integer[]{fileId, lastInsertId};
     }
 
     /**

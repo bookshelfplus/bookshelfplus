@@ -28,6 +28,9 @@ public enum BusinessErrorCode implements CommonError {
     BOOK_FAVORITES_ALREADY_EXIST(50002, "书籍已经在收藏夹中"),
     BOOK_FAVORITES_NOT_EXIST(50003, "书籍不在收藏夹中"),
 
+    // 60000开头为文件、文件对象相关错误定义
+    FILE_ALREADY_EXIST(60001, "文件已存在"),
+
     // 占位
     PLACE_HOLDER(99999, "这是一个占位符错误");
 

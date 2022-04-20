@@ -374,9 +374,35 @@
                 if (status === "success") {
                     console.log("data", data);
                     // 取得预授权URL，使用该URL进行文件上传
-                    uploadFile(file, data.url, data.fileId);
+                    uploadFile(file, data.url, data.fileId, data.fileObjectId);
                 } else {
-                    alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
+                    if (data.errCode == "60001") {
+                        // 文件已存在
+                        console.log(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
+
+                        // 再次发送请求，查询这个已存在文件的 fileId
+                        postRequest("/file/getFileByHash", { token: localStorageUtils.getToken(), fileSha1: fileInfo.fileSha1 })
+                            .then(function (responseData) {
+                                var axiosData = responseData.data;
+                                var status = axiosData.status;
+                                var data = axiosData.data;
+                                if (status === "success") {
+                                    console.log(data);
+
+                                    // 查询到之后，询问用户是否跳转到文件详情页
+                                    var isRedirect = confirm(`文件已存在，是否前往查看详情？\n（文件ID: ${data.id}）`);
+                                    if (isRedirect)
+                                        location.href = `<%= pageUrl %>../detail?fileId=${data.id}`;
+                                } else {
+                                    alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
+                                }
+                            }).catch(function (error) {
+                                console.log(error);
+                                alert("无法连接到服务器，请检查网络连接！");
+                            });
+                    } else {
+                        alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
+                    }
                 }
             }).catch(function (error) {
                 console.log(error);
@@ -387,7 +413,7 @@
     //##############################################
     //传入预授权 URL ，将文件上传到这个地址
     //##############################################
-    function uploadFile(file, preSignedUrl, fileId) {
+    function uploadFile(file, preSignedUrl, fileId, fileObjectId) {
         // refer: https://cloud.tencent.com/document/product/436/35651
 
         // 获取到 Url 后，前端可以这样 ajax 上传
@@ -408,13 +434,16 @@
             console.log('上传成功', xhr.status, xhr.statusText);
             // 等待进度条走到 100% 否则小文件进度条还没有走完就提示上传完成会让人感觉有点奇怪
             setTimeout(function () {
-                alert("上传成功！");
-                if ($("#checkbox-auto-upload").is(":checked")) {
-                    window.location.reload();
-                } else {
-                    // location.href = "<%= pageUrl %>../";
-                    location.href = "<%= pageUrl %>../detail?id=" + fileId;
-                }
+                // 上传成功触发一次 “刷新文件对象上传状态”，避免因为云函数回调不成功导致文件对象上传状态没有及时更新
+                refreshFileObjectStatus(fileObjectId, function () {
+                    alert("上传成功！");
+                    if ($("#checkbox-auto-upload").is(":checked")) {
+                        window.location.reload();
+                    } else {
+                        // location.href = "<%= pageUrl %>../";
+                        location.href = "<%= pageUrl %>../detail?id=" + fileId;
+                    }
+                });
             }, 300);
         };
         xhr.onerror = function (e) {
@@ -428,7 +457,7 @@
     function getFileAssociatorList(fileSha1) {
         var fileAssociator = document.getElementById("fileAssociator");
         // 下拉框列表
-        postRequest("/file/list/MatchfileHash", { token: localStorageUtils.getToken(), fileSha1: fileSha1 })
+        postRequest("/file/list/MatchfileHashWithNullValue", { token: localStorageUtils.getToken(), fileSha1: fileSha1 })
             .then(function (responseData) {
                 var axiosData = responseData.data;
                 var status = axiosData.status;
@@ -444,6 +473,27 @@
                     // 渲染到下拉框内
                     // fileAssociator.innerHTML += optionHTML;
                     fileAssociator.innerHTML = `<option value="0">新建文件</option>` + optionHTML;
+                } else {
+                    alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
+                }
+            }).catch(function (error) {
+                console.log(error);
+                alert("无法连接到服务器，请检查网络连接！");
+            });
+    }
+</script>
+<script>
+    // 刷新文件对象上传状态
+    async function refreshFileObjectStatus(fileObjectId, callback) {
+        postRequest("/file/object/refreshFileObjectStatus", { token: localStorageUtils.getToken(), fileObjectId: fileObjectId })
+            .then(function (responseData) {
+                var axiosData = responseData.data;
+                var status = axiosData.status;
+                var data = axiosData.data;
+                if (status === "success") {
+                    // console.log(data);
+                    if (callback)
+                        callback();
                 } else {
                     alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
                 }

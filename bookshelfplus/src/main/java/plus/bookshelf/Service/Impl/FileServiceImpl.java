@@ -8,11 +8,9 @@ import plus.bookshelf.Common.Error.BusinessErrorCode;
 import plus.bookshelf.Common.Error.BusinessException;
 import plus.bookshelf.Config.QCloudCosConfig;
 import plus.bookshelf.Dao.DO.FileDO;
-import plus.bookshelf.Dao.DO.FileObjectDO;
 import plus.bookshelf.Dao.Mapper.FileDOMapper;
 import plus.bookshelf.Dao.Mapper.FileObjectDOMapper;
 import plus.bookshelf.Service.Model.FileModel;
-import plus.bookshelf.Service.Model.FileObjectModel;
 import plus.bookshelf.Service.Service.CosPresignedUrlGenerateLogService;
 import plus.bookshelf.Service.Service.FileService;
 
@@ -100,6 +98,18 @@ public class FileServiceImpl implements FileService {
         }
 
         return fileModels;
+    }
+
+    /**
+     * 列出一个 SHA1匹配 的文件
+     *
+     * @return
+     */
+    @Override
+    public FileModel selectBySha1(String fileSha1) {
+        FileDO fileDO = fileDOMapper.selectBySha1(fileSha1);
+        FileModel fileModel = convertFromDataObject(fileDO);
+        return fileModel;
     }
 
     private FileModel convertFromDataObject(FileDO fileDO) {

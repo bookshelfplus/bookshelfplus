@@ -33,6 +33,14 @@ public interface FileService {
     List<FileModel> selectBySha1WithNullValue(String token) throws InvocationTargetException, IllegalAccessException, BusinessException;
 
     /**
+     * 列出一个 SHA1匹配 的文件
+     *
+     * @param fileSha1
+     * @return
+     */
+    FileModel selectBySha1(String fileSha1);
+
+    /**
      * 添加文件信息
      * 返回是否添加成功
      *

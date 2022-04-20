@@ -55,7 +55,7 @@ public interface FileObjectService {
      * @throws BusinessException
      */
     @Transactional
-    Integer uploadFile(Integer fileId, String fileName, String filePath, Long fileSize, String fileSHA1, String fileExt, FileStorageMediumEnum fileStorageMediumEnum, String source, Long lastModified) throws InvocationTargetException, IllegalAccessException, BusinessException;
+    Integer[] uploadFile(Integer fileId, String fileName, String filePath, Long fileSize, String fileSHA1, String fileExt, FileStorageMediumEnum fileStorageMediumEnum, String source, Long lastModified) throws InvocationTargetException, IllegalAccessException, BusinessException;
 
     /**
      * 修改文件对象上传状态信息
