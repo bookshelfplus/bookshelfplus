@@ -41,19 +41,26 @@
                     var renderData = [];
                     data.forEach(element => {
                         console.log(element);
+
+                        var watermarkAndAdvertising = [];
+                        if (element.watermark)
+                            watermarkAndAdvertising.push("有水印");
+                        if (element.advertising)
+                            watermarkAndAdvertising.push("有广告");
+                        watermarkAndAdvertising = watermarkAndAdvertising.join("，") || "无";
+
                         renderData.push({
                             编号: `${element.id}`,
-                            关联书籍: element.bookId === 0 ? "未关联书籍" : `<span class="overflow-omit" style="margin: 0 auto;">
+                            关联书籍: element.bookId === 0 ? "<span style=\"font-size: 10px;\">未关联书籍</span>" : `<span class="overflow-omit" style="margin: 0 auto;">
                                         ID: ${element.bookId}
                                         <a href="/book?id=${element.bookId}">查看</a>
                                         <a href="/dashboard/admin/book-manage/detail?id=${element.bookId}">修改</a>
                                     </span>`,
-                            文件名: `${element.fileDisplayName}`,
-                            格式: `${element.fileFormat}`,
-                            页数: `${element.numberOfPages}`,
-                            水印: `${element.watermark}`,
-                            广告: `${element.advertising}`,
-                            来源: `<span class="overflow-omit" style="font-size: 10px;">${element.bookOrigin}</span>`,
+                            文件名: `${element.fileName}`,
+                            格式: `${element.fileExt}`,
+                            页数: `${element.numberOfPages ?element.numberOfPages : ""}`,
+                            "水印&广告": `<span style="font-size: 10px;">${watermarkAndAdvertising}</span>`,
+                            来源: `<span class="overflow-omit" style="font-size: 10px;">${element.source}</span>`,
                             大小: `${element.fileSize}`,
                             "哈希(双击全选)": `<span class="overflow-omit" style="font-size: 10px;">${element.fileSha1}</span>`,
                             时间: `<span class="overflow-omit" style="font-size: 12px; line-height: 1.2em; display: block;"><nobr>

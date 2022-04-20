@@ -1,10 +1,3 @@
-<style>
-    /* 限制 哈希 列的宽度 */
-    tr>*:nth-child(8),
-    td>*:nth-child(8) {
-        max-width: 100px;
-    }
-</style>
 <p>
     <a href="<%= pageUrl %>../">返回上一级</a>
     &nbsp;
@@ -33,7 +26,6 @@
                                         ID: ${element.fileId}
                                         <a href="<%= pageUrl %>../detail?id=${element.fileId}">查看</a>
                                     </span>`,
-                            文件名: `${element.fileName}`,
                             修改日期: element.lastModified === 0 ? "未知" : `<span class="overflow-omit" style="font-size: 12px; line-height: 1.2em; display: block;"><nobr>
                                         ${new Date(element.lastModified).toISOString().replace(/T/, ' ').replace(/\..+/, '')}
                                     </nobr></span>`,
@@ -45,9 +37,8 @@
                                         提取码: ${element.fileShareCode}
                                     </nobr></span>`,
                             存储介质: `<span class="overflow-omit" style="font-size: 12px; line-height: 1.2em; display: block;"><nobr>
-                                        ${element.storageMediumType}
+                                        ${element.storageMedium}
                                     </nobr></span>`,
-                            "哈希(双击全选)": `<span class="overflow-omit" style="font-size: 10px;">${element.fileSha1 ? element.fileSha1 : "未知"}</span>`,
                             状态: `${(element.uploadStatus ? element.uploadStatus : "<span style='color: grey; font-weight: bold;'>未知</span>")
                                 .replace("SUCCESS", "<span style='color: green; font-weight: bold;'>成功</span>")
                                 .replace("UPLOADING", "<span style='color: orange; font-weight: bold;'>正在上传</span>")

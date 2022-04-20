@@ -85,11 +85,15 @@ public class QCloudCosUtils {
     }
 
     public Boolean doesObjectExist(String folder, String objectKey) {
+        return doesObjectExist(folder + objectKey);
+    }
+
+    public Boolean doesObjectExist(String filePath) {
         COSClient cosClient = createCOSClient();
         // 存储桶的命名格式为 BucketName-APPID，此处填写的存储桶名称必须为此格式
         String bucketName = qCloudCosConfig.getBucketName();
         // 对象键(Key)是对象在存储桶中的唯一标识。详情请参见 [对象键](https://cloud.tencent.com/document/product/436/13324)
-        String key = qCloudCosConfig.getKeyName() + folder + objectKey;
+        String key = qCloudCosConfig.getKeyName() + filePath;
         return cosClient.doesObjectExist(bucketName, key);
     }
 

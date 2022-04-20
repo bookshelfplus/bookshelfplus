@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 19/04/2022 22:46:17
+ Date: 20/04/2022 16:15:38
 */
 
 SET NAMES utf8mb4;
@@ -154,17 +154,16 @@ DROP TABLE IF EXISTS `file_info`;
 CREATE TABLE `file_info`  (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增编号',
   `book_id` int(11) NOT NULL,
-  `file_display_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
-  `file_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
-  `file_format` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
+  `file_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '文件名（不含扩展名）',
+  `file_ext` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
+  `file_size` bigint(20) UNSIGNED NOT NULL DEFAULT 0,
+  `file_sha1` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
   `number_of_pages` int(11) NOT NULL DEFAULT 0,
   `watermark` tinyint(1) NOT NULL DEFAULT 0,
   `advertising` tinyint(1) NOT NULL DEFAULT 0 COMMENT '1为已删除项',
-  `book_origin` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `source` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `file_create_at` datetime NOT NULL,
   `file_modified_at` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP,
-  `file_size` bigint(20) UNSIGNED NOT NULL DEFAULT 0,
-  `file_sha1` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
@@ -179,44 +178,17 @@ DROP TABLE IF EXISTS `file_object_info`;
 CREATE TABLE `file_object_info`  (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '编号',
   `file_id` int(11) NOT NULL,
-  `file_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '文件名（不含扩展名）',
-  `file_size` bigint(20) NOT NULL DEFAULT 0 COMMENT '文件大小',
-  `file_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '文件类型',
-  `storage_medium_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `upload_status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '上传状态（上传成功 SUCCESS，正在上传 UPLOADING，上传终止 NOT_EXIST）',
+  `storage_medium` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `file_path` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '本地文件保存相对路径（本地维护用，非线上使用）',
   `file_pwd` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
   `file_share_code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
-  `upload_status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '上传状态（上传成功 SUCCESS，正在上传 UPLOADING，上传终止 NOT_EXIST）',
-  `file_sha1` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '文件SHA1哈希',
   `last_modified` bigint(20) UNSIGNED NOT NULL DEFAULT 0 COMMENT '文件最后修改时间戳',
-  `additional_fields` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of file_object_info
--- ----------------------------
-
--- ----------------------------
--- Table structure for schedule_task
--- ----------------------------
-DROP TABLE IF EXISTS `schedule_task`;
-CREATE TABLE `schedule_task`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增id',
-  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '插入时间',
-  `schedule_time` datetime NOT NULL COMMENT '更新时间',
-  `action` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '任务名称',
-  `data` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '数据字段',
-  `task_guid` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'GUID唯一标识',
-  `associated_user_id` int(11) NOT NULL COMMENT '和此任务关联的用户',
-  `fail_time` tinyint(4) NOT NULL DEFAULT 0 COMMENT '失败次数',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `task_guid`(`task_guid`) USING BTREE,
-  INDEX `schedule_time`(`schedule_time`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of schedule_task
 -- ----------------------------
 
 -- ----------------------------

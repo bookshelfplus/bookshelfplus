@@ -8,9 +8,11 @@ import plus.bookshelf.Common.Error.BusinessErrorCode;
 import plus.bookshelf.Common.Error.BusinessException;
 import plus.bookshelf.Config.QCloudCosConfig;
 import plus.bookshelf.Dao.DO.FileDO;
+import plus.bookshelf.Dao.DO.FileObjectDO;
 import plus.bookshelf.Dao.Mapper.FileDOMapper;
 import plus.bookshelf.Dao.Mapper.FileObjectDOMapper;
 import plus.bookshelf.Service.Model.FileModel;
+import plus.bookshelf.Service.Model.FileObjectModel;
 import plus.bookshelf.Service.Service.CosPresignedUrlGenerateLogService;
 import plus.bookshelf.Service.Service.FileService;
 
@@ -119,13 +121,13 @@ public class FileServiceImpl implements FileService {
      * @throws IllegalAccessException
      */
     @Override
-    public Boolean addFile(FileModel fileModel) throws InvocationTargetException, IllegalAccessException {
-        FileDO fileDO = copyFileToDataObject(fileModel);
+    public Boolean addFile(FileModel fileModel) {
+        FileDO fileDO = convertFromFileModel(fileModel);
         int affectRows = fileDOMapper.insertSelective(fileDO);
         return affectRows > 0;
     }
 
-    private FileDO copyFileToDataObject(FileModel fileModel) throws InvocationTargetException, IllegalAccessException {
+    private FileDO convertFromFileModel(FileModel fileModel) {
         FileDO fileDO = new FileDO();
         BeanUtils.copyProperties(fileModel, fileDO);
         return fileDO;
@@ -149,5 +151,32 @@ public class FileServiceImpl implements FileService {
     @Override
     public Integer getLastInsertId() {
         return fileDOMapper.getLastInsertId();
+    }
+
+    /**
+     * 更新文件的SHA1值
+     *
+     * @return
+     */
+    @Override
+    public Boolean updateFileSha1(Integer fileId, String fileSha1) throws BusinessException {
+        if (fileId == null || fileId == 0) {
+            throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "fileId不能为空");
+        }
+        Integer affectRows = fileDOMapper.updateFileSha1(fileId, fileSha1);
+        return affectRows > 0;
+    }
+
+    /**
+     * 通过文件对象Id找到文件Id
+     *
+     * @param fileObjectId
+     * @return
+     */
+    @Override
+    public FileModel getFileByFileObjectId(Integer fileObjectId) {
+        FileDO fileDO = fileDOMapper.selectByPrimaryKey(fileObjectId);
+        FileModel fileModel = convertFromDataObject(fileDO);
+        return fileModel;
     }
 }

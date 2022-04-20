@@ -215,43 +215,7 @@
         <hr>
         <div class="download-container">
             <h3 id="scrollTarget">下载这本书</h3>
-            <div id="file-container"><% /*
-                <!-- <div class="file-item">
-                    <div class="file-title">
-                        <span class="file-name size20">bookshelf</span><span class="file-ext size16">.json</span>
-                        <span class="file-size size14" style="padding-left: 30px;">10.02MB</span>
-                    </div>
-                    <div class="file-detail">
-                        <span class="size14 overflow-hide">SHA1：<span class="file-sha1 size12">07b12eb2a5915282bf086a7913b0fd9720fc012c</span></span>
-                        <span class="file-copyright size14 overflow-hide">来源信息：中国地质大学（武汉）</span>
-                        <span class="file-copyright size14" style="margin-top: 12px; display: block;">下载方式：</span>
-                    </div>
-                    <div class="file-object">
-                        <div class="file-object-item">
-                            <div class="file-object-item-title">
-                                <img src="/assets/image/svg/baidu_netdisk.svg"/>
-                                <span>百度网盘</span>
-                            </div>
-                            <div class="file-object-item-content">
-                                提取码：abcd
-                            </div>
-                            <div class="file-object-item-link">
-                                <a href="" target="_blank">百度网盘</a>
-                            </div>
-                            <div class="outdated-feedback">
-                                <img src="/assets/image/svg/feedback.svg"/>
-                                <span class="outdated-feedback-tip">链接失效？点击反馈！</span>
-                            </div>
-                        </div>
-                        <div class="file-object-item">
-                            <a href="" target="_blank">阿里云盘</a>
-                        </div>
-                        <div class="file-object-item">
-                            <a href="" download="文件名.pdf">直链下载</a>
-                        </div>
-                    </div>
-                </div> --> */ %>
-            </div>
+            <div id="file-container"></div>
         </div>
         <p style="font-size: 12px;">
             * 由于直链下载成本很高，为降低运营成本，目前仅提供给登录用户使用。
@@ -466,14 +430,14 @@
             }
             function getLinkDOM(fileObjectInfo) {
                 // 获取文件下载链接DOM
-                var iconSrc = "/assets/image/svg/direct_link.svg", title = fileObjectInfo.storageMediumType, content = "", downloadLink = "";
+                var iconSrc = "/assets/image/svg/direct_link.svg", title = fileObjectInfo.storageMedium, content = "", downloadLink = "";
                 if(fileObjectInfo.fileShareCode != "" && fileObjectInfo.fileShareCode != null) {
                     content = `<span>提取码: <span class="click2copy" style="user-select: all; cursor: pointer;">${fileObjectInfo.fileShareCode}</span>&nbsp;</span>`; // 最后一个 &nbsp; 是为了保证选中时不会选中后面的回车
                     downloadLink = `<a class="baiduNetdiskLink" share-code="${fileObjectInfo.fileShareCode}" share-link="${fileObjectInfo.filePath}" style="cursor: pointer;" title="复制提取码并前往">前往</a>`;
                 } else {
                     downloadLink = `<a href="${fileObjectInfo.filePath}" target="_blank">前往</a>`;
                 }
-                switch (fileObjectInfo.storageMediumType) {
+                switch (fileObjectInfo.storageMedium) {
                     case "腾讯云对象存储":
                         title = "直链下载";
                         if (!localStorageUtils.getLoginStatus()) {
@@ -490,7 +454,7 @@
                         iconSrc = "/assets/image/svg/aliyun_drive.svg";
                         break;
                     default:
-                        title = fileObjectInfo.storageMediumType;
+                        title = fileObjectInfo.storageMedium;
                         downloadLink = `<a href="${fileObjectInfo.filePath}" target="_blank">前往</a>`;
                         break;
                 }
@@ -530,29 +494,29 @@
 
                         // 再处理文件
                         var fileContainer = document.getElementById("file-container");
-                        var innerHTML = [];
+                        var innerHtmlList = [];
                         for (let i = 0; i < data.file.length; i++) {
                             const fileInfo = data.file[i];
-                            innerHTML.push(`
+                            innerHtmlList.push(`
                                 <div class="file-item">
                                     <div class="file-title">
-                                        <span class="file-name size20">${fileInfo.fileName}</span><span class="file-ext size16">${fileInfo.fileFormat == "" ? "" : ("." + fileInfo.fileFormat)}</span>
+                                        <span class="file-name size20">${fileInfo.fileName}</span><span class="file-ext size16">${fileInfo.fileExt == "" ? "" : ("." + fileInfo.fileExt)}</span>
                                         <span class="file-size size14" style="padding-left: 30px;">${stringifyFileSize(fileInfo.fileSize)}</span>
                                     </div>
                                     <div class="file-detail">
-                                        <span class="overflow-hide file-sha1 size12">SHA1：<span class="">${fileInfo.fileSha1}</span></span>
-                                        <span class="file-copyright size14 overflow-hide">${fileInfo.bookOrigin == "" ? "" : ("来源信息：" + fileInfo.bookOrigin) }</span>
+                                        <span class="file-copyright size14 overflow-hide">${fileInfo.source == "" ? "" : ("来源信息：" + fileInfo.source) }</span>
                                         <span class="file-copyright size14" style="margin-top: 12px; display: block;">下载地址：</span>
                                     </div>
                                     <div class="file-object">
-                                        ${fileObjectList[fileInfo.id] ? fileObjectList[fileInfo.id].join('') : ""}
+                                        ${fileObjectList[fileInfo.id] ? fileObjectList[fileInfo.id].join('') : "暂无可用下载链接"}
                                     </div>
                                 </div>`
                             );
                         }
-                        fileContainer.innerHTML = innerHTML.join("");
 
-                        if (innerHTML.length == 0) {
+                        fileContainer.innerHTML = innerHtmlList.join("");
+
+                        if (innerHtmlList.length == 0) {
                             var fileItem = document.createElement("div");
                             fileItem.className = "file-item";
                             fileItem.style.textAlign = "center";

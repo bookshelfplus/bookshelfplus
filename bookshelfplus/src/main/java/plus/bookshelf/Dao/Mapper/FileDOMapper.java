@@ -87,4 +87,13 @@ public interface FileDOMapper {
      * @return
      */
     int getLastInsertId();
+
+    /**
+     * 更新文件的SHA1值
+     *
+     * @param id       文件Id
+     * @param fileSha1 文件的SHA1值
+     * @return
+     */
+    int updateFileSha1(Integer id, String fileSha1);
 }

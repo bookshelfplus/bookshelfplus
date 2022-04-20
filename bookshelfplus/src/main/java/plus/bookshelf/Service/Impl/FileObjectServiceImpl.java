@@ -12,7 +12,6 @@ import plus.bookshelf.Dao.DO.FileObjectDO;
 import plus.bookshelf.Dao.Mapper.FileObjectDOMapper;
 import plus.bookshelf.Service.Model.FileModel;
 import plus.bookshelf.Service.Model.FileObjectModel;
-import plus.bookshelf.Service.Model.UserModel;
 import plus.bookshelf.Service.Service.FileObjectService;
 
 import java.lang.reflect.InvocationTargetException;
@@ -61,10 +60,7 @@ public class FileObjectServiceImpl implements FileObjectService {
      * @return
      */
     @Override
-    public List<FileObjectModel> list(String token) throws InvocationTargetException, IllegalAccessException, BusinessException {
-
-        // 已经在 getUserByToken 方法中判断了 token 为空、不合法；用户不存在情况，此处无需再判断
-        UserModel userModel = userService.getUserByToken(redisTemplate, token);
+    public List<FileObjectModel> list() throws InvocationTargetException, IllegalAccessException, BusinessException {
 
         FileObjectDO[] fileObjectDOS = fileObjectDOMapper.selectAll();
 
@@ -122,7 +118,7 @@ public class FileObjectServiceImpl implements FileObjectService {
      * @param fileExt               文件扩展名
      * @param fileNameWithoutExt    文件名（不包含扩展名）
      * @param fileStorageMediumEnum 文件存储介质
-     * @param bookOrigin            文件来源
+     * @param source                文件来源
      * @return 返回文件Id
      * @throws InvocationTargetException
      * @throws IllegalAccessException
@@ -131,8 +127,8 @@ public class FileObjectServiceImpl implements FileObjectService {
     @Override
     @Transactional
     public Integer uploadFile(Integer fileId, String fileName, String filePath, Long fileSize, String fileSHA1,
-                              String fileExt, String fileNameWithoutExt, FileStorageMediumEnum fileStorageMediumEnum,
-                              String bookOrigin, Long lastModified
+                              String fileExt, FileStorageMediumEnum fileStorageMediumEnum,
+                              String source, Long lastModified
     ) throws InvocationTargetException, IllegalAccessException, BusinessException {
 
         if (fileId == 0) {
@@ -142,9 +138,8 @@ public class FileObjectServiceImpl implements FileObjectService {
             fileModel.setFileName(fileName);
             fileModel.setFileSize(fileSize);
             fileModel.setFileSha1(fileSHA1);
-            fileModel.setFileFormat(fileExt);
-            fileModel.setFileDisplayName(fileNameWithoutExt);
-            fileModel.setBookOrigin(bookOrigin);
+            fileModel.setFileExt(fileExt);
+            fileModel.setSource(source);
 
             // 其余使用默认设置
             fileModel.setBookId(0);
@@ -171,19 +166,14 @@ public class FileObjectServiceImpl implements FileObjectService {
 
         fileObjectModel.setFileId(fileId);
 
-        fileObjectModel.setFileName(fileName);
-        fileObjectModel.setFileSize(fileSize);
-        fileObjectModel.setFileType(fileExt);
-        fileObjectModel.setStorageMediumType(fileStorageMediumEnum.getStorageMediumName());
+        fileObjectModel.setStorageMedium(fileStorageMediumEnum.getStorageMediumName());
         fileObjectModel.setFilePath(filePath);
-        fileObjectModel.setFileSha1(fileSHA1);
         fileObjectModel.setUploadStatus("UPLOADING");
         fileObjectModel.setLastModified(lastModified);
 
         // 其余使用默认设置
         fileObjectModel.setFilePwd("");
         fileObjectModel.setFileShareCode("");
-        fileObjectModel.setAdditionalFields("");
 
         Boolean isSuccess = addFileObject(fileObjectModel);
         if (!isSuccess) {
@@ -199,7 +189,7 @@ public class FileObjectServiceImpl implements FileObjectService {
      * @param fileStatus
      */
     @Override
-    public Boolean updateFileStatus(Integer fileObjectId, String fileStatus) throws InvocationTargetException, IllegalAccessException {
+    public Boolean updateFileStatus(Integer fileObjectId, String fileStatus) {
         if (fileObjectId == null || fileObjectId == 0) {
             return false;
         }

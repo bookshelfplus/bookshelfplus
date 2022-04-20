@@ -56,4 +56,22 @@ public interface FileService {
      * @return
      */
     Integer getLastInsertId();
+
+    /**
+     * 更新文件的SHA1值
+     *
+     * @param fileId   文件Id
+     * @param fileSha1 文件SHA1值
+     * @return
+     * @throws BusinessException
+     */
+    Boolean updateFileSha1(Integer fileId, String fileSha1) throws BusinessException;
+
+    /**
+     * 通过文件对象Id找到文件Id
+     *
+     * @param fileObjectId
+     * @return
+     */
+    FileModel getFileByFileObjectId(Integer fileObjectId);
 }

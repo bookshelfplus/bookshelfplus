@@ -25,7 +25,7 @@ public interface FileObjectService {
      *
      * @return
      */
-    List<FileObjectModel> list(String token) throws InvocationTargetException, IllegalAccessException, BusinessException;
+    List<FileObjectModel> list() throws InvocationTargetException, IllegalAccessException, BusinessException;
 
     /**
      * 添加文件对象
@@ -46,16 +46,16 @@ public interface FileObjectService {
      * @param fileSize              文件大小
      * @param fileSHA1              文件SHA1
      * @param fileExt               文件扩展名
-     * @param fileNameWithoutExt    文件名（不包含扩展名）
+     * @param fileName              文件名（不包含扩展名）
      * @param fileStorageMediumEnum 文件存储介质
-     * @param bookOrigin            文件来源
+     * @param source                文件来源
      * @return 是否插入成功
      * @throws InvocationTargetException
      * @throws IllegalAccessException
      * @throws BusinessException
      */
     @Transactional
-    Integer uploadFile(Integer fileId, String fileName, String filePath, Long fileSize, String fileSHA1, String fileExt, String fileNameWithoutExt, FileStorageMediumEnum fileStorageMediumEnum, String bookOrigin, Long lastModified) throws InvocationTargetException, IllegalAccessException, BusinessException;
+    Integer uploadFile(Integer fileId, String fileName, String filePath, Long fileSize, String fileSHA1, String fileExt, FileStorageMediumEnum fileStorageMediumEnum, String source, Long lastModified) throws InvocationTargetException, IllegalAccessException, BusinessException;
 
     /**
      * 修改文件对象上传状态信息

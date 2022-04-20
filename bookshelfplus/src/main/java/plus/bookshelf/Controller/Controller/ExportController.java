@@ -261,7 +261,7 @@ public class ExportController extends BaseController {
             return;
         }
 
-        String[] headers = {""/*编号*/, "书名", "格式", "总页数", "语言", "是否有水印/广告", "扫描版/电子版", "文件大小", "来源信息 & 备注", "下载地址"}; // "作者", "出版社", "出版日期", "ISBN"
+        String[] headers = {""/*编号*/, "书名", "格式", "总页数", "语言", "是否有水印/广告", "扫描版/电子版", "文件大小", "来源", "下载地址"}; // "作者", "出版社", "出版日期", "ISBN"
         MarkdownTable markdownTable = MarkdownTable.create()
                 .setHeader(headers)
                 .setAlignment(MarkdownTable.Alignment.LEFT)
@@ -298,17 +298,17 @@ public class ExportController extends BaseController {
                 strings[5] = String.join("，", a);// 是否有水印/广告
                 // strings[6] = fileDO.getScan() ? "扫描版" : "电子版";// 扫描版/电子版
                 strings[7] = fileDO.getFileSize() + "";// 文件大小
-                strings[8] = fileDO.getBookOrigin() + "";// 来源信息 & 备注
+                strings[8] = fileDO.getSource() + "";// 来源信息 & 备注
                 List<String> url = new ArrayList<>();
                 StringBuilder download = new StringBuilder();
                 for (FileObjectNode fileObjectNode : fileNode.children) {
                     FileObjectDO fileObjectDO = fileObjectNode.current;
                     // 打印出当前书籍的文件对象信息
                     // System.out.println(getSpace(level - 1) + "\t\t\t[文件对象] " + fileObjectDO.getId() + "\t" + fileObjectDO.getFileName());
-                    if (Objects.equals(fileObjectDO.getStorageMediumType(), FileStorageMediumEnum.QCLOUD_COS.getStorageMediumName()))
+                    if (Objects.equals(fileObjectDO.getStorageMedium(), FileStorageMediumEnum.QCLOUD_COS.getStorageMediumName()))
                         continue;
                     download.append("[")
-                            .append(FileStorageMediumEnum.valueOf(fileObjectDO.getStorageMediumType()).getStorageMediumDisplayName())
+                            .append(FileStorageMediumEnum.valueOf(fileObjectDO.getStorageMedium()).getStorageMediumDisplayName())
                             .append("](")
                             .append(fileObjectDO.getFilePath())
                             .append(")");
