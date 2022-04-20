@@ -100,7 +100,7 @@ router.get('/dashboard/:group/:page/:subpage?', function (req, res) {
             },
             "category-manage": {
                 title: "分类管理",
-                baseTemplate: "form",
+                baseTemplate: "table",
                 pageTemplate: "CategoryManage",
             },
             "book-manage": {
