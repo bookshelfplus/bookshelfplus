@@ -52,11 +52,15 @@
         searchbox.value = keyword;
         if (keyword === "")
             searchbox.focus();
-        search({
-            tableElementId: "result-table",
-            searchText: keyword,
-            categoryId: null
-        });
+
+        function doSearch(keyword) {
+            search({
+                tableElementId: "result-table",
+                searchText: keyword,
+                categoryId: null
+            });
+        }
+        doSearch(keyword);
     </script>
 </body>
 </html>
