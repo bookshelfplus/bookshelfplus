@@ -61,11 +61,18 @@ public interface FileDOMapper {
     FileDO[] selectAll();
 
     /**
-     * 查询系统中的所有文件
+     * 查询系统中所有 SHA1匹配 和 未设置SHA1 的文件
      *
      * @return
      */
     FileDO[] selectBySha1WithNullValue(String fileSha1);
+
+    /**
+     * 查询系统中一个 SHA1匹配 的文件
+     *
+     * @return
+     */
+    FileDO selectBySha1(String fileSha1);
 
     /**
      * 列出文件支持的下载方式
@@ -87,4 +94,13 @@ public interface FileDOMapper {
      * @return
      */
     int getLastInsertId();
+
+    /**
+     * 更新文件的SHA1值
+     *
+     * @param id       文件Id
+     * @param fileSha1 文件的SHA1值
+     * @return
+     */
+    int updateFileSha1(Integer id, String fileSha1);
 }

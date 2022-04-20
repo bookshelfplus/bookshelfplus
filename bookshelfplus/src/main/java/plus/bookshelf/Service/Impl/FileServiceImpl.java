@@ -100,6 +100,18 @@ public class FileServiceImpl implements FileService {
         return fileModels;
     }
 
+    /**
+     * 列出一个 SHA1匹配 的文件
+     *
+     * @return
+     */
+    @Override
+    public FileModel selectBySha1(String fileSha1) {
+        FileDO fileDO = fileDOMapper.selectBySha1(fileSha1);
+        FileModel fileModel = convertFromDataObject(fileDO);
+        return fileModel;
+    }
+
     private FileModel convertFromDataObject(FileDO fileDO) {
         if (fileDO == null) {
             return null;
@@ -119,13 +131,13 @@ public class FileServiceImpl implements FileService {
      * @throws IllegalAccessException
      */
     @Override
-    public Boolean addFile(FileModel fileModel) throws InvocationTargetException, IllegalAccessException {
-        FileDO fileDO = copyFileToDataObject(fileModel);
+    public Boolean addFile(FileModel fileModel) {
+        FileDO fileDO = convertFromFileModel(fileModel);
         int affectRows = fileDOMapper.insertSelective(fileDO);
         return affectRows > 0;
     }
 
-    private FileDO copyFileToDataObject(FileModel fileModel) throws InvocationTargetException, IllegalAccessException {
+    private FileDO convertFromFileModel(FileModel fileModel) {
         FileDO fileDO = new FileDO();
         BeanUtils.copyProperties(fileModel, fileDO);
         return fileDO;
@@ -149,5 +161,32 @@ public class FileServiceImpl implements FileService {
     @Override
     public Integer getLastInsertId() {
         return fileDOMapper.getLastInsertId();
+    }
+
+    /**
+     * 更新文件的SHA1值
+     *
+     * @return
+     */
+    @Override
+    public Boolean updateFileSha1(Integer fileId, String fileSha1) throws BusinessException {
+        if (fileId == null || fileId == 0) {
+            throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "fileId不能为空");
+        }
+        Integer affectRows = fileDOMapper.updateFileSha1(fileId, fileSha1);
+        return affectRows > 0;
+    }
+
+    /**
+     * 通过文件对象Id找到文件Id
+     *
+     * @param fileObjectId
+     * @return
+     */
+    @Override
+    public FileModel getFileByFileObjectId(Integer fileObjectId) {
+        FileDO fileDO = fileDOMapper.selectByPrimaryKey(fileObjectId);
+        FileModel fileModel = convertFromDataObject(fileDO);
+        return fileModel;
     }
 }

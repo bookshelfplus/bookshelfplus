@@ -75,4 +75,11 @@ public interface FileObjectDOMapper {
      * @return
      */
     FileObjectDO[] selectFileObjectByBookId(Integer bookId);
+
+    /**
+     * 获取上一次插入的主键Id
+     *
+     * @return
+     */
+    int getLastInsertId();
 }

@@ -1,6 +1,5 @@
 <div class="searchBox">
     <input id="searchInput" type="text" placeholder="只需两步：搜索、下载  就这么简单" /><!--
-
     --><input id="searchButton" type="button" value="搜一下" />
 </div>
 <script>
@@ -45,13 +44,37 @@
     });
 
     // 搜索按钮点击事件
-    $('#searchButton').click(function () {
-        var searchBoxValue = $('#searchInput').val();
-        if (!searchBoxValue || searchBoxValue.trim() == "") {
-            // alert("请输入搜索内容");
-            // return;
-            window.location.href = "./search";
-        }
-        window.location.href = "./search?keyword=" + encodeURIComponent(searchBoxValue.trim());
-    });
+    if (location.pathname == "/" || !(window.history && history.pushState)) {
+        // 首页 或者不支持 history.pushState
+        $('#searchButton').click(function () {
+            var searchBoxValue = $('#searchInput').val();
+            if (!searchBoxValue || searchBoxValue.trim() == "") {
+                searchBoxValue = "";
+            }
+            window.location.href = "./search?keyword=" + encodeURIComponent(searchBoxValue.trim());
+        });
+    } else {
+        // 搜索页
+        $('#searchButton').click(function () {
+            var searchBoxValue = $('#searchInput').val();
+            // 如果搜索内容未变化，则不搜索
+            if (keyword == searchBoxValue.trim()) return;
+            if (!searchBoxValue || searchBoxValue.trim() == "") {
+                history.pushState({}, "", "./search"); // 第二个参数为保留参数
+            } else {
+                keyword = searchBoxValue.trim();
+                history.pushState({}, "", "./search?keyword=" + encodeURIComponent(keyword));
+                doSearch(keyword);
+            }
+        });
+
+        window.addEventListener('popstate', function (event) {
+            var requestParams = getParams();
+            var keyword = (requestParams["keyword"] || "").trim();
+            var searchbox = document.getElementById("searchInput");
+
+            searchbox.value = keyword;
+            doSearch(keyword);
+        });
+    }
 </script>
