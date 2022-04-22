@@ -9,6 +9,19 @@
             max-width: initial !important;
         }
 
+        #container {
+            margin-top: 50px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 4fr 6fr;
+            place-items: center;
+            grid-gap: 1rem;
+            margin: 0 auto;
+            max-width: 800px;
+        }
+
         #bookImage {
             /* width: 100%; */
             height: auto;
@@ -17,13 +30,16 @@
             margin-top: 60px;
         }
 
+        .group-button>* {
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+
         #favorties-button {
             width: 32px;
             height: 32px;
             user-select: none;
             cursor: pointer;
-            margin-top: 10px;
-            margin-bottom: 20px;
         }
 
         #favorties-button:hover {
@@ -46,16 +62,6 @@
         .download-link:hover #download-icon {
             width: 1.2em;
             opacity: 1;
-        }
-        .download-link * {
-            vertical-align: middle;
-        }
-
-        #book-details {
-            margin-top: 20px;
-        }
-        #book-details>p {
-            margin: 0;
         }
     </style>
     <!-- 文件下载部分 -->
@@ -208,11 +214,9 @@
 <body>
     <%- include("./component/navbar.html"); %>
     <main class="main">
-        <!-- <h1><%= title %></h1> -->
-        <div id="container">
-
-        </div>
-        <hr>
+        <!-- <h1><%= headText %></h1> -->
+        <div id="container"></div>
+        <hr style="opacity: 0.3; margin-top: 30px; margin-bottom: 25px;">
         <div class="download-container">
             <h3 id="scrollTarget">下载这本书</h3>
             <div id="file-container"></div>
@@ -259,30 +263,27 @@
                     }
                     document.getElementById("container").innerHTML = `
                     <div class="grid">
-                        <div class="grid-item">
-                            <img id="bookImage" src="${data.thumbnail}" alt="书籍缩略图">
+                        <div style="width: 100%;">
+                            <img id="bookImage" src="${data.thumbnail == "" ? "/assets/image/svg/no_photo.svg" : data.thumbnail}" alt="书籍缩略图">
                         </div>
-                        <div class="grid-item">
+                        <div style="text-align: left; min-height: 80%; min-width: 200px;">
                             <h1>${data.bookName}</h1>
-                        </div>
-                        <div class="grid-item">
-                            <img id="favorties-button" src="/assets/image/svg/favorites_empty.svg" style="visibility: hidden; opacity: 1; transition: all 0.3s;" title="点击收藏/取消收藏" onclick="alert('请先登录！')" />
-                            <!-- 预加载图片 --><img src="/assets/image/svg/favorites_fill.svg" style="display: none;" />
-                        </div>
-                        <div class="grid-item">
-                            <a class="download-link" href="javaScript:scrollToTarget()"><img id="download-icon" src="/assets/image/svg/download.svg" /><span>下载这本书</span></a>
-                            <!--<a class="download-link" href="/download/?bookId=${data.id}"><img id="download-icon" src="/assets/image/svg/download.svg" /><span>下载这本书</span></a>-->
+                            <p>
+                                作者：${data.author}<br>
+                                所属分类：<a href="/category?id=${data.category.id}">${data.category.name}</a><br>
+                                语言：${data.language}<br>
+                                出版社：${data.publishingHouse}<br>
+                            </p>
+                            <div class="group-button">
+                                <img id="favorties-button" src="/assets/image/svg/favorites_empty.svg" style="visibility: hidden; opacity: 1; transition: all 0.3s;" title="点击收藏/取消收藏" onclick="alert('请先登录！')" />
+                                <!-- 预加载图片 --><img src="/assets/image/svg/favorites_fill.svg" style="display: none;" />
+
+                                <a class="download-link" href="javaScript:scrollToTarget()"><img id="download-icon" src="/assets/image/svg/download.svg" /><span>下载这本书</span></a>
+                                <!--<a class="download-link" href="/download/?bookId=${data.id}"><img id="download-icon" src="/assets/image/svg/download.svg" /><span>下载这本书</span></a>-->
+                            </div>
                         </div>
                     </div>
-                    <hr style="opacity: 0.3; margin-top: 30px; margin-bottom: 25px;">
                     <div>
-                        <div class="grid-item" id="book-details">
-                            <p>作者：${data.author}</p>
-                            <p>所属分类：<a href="/category?id=${data.category.id}">${data.category.name}</a></p>
-                            <p>语言：${data.language}</p>
-                            <p>出版社：${data.publishingHouse}</p>
-                            <p></p>
-                        </div>
                         <h2>书本介绍</h2>
                         <p>${data.description}</p>
                         <h2>版权信息</h2>
