@@ -567,7 +567,7 @@
             var fileKeyForCos = fileObject.filePath;
 
             var visitorId = await getVisitorId();
-            postRequest("/file/cos/get", { fileSha1: fileObject.fileSha1, fileNameAndExt: fileNameForUser, token: localStorageUtils.getToken(), visitorId: visitorId, expireMinute: 30 })
+            postRequest("/file/object/cos/get", { fileSha1: fileObject.fileSha1, fileNameAndExt: fileNameForUser, token: localStorageUtils.getToken(), visitorId: visitorId, expireMinute: 30 })
                 .then(function (response) {
                     var axiosData = response.data;
                     var status = axiosData.status;

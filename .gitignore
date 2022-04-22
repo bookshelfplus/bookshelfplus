@@ -22,3 +22,7 @@ TODO*
 
 # 不提交仓库代码量统计相关文件
 .VSCodeCounter
+
+# 排除开发测试文件
+bookshelfplus-dev.sql
+development.md

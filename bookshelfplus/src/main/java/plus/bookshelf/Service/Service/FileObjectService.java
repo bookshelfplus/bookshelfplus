@@ -93,4 +93,13 @@ public interface FileObjectService {
      * @throws BusinessException
      */
     List<FileObjectModel> getFileObjectListByFileId(Integer fileId) throws InvocationTargetException, IllegalAccessException, BusinessException;
+
+    /**
+     * 删除文件对象
+     *
+     * @param fileObjectId
+     * @return
+     * @throws BusinessException
+     */
+    Integer deleteFileObject(Integer fileObjectId) throws BusinessException;
 }

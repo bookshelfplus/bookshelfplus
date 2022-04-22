@@ -5,6 +5,8 @@ import com.qcloud.cos.ClientConfig;
 import com.qcloud.cos.Headers;
 import com.qcloud.cos.auth.BasicCOSCredentials;
 import com.qcloud.cos.auth.COSCredentials;
+import com.qcloud.cos.exception.CosClientException;
+import com.qcloud.cos.exception.CosServiceException;
 import com.qcloud.cos.http.HttpMethodName;
 import com.qcloud.cos.http.HttpProtocol;
 import com.qcloud.cos.model.GeneratePresignedUrlRequest;
@@ -84,6 +86,13 @@ public class QCloudCosUtils {
         return _cosClient;
     }
 
+    /**
+     * 判断文件是否存在
+     *
+     * @param folder
+     * @param objectKey
+     * @return
+     */
     public Boolean doesObjectExist(String folder, String objectKey) {
         return doesObjectExist(folder + objectKey);
     }
@@ -95,6 +104,36 @@ public class QCloudCosUtils {
         // 对象键(Key)是对象在存储桶中的唯一标识。详情请参见 [对象键](https://cloud.tencent.com/document/product/436/13324)
         String key = qCloudCosConfig.getKeyName() + filePath;
         return cosClient.doesObjectExist(bucketName, key);
+    }
+
+    /**
+     * 删除文件
+     *
+     * @param folder
+     * @param objectKey
+     * @return
+     */
+    public Boolean deleteObject(String folder, String objectKey) {
+        return deleteObject(folder + objectKey);
+    }
+
+    public Boolean deleteObject(String filePath) {
+        COSClient cosClient = createCOSClient();
+        // 存储桶的命名格式为 BucketName-APPID，此处填写的存储桶名称必须为此格式
+        String bucketName = qCloudCosConfig.getBucketName();
+        // 对象键(Key)是对象在存储桶中的唯一标识。详情请参见 [对象键](https://cloud.tencent.com/document/product/436/13324)
+        String key = qCloudCosConfig.getKeyName() + filePath;
+
+        // refer: https://cloud.tencent.com/document/product/436/65939#.E5.88.A0.E9.99.A4.E5.AF.B9.E8.B1.A1
+        try {
+            cosClient.deleteObject(bucketName, key);
+            return true;
+        } catch (CosServiceException e) {
+            e.printStackTrace();
+        } catch (CosClientException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     /**

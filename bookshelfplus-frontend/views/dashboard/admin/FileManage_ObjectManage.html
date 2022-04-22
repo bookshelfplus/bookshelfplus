@@ -43,7 +43,7 @@
                             管理: `<span span class="overflow-omit" style="margin: 0 auto;">
                                         <a href="javascript:refreshFileObjectStatus(${element.id});">刷新状态</a>
                                         <a href="<%= pageUrl %>../object-detail?id=${element.id}">修改(TODO)</a>
-                                        <a href="javascript:deleteBook(${element.id});">删除(TODO)</a>
+                                        <a href="javascript:deleteFileObject(${element.id});">删除</a>
                                     </span >`,
                         })
                     });
@@ -78,6 +78,32 @@
                     console.log(data);
                     alert("刷新成功！");
                     list({ tableElementId: "book-table" });
+                } else {
+                    alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
+                }
+            }).catch(function (error) {
+                console.log(error);
+                alert("无法连接到服务器，请检查网络连接！");
+            });
+    }
+
+    // 删除文件对象
+    function deleteFileObject(deleteFileObjectId) {
+        if (!confirm(`确认要删除编号为 ${deleteFileObjectId} 的文件对象吗？`)) return;
+
+        postRequest("/file/object/delete", { token: localStorageUtils.getToken(), id: deleteFileObjectId })
+            .then(function (responseData) {
+                var axiosData = responseData.data;
+                var status = axiosData.status;
+                var data = axiosData.data;
+                if (status === "success") {
+                    console.log(data)
+                    if (data == "success") {
+                        list({ tableElementId: "book-table" });
+                        alert("删除成功！");
+                    } else {
+                        alert("删除失败！");
+                    }
                 } else {
                     alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
                 }

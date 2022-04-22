@@ -348,6 +348,31 @@ https://console.cloud.tencent.com/cos/bucket
 
 ![image-20220407221534955](docs/image/image-20220407221534955.png)
 
+>需要注意的是，http 和 https ，www 和 不带www 需要都需要配置。
+>
+>例如，若您配置后用户可以通过 http://bookshelf.plus、http://www.bookshelf.plus、https://bookshelf.plus、https://www.bookshelf.plus 域名访问到，那么需要配置如下：
+>
+>```
+>http://bookshelf.plus
+>http://www.bookshelf.plus
+>https://bookshelf.plus
+>https://www.bookshelf.plus
+>```
+>
+>若您在二级域名下部署，例如 site.bookshelf.plus ，那么需要配置如下：
+>
+>```
+>http://site.bookshelf.plus
+>https://site.bookshelf.plus
+>```
+>
+>对于上述几种情况，您也可以使用通配符，以允许域名下所有子域对资源的访问。
+>
+>```
+>http://*.bookshelf.plus
+>https://*.bookshelf.plus
+>```
+
 
 
 ###### 配置自定义 CDN 加速域名（TODO）

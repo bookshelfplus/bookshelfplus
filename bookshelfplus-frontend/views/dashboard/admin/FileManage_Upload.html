@@ -366,7 +366,7 @@
         };
         console.log(postParams);
         // 获取预授权URL
-        postRequest("/file/cos/put", postParams)
+        postRequest("/file/object/cos/put", postParams)
             .then(function (response) {
                 var axiosData = response.data;
                 var status = axiosData.status;

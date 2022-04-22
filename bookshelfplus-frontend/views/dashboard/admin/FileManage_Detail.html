@@ -1,11 +1,11 @@
+<p>
+    <a href="<%= pageUrl %>../">返回文件管理</a>
+</p>
 <h3>文件详情</h3>
-<div id="file-detail-container">
-</div>
+<div id="file-detail-container"></div>
 <hr>
 <h3>关联文件对象</h3>
-<div id="file-object-container">
-
-</div>
+<div id="file-object-container"></div>
 
 <!-- 获取参数 -->
 <script src="/assets/javascripts/getParams.js"></script>
@@ -43,7 +43,7 @@
                             <tr><td>文件大小</td><td>${stringifyFileSize(data.fileSize)}</td></tr>
                             <tr><td>SHA1</td><td>${data.fileSha1}</td></tr>
                             <tr><td>文件Id</td><td>${data.id}</td></tr>
-                            <tr><td>关联书籍Id</td><td>${data.bookId}</td></tr>
+                            <tr><td>关联书籍Id</td><td>${data.bookId == 0 ? "未关联书籍" : data.bookId}</td></tr>
                             <tr><td>是否有广告</td><td>${data.advertising ? "是" : "否"}</td></tr>
                             <tr><td>是否有水印</td><td>${data.watermark ? "是" : "否"}</td></tr>
                             <tr><td>文件创建日期</td><td>${data.fileCreateAt}</td></tr>

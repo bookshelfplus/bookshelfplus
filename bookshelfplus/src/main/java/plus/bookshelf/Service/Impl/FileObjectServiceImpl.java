@@ -8,10 +8,13 @@ import org.springframework.transaction.annotation.Transactional;
 import plus.bookshelf.Common.Enum.FileStorageMediumEnum;
 import plus.bookshelf.Common.Error.BusinessErrorCode;
 import plus.bookshelf.Common.Error.BusinessException;
+import plus.bookshelf.Common.FileManager.QCloudCosUtils;
+import plus.bookshelf.Config.QCloudCosConfig;
 import plus.bookshelf.Dao.DO.FileObjectDO;
 import plus.bookshelf.Dao.Mapper.FileObjectDOMapper;
 import plus.bookshelf.Service.Model.FileModel;
 import plus.bookshelf.Service.Model.FileObjectModel;
+import plus.bookshelf.Service.Service.CosPresignedUrlGenerateLogService;
 import plus.bookshelf.Service.Service.FileObjectService;
 
 import java.lang.reflect.InvocationTargetException;
@@ -34,6 +37,12 @@ public class FileObjectServiceImpl implements FileObjectService {
 
     @Autowired
     FileServiceImpl fileService;
+
+    @Autowired
+    QCloudCosConfig qCloudCosConfig;
+
+    @Autowired
+    CosPresignedUrlGenerateLogService cosPresignedUrlGenerateLogService;
 
     /**
      * 通过书本Id获取关联文件，进而获取所有关联文件对应的文件对象
@@ -251,5 +260,42 @@ public class FileObjectServiceImpl implements FileObjectService {
         }
 
         return fileObjectModels;
+    }
+
+    /**
+     * 删除文件对象
+     *
+     * @param fileObjectId
+     * @return
+     * @throws BusinessException
+     */
+    @Override
+    public Integer deleteFileObject(Integer fileObjectId) throws BusinessException {
+        if (fileObjectId == null || fileObjectId == 0) {
+            throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "文件对象 Id 不能为空");
+        }
+
+        FileObjectDO fileObjectDO = fileObjectDOMapper.selectByPrimaryKey(fileObjectId);
+        if (fileObjectDO == null) {
+            throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "文件对象不存在，或许您已经删掉这个文件了，刷新下页面吧");
+        }
+
+        // 删除对象存储中的文件
+        QCloudCosUtils qCloudCosUtils = new QCloudCosUtils(qCloudCosConfig, cosPresignedUrlGenerateLogService);
+        Boolean isSuccess = qCloudCosUtils.deleteObject(fileObjectDO.getFilePath());
+        if (!isSuccess) {
+            throw new BusinessException(BusinessErrorCode.UNKNOWN_ERROR, "删除文件对象失败，请稍后重试");
+        }
+
+        // 确认文件是否被删除
+        Boolean isStillExist = qCloudCosUtils.doesObjectExist(fileObjectDO.getFilePath());
+        if (isStillExist) {
+            //
+            throw new BusinessException(BusinessErrorCode.UNKNOWN_ERROR, "删除腾讯云COS存储桶中文件出现异常，请稍后重试");
+        }
+
+        // 删除数据库中记录
+        int affecctRows = fileObjectDOMapper.deleteByPrimaryKey(fileObjectId);
+        return affecctRows;
     }
 }
