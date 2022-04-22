@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 20/04/2022 16:15:38
+ Date: 22/04/2022 17:27:42
 */
 
 SET NAMES utf8mb4;
@@ -33,22 +33,11 @@ CREATE TABLE `book_info`  (
   `thumbnail` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '缩略图',
   `author` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '作者',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of book_info
 -- ----------------------------
-INSERT INTO `book_info` VALUES (1, '程序员小墨1', '这是书栖网的第1本书', 38, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, 'https://img14.360buyimg.com/pop/jfs/t1/141705/31/25225/853702/61a85f89Ef68c838b/929ded96a4a7579e.png', '小墨');
-INSERT INTO `book_info` VALUES (2, '程序员小墨2', '这是书栖网的第2本书', 20, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, 'https://img14.360buyimg.com/pop/jfs/t1/141705/31/25225/853702/61a85f89Ef68c838b/929ded96a4a7579e.png', '小墨');
-INSERT INTO `book_info` VALUES (3, '程序员小墨3', '这是书栖网的第3本书', 1, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, 'https://img14.360buyimg.com/pop/jfs/t1/141705/31/25225/853702/61a85f89Ef68c838b/929ded96a4a7579e.png', '小墨');
-INSERT INTO `book_info` VALUES (4, '程序员小墨4', '这是书栖网的第4本书', 5, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, 'https://img14.360buyimg.com/pop/jfs/t1/141705/31/25225/853702/61a85f89Ef68c838b/929ded96a4a7579e.png', '小墨');
-INSERT INTO `book_info` VALUES (5, '程序员小墨5', '这是书栖网的第5本书', 4, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, 'https://img14.360buyimg.com/pop/jfs/t1/141705/31/25225/853702/61a85f89Ef68c838b/929ded96a4a7579e.png', '小墨');
-INSERT INTO `book_info` VALUES (6, '程序员小墨6', '这是书栖网的第6本书', 6, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, 'https://img14.360buyimg.com/pop/jfs/t1/141705/31/25225/853702/61a85f89Ef68c838b/929ded96a4a7579e.png', '小墨');
-INSERT INTO `book_info` VALUES (7, '程序员小墨7', '这是书栖网的第7本书', 7, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, 'https://img14.360buyimg.com/pop/jfs/t1/141705/31/25225/853702/61a85f89Ef68c838b/929ded96a4a7579e.png', '小墨');
-INSERT INTO `book_info` VALUES (8, '程序员小墨8', '这是书栖网的第8本书', 8, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, 'https://img14.360buyimg.com/pop/jfs/t1/141705/31/25225/853702/61a85f89Ef68c838b/929ded96a4a7579e.png', '小墨');
-INSERT INTO `book_info` VALUES (9, '程序员小墨9', '这是书栖网的第9本书', 9, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, 'https://img14.360buyimg.com/pop/jfs/t1/141705/31/25225/853702/61a85f89Ef68c838b/929ded96a4a7579e.png', '小墨');
-INSERT INTO `book_info` VALUES (10, '这是一本名字肥肠肥肠滴长滴书', '这是书栖网的第10本书，外加一个超级超级超级超级超级超级超级超级超级超级超级超级超级超级超级超级长的简介', 10, '电子工业出版社', 'Chinese', '中国工信出版集团', 0, 'https://img14.360buyimg.com/pop/jfs/t1/141705/31/25225/853702/61a85f89Ef68c838b/929ded96a4a7579e.png', '小墨');
-INSERT INTO `book_info` VALUES (11, '书本名称', '这是一本很有意义的书', 1, '中国地质大学（武汉）出版社出版', 'Chinese', '版权没有', 1, 'https://img14.360buyimg.com/pop/jfs/t1/141705/31/25225/853702/61a85f89Ef68c838b/929ded96a4a7579e.png', '消息');
 
 -- ----------------------------
 -- Table structure for category_info
@@ -68,49 +57,49 @@ CREATE TABLE `category_info`  (
 -- ----------------------------
 -- Records of category_info
 -- ----------------------------
-INSERT INTO `category_info` VALUES (1, 'Git与代码版本管理', '简介123简介123简介123简介123简介123简介123简介123简介123简介123简介123简介123简介123简介123简介123简介123简介123简介123简介123简介123', 1, 1, 1, 0);
-INSERT INTO `category_info` VALUES (2, 'LeetCode与面试', '简介123', 1, 2, 1, 0);
-INSERT INTO `category_info` VALUES (3, '操作系统（Android、Linux等）', '简介123', 1, 3, 1, 0);
-INSERT INTO `category_info` VALUES (4, 'Android', '简介123', 1, 1, 2, 3);
-INSERT INTO `category_info` VALUES (5, 'Linux', '简介123', 1, 2, 2, 3);
-INSERT INTO `category_info` VALUES (6, '产品与时代', '简介123', 1, 4, 1, 0);
-INSERT INTO `category_info` VALUES (7, '分布式与高并发（Hadoop、ElasticSearch、区块链、架构）', '简介123', 1, 5, 1, 0);
-INSERT INTO `category_info` VALUES (8, 'ElasticSearch 分布式搜索引擎', '简介123', 1, 1, 2, 7);
-INSERT INTO `category_info` VALUES (9, 'Hadoop', '简介123', 1, 2, 2, 7);
-INSERT INTO `category_info` VALUES (10, '架构', '简介123', 1, 3, 2, 7);
-INSERT INTO `category_info` VALUES (11, '区块链', '简介123', 1, 4, 2, 7);
-INSERT INTO `category_info` VALUES (12, '机器学习', '简介123', 1, 6, 1, 0);
-INSERT INTO `category_info` VALUES (13, '计算机基础（计算机组成原理、计算机网络、数据结构与算法）', '简介123', 1, 7, 1, 0);
-INSERT INTO `category_info` VALUES (14, '计算机网络', '简介123', 1, 1, 2, 13);
-INSERT INTO `category_info` VALUES (15, '计算机组成原理', '简介123', 1, 2, 2, 13);
-INSERT INTO `category_info` VALUES (16, '数据结构与算法', '简介123', 1, 3, 2, 13);
-INSERT INTO `category_info` VALUES (17, '开发语言（C、C++、Java、Go、Python、HTML、JavaScript、CSS、汇编等）', '简介123', 1, 8, 1, 0);
-INSERT INTO `category_info` VALUES (18, 'C++', '简介123', 1, 2, 2, 17);
-INSERT INTO `category_info` VALUES (19, 'Go', '简介123', 1, 3, 2, 17);
-INSERT INTO `category_info` VALUES (20, 'Java', '简介123', 1, 4, 2, 17);
-INSERT INTO `category_info` VALUES (21, 'Java工具', '简介123', 1, 1, 3, 20);
-INSERT INTO `category_info` VALUES (22, 'Java基础', '简介123', 1, 2, 3, 20);
-INSERT INTO `category_info` VALUES (23, 'Netty', '简介123', 1, 3, 3, 20);
-INSERT INTO `category_info` VALUES (24, 'Spring', '简介123', 1, 4, 3, 20);
-INSERT INTO `category_info` VALUES (25, '线程', '简介123', 1, 5, 3, 20);
-INSERT INTO `category_info` VALUES (26, '虚拟机', '简介123', 1, 6, 3, 20);
-INSERT INTO `category_info` VALUES (27, 'Python', '简介123', 1, 5, 2, 17);
-INSERT INTO `category_info` VALUES (28, '汇编语言', '简介123', 1, 6, 2, 17);
-INSERT INTO `category_info` VALUES (29, '前端（HTML、JavaScript、CSS）', '简介123', 1, 7, 2, 17);
-INSERT INTO `category_info` VALUES (30, '设计模式', '简介123', 1, 9, 1, 0);
-INSERT INTO `category_info` VALUES (31, '数据库（MySQL、Redis、SQLite、Mybatis、MongoDB等）', '简介123', 1, 10, 1, 0);
-INSERT INTO `category_info` VALUES (32, 'MongoDB', '简介123', 1, 1, 2, 31);
-INSERT INTO `category_info` VALUES (33, 'Mybatis', '简介123', 1, 2, 2, 31);
-INSERT INTO `category_info` VALUES (34, 'MySQL', '简介123', 1, 3, 2, 31);
-INSERT INTO `category_info` VALUES (35, 'Redis', '简介123', 1, 4, 2, 31);
-INSERT INTO `category_info` VALUES (36, 'SQLite', '简介123', 1, 5, 2, 31);
-INSERT INTO `category_info` VALUES (37, '消息队列', '简介123', 1, 11, 1, 0);
-INSERT INTO `category_info` VALUES (38, 'C语言', '简介123', 1, 1, 2, 17);
-INSERT INTO `category_info` VALUES (39, 'Spring Boot', '简介123', 1, 7, 3, 20);
-INSERT INTO `category_info` VALUES (40, 'Java进阶', '简介123', 1, 8, 3, 20);
-INSERT INTO `category_info` VALUES (41, 'Java Web', '简介123', 1, 9, 3, 20);
-INSERT INTO `category_info` VALUES (42, 'Spring Cloud', '简介123', 1, 10, 3, 20);
-INSERT INTO `category_info` VALUES (43, '其他', '简介123', 1, 12, 1, 0);
+INSERT INTO `category_info` VALUES (1, 'Git与代码版本管理', '暂无简介', 1, 1, 1, 0);
+INSERT INTO `category_info` VALUES (2, 'LeetCode与面试', '暂无简介', 1, 2, 1, 0);
+INSERT INTO `category_info` VALUES (3, '操作系统（Android、Linux等）', '暂无简介', 1, 3, 1, 0);
+INSERT INTO `category_info` VALUES (4, 'Android', '暂无简介', 1, 1, 2, 3);
+INSERT INTO `category_info` VALUES (5, 'Linux', '暂无简介', 1, 2, 2, 3);
+INSERT INTO `category_info` VALUES (6, '产品与时代', '暂无简介', 1, 4, 1, 0);
+INSERT INTO `category_info` VALUES (7, '分布式与高并发（Hadoop、ElasticSearch、区块链、架构）', '暂无简介', 1, 5, 1, 0);
+INSERT INTO `category_info` VALUES (8, 'ElasticSearch 分布式搜索引擎', '暂无简介', 1, 1, 2, 7);
+INSERT INTO `category_info` VALUES (9, 'Hadoop', '暂无简介', 1, 2, 2, 7);
+INSERT INTO `category_info` VALUES (10, '架构', '暂无简介', 1, 3, 2, 7);
+INSERT INTO `category_info` VALUES (11, '区块链', '暂无简介', 1, 4, 2, 7);
+INSERT INTO `category_info` VALUES (12, '机器学习', '暂无简介', 1, 6, 1, 0);
+INSERT INTO `category_info` VALUES (13, '计算机基础（计算机组成原理、计算机网络、数据结构与算法）', '暂无简介', 1, 7, 1, 0);
+INSERT INTO `category_info` VALUES (14, '计算机网络', '暂无简介', 1, 1, 2, 13);
+INSERT INTO `category_info` VALUES (15, '计算机组成原理', '暂无简介', 1, 2, 2, 13);
+INSERT INTO `category_info` VALUES (16, '数据结构与算法', '暂无简介', 1, 3, 2, 13);
+INSERT INTO `category_info` VALUES (17, '开发语言（C、C++、Java、Go、Python、HTML、JavaScript、CSS、汇编等）', '暂无简介', 1, 8, 1, 0);
+INSERT INTO `category_info` VALUES (18, 'C++', '暂无简介', 1, 2, 2, 17);
+INSERT INTO `category_info` VALUES (19, 'Go', '暂无简介', 1, 3, 2, 17);
+INSERT INTO `category_info` VALUES (20, 'Java', '暂无简介', 1, 4, 2, 17);
+INSERT INTO `category_info` VALUES (21, 'Java工具', '暂无简介', 1, 1, 3, 20);
+INSERT INTO `category_info` VALUES (22, 'Java基础', '暂无简介', 1, 2, 3, 20);
+INSERT INTO `category_info` VALUES (23, 'Netty', '暂无简介', 1, 3, 3, 20);
+INSERT INTO `category_info` VALUES (24, 'Spring', '暂无简介', 1, 4, 3, 20);
+INSERT INTO `category_info` VALUES (25, '线程', '暂无简介', 1, 5, 3, 20);
+INSERT INTO `category_info` VALUES (26, '虚拟机', '暂无简介', 1, 6, 3, 20);
+INSERT INTO `category_info` VALUES (27, 'Python', '暂无简介', 1, 5, 2, 17);
+INSERT INTO `category_info` VALUES (28, '汇编语言', '暂无简介', 1, 6, 2, 17);
+INSERT INTO `category_info` VALUES (29, '前端（HTML、JavaScript、CSS）', '暂无简介', 1, 7, 2, 17);
+INSERT INTO `category_info` VALUES (30, '设计模式', '暂无简介', 1, 9, 1, 0);
+INSERT INTO `category_info` VALUES (31, '数据库（MySQL、Redis、SQLite、Mybatis、MongoDB等）', '暂无简介', 1, 10, 1, 0);
+INSERT INTO `category_info` VALUES (32, 'MongoDB', '暂无简介', 1, 1, 2, 31);
+INSERT INTO `category_info` VALUES (33, 'Mybatis', '暂无简介', 1, 2, 2, 31);
+INSERT INTO `category_info` VALUES (34, 'MySQL', '暂无简介', 1, 3, 2, 31);
+INSERT INTO `category_info` VALUES (35, 'Redis', '暂无简介', 1, 4, 2, 31);
+INSERT INTO `category_info` VALUES (36, 'SQLite', '暂无简介', 1, 5, 2, 31);
+INSERT INTO `category_info` VALUES (37, '消息队列', '暂无简介', 1, 11, 1, 0);
+INSERT INTO `category_info` VALUES (38, 'C语言', '暂无简介', 1, 1, 2, 17);
+INSERT INTO `category_info` VALUES (39, 'Spring Boot', '暂无简介', 1, 7, 3, 20);
+INSERT INTO `category_info` VALUES (40, 'Java进阶', '暂无简介', 1, 8, 3, 20);
+INSERT INTO `category_info` VALUES (41, 'Java Web', '暂无简介', 1, 9, 3, 20);
+INSERT INTO `category_info` VALUES (42, 'Spring Cloud', '暂无简介', 1, 10, 3, 20);
+INSERT INTO `category_info` VALUES (43, '其他', '暂无简介', 1, 12, 1, 0);
 
 -- ----------------------------
 -- Table structure for cos_presigned_url_generate_log
@@ -125,7 +114,7 @@ CREATE TABLE `cos_presigned_url_generate_log`  (
   `file_path` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '下载的文件链接',
   `url_guid` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '链接生成时创建的全局唯一NanoID，便于出现异常下载记录与腾讯云下载日志做对应',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of cos_presigned_url_generate_log
@@ -141,7 +130,7 @@ CREATE TABLE `failure_feedback`  (
   `file_object_id` int(11) NOT NULL DEFAULT 0,
   `user_id` int(11) NOT NULL DEFAULT 0,
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '失效反馈' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '失效反馈' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of failure_feedback
@@ -254,7 +243,7 @@ CREATE TABLE `user_book_favorites_relation`  (
   INDEX `book_id`(`book_id`) USING BTREE,
   CONSTRAINT `user_book_favorites_relation_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user_info` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT,
   CONSTRAINT `user_book_favorites_relation_ibfk_2` FOREIGN KEY (`book_id`) REFERENCES `book_info` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of user_book_favorites_relation
@@ -276,12 +265,12 @@ CREATE TABLE `user_info`  (
   `weixin_third_party_auth_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `qq_third_party_auth_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of user_info
 -- ----------------------------
-INSERT INTO `user_info` VALUES (1, 'admin', '7c4a8d09ca3762af61e59520943dc26494f8941b', '小小墨', 'ADMIN', '/密码/123456/', '', '', '', '');
+INSERT INTO `user_info` VALUES (1, 'admin', '7c4a8d09ca3762af61e59520943dc26494f8941b', '小小墨（密码是123456）', 'ADMIN', '', '', '', '', '');
 
 -- ----------------------------
 -- Table structure for visitor_fingerprint_log
@@ -294,7 +283,7 @@ CREATE TABLE `visitor_fingerprint_log`  (
   `create_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `action` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '注意，用户浏览器指纹有概率重复，所以仅供参考，不能作为判断的依据\r\n\r\n获取不到浏览器指纹的将使用浏览器UA代替' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '注意，用户浏览器指纹有概率重复，所以仅供参考，不能作为判断的依据\r\n\r\n获取不到浏览器指纹的将使用浏览器UA代替' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of visitor_fingerprint_log
