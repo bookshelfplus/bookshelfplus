@@ -23,15 +23,17 @@
 
 ## 项目许可证
 
-本项目使用 MIT 许可证，但**不得使用本项目作为毕业设计项目，或者将本项目传至诸如CSDN等付费下载平台**。除此之外，不做其他限制，祝您使用愉快 :)
+本项目使用 MIT 许可证，但**不得删除或修改项目原作者信息，不得使用本项目作为毕业设计项目，或者将本项目传至诸如CSDN等付费下载平台**。除此之外，不做其他限制，祝您使用愉快 :)
 
 
 
 ## 开始使用
 
-> 所需环境：Java JDK 8，Maven，MySQL 5.7+，nodejs，Redis等。
+> 所需环境：Java JDK 8，Maven，MySQL 5.7+，Node.js，Redis等。
 >
 > MySQL推荐使用8.0以上版本。
+>
+> 本项目配置项较多，暂未测试宝塔服务器环境，如果可能，建议使用飞豹他环境。
 
 > **下面的配置有些没有说明命令的执行目录，请自行判断。**这部分文档后期将会完善。
 
@@ -114,16 +116,83 @@ npm config set registry https://registry.npm.taobao.org/
 
 ### 下载项目
 
-```
-# TODO
+#### 方式1: 在 Release 页面下载压缩包
 
-# 设置文件夹权限 (Linux)
+访问以下网址（国内推荐使用Gitee），下载最新版代码包并解压即可
+https://gitee.com/bookshelfplus/bookshelfplus/releases
+
+https://github.com/bookshelfplus/bookshelfplus/releases
+
+
+
+#### 方式2: 克隆 Git 代码仓库
+
+```bash
+# 首先，先切换到希望克隆到的本地路径。之后克隆项目会在该目录下创建一个 bookshelf 文件夹
+# 例如，您可以切换到用户 家 目录
+# cd ~/
+
+# 通过 码云 克隆 （也可通过 GitHub 克隆）
+git clone https://gitee.com/bookshelfplus/bookshelfplus
+# git clone https://github.com/bookshelfplus/bookshelfplus
+
+# 进入克隆的项目文件夹
+cd ./bookshelfplus
+
+# 切换到 master 分支下
+git checkout master
+
+# 设置文件夹权限 (Windows 用户可跳过此步，Linux 用户需要设置)
 # TODO
 ```
 
 
 
 ### 项目配置
+
+#### 配置 nginx.conf
+
+参考配置如下（此处仅列出核心配置，完整配置文件可以参考[这里](./server/nginx/conf/nginx.conf)）
+
+```
+
+http {
+    upstream frontendNodejsServer {
+        server 127.0.0.1:3000;
+    }
+    upstream backendSpringbootServer {
+        server 127.0.0.1:8090;
+    }
+    server {
+        listen 80;
+        server_name localhost;
+        # server_name bookshelf.plus;
+
+        #禁止访问的文件或目录
+        location ~ ^/(\.user.ini|\.htaccess|\.git|LICENSE|README.md)
+        {
+            return 404;
+        }
+
+        location / {
+            proxy_pass http://frontendNodejsServer;
+            index index.html index.htm;
+        }
+
+        location /api/ {
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_pass http://backendSpringbootServer/api/;
+            index index.html index.htm;
+        }
+    }
+}
+```
+
+
+
+
 
 ```bash
 # 配置 nginx.conf
@@ -200,6 +269,224 @@ mvn clean install
 
 
 
+### 创建云服务（腾讯云）
+
+#### 对象存储（COS）
+
+> 本项目云服务使用腾讯云，其他云厂商暂不支持。开始之前，你需要有一个腾讯云账号。
+>
+> 请注意，使用云服务可能会产生费用，使用前请您详细了解相关服务的收费策略，以免产生不必要的费用。
+
+##### 创建存储桶
+
+> 仅支持腾讯云 COS 存储桶，其他云厂商的对象存储暂不支持。
+
+> 需要为本服务单独创建存储桶，不支持和其他业务共用一个存储桶。
+
+首先登录腾讯云控制台，进入对象存储页面：
+
+https://console.cloud.tencent.com/cos/bucket
+
+点击创建存储桶。
+
+创建COS存储桶的时候一定要创建在CSF可用区域。（建议选择上海，因为后面创建云函数需要与对象存储在同一地域，而云函数只支持以下地区）
+
+> - 华南地区：广州
+> - 华东地区：上海
+> - 华北地区：北京
+> - 西南地区：成都
+
+【TODO】图需要更新
+
+![image-20220407215810950](docs/image/image-20220407215810950.png)
+
+高级可选配置可以根据自己实际需求进行配置，此处保持默认不做更改。
+
+![image-20220407220043606](docs/image/image-20220407220043606.png)
+
+点击创建，完成存储桶的创建。
+
+【TODO】图需要更新
+
+![image-20220407220149829](docs/image/image-20220407220149829.png)
+
+
+
+##### 配置存储桶
+
+###### 配置跨域访问
+
+由于腾讯云存储桶和我们的业务域名不在同一主域下，所以需要配置 CORS 跨域访问，否则浏览器请求的时候会出现报错，无法完成请求。
+
+> 如果您不了解 CORS 是什么的话，建议您阅读一下这篇 MDN 文档：[跨源资源共享CORS](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/CORS)（其中的描述可能有些专业，大概看看就好）
+>
+> 也可以看一下腾讯云的官方文档：[设置跨域访问](https://cloud.tencent.com/document/product/436/13318)
+
+这里添加一条**跨域访问CORS规则**
+
+![image-20220407220755779](docs/image/image-20220407220755779.png)
+
+**来源 Origin** 填写自己的业务域名，注意后续对存储桶的请求需要通过此域名发出。如果您只是自己本地测试，方便起见可以直接填写 `*` ，但是如果您希望向他人分享，您最好还是设置一下，否则容易被别人刷流量。
+
+**操作 Methods** 可以全部勾上。目前项目使用到的由 `PUT`，`GET` 和 `DELETE` 三种。
+
+其余配置保持默认即可。
+
+![image-20220407221145206](docs/image/image-20220407221145206.png)
+
+配置好后点击保存即可。
+
+
+
+###### 配置防盗链（可选）
+
+这个配置不配不会影响业务正常使用，但是强烈建议您配置一下。因为不配置的话其他人可以将您的下载链接嵌入他们的网站，这样的话您需要为其支付费用。
+
+> referer 在浏览器发请求的时候会将所在的网站域名通过 referer 请求标头发给服务端。③ 空 referer 一般指的是用户直接访问资源链接，而不是通过点击网页上的超链接访问的情景（也可能是通过设置了不发送 referer 请求头的网页访问过来），自己视情况设置。
+>
+> 防盗链可以参考腾讯云官方文档：[防盗链](https://cloud.tencent.com/document/faq/436/56651)
+
+![image-20220407221534955](docs/image/image-20220407221534955.png)
+
+
+
+###### 配置自定义 CDN 加速域名（TODO）
+
+> 参考腾讯云官方文档：[CDN 加速域名](https://cloud.tencent.com/document/faq/436/56558)
+
+TODO
+
+上传：后端生成带有效期的预授权URL，前端使用这个 URL 进行上传。
+
+下载：后端计算好 CDN 回源鉴权返回给前端，前端通过这个鉴权 URL 下载文件。
+
+
+
+##### 配置日志记录（可选）
+
+如果您需要开启日志记录，可以按照下图步骤进行配置，如果不需要就不配置。
+
+![image-20220407223556238](docs/image/image-20220407223556238.png)
+
+
+
+#### 云函数（Serverless 函数服务）
+
+> 为什么要创建云函数？
+>
+> 云函数对象存储文件上传成功时触发，后台上传文件后通过该云函数告知后端服务文件上传成功，以便后端服务及时更新数据库中记录及进行进一步处理。
+>
+> 不创建可以吗？
+>
+> 可以，但不推荐。如果不创建，那么上传文件后部分弱网情况下后端文件上传状态不会更新，需要手动点击刷新才会更新。
+
+##### 创建 Serverless 函数
+
+> 腾讯云官方文档：COS 触发器说明
+> https://cloud.tencent.com/document/product/583/9707
+
+> 注意，一个存储桶同一个类别的触发事件仅能选择一个
+
+打开腾讯云控制台 Serverless后台：https://console.cloud.tencent.com/scf/list
+
+点击新建。
+
+![image-20220409164929861](docs/image/image-20220409164929861.png)
+
+**基础配置：**修改如下信息。
+
+![image-20220422084554692](docs/image/image-20220422084554692.png)
+
+**函数代码：**选择在线编辑，执行方法保持默认（`index.main_handler`）。
+
+将项目文件夹下 [utils/QCloudSCF/index.js](utils/QCloudSCF/index.js) 代码文件中内容粘贴至下方在线编辑器（在线编辑器中的默认内容需要删除）。
+
+> 注意，图中 ③ 处请修改为您自己的域名（例如网站部署在 `abc.example.com`，此处就填写 `abc.example.com`），若您的网站配置了多个域名，选择其中一个可以访问后台api的域名填写即可。
+
+![image-20220422085049511](docs/image/image-20220422085049511.png)
+
+**高级配置**：保持默认即可。
+
+**触发器配置：**`创建触发器` 处选择 `自定义创建`。
+
+> 前缀过滤：不填
+>
+> 后缀过滤：不填
+
+![image-20220422085806254](docs/image/image-20220422085806254.png)
+
+点击完成，创建成功。
+
+![image-20220413001238233](docs/image/image-20220413001238233.png)。
+
+稍等一下，等待部署完成后，会自动跳转到函数管理页面。
+
+创建成功后，建议将 `执行超时时间` 适当调大一点，特别是当服务器和腾讯云COS节点较远的情况，以减少因网络问题导致COS文件上传后网站后台不能及时感知。一般建议大于 `5秒`，此处调为 `10秒`。
+
+![image-20220415213234407](docs/image/image-20220415213234407.png)
+
+
+
+#### 生成 SecretId、SecretKey
+
+> 有两种方式，一种是创建子用户，然后生成子用户的SecrectKey，另一种是直接生成当前账号的SecrectKey。两种方式均可。如果您对权限管理有需求，建议使用第一种；如果您希望尽可能简单的配置，可以使用第二种。如果您不确定使用哪种，那么请用第一种。
+
+##### 第1种：创建子用户
+
+登录腾讯云后台，进入访问管理下的用户列表页：https://console.cloud.tencent.com/cam
+
+点击新建用户
+
+![image-20220408141246583](docs/image/image-20220408141246583.png)
+
+点击快速创建。
+
+![image-20220408142012036](docs/image/image-20220408142012036.png)
+
+接下来这里有四个地方需要配置。下图仅标出需要配置的项目，具体应该配置成什么请继续往下看。
+
+![image-20220408142047431](docs/image/image-20220408142047431.png)
+
+> ① 用户名：自己随便起一个，满足要求即可。（用户名创建后不可以修改）
+>
+> ② 访问方式：修改为编程访问。
+>
+> ![image-20220408141017781](docs/image/image-20220408141017781.png)
+>
+> ③ 用户权限：
+>
+> <1> 取消 `AdministratorAccess` 权限；
+>
+> <2> 搜索 `QcloudCOSDataFullControl` ，并勾选 `QcloudCOSDataFullControl` （对象存储（COS）数据读、写、删除、列出的访问权限）
+>
+> ![image-20220408142738210](docs/image/image-20220408142738210.png)
+>
+> ④ 根据自己的情况选择即可
+
+点击创建用户，用户创建成功，获得密钥。
+
+![image-20220408143017202](docs/image/image-20220408143017202.png)
+
+
+
+##### 第2种：直接生成
+
+访问：https://console.cloud.tencent.com/cam/capi
+
+点击继续使用。
+
+![image-20220408141715193](docs/image/image-20220408141715193.png)
+
+点击新建密钥。
+
+![image-20220408141742336](docs/image/image-20220408141742336.png)
+
+密钥创建完成。
+
+![image-20220408141827890](docs/image/image-20220408141827890.png)
+
+
+
 ### 启动项目
 
 ```bash
@@ -235,7 +522,9 @@ WARNING: All illegal access operations will be denied in a future release
 
 
 
-### 查看后端运行状态
+### 验证是否部署成功
+
+#### 查看后端运行状态
 
 ```bash
 # 查看后端运行状态
@@ -250,7 +539,75 @@ ubuntu@xxxxxx:~$ sudo kill -9 558861
 
 
 
-### 停止项目
+#### 验证云函数是否配置成功
+
+检查云函数是否能与后端服务进行交互
+
+点击云函数名称，进入云函数详情页面。
+
+![image-20220422154421209](docs/image/image-20220422154421209.png)
+
+切换到“函数代码”标签页（如下图）。
+
+![image-20220422154522965](docs/image/image-20220422154522965.png)
+
+将测试模板切换为 `COS 对象存储的 PUT 事件模板`。
+
+![image-20220422164628657](docs/image/image-20220422164628657.png)
+
+往下滑动，编辑器下方有两个按钮，分别是**部署**和**测试**。
+
+![image-20220422154936825](docs/image/image-20220422154936825.png)
+
+> 注意，每次在修改云函数的代码后都需要点击**部署**按钮，所做的修改才会被更新。
+
+我们点击**测试**，如果您看到如下返回信息，说明您的后端服务和云函数已经部署成功。
+
+![image-20220422164836541](docs/image/image-20220422164836541.png)
+
+返回结果类似于：
+
+```json
+{"status":"success","data":{"data":"您的云函数配置成功。","status":"success"},"tryTime":1}
+```
+
+> 您还可能见到如下错误：
+>
+> **请求超时**： `Invoking task timed out after 3 seconds`
+>
+> ![image-20220422155631095](docs/image/image-20220422155631095.png)
+>
+> 返回结果类似于：
+>
+> ```json
+> {"errorCode":-1,"errorMessage":"Invoking task timed out after 3 seconds","requestId":"3fed8ed2-da82-41a5-beda-eaab1e12a019","statusCode":433}
+> ```
+>
+> 解决方法：可以尝试调大云函数的超时时间（函数管理→函数配置→右上角**编辑**→环境配置分类下面执行超时时间适当调大一点）。如果调大超时时间后仍然不行，那么说明云函数无法访问到后端服务，请检查后端服务是否已经部署并启动，云函数中的域名是否配置正确。
+>
+> 
+>
+> **未创建 COS 触发器**：`JSON解析出错！`
+>
+> ![image-20220422161228789](docs/image/image-20220422161228789.png)
+>
+> 返回结果类似于：
+>
+> ```json
+> {"status":"success","data":{"data":{"errCode":10001,"errMsg":"JSON解析出错！"},"status":"failed"},"tryTime":1}
+> ```
+>
+> 解决方法：检查您的云函数“触发管理”页面是否已创建如下触发器。如果没有或不正确，请创建或修改为正确配置。
+>
+> ![image-20220422161504404](docs/image/image-20220422161504404.png)
+>
+> 
+>
+> 如果您还遇到了其他返回结果，请参考错误提示进行处理。
+
+
+
+## 停止项目
 
 ```bash
 # 停止 nginx
@@ -269,7 +626,7 @@ npm run prod-stop
 
 
 
-### 其他
+## 其他命令
 
 ```bash
 # 清除前端字体缓存
@@ -278,23 +635,21 @@ node ./bookshelfplus-frontend/cleanup.js
 
 
 
-
-
 ## 功能展示
 
-### 功能列表
+### 功能列表（TODO）
 
-- [x] 首页。简约（说白了其实就是懒），一个搜索框就够了。后期考虑添加热门搜索功能。
+- [x] 首页。简约，一个搜索框就够了。后期考虑添加热门搜索功能。
 - [x] 书籍列表页，也是搜索结果页。就是一个书单列表，带分页功能。
 - [x] 书籍详情页。主要是显示书籍的各种详细信息（书名，简介，缩略图等），还有下载方式，同时还有反馈功能（连接失效反馈，版权问题申诉下架等）
 - [x] 分类列表页
 - [x] 分类详情页
-- [ ] 管理员后台。
-- [ ] 用户登录后台。
+- [x] 管理员后台。
+- [x] 用户登录后台。
 
 ### 功能截图
 
-截图待补充...
+【TODO】截图待补充...
 
 
 

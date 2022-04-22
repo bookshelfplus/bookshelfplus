@@ -2,19 +2,23 @@
 
 // 后端配置信息
 const backendApi = {
-  hostname: "dev.bookshelf.plus",
-  path: "/api/file/upload/cos-check-file-state",
+  hostname: "此处配置您的域名",
+  path: "/api/file/object/upload/cos-check-file-state",
 };
 
 function postback(event, context) {
   return new Promise(function (resolve) {
-    const querystring = require("querystring");
     const http = require("http");
 
-    const postData = querystring.stringify({
-      event: JSON.stringify(event),
-      context: JSON.stringify(context),
-    });
+    // const querystring = require("querystring");
+    // const postData = querystring.stringify({
+    //   event: JSON.stringify(event),
+    //   context: JSON.stringify(context),
+    // });
+    const postData = new URLSearchParams({
+        event: JSON.stringify(event),
+        context: JSON.stringify(context),
+    }).toString();
 
     console.log("⭐postData");
     console.log(postData);
