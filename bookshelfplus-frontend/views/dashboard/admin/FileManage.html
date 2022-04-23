@@ -28,6 +28,16 @@
         tableElementId: "book-table"
     });
 
+    function stringifyFileSize(nBytes = 0) {
+        // 美化输出文件大小
+        let sOutput = nBytes + " bytes";
+        const aMultiples = ["KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+        for (nMultiple = 0, nApprox = nBytes / 1024; nApprox > 1; nApprox /= 1024, nMultiple++) {
+            sOutput = nApprox.toFixed(2) + " " + aMultiples[nMultiple];
+        }
+        return sOutput;
+    }
+
     function list({ tableElementId }) {
         postRequest("/file/list", { token: localStorageUtils.getToken() })
             .then(function (responseData) {
@@ -61,7 +71,7 @@
                             页数: `${element.numberOfPages ?element.numberOfPages : ""}`,
                             "水印&广告": `<span style="font-size: 10px;">${watermarkAndAdvertising}</span>`,
                             来源: `<span class="overflow-omit" style="font-size: 10px;">${element.source}</span>`,
-                            大小: `${element.fileSize}`,
+                            大小: `${stringifyFileSize(element.fileSize)}`,
                             "哈希(双击全选)": `<span class="overflow-omit" style="font-size: 10px;">${element.fileSha1}</span>`,
                             时间: `<span class="overflow-omit" style="font-size: 12px; line-height: 1.2em; display: block;">
                                         ${new Date(element.fileCreateAt).toLocaleString()}
