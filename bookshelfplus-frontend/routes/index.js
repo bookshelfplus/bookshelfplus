@@ -89,6 +89,12 @@ router.get('/callback/:platform', function (req, res) {
     });
 });
 
+router.get('/dashboard/iframe/:page', function (req, res) {
+    res.render(`dashboard/component/iframe/${req.params.page}`, {
+        pageUrl: (req._parsedUrl.pathname + "/").replace("//", "/"),
+    });
+});
+
 router.get('/dashboard/:group/:page/:subpage?', function (req, res) {
     // baseTemplate 基于哪个html模板渲染页面
     // pageTemplate 引入这个文件中的页面脚本

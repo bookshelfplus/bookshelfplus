@@ -3,6 +3,12 @@
 </p>
 <h3>文件详情</h3>
 <div id="file-detail-container"></div>
+<div id="book-selector-container" style="display: none;">
+    <p>
+        请选择需要绑定的书籍
+    </p>
+    <iframe id="book-selector-iframe" src="" style="width: 100%; height: 55vh;"></iframe>
+</div>
 <hr>
 <h3>关联文件对象</h3>
 <div id="file-object-container"></div>
@@ -43,7 +49,7 @@
                             <tr><td>文件大小</td><td>${stringifyFileSize(data.fileSize)}</td></tr>
                             <tr><td>SHA1</td><td>${data.fileSha1}</td></tr>
                             <tr><td>文件Id</td><td>${data.id}</td></tr>
-                            <tr><td>关联书籍Id</td><td>${data.bookId == 0 ? "未关联书籍" : data.bookId}</td></tr>
+                            <tr><td>关联书籍Id</td><td>${data.bookId == 0 ? "未关联书籍" : data.bookId}&nbsp; <button onclick="toggleSelectBook();">关联书籍</button></td></tr>
                             <tr><td>是否有广告</td><td>${data.advertising ? "是" : "否"}</td></tr>
                             <tr><td>是否有水印</td><td>${data.watermark ? "是" : "否"}</td></tr>
                             <tr><td>文件创建日期</td><td>${data.fileCreateAt}</td></tr>
@@ -109,4 +115,52 @@
             });
     }
     getFileObjectInfo();
+</script>
+<script>
+    window.addEventListener('message', function (event) {
+        var data = JSON.parse(event.data);
+        console.log("子页面消息:", data);
+        var bookId = data.id;
+        if (data.iframe != "book-selector") return;
+        if (data.id == null) {
+            toggleSelectBook();
+            return;
+        }
+
+        // 用户选择了书籍，现在需要绑定到文件
+        postRequest("/file/bindBook", { token: localStorageUtils.getToken(), fileId: fileId, bookId: bookId })
+            .then(function (responseData) {
+                var axiosData = responseData.data;
+                var status = axiosData.status;
+                var data = axiosData.data;
+                if (status === "success") {
+                    console.log(data);
+                    if(data == "success") {
+                        // alert("绑定成功！");
+                    } else {
+                        alert("绑定失败！");
+                    }
+                    getFileInfo();
+                } else {
+                    alert(`出错啦！${data.errMsg}(错误码: ${data.errCode}) `);
+                }
+            }).catch(function (error) {
+                console.log(error);
+                alert("无法连接到服务器，请检查网络连接！");
+            }).finally(function () {
+                toggleSelectBook();
+            });
+    }, false);
+
+    function toggleSelectBook() {
+        if($("#book-selector-container").css("display") === "none") {
+            document.getElementById("book-selector-iframe").src = "/dashboard/iframe/book-selector";
+            $("#book-selector-container").slideDown();
+        } else {
+            $("#book-selector-container").slideUp();
+        }
+    }
+    function selectBook() {
+        $("#book-selector-container").slideDown();
+    }
 </script>

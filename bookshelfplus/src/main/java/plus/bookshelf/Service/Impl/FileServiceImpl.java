@@ -165,6 +165,22 @@ public class FileServiceImpl implements FileService {
     }
 
     /**
+     * 更新文件
+     *
+     * @return
+     */
+    @Override
+    public Integer updateSelective(FileModel fileModel) {
+        FileDO fileDO = convertFromFileModel(fileModel);
+
+        // 如果文件 id 不对，那么不能更新
+        if (fileDO.getId() == 0 || fileDO.getId() == null) {
+            return 0;
+        }
+        return fileDOMapper.updateByPrimaryKeySelective(fileDO);
+    }
+
+    /**
      * 取消文件和书籍的关联
      *
      * @return

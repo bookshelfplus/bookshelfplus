@@ -16,6 +16,7 @@ import plus.bookshelf.Config.QCloudCosConfig;
 import plus.bookshelf.Controller.VO.FileObjectVO;
 import plus.bookshelf.Controller.VO.FileVO;
 import plus.bookshelf.Service.Impl.*;
+import plus.bookshelf.Service.Model.BookModel;
 import plus.bookshelf.Service.Model.FileModel;
 import plus.bookshelf.Service.Model.FileObjectModel;
 import plus.bookshelf.Service.Model.UserModel;
@@ -138,6 +139,44 @@ public class FileController extends BaseController {
         FileModel fileModel = fileService.selectBySha1(fileSha1);
         FileVO fileVO = convertFileVOFromModel(fileModel);
         return CommonReturnType.create(fileVO);
+    }
+
+    @Autowired
+    BookServiceImpl bookService;
+
+    @ApiOperation(value = "【管理员】将书籍和文件进行绑定", notes = "")
+    @RequestMapping(value = "bindBook", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
+    @ResponseBody
+    public CommonReturnType bindBook(@RequestParam(value = "token", required = false) String token,
+                                     @RequestParam(value = "fileId", required = true) Integer fileId,
+                                     @RequestParam(value = "bookId", required = true) Integer bookId) throws BusinessException {
+
+        UserModel userModel = userService.getUserByToken(redisTemplate, token);
+        if (userModel == null || !Objects.equals(userModel.getGroup(), "ADMIN")) {
+            throw new BusinessException(BusinessErrorCode.OPERATION_NOT_ALLOWED, "非管理员用户无权进行此操作");
+        }
+
+        if (fileId == null || bookId == null) {
+            throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR);
+        }
+
+        FileModel fileModel = fileService.getFileById(fileId);
+        if (fileModel == null) {
+            throw new BusinessException(BusinessErrorCode.FILE_NOT_EXIST);
+        }
+
+        BookModel bookModel = bookService.getBookById(bookId);
+        if (bookModel == null) {
+            throw new BusinessException(BusinessErrorCode.BOOK_NOT_EXIST);
+        }
+
+        fileModel.setBookId(bookModel.getId());
+        Integer affectRows = fileService.updateSelective(fileModel);
+        if (affectRows > 0) {
+            return CommonReturnType.create("success");
+        } else {
+            throw new BusinessException(BusinessErrorCode.UNKNOWN_ERROR, "绑定失败，未知错误");
+        }
     }
 
     private FileVO convertFileVOFromModel(FileModel fileModel) {

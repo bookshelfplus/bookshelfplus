@@ -61,6 +61,14 @@ public interface FileService {
     Boolean addFile(FileModel fileModel) throws InvocationTargetException, IllegalAccessException;
 
     /**
+     * 更新文件对象
+     *
+     * @param fileModel
+     * @return
+     */
+    Integer updateSelective(FileModel fileModel);
+
+    /**
      * 取消文件和书籍的关联
      *
      * @return

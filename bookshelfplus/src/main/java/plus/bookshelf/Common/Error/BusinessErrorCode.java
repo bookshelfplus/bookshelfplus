@@ -30,6 +30,7 @@ public enum BusinessErrorCode implements CommonError {
 
     // 60000开头为文件、文件对象相关错误定义
     FILE_ALREADY_EXIST(60001, "文件已存在"),
+    FILE_NOT_EXIST(60002, "文件不存在"),
 
     // 占位
     PLACE_HOLDER(99999, "这是一个占位符错误");
