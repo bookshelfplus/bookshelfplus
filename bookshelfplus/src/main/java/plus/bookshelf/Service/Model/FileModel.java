@@ -39,7 +39,4 @@ public class FileModel {
 
     // 文件创建时间
     Date fileCreateAt;
-
-    // 文件修改时间
-    Date fileModifiedAt;
 }

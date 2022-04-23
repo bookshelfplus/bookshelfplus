@@ -37,7 +37,4 @@ public class FileVO {
 
     // 文件创建时间
     long fileCreateAt;
-
-    // 文件修改时间
-    long fileModifiedAt;
 }

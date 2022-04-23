@@ -156,13 +156,13 @@ public class FileObjectServiceImpl implements FileObjectService {
             fileModel.setWatermark(false);
             fileModel.setAdvertising(false);
 
-            // 获取时间戳为 0 的时间 1970-01-01
             Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(0);
-            Date time = calendar.getTime();
+            calendar.setTimeInMillis(lastModified);
+            fileModel.setFileCreateAt(calendar.getTime());
 
-            fileModel.setFileCreateAt(time);
-            fileModel.setFileModifiedAt(time);
+            // 获取时间戳为 0 的时间 1970-01-01 08:00:00
+            // calendar.setTimeInMillis(0);
+            // Date time = calendar.getTime();
 
             Boolean isSuccess = fileService.addFile(fileModel);
             if (!isSuccess) {
@@ -178,7 +178,6 @@ public class FileObjectServiceImpl implements FileObjectService {
         fileObjectModel.setStorageMedium(fileStorageMediumEnum.getStorageMediumName());
         fileObjectModel.setFilePath(filePath);
         fileObjectModel.setUploadStatus("UPLOADING");
-        fileObjectModel.setLastModified(lastModified);
 
         // 其余使用默认设置
         fileObjectModel.setFilePwd("");

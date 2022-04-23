@@ -26,9 +26,6 @@
                                         ID: ${element.fileId}
                                         <a href="<%= pageUrl %>../detail?id=${element.fileId}">查看</a>
                                     </span>`,
-                            修改日期: element.lastModified === 0 ? "未知" : `<span class="overflow-omit" style="font-size: 12px; line-height: 1.2em; display: block;"><nobr>
-                                        ${new Date(element.lastModified).toISOString().replace(/T/, ' ').replace(/\..+/, '')}
-                                    </nobr></span>`,
                             密码: `<span class="overflow-omit" style="font-size: 12px; line-height: 1.2em; display: block;"><nobr>
                                         文件密码: ${element.filePwd}<br>
                                         提取码: ${element.fileShareCode}

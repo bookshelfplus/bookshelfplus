@@ -186,7 +186,6 @@ public class FileController extends BaseController {
         FileVO fileVO = new FileVO();
         BeanUtils.copyProperties(fileModel, fileVO);
         fileVO.setFileCreateAt(fileModel.getFileCreateAt().getTime());
-        fileVO.setFileModifiedAt(fileModel.getFileModifiedAt().getTime());
         return fileVO;
     }
 }
