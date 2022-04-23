@@ -39,6 +39,14 @@ public interface FileObjectService {
     Boolean addFileObject(FileObjectModel fileObjectModel) throws InvocationTargetException, IllegalAccessException;
 
     /**
+     * 修改文件对象
+     *
+     * @param fileObjectModel
+     * @return
+     */
+    Boolean modifyFileObject(FileObjectModel fileObjectModel);
+
+    /**
      * 向数据库中插入文件信息
      *
      * @param fileName              文件名

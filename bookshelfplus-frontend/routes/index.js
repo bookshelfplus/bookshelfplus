@@ -138,7 +138,7 @@ router.get('/dashboard/:group/:page/:subpage?', function (req, res) {
                     },
                     "object-detail": {
                         title: "文件对象详情",
-                        baseTemplate: "blank",
+                        baseTemplate: "form",
                         pageTemplate: "FileManage_ObjectManage_Detail",
                     },
                     "upload": {

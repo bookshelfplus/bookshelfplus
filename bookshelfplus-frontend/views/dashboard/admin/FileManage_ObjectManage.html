@@ -1,3 +1,10 @@
+<style>
+    /* 限制 来源 列的宽度 */
+    tr>*:nth-child(3),
+    td>*:nth-child(3) {
+        max-width: 100px;
+    }
+</style>
 <p>
     <a href="<%= pageUrl %>../">返回上一级</a>
     &nbsp;
@@ -26,12 +33,15 @@
                                         ID: ${element.fileId}
                                         <a href="<%= pageUrl %>../detail?id=${element.fileId}">查看</a>
                                     </span>`,
+                            链接: `<span class="overflow-omit" style="font-size: 12px; line-height: 1.2em; display: block;">
+                                        ${element.filePath}
+                                    </span>`,
                             密码: `<span class="overflow-omit" style="font-size: 12px; line-height: 1.2em; display: block;"><nobr>
                                         文件密码: ${element.filePwd}<br>
                                         提取码: ${element.fileShareCode}
                                     </nobr></span>`,
                             存储介质: `<span class="overflow-omit" style="font-size: 12px; line-height: 1.2em; display: block;"><nobr>
-                                        ${element.storageMedium}
+                                        ${element.storageMediumForDisplay}
                                     </nobr></span>`,
                             状态: `${(element.uploadStatus ? element.uploadStatus : "<span style='color: grey; font-weight: bold;'>未知</span>")
                                 .replace("SUCCESS", "<span style='color: green; font-weight: bold;'>成功</span>")

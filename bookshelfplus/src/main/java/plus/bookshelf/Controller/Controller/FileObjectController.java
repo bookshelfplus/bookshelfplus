@@ -18,11 +18,10 @@ import plus.bookshelf.Common.Error.BusinessException;
 import plus.bookshelf.Common.FileManager.QCloudCosUtils;
 import plus.bookshelf.Common.Response.CommonReturnType;
 import plus.bookshelf.Config.QCloudCosConfig;
+import plus.bookshelf.Controller.VO.BookVO;
 import plus.bookshelf.Controller.VO.FileObjectVO;
 import plus.bookshelf.Service.Impl.*;
-import plus.bookshelf.Service.Model.FailureFeedbackModel;
-import plus.bookshelf.Service.Model.FileObjectModel;
-import plus.bookshelf.Service.Model.UserModel;
+import plus.bookshelf.Service.Model.*;
 import plus.bookshelf.Service.Service.CosPresignedUrlGenerateLogService;
 
 import java.lang.reflect.InvocationTargetException;
@@ -54,6 +53,45 @@ public class FileObjectController extends BaseController {
     @Autowired
     VisitorFingerprintLogServiceImpl visitorFingerprintLogService;
 
+
+    @ApiOperation(value = "【管理员】添加/修改文件对象", notes = "管理员在后台添加/修改文件对象（fileObjectId 传 0 或 null 或 不传 即为添加）")
+    @RequestMapping(value = "detail", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
+    @ResponseBody
+    public CommonReturnType detail(@RequestParam(value = "token", required = false) String token,
+                                   @RequestParam(required = false, value = "id") Integer fileObjectId,
+                                   @RequestParam(required = false, value = "filePath") String filePath,
+                                   @RequestParam(required = false, value = "fileId") Integer fileId,
+                                   @RequestParam(required = false, value = "filePwd") String filePwd,
+                                   @RequestParam(required = false, value = "fileShareCode") String fileShareCode,
+                                   @RequestParam(required = false, value = "storageMedium") String storageMedium) throws BusinessException, InvocationTargetException, IllegalAccessException {
+        // 已经在 getUserByToken 方法中判断了 token 为空、不合法；用户不存在情况，此处无需再判断
+        UserModel userModel = userService.getUserByToken(redisTemplate, token);
+
+        FileObjectModel fileObjectModel = new FileObjectModel();
+
+        fileObjectModel.setFilePath(filePath);
+        fileObjectModel.setFileId(fileId);
+        fileObjectModel.setFilePwd(filePwd);
+        fileObjectModel.setFileShareCode(fileShareCode);
+        fileObjectModel.setStorageMedium(storageMedium);
+
+        Boolean isSuccess;
+        if (fileObjectId == null || fileObjectId == 0) {
+            // 新增文件对象
+            fileObjectModel.setUploadStatus("SUCCESS");
+            isSuccess = fileObjectService.addFileObject(fileObjectModel);
+        } else {
+            //修改文件对象
+            fileObjectModel.setId(fileObjectId);
+            isSuccess = fileObjectService.modifyFileObject(fileObjectModel);
+        }
+
+        if (isSuccess) {
+            return CommonReturnType.create("success");
+        } else {
+            return CommonReturnType.create("failed");
+        }
+    }
 
     @ApiOperation(value = "链接失效反馈", notes = "查询文件列表")
     @RequestMapping(value = "FailureFeedback", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
@@ -123,6 +161,19 @@ public class FileObjectController extends BaseController {
             fileObjectVOS.add(fileObjectVO);
         }
         return CommonReturnType.create(fileObjectVOS);
+    }
+
+    @ApiOperation(value = "获取文件对象信息", notes = "获取文件对象信息")
+    @RequestMapping(value = "get", method = {RequestMethod.GET})
+    @ResponseBody
+    public CommonReturnType get(@RequestParam(value = "id") Integer id) throws InvocationTargetException, IllegalAccessException {
+        if (id == null) {
+            return null;
+        }
+
+        FileObjectModel fileObjectModel = fileObjectService.getFileObjectById(id);
+        FileObjectVO fileObjectVO = convertFileObjectVOFromModel(fileObjectModel);
+        return CommonReturnType.create(fileObjectVO);
     }
 
     @ApiOperation(value = "【管理员】更新文件对象上传状态", notes = "重新从 COS 对象存储中获取文件对象上传状态")
@@ -378,7 +429,7 @@ public class FileObjectController extends BaseController {
         BeanUtils.copyProperties(fileObjectModel, fileObjectVO);
         try {
             // 尝试将 FileStorageMedium 转为中文，如果没有成功，那么就保留英文
-            fileObjectVO.setStorageMedium(FileStorageMediumEnum.valueOf(fileObjectModel.getStorageMedium()).getStorageMediumDisplayName());
+            fileObjectVO.setStorageMediumForDisplay(FileStorageMediumEnum.valueOf(fileObjectModel.getStorageMedium()).getStorageMediumDisplayName());
         } catch (Exception e) {
         }
         return fileObjectVO;

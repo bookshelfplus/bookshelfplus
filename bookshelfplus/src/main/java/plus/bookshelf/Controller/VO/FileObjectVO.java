@@ -15,6 +15,7 @@ public class FileObjectVO {
     String uploadStatus;
 
     // 文件存储介质类型
+    String storageMediumForDisplay;
     String storageMedium;
 
     // 文件地址

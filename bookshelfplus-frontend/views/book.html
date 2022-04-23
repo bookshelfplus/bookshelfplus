@@ -431,14 +431,14 @@
             }
             function getLinkDOM(fileObjectInfo) {
                 // 获取文件下载链接DOM
-                var iconSrc = "/assets/image/svg/direct_link.svg", title = fileObjectInfo.storageMedium, content = "", downloadLink = "";
+                var iconSrc = "/assets/image/svg/direct_link.svg", title = fileObjectInfo.storageMediumForDisplay, content = "", downloadLink = "";
                 if(fileObjectInfo.fileShareCode != "" && fileObjectInfo.fileShareCode != null) {
                     content = `<span>提取码: <span class="click2copy" style="user-select: all; cursor: pointer;">${fileObjectInfo.fileShareCode}</span>&nbsp;</span>`; // 最后一个 &nbsp; 是为了保证选中时不会选中后面的回车
                     downloadLink = `<a class="baiduNetdiskLink" share-code="${fileObjectInfo.fileShareCode}" share-link="${fileObjectInfo.filePath}" style="cursor: pointer;" title="复制提取码并前往">前往</a>`;
                 } else {
                     downloadLink = `<a href="${fileObjectInfo.filePath}" target="_blank">前往</a>`;
                 }
-                switch (fileObjectInfo.storageMedium) {
+                switch (fileObjectInfo.storageMediumForDisplay) {
                     case "腾讯云对象存储":
                         title = "直链下载";
                         if (!localStorageUtils.getLoginStatus()) {
@@ -455,7 +455,7 @@
                         iconSrc = "/assets/image/svg/aliyun_drive.svg";
                         break;
                     default:
-                        title = fileObjectInfo.storageMedium;
+                        title = fileObjectInfo.storageMediumForDisplay;
                         downloadLink = `<a href="${fileObjectInfo.filePath}" target="_blank">前往</a>`;
                         break;
                 }

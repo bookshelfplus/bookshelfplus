@@ -1,0 +1,197 @@
+<script>
+    // 如果传入了 id 那么就是修改文件对象，否则就是添加文件对象
+    var params = getParams()
+    var fileObjectId = params.id;
+    var fileId = params.fileId;
+    if (!fileId) {
+        alert("未传入 fileId ！");
+        history.go(-1);
+    }
+
+    var isModify = fileObjectId ? true : false;
+    if (!isModify) {
+        // 新增文件对象
+        fileObjectId = 0;
+    } else {
+        // 修改文件对象
+    }
+
+    // 点击提交按钮
+    function btnSubmitClick() {
+        formSubmit({
+            type: 'POST',
+            url: '/file/object/detail',
+            data: { id: fileObjectId },
+            success: function (data) {
+                console.log(data);
+                alert(isModify ? "修改成功！" : "添加成功！");
+                history.go(-1);
+            }
+        });
+    }
+
+    // 如果是修改文件对象，则需要获取文件对象详情
+    async function getFileObjectDetail(fileObjectId) {
+        var responseData = await getRequest("/file/object/get", { id: fileObjectId });
+        var axiosData = responseData.data;
+        var status = axiosData.status;
+        var data = axiosData.data;
+        if (status === "success") {
+            console.log(data)
+            return data;
+        } else {
+            alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
+            // 回到上一页
+            history.go(-1);
+        }
+    }
+
+    async function getControlsProfile(getValidateUtils) {
+
+        // 修改文件对象: 获取文件对象详情
+        var fileObjectDetail = {};
+        if (isModify) {
+            fileObjectDetail = await getFileObjectDetail(fileObjectId);
+        } else {
+            console.log("新增文件对象无需获取文件对象详情");
+        }
+
+        var filePathDisabledAttr = {};
+        var modifyDisabledAttr = {};
+        if (fileObjectDetail.storageMediumForDisplay == "腾讯云对象存储") {
+            filePathDisabledAttr.disabled = "true";
+            if (isModify) {
+                modifyDisabledAttr.disabled = "true";
+            }
+        }
+
+
+        return [
+            // 必须设置 id, name
+            // 只有设置了 id 才会使用 validate 校验取值
+            {
+                "tag": "select",
+                "attr": {
+                    "id": "storageMedium",
+                    "name": "storageMedium",
+                    "value": fileObjectDetail.storageMedium || "",
+                    ...modifyDisabledAttr
+                },
+                "label": {
+                    "value": "存储位置",
+                },
+                "required": true,
+                "children": [
+                    {
+                        "tag": "option",
+                        "attr": { "value": "QCLOUD_COS" },
+                        "innerHTML": "腾讯云对象存储",
+                    },
+                    {
+                        "tag": "option",
+                        "attr": { "value": "BAIDU_NETDISK" },
+                        "innerHTML": "百度网盘",
+                    },
+                    {
+                        "tag": "option",
+                        "attr": { "value": "ALIYUN_DRIVE" },
+                        "innerHTML": "阿里云盘",
+                    },
+                ],
+                "innerHTML": "",
+                "validate": (val) => {
+                    if (val == "QCLOUD_COS") {
+                        return {
+                            result: false,
+                            msg: "腾讯云对象存储请使用上传文件功能上传"
+                        };
+                    } else {
+                        return { result: true };
+                    }
+                }
+            },
+            {
+                "tag": "input",
+                "attr": {
+                    "id": "filePath",
+                    "name": "filePath",
+                    "placeholder": "文件对象链接或路径",
+                    "value": fileObjectDetail.filePath || "",
+                    ...filePathDisabledAttr // 如果是对象存储，那么就不允许编辑
+                },
+                "label": {
+                    "value": "文件链接",
+                },
+                "required": true,
+                "innerHTML": "",
+                "validate": (val) => getValidateUtils().setValue(val)
+                    .notString("传入的值为非字符串类型")
+                    .notEmptyAfterTrim("文件链接不能为空，请输入文件链接")
+                    .length(0, 150, "文件链接不能超过 150 个字符")
+                    .isValid()
+            },
+            {
+                "tag": "input",
+                "attr": {
+                    "id": "fileId",
+                    "name": "fileId",
+                    "placeholder": "关联文件Id",
+                    "value": fileId || "",
+                    "disabled": true,
+                },
+                "label": {
+                    "value": "关联文件Id",
+                },
+                "required": true,
+                "innerHTML": "",
+                "validate": (val) => getValidateUtils().setValue(val)
+                    .notPositiveInteger("关联文件id需要为正整数")
+                    .isValid()
+            },
+            {
+                "tag": "input",
+                "attr": {
+                    "id": "filePwd",
+                    "name": "filePwd",
+                    "placeholder": "文件密码",
+                    "value": fileObjectDetail.filePwd || "",
+                },
+                "label": {
+                    "value": "文件密码",
+                },
+                "required": false,
+                "innerHTML": "",
+                "validate": (val) => getValidateUtils().setValue(val)
+                    .notString("传入的值为非字符串类型")
+                    .isValid()
+            },
+            {
+                "tag": "input",
+                "attr": {
+                    "id": "fileShareCode",
+                    "name": "fileShareCode",
+                    "placeholder": "提取码",
+                    "value": fileObjectDetail.fileShareCode || "",
+                },
+                "label": {
+                    "value": "提取码",
+                },
+                "required": false,
+                "innerHTML": "",
+                "validate": (val) => getValidateUtils().setValue(val)
+                    .notString("传入的值为非字符串类型")
+                    .isValid()
+            },
+            // {
+            //     "tag": "span",
+            //     "attr": {
+            //     },
+            //     "innerHTML": fileObjectDetail.uploadStatus || "",
+            //     "label": {
+            //         "value": "上传状态",
+            //     },
+            //     "required": false,
+            // },
+        ];
+    }
+</script>

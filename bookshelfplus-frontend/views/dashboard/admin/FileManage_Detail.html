@@ -83,7 +83,8 @@
                         var item = data[i];
                         items.push(`<tr>
                             <td>${item.id}</td>
-                            <td>${item.storageMedium}</td>
+                            <td>${item.storageMediumForDisplay}</td>
+                            <td style="font-size: 12px;">${item.filePath}</td>
                             <td>${item.filePwd}</td>
                             <td>${item.fileShareCode}</td>
                             <td>${(item.uploadStatus ? item.uploadStatus : "<span style='color: grey; font-weight: bold;'>未知</span>")
@@ -93,10 +94,12 @@
                         </tr>`);
                     }
                     document.getElementById("file-object-container").innerHTML =
-                        `<table border="1" style="margin: 0 auto;">
+                        `<a href="<%= pageUrl %>../object-detail?fileId=${fileId}">添加网盘链接</a><br>
+                        <table border="1" style="margin: 0 auto;">
                             <tr>
                                 <th>文件对象Id</th>
                                 <th>存储介质</th>
+                                <th>链接</th>
                                 <th>文件密码</th>
                                 <th>提取码</th>
                                 <th>状态</th>

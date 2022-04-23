@@ -20,7 +20,6 @@ import plus.bookshelf.Service.Service.FileObjectService;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -104,6 +103,26 @@ public class FileObjectServiceImpl implements FileObjectService {
     public Boolean addFileObject(FileObjectModel fileObjectModel) throws InvocationTargetException, IllegalAccessException {
         FileObjectDO fileObjectDO = convertFromFileObjectModel(fileObjectModel);
         int affectRows = fileObjectDOMapper.insertSelective(fileObjectDO);
+        return affectRows > 0;
+    }
+
+    /**
+     * 修改文件对象
+     * 返回是否修改成功
+     *
+     * @param fileObjectModel
+     * @return
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException
+     */
+    @Override
+    public Boolean modifyFileObject(FileObjectModel fileObjectModel) {
+        FileObjectDO fileObjectDO = convertFromFileObjectModel(fileObjectModel);
+        Integer id = fileObjectDO.getId();
+        if (id == 0) {
+            return false;
+        }
+        int affectRows = fileObjectDOMapper.updateByPrimaryKeySelective(fileObjectDO);
         return affectRows > 0;
     }
 

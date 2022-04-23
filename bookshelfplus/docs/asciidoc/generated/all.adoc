@@ -21,6 +21,7 @@ __域名__ : localhost:8090
 * 书籍信息 : Book Controller
 * 书籍分类信息 : Category Controller
 * 导出数据 : Export Controller
+* 文件对象管理 : File Object Controller
 * 文件管理 : File Controller
 * 用户操作 : User Controller
 * 第三方登录 : Third Party Controller
@@ -734,294 +735,9 @@ __可选__|string
 ----
 
 
-[[_5505c91c7c23d55a117904f2a3fe6081]]
-=== 文件管理
-File Controller
-
-
-[[_cosusingpost]]
-==== 【用户|管理员】创建腾讯云 COS 预授权 URL
-....
-POST /api/file/cos/{httpMethod}
-....
-
-
-===== 参数
-
-[options="header", cols=".^2a,.^3a,.^9a,.^4a"]
-|===
-|类型|名称|说明|类型
-|**Path**|**httpMethod** +
-__必填__|httpMethod|string
-|**FormData**|**expireMinute** +
-__可选__||integer (int32)
-|**FormData**|**fileExt** +
-__可选__||string
-|**FormData**|**fileId** +
-__可选__||integer (int32)
-|**FormData**|**fileName** +
-__可选__||string
-|**FormData**|**fileNameAndExt** +
-__可选__||string
-|**FormData**|**fileSha1** +
-__可选__||string
-|**FormData**|**fileSize** +
-__可选__||integer (int64)
-|**FormData**|**lastModified** +
-__可选__||integer (int64)
-|**FormData**|**token** +
-__可选__||string
-|**FormData**|**visitorId** +
-__可选__||string
-|===
-
-
-===== 响应
-
-[options="header", cols=".^2a,.^14a,.^4a"]
-|===
-|HTTP代码|说明|类型
-|**200**|OK|<<_commonreturntype,CommonReturnType>>
-|**201**|Created|无内容
-|**401**|Unauthorized|无内容
-|**403**|Forbidden|无内容
-|**404**|Not Found|无内容
-|===
-
-
-===== 消耗
-
-* `application/x-www-form-urlencoded`
-
-
-===== 生成
-
-* `\*/*`
-
-
-===== HTTP请求示例
-
-====== 请求 path
-----
-/api/file/cos/string
-----
-
-
-====== 请求 formData
-[source,json]
-----
-"string"
-----
-
-
-===== HTTP响应示例
-
-====== 响应 200
-[source,json]
-----
-{
-  "data" : "object",
-  "status" : "string"
-}
-----
-
-
-[[_getfileusingget]]
-==== 书籍下载页面获取文件提供的下载方式
-....
-GET /api/file/getFile
-....
-
-
-===== 参数
-
-[options="header", cols=".^2a,.^3a,.^9a,.^4a"]
-|===
-|类型|名称|说明|类型
-|**Query**|**bookId** +
-__可选__|bookId|integer (int32)
-|===
-
-
-===== 响应
-
-[options="header", cols=".^2a,.^14a,.^4a"]
-|===
-|HTTP代码|说明|类型
-|**200**|OK|<<_commonreturntype,CommonReturnType>>
-|**401**|Unauthorized|无内容
-|**403**|Forbidden|无内容
-|**404**|Not Found|无内容
-|===
-
-
-===== 生成
-
-* `\*/*`
-
-
-===== HTTP请求示例
-
-====== 请求 path
-----
-/api/file/getFile
-----
-
-
-===== HTTP响应示例
-
-====== 响应 200
-[source,json]
-----
-{
-  "data" : "object",
-  "status" : "string"
-}
-----
-
-
-[[_listusingpost]]
-==== 【管理员】查询文件列表
-....
-POST /api/file/list
-....
-
-
-===== 说明
-查询文件列表
-
-
-===== 参数
-
-[options="header", cols=".^2a,.^3a,.^4a"]
-|===
-|类型|名称|类型
-|**FormData**|**token** +
-__可选__|string
-|===
-
-
-===== 响应
-
-[options="header", cols=".^2a,.^14a,.^4a"]
-|===
-|HTTP代码|说明|类型
-|**200**|OK|<<_commonreturntype,CommonReturnType>>
-|**201**|Created|无内容
-|**401**|Unauthorized|无内容
-|**403**|Forbidden|无内容
-|**404**|Not Found|无内容
-|===
-
-
-===== 消耗
-
-* `application/x-www-form-urlencoded`
-
-
-===== 生成
-
-* `\*/*`
-
-
-===== HTTP请求示例
-
-====== 请求 path
-----
-/api/file/list
-----
-
-
-====== 请求 formData
-[source,json]
-----
-"string"
-----
-
-
-===== HTTP响应示例
-
-====== 响应 200
-[source,json]
-----
-{
-  "data" : "object",
-  "status" : "string"
-}
-----
-
-
-[[_matchfilehashusingpost]]
-==== 【管理员】查询文件列表（匹配文件哈希）
-....
-POST /api/file/list/MatchfileHash
-....
-
-
-===== 说明
-查询文件列表，返回文件哈希为空或者相同的文件
-
-
-===== 参数
-
-[options="header", cols=".^2a,.^3a,.^4a"]
-|===
-|类型|名称|类型
-|**FormData**|**fileSha1** +
-__可选__|string
-|**FormData**|**token** +
-__可选__|string
-|===
-
-
-===== 响应
-
-[options="header", cols=".^2a,.^14a,.^4a"]
-|===
-|HTTP代码|说明|类型
-|**200**|OK|<<_commonreturntype,CommonReturnType>>
-|**201**|Created|无内容
-|**401**|Unauthorized|无内容
-|**403**|Forbidden|无内容
-|**404**|Not Found|无内容
-|===
-
-
-===== 消耗
-
-* `application/x-www-form-urlencoded`
-
-
-===== 生成
-
-* `\*/*`
-
-
-===== HTTP请求示例
-
-====== 请求 path
-----
-/api/file/list/MatchfileHash
-----
-
-
-====== 请求 formData
-[source,json]
-----
-"string"
-----
-
-
-===== HTTP响应示例
-
-====== 响应 200
-[source,json]
-----
-{
-  "data" : "object",
-  "status" : "string"
-}
-----
+[[_57b49e52efcce5b3ba6dc8bdf593d99a]]
+=== 文件对象管理
+File Object Controller
 
 
 [[_failurefeedbackusingpost]]
@@ -1088,6 +804,365 @@ __可选__|string
 [source,json]
 ----
 "string"
+----
+
+
+===== HTTP响应示例
+
+====== 响应 200
+[source,json]
+----
+{
+  "data" : "object",
+  "status" : "string"
+}
+----
+
+
+[[_cosusingpost]]
+==== 【用户|管理员】创建腾讯云 COS 预授权 URL
+....
+POST /api/file/object/cos/{httpMethod}
+....
+
+
+===== 参数
+
+[options="header", cols=".^2a,.^3a,.^9a,.^4a"]
+|===
+|类型|名称|说明|类型
+|**Path**|**httpMethod** +
+__必填__|httpMethod|string
+|**FormData**|**expireMinute** +
+__可选__||integer (int32)
+|**FormData**|**fileExt** +
+__可选__||string
+|**FormData**|**fileId** +
+__可选__||integer (int32)
+|**FormData**|**fileName** +
+__可选__||string
+|**FormData**|**fileNameAndExt** +
+__可选__||string
+|**FormData**|**fileSha1** +
+__可选__||string
+|**FormData**|**fileSize** +
+__可选__||integer (int64)
+|**FormData**|**lastModified** +
+__可选__||integer (int64)
+|**FormData**|**token** +
+__可选__||string
+|**FormData**|**visitorId** +
+__可选__||string
+|===
+
+
+===== 响应
+
+[options="header", cols=".^2a,.^14a,.^4a"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_commonreturntype,CommonReturnType>>
+|**201**|Created|无内容
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+===== 消耗
+
+* `application/x-www-form-urlencoded`
+
+
+===== 生成
+
+* `\*/*`
+
+
+===== HTTP请求示例
+
+====== 请求 path
+----
+/api/file/object/cos/string
+----
+
+
+====== 请求 formData
+[source,json]
+----
+"string"
+----
+
+
+===== HTTP响应示例
+
+====== 响应 200
+[source,json]
+----
+{
+  "data" : "object",
+  "status" : "string"
+}
+----
+
+
+[[_deletefileobjectusingpost]]
+==== 【管理员】删除文件对象
+....
+POST /api/file/object/delete
+....
+
+
+===== 说明
+管理员在后台删除文件对象
+
+
+===== 参数
+
+[options="header", cols=".^2a,.^3a,.^4a"]
+|===
+|类型|名称|类型
+|**FormData**|**id** +
+__可选__|integer (int32)
+|**FormData**|**token** +
+__可选__|string
+|===
+
+
+===== 响应
+
+[options="header", cols=".^2a,.^14a,.^4a"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_commonreturntype,CommonReturnType>>
+|**201**|Created|无内容
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+===== 消耗
+
+* `application/x-www-form-urlencoded`
+
+
+===== 生成
+
+* `\*/*`
+
+
+===== HTTP请求示例
+
+====== 请求 path
+----
+/api/file/object/delete
+----
+
+
+====== 请求 formData
+[source,json]
+----
+"string"
+----
+
+
+===== HTTP响应示例
+
+====== 响应 200
+[source,json]
+----
+{
+  "data" : "object",
+  "status" : "string"
+}
+----
+
+
+[[_detailusingpost_1]]
+==== 【管理员】添加/修改文件对象
+....
+POST /api/file/object/detail
+....
+
+
+===== 说明
+管理员在后台添加/修改文件对象（fileObjectId 传 0 或 null 或 不传 即为添加）
+
+
+===== 参数
+
+[options="header", cols=".^2a,.^3a,.^4a"]
+|===
+|类型|名称|类型
+|**FormData**|**fileId** +
+__可选__|integer (int32)
+|**FormData**|**filePath** +
+__可选__|string
+|**FormData**|**filePwd** +
+__可选__|string
+|**FormData**|**fileShareCode** +
+__可选__|string
+|**FormData**|**id** +
+__可选__|integer (int32)
+|**FormData**|**storageMedium** +
+__可选__|string
+|**FormData**|**token** +
+__可选__|string
+|===
+
+
+===== 响应
+
+[options="header", cols=".^2a,.^14a,.^4a"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_commonreturntype,CommonReturnType>>
+|**201**|Created|无内容
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+===== 消耗
+
+* `application/x-www-form-urlencoded`
+
+
+===== 生成
+
+* `\*/*`
+
+
+===== HTTP请求示例
+
+====== 请求 path
+----
+/api/file/object/detail
+----
+
+
+====== 请求 formData
+[source,json]
+----
+"string"
+----
+
+
+===== HTTP响应示例
+
+====== 响应 200
+[source,json]
+----
+{
+  "data" : "object",
+  "status" : "string"
+}
+----
+
+
+[[_getusingget_2]]
+==== 获取文件对象信息
+....
+GET /api/file/object/get
+....
+
+
+===== 说明
+获取文件对象信息
+
+
+===== 参数
+
+[options="header", cols=".^2a,.^3a,.^9a,.^4a"]
+|===
+|类型|名称|说明|类型
+|**Query**|**id** +
+__必填__|id|integer (int32)
+|===
+
+
+===== 响应
+
+[options="header", cols=".^2a,.^14a,.^4a"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_commonreturntype,CommonReturnType>>
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+===== 生成
+
+* `\*/*`
+
+
+===== HTTP请求示例
+
+====== 请求 path
+----
+/api/file/object/get?id=0
+----
+
+
+===== HTTP响应示例
+
+====== 响应 200
+[source,json]
+----
+{
+  "data" : "object",
+  "status" : "string"
+}
+----
+
+
+[[_getfileobjectbyfileidusingget]]
+==== 查询指定文件的文件对象列表
+....
+GET /api/file/object/getByFileId
+....
+
+
+===== 说明
+传入文件Id，返回文件对象列表
+
+
+===== 参数
+
+[options="header", cols=".^2a,.^3a,.^9a,.^4a"]
+|===
+|类型|名称|说明|类型
+|**Query**|**fileId** +
+__可选__|fileId|integer (int32)
+|===
+
+
+===== 响应
+
+[options="header", cols=".^2a,.^14a,.^4a"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_commonreturntype,CommonReturnType>>
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+===== 生成
+
+* `\*/*`
+
+
+===== HTTP请求示例
+
+====== 请求 path
+----
+/api/file/object/getByFileId
 ----
 
 
@@ -1250,7 +1325,7 @@ __可选__|string
 [[_coscheckfilestatususingpost]]
 ==== 【COS】腾讯云 COS 文件上传成功回调
 ....
-POST /api/file/upload/cos-check-file-state
+POST /api/file/object/upload/cos-check-file-state
 ....
 
 
@@ -1297,7 +1372,408 @@ __可选__|string
 
 ====== 请求 path
 ----
-/api/file/upload/cos-check-file-state
+/api/file/object/upload/cos-check-file-state
+----
+
+
+====== 请求 formData
+[source,json]
+----
+"string"
+----
+
+
+===== HTTP响应示例
+
+====== 响应 200
+[source,json]
+----
+{
+  "data" : "object",
+  "status" : "string"
+}
+----
+
+
+[[_5505c91c7c23d55a117904f2a3fe6081]]
+=== 文件管理
+File Controller
+
+
+[[_bindbookusingpost]]
+==== 【管理员】将书籍和文件进行绑定
+....
+POST /api/file/bindBook
+....
+
+
+===== 参数
+
+[options="header", cols=".^2a,.^3a,.^4a"]
+|===
+|类型|名称|类型
+|**FormData**|**bookId** +
+__可选__|integer (int32)
+|**FormData**|**fileId** +
+__可选__|integer (int32)
+|**FormData**|**token** +
+__可选__|string
+|===
+
+
+===== 响应
+
+[options="header", cols=".^2a,.^14a,.^4a"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_commonreturntype,CommonReturnType>>
+|**201**|Created|无内容
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+===== 消耗
+
+* `application/x-www-form-urlencoded`
+
+
+===== 生成
+
+* `\*/*`
+
+
+===== HTTP请求示例
+
+====== 请求 path
+----
+/api/file/bindBook
+----
+
+
+====== 请求 formData
+[source,json]
+----
+"string"
+----
+
+
+===== HTTP响应示例
+
+====== 响应 200
+[source,json]
+----
+{
+  "data" : "object",
+  "status" : "string"
+}
+----
+
+
+[[_getfilebybookidusingget]]
+==== 书籍下载页面获取文件提供的下载方式
+....
+GET /api/file/getFileByBookId
+....
+
+
+===== 参数
+
+[options="header", cols=".^2a,.^3a,.^9a,.^4a"]
+|===
+|类型|名称|说明|类型
+|**Query**|**bookId** +
+__可选__|bookId|integer (int32)
+|===
+
+
+===== 响应
+
+[options="header", cols=".^2a,.^14a,.^4a"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_commonreturntype,CommonReturnType>>
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+===== 生成
+
+* `\*/*`
+
+
+===== HTTP请求示例
+
+====== 请求 path
+----
+/api/file/getFileByBookId
+----
+
+
+===== HTTP响应示例
+
+====== 响应 200
+[source,json]
+----
+{
+  "data" : "object",
+  "status" : "string"
+}
+----
+
+
+[[_getfilebyhashusingpost]]
+==== 【管理员】通过文件SHA1哈希查找文件Id
+....
+POST /api/file/getFileByHash
+....
+
+
+===== 说明
+查询文件列表，返回文件哈希匹配的文件Id
+
+
+===== 参数
+
+[options="header", cols=".^2a,.^3a,.^4a"]
+|===
+|类型|名称|类型
+|**FormData**|**fileSha1** +
+__可选__|string
+|**FormData**|**token** +
+__可选__|string
+|===
+
+
+===== 响应
+
+[options="header", cols=".^2a,.^14a,.^4a"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_commonreturntype,CommonReturnType>>
+|**201**|Created|无内容
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+===== 消耗
+
+* `application/x-www-form-urlencoded`
+
+
+===== 生成
+
+* `\*/*`
+
+
+===== HTTP请求示例
+
+====== 请求 path
+----
+/api/file/getFileByHash
+----
+
+
+====== 请求 formData
+[source,json]
+----
+"string"
+----
+
+
+===== HTTP响应示例
+
+====== 响应 200
+[source,json]
+----
+{
+  "data" : "object",
+  "status" : "string"
+}
+----
+
+
+[[_getfilebyidusingget]]
+==== 通过 fileId 获取文件信息
+....
+GET /api/file/getFileById
+....
+
+
+===== 参数
+
+[options="header", cols=".^2a,.^3a,.^9a,.^4a"]
+|===
+|类型|名称|说明|类型
+|**Query**|**fileId** +
+__可选__|fileId|integer (int32)
+|===
+
+
+===== 响应
+
+[options="header", cols=".^2a,.^14a,.^4a"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_commonreturntype,CommonReturnType>>
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+===== 生成
+
+* `\*/*`
+
+
+===== HTTP请求示例
+
+====== 请求 path
+----
+/api/file/getFileById
+----
+
+
+===== HTTP响应示例
+
+====== 响应 200
+[source,json]
+----
+{
+  "data" : "object",
+  "status" : "string"
+}
+----
+
+
+[[_listusingpost]]
+==== 【管理员】查询文件列表
+....
+POST /api/file/list
+....
+
+
+===== 说明
+查询文件列表
+
+
+===== 参数
+
+[options="header", cols=".^2a,.^3a,.^4a"]
+|===
+|类型|名称|类型
+|**FormData**|**token** +
+__可选__|string
+|===
+
+
+===== 响应
+
+[options="header", cols=".^2a,.^14a,.^4a"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_commonreturntype,CommonReturnType>>
+|**201**|Created|无内容
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+===== 消耗
+
+* `application/x-www-form-urlencoded`
+
+
+===== 生成
+
+* `\*/*`
+
+
+===== HTTP请求示例
+
+====== 请求 path
+----
+/api/file/list
+----
+
+
+====== 请求 formData
+[source,json]
+----
+"string"
+----
+
+
+===== HTTP响应示例
+
+====== 响应 200
+[source,json]
+----
+{
+  "data" : "object",
+  "status" : "string"
+}
+----
+
+
+[[_matchfilehashwithnullvalueusingpost]]
+==== 【管理员】查询文件列表（匹配文件哈希）
+....
+POST /api/file/list/MatchfileHashWithNullValue
+....
+
+
+===== 说明
+查询文件列表，返回文件哈希为空或者相同的文件
+
+
+===== 参数
+
+[options="header", cols=".^2a,.^3a,.^4a"]
+|===
+|类型|名称|类型
+|**FormData**|**fileSha1** +
+__可选__|string
+|**FormData**|**token** +
+__可选__|string
+|===
+
+
+===== 响应
+
+[options="header", cols=".^2a,.^14a,.^4a"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_commonreturntype,CommonReturnType>>
+|**201**|Created|无内容
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+===== 消耗
+
+* `application/x-www-form-urlencoded`
+
+
+===== 生成
+
+* `\*/*`
+
+
+===== HTTP请求示例
+
+====== 请求 path
+----
+/api/file/list/MatchfileHashWithNullValue
 ----
 
 
@@ -2037,7 +2513,7 @@ __可选__|string
 Status Controller
 
 
-[[_getusingget_2]]
+[[_getusingget_3]]
 ==== 系统状态
 ....
 GET /api/status/get

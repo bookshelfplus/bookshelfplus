@@ -11,7 +11,7 @@
  Target Server Version : 50726
  File Encoding         : 65001
 
- Date: 23/04/2022 10:24:36
+ Date: 23/04/2022 22:43:31
 */
 
 SET NAMES utf8mb4;
@@ -152,7 +152,6 @@ CREATE TABLE `file_info`  (
   `advertising` tinyint(1) NOT NULL DEFAULT 0 COMMENT '1为已删除项',
   `source` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `file_create_at` datetime NOT NULL,
-  `file_modified_at` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 

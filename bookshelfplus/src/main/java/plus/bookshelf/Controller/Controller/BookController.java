@@ -171,7 +171,7 @@ public class BookController extends BaseController {
         Integer affectRows = 0;
         if (bookId == null || bookId == 0) {
             // 新增图书
-            isDelete = false;
+            // isDelete = false;
             affectRows = bookService.addBook(bookModel);
         } else {
             //修改图书
