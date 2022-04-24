@@ -1,0 +1,78 @@
+<style>
+    #sharecode_input {
+        width: 100%;
+        height: 50px;
+    }
+
+    #next-button {
+        margin-top: 30px;
+    }
+</style>
+<input id="sharecode_input" placeholder="请在此处粘贴网盘分享链接">
+<input id="paste-button" value="点击粘贴" type="button" onclick="pasteText();">
+<input id="next-button" value="直接前往添加" type="button" onclick="location.replace(redirectUrl);">
+<!-- 获取参数 -->
+<script src="/assets/javascripts/getParams.js"></script>
+<script>
+    var requestParams = getParams();
+    var fileId = Number(requestParams["fileId"]) ?? "";
+    if (fileId === "")
+        history.go(-1);
+    console.log(fileId);
+</script>
+
+<!-- 获取网盘分享链接 -->
+<script src="/assets/javascripts/dashboard/netdiskShareStringUtils.js"></script>
+<script>
+    var redirectUrl = `<%= pageUrl %>../object-detail?fileId=${fileId}&referrer=${encodeURIComponent(document.referrer)}`
+    $(document).ready(function () {
+        $("#sharecode_input").on({
+            // copy: function () {
+            //     alert('复制');
+            // },
+            paste: onPaste,
+            // cut: function () {
+            //     alert('剪切');
+            // }
+        });
+    });
+
+    // input 粘贴事件
+    function onPaste() {
+        // alert('粘贴');
+
+        // 直接获取的话，获取到的值还是粘贴之前的，所以这里使用了 setTimeout
+        // console.log(this.value);
+        setTimeout(function (val) {
+            var inputValue = $("#sharecode_input").val();
+            console.log("用户输入", inputValue);
+            var result = getNetdiskShareDetails(inputValue);
+            console.log(result);
+            if (result && result.success) {
+                redirectUrl += `&disk=${result.platform.name}&url=${encodeURIComponent(result.url)}&pwd=${result.pwd}`
+            } else {
+                if (!confirm("未检测到网盘分享链接，是否直接跳转？"))
+                    return;
+            }
+            // 跳转
+            console.log("将要跳转", redirectUrl);
+            location.replace(redirectUrl);
+        }, 1)
+    }
+
+    // 点击粘贴按钮
+    function pasteText() {
+        if (!navigator.clipboard) {
+            alert("浏览器不支持读取剪切板，请手动粘贴！");
+            return;
+        }
+        navigator.clipboard.readText().then(text => {
+            console.log("剪切板内容：" + text);
+            $("#sharecode_input").val(text);
+            onPaste();
+        }).catch(err => {
+            console.error('Failed to read clipboard contents: ', err);
+            alert("读取剪切板失败，请手动粘贴！");
+        });
+    }
+</script>

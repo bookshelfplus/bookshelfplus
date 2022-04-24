@@ -126,6 +126,11 @@ router.get('/dashboard/:group/:page/:subpage?', function (req, res) {
                 baseTemplate: "table",
                 pageTemplate: "FileManage",
                 childPage: {
+                    "upload": {
+                        title: "上传文件",
+                        baseTemplate: "blank",
+                        pageTemplate: "FileManage_Upload",
+                    },
                     "detail": {
                         title: "文件详情",
                         baseTemplate: "blank",
@@ -141,10 +146,10 @@ router.get('/dashboard/:group/:page/:subpage?', function (req, res) {
                         baseTemplate: "form",
                         pageTemplate: "FileManage_ObjectManage_Detail",
                     },
-                    "upload": {
-                        title: "上传文件",
+                    "get-share-url": {
+                        title: "粘贴网盘分享链接",
                         baseTemplate: "blank",
-                        pageTemplate: "FileManage_Upload",
+                        pageTemplate: "FileManage_ObjectManage_getShareUrl",
                     },
                 }
             },

@@ -48,8 +48,8 @@
                                 .replace("UPLOADING", "<span style='color: orange; font-weight: bold;'>正在上传</span>")
                                 .replace("NOT_EXIST", "<span style='color: red; font-weight: bold;'>不存在</span>")}`,
                             管理: `<span span class="overflow-omit" style="margin: 0 auto;">
-                                        <a href="javascript:refreshFileObjectStatus(${element.id});">刷新状态</a>
-                                        <a href="<%= pageUrl %>../object-detail?id=${element.id}">修改(TODO)</a>
+                                        <a href="javascript:refreshFileObjectStatus(${element.id});" style="${element.storageMedium == "QCLOUD_COS" ? "" : "display: none;"}">刷新状态</a>
+                                        <a href="<%= pageUrl %>../object-detail?id=${element.id}&fileId=${element.fileId}">修改</a>
                                         <a href="javascript:deleteFileObject(${element.id});">删除</a>
                                     </span >`,
                         })

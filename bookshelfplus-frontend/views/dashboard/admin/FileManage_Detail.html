@@ -84,18 +84,21 @@
                         items.push(`<tr>
                             <td>${item.id}</td>
                             <td>${item.storageMediumForDisplay}</td>
-                            <td style="font-size: 12px;">${item.filePath}</td>
+                            <td style="font-size: 12px; max-width: 120px;">
+                                <span class="overflow-omit">${item.filePath}</span>
+                            </td>
                             <td>${item.filePwd}</td>
                             <td>${item.fileShareCode}</td>
                             <td>${(item.uploadStatus ? item.uploadStatus : "<span style='color: grey; font-weight: bold;'>未知</span>")
                                 .replace("SUCCESS", "<span style='color: green; font-weight: bold;'>成功</span>")
                                 .replace("UPLOADING", "<span style='color: orange; font-weight: bold;'>正在上传</span>")
                                 .replace("NOT_EXIST", "<span style='color: red; font-weight: bold;'>不存在</span>")}</td>
+                            <td><a href="<%= pageUrl %>../object-detail?id=${item.id}&fileId=${item.fileId}">修改</a></td>
                         </tr>`);
                     }
                     document.getElementById("file-object-container").innerHTML =
-                        `<a href="<%= pageUrl %>../object-detail?fileId=${fileId}">添加网盘链接</a><br>
-                        <table border="1" style="margin: 0 auto;">
+                        `<a href="<%= pageUrl %>../get-share-url?fileId=${fileId}">添加网盘链接</a><br>
+                        <table border="1" style="margin: 0 auto; width: 100%;">
                             <tr>
                                 <th>文件对象Id</th>
                                 <th>存储介质</th>
@@ -103,6 +106,7 @@
                                 <th>文件密码</th>
                                 <th>提取码</th>
                                 <th>状态</th>
+                                <th>管理</th>
                             </tr>
                             ${items.join("")}
                         </table>`;

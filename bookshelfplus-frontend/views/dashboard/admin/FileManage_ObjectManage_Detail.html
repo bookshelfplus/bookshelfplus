@@ -1,6 +1,9 @@
+<div class="show-only-modify" style="text-align: center;">
+    上传状态：<span id="upload-status"></span>
+</div>
 <script>
     // 如果传入了 id 那么就是修改文件对象，否则就是添加文件对象
-    var params = getParams()
+    var params = getParams();
     var fileObjectId = params.id;
     var fileId = params.fileId;
     if (!fileId) {
@@ -12,6 +15,7 @@
     if (!isModify) {
         // 新增文件对象
         fileObjectId = 0;
+        $(".show-only-modify").hide();
     } else {
         // 修改文件对象
     }
@@ -25,7 +29,10 @@
             success: function (data) {
                 console.log(data);
                 alert(isModify ? "修改成功！" : "添加成功！");
-                history.go(-1);
+                if (params.referrer)
+                    location.replace(params.referrer);
+                else
+                    history.go(-1);
             }
         });
     }
@@ -65,6 +72,8 @@
             }
         }
 
+        // 如果是修改文件对象，那么显示文件上传状态
+        $("#upload-status").html(fileObjectDetail.uploadStatus || "");
 
         return [
             // 必须设置 id, name
@@ -74,7 +83,7 @@
                 "attr": {
                     "id": "storageMedium",
                     "name": "storageMedium",
-                    "value": fileObjectDetail.storageMedium || "",
+                    "value": params.disk || fileObjectDetail.storageMedium || "",
                     ...modifyDisabledAttr
                 },
                 "label": {
@@ -116,7 +125,7 @@
                     "id": "filePath",
                     "name": "filePath",
                     "placeholder": "文件对象链接或路径",
-                    "value": fileObjectDetail.filePath || "",
+                    "value": params.url || fileObjectDetail.filePath || "",
                     ...filePathDisabledAttr // 如果是对象存储，那么就不允许编辑
                 },
                 "label": {
@@ -171,7 +180,7 @@
                     "id": "fileShareCode",
                     "name": "fileShareCode",
                     "placeholder": "提取码",
-                    "value": fileObjectDetail.fileShareCode || "",
+                    "value": params.pwd || fileObjectDetail.fileShareCode || "",
                 },
                 "label": {
                     "value": "提取码",
