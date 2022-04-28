@@ -93,7 +93,7 @@
                                 .replace("SUCCESS", "<span style='color: green; font-weight: bold;'>成功</span>")
                                 .replace("UPLOADING", "<span style='color: orange; font-weight: bold;'>正在上传</span>")
                                 .replace("NOT_EXIST", "<span style='color: red; font-weight: bold;'>不存在</span>")}</td>
-                            <td><a href="<%= pageUrl %>../object-detail?id=${item.id}&fileId=${item.fileId}">修改</a></td>
+                            <td><a href="<%= pageUrl %>../get-share-url?id=${item.id}&fileId=${item.fileId}">修改</a></td>
                         </tr>`);
                     }
                     document.getElementById("file-object-container").innerHTML =

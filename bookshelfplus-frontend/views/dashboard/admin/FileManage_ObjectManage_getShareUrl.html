@@ -10,21 +10,27 @@
 </style>
 <input id="sharecode_input" placeholder="请在此处粘贴网盘分享链接">
 <input id="paste-button" value="点击粘贴" type="button" onclick="pasteText();">
-<input id="next-button" value="直接前往添加" type="button" onclick="location.replace(redirectUrl);">
+<input id="next-button" value="直接前往添加/修改" type="button" onclick="location.replace(redirectUrl);">
 <!-- 获取参数 -->
 <script src="/assets/javascripts/getParams.js"></script>
 <script>
     var requestParams = getParams();
+
+    // 文件对象 id (修改文件对象用)
+    var id = requestParams["id"] ?? "";
+
+    // 文件 id
     var fileId = Number(requestParams["fileId"]) ?? "";
     if (fileId === "")
         history.go(-1);
-    console.log(fileId);
+
+    console.log(id, fileId);
 </script>
 
 <!-- 获取网盘分享链接 -->
 <script src="/assets/javascripts/dashboard/netdiskShareStringUtils.js"></script>
 <script>
-    var redirectUrl = `<%= pageUrl %>../object-detail?fileId=${fileId}&referrer=${encodeURIComponent(document.referrer)}`
+    var redirectUrl = `<%= pageUrl %>../object-detail?id=${id}&fileId=${fileId}&referrer=${encodeURIComponent(document.referrer)}`
     $(document).ready(function () {
         $("#sharecode_input").on({
             // copy: function () {

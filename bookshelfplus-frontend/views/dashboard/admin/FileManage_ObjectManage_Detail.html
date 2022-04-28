@@ -1,3 +1,6 @@
+<div class="show-modify-or-add" style="text-align: center;">
+    当前为：<span id="upload-type" style="font-weight: bold;">新增文件对象</span>
+</div>
 <div class="show-only-modify" style="text-align: center;">
     上传状态：<span id="upload-status"></span>
 </div>
@@ -17,8 +20,12 @@
         // 新增文件对象
         fileObjectId = 0;
         $(".show-only-modify").hide();
+        $("#upload-type").html("新增文件对象");
+        $("#upload-type").css("color", "green");
     } else {
         // 修改文件对象
+        $("#upload-type").html("修改文件对象");
+        $("#upload-type").css("color", "red");
     }
 
     // 点击提交按钮
