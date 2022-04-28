@@ -473,7 +473,7 @@
                     var optionHTML = "";
                     for (var i = 0; i < data.length; i++) {
                         const element = data[i];
-                        optionHTML += `<option value="${element.id}">[${element.id}] ${element.fileDisplayName}.${element.fileFormat}</option>`;
+                        optionHTML += `<option value="${element.id}">[${element.id}] ${element.fileName}.${element.fileExt}</option>`;
                     }
                     // 渲染到下拉框内
                     // fileAssociator.innerHTML += optionHTML;
