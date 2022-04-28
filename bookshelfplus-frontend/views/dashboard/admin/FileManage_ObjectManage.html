@@ -67,11 +67,11 @@
                         renderTable({ data: renderData, tableId: tableElementId, renderTableHead: true });
                     }
                 } else {
-                    alert(`出错啦！${data.errMsg}(错误码: ${data.errCode}) `);
+                    swal(`出错啦！${data.errMsg} (错误码: ${data.errCode})`);
                 }
             }).catch(function (error) {
                 console.log(error);
-                alert("无法连接到服务器，请检查网络连接！");
+                swal("无法连接到服务器，请检查网络连接！");
             });
     }
 
@@ -83,14 +83,14 @@
                 var data = axiosData.data;
                 if (status === "success") {
                     console.log(data);
-                    alert("刷新成功！");
+                    swal("刷新成功！");
                     list({ tableElementId: "book-table" });
                 } else {
-                    alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
+                    swal(`出错啦！${data.errMsg} (错误码: ${data.errCode})`);
                 }
             }).catch(function (error) {
                 console.log(error);
-                alert("无法连接到服务器，请检查网络连接！");
+                swal("无法连接到服务器，请检查网络连接！");
             });
     }
 
@@ -107,16 +107,16 @@
                     console.log(data)
                     if (data == "success") {
                         list({ tableElementId: "book-table" });
-                        alert("删除成功！");
+                        swal("删除成功！");
                     } else {
-                        alert("删除失败！");
+                        swal("删除失败！");
                     }
                 } else {
-                    alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
+                    swal(`出错啦！${data.errMsg} (错误码: ${data.errCode})`);
                 }
             }).catch(function (error) {
                 console.log(error);
-                alert("无法连接到服务器，请检查网络连接！");
+                swal("无法连接到服务器，请检查网络连接！");
             });
     }
 </script>

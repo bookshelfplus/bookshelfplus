@@ -84,11 +84,11 @@ public class ThirdPartyUserServiceImpl implements ThirdPartyUserService {
                     return userModel;
                 } else {
                     // 未绑定到系统账号
-                    throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "第三方登录失败，该第三方账号未绑定到系统账号，请先绑定");
+                    throw new BusinessException(BusinessErrorCode.THIRD_PARTY_ACCOUNT_NOT_EXIST, "第三方登录失败，该第三方账号未绑定到系统账号，请先绑定");
                 }
             } else {
                 // 之前未授权登录过
-                throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "第三方登录失败，该第三方账号未绑定到系统账号，请先绑定");
+                throw new BusinessException(BusinessErrorCode.THIRD_PARTY_ACCOUNT_NOT_EXIST, "第三方登录失败，该第三方账号未绑定到系统账号，请先绑定");
             }
         } else {
             // 未知错误

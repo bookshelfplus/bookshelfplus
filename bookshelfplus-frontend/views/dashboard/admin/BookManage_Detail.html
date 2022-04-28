@@ -25,13 +25,14 @@
             data: { id: bookId },
             success: function (data) {
                 console.log(data);
-                alert(isModify ? "修改成功！" : "添加成功！");
-                if (!isModify && document.getElementById("isContinuous").checked) {
-                    location.reload();
-                } else {
-                    // 回到书籍管理页
-                    location.href = "<%= pageUrl %>../";
-                }
+                swal(isModify ? "修改成功！" : "添加成功！").then(function () {
+                    if (!isModify && document.getElementById("isContinuous").checked) {
+                        location.reload();
+                    } else {
+                        // 回到书籍管理页
+                        location.href = "<%= pageUrl %>../";
+                    }
+                });
             }
         });
     }
@@ -46,7 +47,7 @@
             console.log(data)
             return data;
         } else {
-            alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
+            swal(`出错啦！${data.errMsg} (错误码: ${data.errCode})`);
             // 回到书籍管理页
             location.href = "<%= pageUrl %>../";
         }
@@ -77,7 +78,7 @@
             render({ children: hierarchyData });
             categoryOptions.shift(); // 删除数组中的第一个元素
         } else {
-            alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
+            swal(`出错啦！${data.errMsg} (错误码: ${data.errCode})`);
         }
 
         console.log(categoryOptions);

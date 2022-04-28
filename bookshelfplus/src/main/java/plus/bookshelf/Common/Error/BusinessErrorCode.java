@@ -22,6 +22,7 @@ public enum BusinessErrorCode implements CommonError {
     THIRD_PARTY_LOGIN_FAIL(40001, "第三方登录失败"),
     THIRD_PARTY_ACCOUNT_ALREADY_BOUND(40002, "该账号已被其他账号绑定"),
     THIRD_PARTY_UNBIND_FAIL(40003, "第三方账号解绑失败"),
+    THIRD_PARTY_ACCOUNT_NOT_EXIST(40004, "当前第三方账号未绑定到系统账号"),
 
     // 50000开头为书籍相关错误定义
     BOOK_NOT_EXIST(50001, "书籍不存在"),

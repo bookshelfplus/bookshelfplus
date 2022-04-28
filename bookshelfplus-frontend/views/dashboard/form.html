@@ -99,7 +99,7 @@
                 var control = document.getElementById(controlsProfileItem.attr.id);
                 // 判断 control 是否为空
                 if (!control) {
-                    alert("控件不存在：" + controlsProfileItem.attr.id);
+                    swal("控件不存在：" + controlsProfileItem.attr.id);
                     return;
                 }
                 var name = control.name;
@@ -109,8 +109,9 @@
                 if (validateResult.result) {
                     data[name] = value;
                 } else {
-                    alert(validateResult.msg);
-                    control.focus();
+                    swal(validateResult.msg).then(function () {
+                        control.focus();
+                    });
                     return;
                 }
             }
@@ -133,16 +134,17 @@
                     if (status === "success") {
                         success(data);
                     } else {
-                        alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
-                        if (data.errCode == "20004") {
-                            // 登录过期
-                            localStorageUtils.userLogout();
-                            location.href = "/login?redirect=" + encodeURIComponent(location.pathname + location.search);
-                        }
+                        swal(`出错啦！${data.errMsg} (错误码: ${data.errCode})`).then(function () {
+                            if (data.errCode == "20004") {
+                                // 登录过期
+                                localStorageUtils.userLogout();
+                                location.href = "/login?redirect=" + encodeURIComponent(location.pathname + location.search);
+                            }
+                        });
                     }
                 }).catch(function (error) {
                     console.log(error);
-                    alert("无法连接到服务器，请检查网络连接！");
+                    swal("无法连接到服务器，请检查网络连接！");
                 }).finally(function () {
                     $("#favorties-button").css("visibility", "visible");
                 });

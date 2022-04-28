@@ -21,7 +21,7 @@
     <div class="navbar-grid">
         <div class="grid-item"></div>
         <div class="grid-item" style="grid-column-start: span 2;">
-            <h1 style="display: inline; vertical-align: middle; margin-right: 20px; cursor: pointer;" onclick="location.href='/';">
+            <h1 style="display: inline; vertical-align: middle; margin-right: 20px; cursor: pointer;" onclick="window.open('/');">
                 <img src="/assets/image/svg/home.svg" style="width: 1em; height: 1em; transform: translateY(2px);" title="返回首页">
             </h1>
             <% Object.keys(dashboardPage).forEach(item => { %>
@@ -47,10 +47,10 @@
                         localStorageUtils.userLogout();
                         location.href = "/login";
                     } else {
-                        alert("退出登录失败");
+                        swal("退出登录失败");
                     }
                 } else {
-                    alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
+                    swal(`出错啦！${data.errMsg} (错误码: ${data.errCode})`);
                 }
             }).catch(function (error) {
                 console.log(error);

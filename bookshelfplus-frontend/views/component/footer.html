@@ -39,17 +39,11 @@
             .then(function (response) {
                 // 当接口成功返回时，动态设置css
                 loadFont(response.data.url);
-                $("html,body").css("transition", ".05s");
-                setTimeout(() => {
-                    $("html,body").css("opacity", "1");
-                }, 100)
             })
             .catch(function (error) {
                 console.log("字体加载失败", error);
-                $("html,body").css("transition", ".05s");
-                setTimeout(() => {
-                    $("html,body").css("opacity", "1");
-                }, 100)
+            }).finally(function () {
+                finishFontLoading();
             });
     }
 
@@ -67,6 +61,12 @@
         console.log("字体加载成功");
     }
 
+    function finishFontLoading() {
+        $("html,body").css("transition", ".05s");
+        setTimeout(() => {
+            $("html,body").css("opacity", "1");
+        }, 100);
+    }
 
     $(document).ready(function () {
         var allText = getPageText();
@@ -74,7 +74,7 @@
         if ('<%= typeof(minfontOnLoad) === "undefined" ? "true" : minfontOnLoad %>' != "false") {
             fontmin(allText);
         } else {
-            // $("html,body").css("opacity", "1");
+            setTimeout(finishFontLoading, 1000);
         }
     });
 </script>

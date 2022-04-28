@@ -107,7 +107,7 @@
         });
         $(".btn-submit").click(async function () {
             if ($("#username").val() === "" || $("#password").val() === "") {
-                alert("用户名或密码不能为空！");
+                await swal("用户名或密码不能为空！");
                 if ($("#username").val() === "") {
                     $("#username").focus();
                 } else {
@@ -157,14 +157,14 @@
                                 window.location.href = "/dashboard/user/index";
                             }
                         } else {
-                            alert("用户名或密码错误");
+                            swal("用户名或密码错误");
                         }
                     } else {
-                        alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
+                        swal(`出错啦！${data.errMsg} (错误码: ${data.errCode})`);
                     }
                 }).catch(function (error) {
                     console.log(error);
-                    alert("无法连接到服务器，请检查网络连接！");
+                    swal("无法连接到服务器，请检查网络连接！");
                 }).finally(function () {
                     isOnLogin = false;
                 });

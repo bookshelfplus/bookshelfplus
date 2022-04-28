@@ -16,18 +16,20 @@
                 if (status === "success") {
                     console.log(data);
                     if (data == "success") {
-                        alert("取消绑定成功！");
-                        location.reload();
+                        swal("取消绑定成功！").then(function () {
+                            location.reload();
+                        });
                     } else {
-                        alert("出错啦，刷新页面重新试试吧");
+                        swal("出错啦，刷新页面重新试试吧");
                     }
                 } else {
-                    alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
-                    location.reload();
+                    swal(`出错啦！${data.errMsg} (错误码: ${data.errCode})`).then(function () {
+                        location.reload();
+                    });
                 }
             }).catch(function (error) {
                 console.log(error);
-                alert("无法连接到服务器，请检查网络连接！");
+                swal("无法连接到服务器，请检查网络连接！");
             });
     }
     if (localStorageUtils.getLoginStatus() != null) {
@@ -55,11 +57,11 @@
                     }
                 } else {
                     $(".btn-third-party").hide();
-                    alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
+                    swal(`出错啦！${data.errMsg} (错误码: ${data.errCode})`);
                 }
             }).catch(function (error) {
                 console.log(error);
-                alert("无法连接到服务器，请检查网络连接！");
+                swal("无法连接到服务器，请检查网络连接！");
             });
     }
 </script>

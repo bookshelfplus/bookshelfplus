@@ -10,6 +10,7 @@
     <script src="/assets/lib/axios/0.26.1/axios.min.js"></script>
     <script src="/assets/javascripts/httpRequestUtils.js"></script>
     <script src="/assets/javascripts/localStorageUtils.js"></script>
+    <script src="/assets/lib/sweetalert/2.1.2/sweetalert.min.js"></script>
     <script>
         // API地址
         const APIHOST = '<%= global.site.api.prefix %>';
@@ -36,8 +37,9 @@
                         // 绑定第三方账号
 
                         // 绑定第三方账号成功
-                        alert("绑定成功");
-                        location.href = "/dashboard/user/my-account";
+                        swal("绑定成功").then(() => {
+                            location.href = "/dashboard/user/my-account";
+                        });
                     } else {
                         // 第三方登录成功
                         localStorageUtils.userLogin({
@@ -51,8 +53,9 @@
                         }
                     }
                 } else {
-                    alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
-                    location.replace("/login");
+                    swal(`出错啦！${data.errMsg} (错误码: ${data.errCode})`).then(function () {
+                        location.replace("/login");
+                    });
                 }
             }).catch(function (error) {
                 console.log(error);

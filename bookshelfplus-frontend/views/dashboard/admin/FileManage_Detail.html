@@ -58,11 +58,11 @@
                         </table>`;
 
                 } else {
-                    alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
+                    swal(`出错啦！${data.errMsg} (错误码: ${data.errCode})`);
                 }
             }).catch(function (error) {
                 console.log(error);
-                alert("无法连接到服务器，请检查网络连接！");
+                swal("无法连接到服务器，请检查网络连接！");
             });
     }
     getFileInfo();
@@ -111,11 +111,11 @@
                             ${items.join("")}
                         </table>`;
                 } else {
-                    alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
+                    swal(`出错啦！${data.errMsg} (错误码: ${data.errCode})`);
                 }
             }).catch(function (error) {
                 console.log(error);
-                alert("无法连接到服务器，请检查网络连接！");
+                swal("无法连接到服务器，请检查网络连接！");
             });
     }
     getFileObjectInfo();
@@ -140,17 +140,17 @@
                 if (status === "success") {
                     console.log(data);
                     if(data == "success") {
-                        // alert("绑定成功！");
+                        // swal("绑定成功！");
                     } else {
-                        alert("绑定失败！");
+                        swal("绑定失败！");
                     }
                     getFileInfo();
                 } else {
-                    alert(`出错啦！${data.errMsg}(错误码: ${data.errCode}) `);
+                    swal(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
                 }
             }).catch(function (error) {
                 console.log(error);
-                alert("无法连接到服务器，请检查网络连接！");
+                swal("无法连接到服务器，请检查网络连接！");
             }).finally(function () {
                 toggleSelectBook();
             });

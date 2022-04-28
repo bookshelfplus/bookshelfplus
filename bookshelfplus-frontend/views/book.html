@@ -275,7 +275,7 @@
                                 出版社：${data.publishingHouse}<br>
                             </p>
                             <div class="group-button">
-                                <img id="favorties-button" src="/assets/image/svg/favorites_empty.svg" style="visibility: hidden; opacity: 1; transition: all 0.3s;" title="点击收藏/取消收藏" onclick="alert('请先登录！')" />
+                                <img id="favorties-button" src="/assets/image/svg/favorites_empty.svg" style="visibility: hidden; opacity: 1; transition: all 0.3s;" title="点击收藏/取消收藏" onclick="swal('请先登录！')" />
                                 <!-- 预加载图片 --><img src="/assets/image/svg/favorites_fill.svg" style="display: none;" />
 
                                 <a class="download-link" href="javaScript:scrollToTarget()"><img id="download-icon" src="/assets/image/svg/download.svg" /><span>下载这本书</span></a>
@@ -293,11 +293,11 @@
                     // 获取用户收藏信息
                     getUserFavouritesStatus();
                 } else {
-                    alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
+                    swal(`出错啦！${data.errMsg} (错误码: ${data.errCode})`);
                 }
             }).catch(function (error) {
                 console.log(error);
-                alert("无法连接到服务器，请检查网络连接！");
+                swal("无法连接到服务器，请检查网络连接！");
             }).finally(function () {
                 doFontmin();
             });
@@ -336,12 +336,12 @@
                             // 登录过期，小问题，这里不弹窗显示
                             localStorageUtils.userLogout();
                         } else {
-                            alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
+                            swal(`出错啦！${data.errMsg} (错误码: ${data.errCode})`);
                         }
                     }
                 }).catch(function (error) {
                     console.log(error);
-                    // alert("无法连接到服务器，请检查网络连接！");
+                    // swal("无法连接到服务器，请检查网络连接！");
                 }).finally(function () {
                     $("#favorties-button").css("visibility", "visible");
                 });
@@ -374,11 +374,11 @@
                             console.log("操作失败");
                         }
                     } else {
-                        alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
+                        swal(`出错啦！${data.errMsg} (错误码: ${data.errCode})`);
                     }
                 }).catch(function (error) {
                     console.log(error);
-                    // alert("无法连接到服务器，请检查网络连接！");
+                    swal("无法连接到服务器，请检查网络连接！");
                 }).finally(function () {
                     setTimeout(toggleDisplayButton, 500);
                 });
@@ -542,11 +542,11 @@
                             }, 500);
                         });
                     } else {
-                        alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
+                        swal(`出错啦！${data.errMsg} (错误码: ${data.errCode})`);
                     }
                 }).catch(function (error) {
                     console.log(error);
-                    alert("无法连接到服务器，请检查网络连接！");
+                    swal("无法连接到服务器，请检查网络连接！");
                 }).finally(function () {
                     doFontmin();
                 });
@@ -560,7 +560,7 @@
             console.log("fileObject", fileObject);
 
             if(!localStorageUtils.getLoginStatus()) {
-                alert("请先登录！");
+                swal("请先登录！");
                 return;
             }
 
@@ -582,11 +582,11 @@
                         console.log(downloadLink);
                         downloadLink.click();
                     } else {
-                        alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
+                        swal(`出错啦！${data.errMsg} (错误码: ${data.errCode})`);
                     }
                 }).catch(function (error) {
                     console.log(error);
-                    alert("无法连接到服务器，请检查网络连接！");
+                    swal("无法连接到服务器，请检查网络连接！");
                 });
         }
     </script>
@@ -612,16 +612,16 @@
                     if (status === "success") {
                         // console.log(data);
                         if (data) {
-                            alert("真棒！反馈成功！");
+                            swal("真棒！反馈成功！");
                         } else {
-                            alert("反馈失败，请稍后再试！");
+                            swal("反馈失败，请稍后再试！");
                         }
                     } else {
-                        alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
+                        swal(`出错啦！${data.errMsg} (错误码: ${data.errCode})`);
                     }
                 }).catch(function (error) {
                     console.log(error);
-                    alert("无法连接到服务器，请检查网络连接！");
+                    swal("无法连接到服务器，请检查网络连接！");
                 });
         }
     </script>

@@ -8,8 +8,9 @@ var localStorageUtils = {
             localStorage.removeItem('test');
             return true;
         } catch (e) {
-            alert("您的浏览器不支持localStorage，请更换浏览器！");
-            window.location.href = "/";
+            swal("您的浏览器不支持localStorage，请更换浏览器！").then(function () {
+                window.location.href = "/";
+            });
             return false;
         }
     },

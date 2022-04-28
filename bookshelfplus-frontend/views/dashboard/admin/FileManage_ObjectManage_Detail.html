@@ -7,8 +7,9 @@
     var fileObjectId = params.id;
     var fileId = params.fileId;
     if (!fileId) {
-        alert("未传入 fileId ！");
-        history.go(-1);
+        swal("未传入 fileId ！").then(function () {
+            history.go(-1);
+        });
     }
 
     var isModify = fileObjectId ? true : false;
@@ -28,11 +29,12 @@
             data: { id: fileObjectId },
             success: function (data) {
                 console.log(data);
-                alert(isModify ? "修改成功！" : "添加成功！");
-                if (params.referrer)
-                    location.replace(params.referrer);
-                else
-                    history.go(-1);
+                swal(isModify ? "修改成功！" : "添加成功！").then(function () {
+                    if (params.referrer)
+                        location.replace(params.referrer);
+                    else
+                        history.go(-1);
+                });
             }
         });
     }
@@ -47,9 +49,10 @@
             console.log(data)
             return data;
         } else {
-            alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
-            // 回到上一页
-            history.go(-1);
+            swal(`出错啦！${data.errMsg} (错误码: ${data.errCode})`).then(function () {
+                // 回到上一页
+                history.go(-1);
+            });
         }
     }
 

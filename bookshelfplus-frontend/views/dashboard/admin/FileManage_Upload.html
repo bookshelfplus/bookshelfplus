@@ -161,7 +161,7 @@
             return;
         }
         if (fileList.length > 1) {
-            alert("一次只能选择1个文件！");
+            swal("一次只能选择1个文件！");
             return;
         }
 
@@ -171,7 +171,7 @@
 
         // // 判断用户选择的文件是否为文件夹
         // if (await isFolder(file)) {
-        //     alert("不支持文件夹，请选择文件！");
+        //     swal("不支持文件夹，请选择文件！");
         //     return;
         // }
 
@@ -277,11 +277,11 @@
 
         updateUI({ isFileEmpty: true });
         if (dt.items.length > 1) {
-            alert("一次只能选择1个文件！");
+            swal("一次只能选择1个文件！");
             return;
         }
         if (dt.items[0].webkitGetAsEntry().isDirectory) {
-            alert("不支持文件夹，请选择文件！");
+            swal("不支持文件夹，请选择文件！");
             return;
         }
         handleFiles(files);
@@ -350,7 +350,7 @@
     //##############################################
     function upload() {
         if (!file) {
-            alert("您还未选择文件！");
+            swal("您还未选择文件！");
             return;
         }
         var postParams = {
@@ -378,7 +378,7 @@
                 } else {
                     if (data.errCode == "60001") {
                         // 文件已存在
-                        console.log(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
+                        console.log(`出错啦！${data.errMsg} (错误码: ${data.errCode})`);
 
                         // 再次发送请求，查询这个已存在文件的 fileId
                         postRequest("/file/getFileByHash", { token: localStorageUtils.getToken(), fileSha1: fileInfo.fileSha1 })
@@ -394,19 +394,19 @@
                                     if (isRedirect)
                                         location.href = `<%= pageUrl %>../detail?fileId=${data.id}`;
                                 } else {
-                                    alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
+                                    swal(`出错啦！${data.errMsg} (错误码: ${data.errCode})`);
                                 }
                             }).catch(function (error) {
                                 console.log(error);
-                                alert("无法连接到服务器，请检查网络连接！");
+                                swal("无法连接到服务器，请检查网络连接！");
                             });
                     } else {
-                        alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
+                        swal(`出错啦！${data.errMsg} (错误码: ${data.errCode})`);
                     }
                 }
             }).catch(function (error) {
                 console.log(error);
-                alert("无法连接到服务器，请检查网络连接！");
+                swal("无法连接到服务器，请检查网络连接！");
             });
     }
 
@@ -436,13 +436,14 @@
             setTimeout(function () {
                 // 上传成功触发一次 “刷新文件对象上传状态”，避免因为云函数回调不成功导致文件对象上传状态没有及时更新
                 refreshFileObjectStatus(fileObjectId, function () {
-                    alert("上传成功！");
-                    if ($("#checkbox-auto-upload").is(":checked")) {
-                        window.location.reload();
-                    } else {
-                        // location.href = "<%= pageUrl %>../";
-                        location.href = "<%= pageUrl %>../detail?id=" + fileId;
-                    }
+                    swal("上传成功！").then(function () {
+                        if ($("#checkbox-auto-upload").is(":checked")) {
+                            window.location.reload();
+                        } else {
+                            // location.href = "<%= pageUrl %>../";
+                            location.href = "<%= pageUrl %>../detail?id=" + fileId;
+                        }
+                    });
                 });
             }, 300);
         };
@@ -474,11 +475,11 @@
                     // fileAssociator.innerHTML += optionHTML;
                     fileAssociator.innerHTML = `<option value="0">新建文件</option>` + optionHTML;
                 } else {
-                    alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
+                    swal(`出错啦！${data.errMsg} (错误码: ${data.errCode})`);
                 }
             }).catch(function (error) {
                 console.log(error);
-                alert("无法连接到服务器，请检查网络连接！");
+                swal("无法连接到服务器，请检查网络连接！");
             });
     }
 </script>
@@ -495,11 +496,11 @@
                     if (callback)
                         callback();
                 } else {
-                    alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
+                    swal(`出错啦！${data.errMsg} (错误码: ${data.errCode})`);
                 }
             }).catch(function (error) {
                 console.log(error);
-                alert("无法连接到服务器，请检查网络连接！");
+                swal("无法连接到服务器，请检查网络连接！");
             });
     }
 </script>

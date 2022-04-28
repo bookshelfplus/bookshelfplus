@@ -62,7 +62,7 @@
     $("#btn-account-cancellation-confirm").click(function () {
         var accountCancellationPassword = $("#account-cancellation-password").val();
         if (accountCancellationPassword == "") {
-            alert("请输入您的密码");
+            swal("请输入您的密码");
             return;
         }
         postRequest("/user/cancelAccount", { token: localStorageUtils.getToken(), password: accountCancellationPassword })
@@ -73,18 +73,19 @@
                 if (status === "success") {
                     console.log(data);
                     if (data == "success") {
-                        alert("注销成功！");
-                        location.reload();
+                        swal("注销成功！").then(function () {
+                            location.reload();
+                        });
                     } else {
-                        alert("出错啦，刷新页面重新试试吧");
+                        swal("出错啦，刷新页面重新试试吧");
                     }
                 } else {
-                    alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
+                    swal(`出错啦！${data.errMsg} (错误码: ${data.errCode})`);
                     $("#account-cancellation-password").val("");
                 }
             }).catch(function (error) {
                 console.log(error);
-                alert("无法连接到服务器，请检查网络连接！");
+                swal("无法连接到服务器，请检查网络连接！");
             });
     });
 </script>

@@ -63,7 +63,7 @@
     // 点击粘贴按钮
     function pasteText() {
         if (!navigator.clipboard) {
-            alert("浏览器不支持读取剪切板，请手动粘贴！");
+            swal("浏览器不支持读取剪切板，请手动粘贴！");
             return;
         }
         navigator.clipboard.readText().then(text => {
@@ -72,7 +72,7 @@
             onPaste();
         }).catch(err => {
             console.error('Failed to read clipboard contents: ', err);
-            alert("读取剪切板失败，请手动粘贴！");
+            swal("读取剪切板失败，请手动粘贴！");
         });
     }
 </script>

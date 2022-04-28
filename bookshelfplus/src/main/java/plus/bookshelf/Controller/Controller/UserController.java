@@ -67,8 +67,14 @@ public class UserController extends BaseController {
     public CommonReturnType register(@RequestParam(value = "username") String username,
                                      @RequestParam(value = "password") String password,
                                      @RequestParam(value = "visitorId") String visitorFingerprint) throws BusinessException {
-        if (username == null || password == null) {
-            return null;
+        if (username == null || username.equals("")) {
+            throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "用户名不能为空");
+        }
+        if (password == null || password.equals("")) {
+            throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "密码不能为空");
+        }
+        if (!password.matches("[A-Za-z0-9_!@#]{8,16}$")) {
+            throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "密码不符合要求，请检查");
         }
         String encryptPwd = DigestUtils.sha1Hex(password);
 

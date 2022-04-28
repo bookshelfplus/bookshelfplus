@@ -55,15 +55,16 @@ function search({ tableElementId = "", searchText = "", categoryId = 0 }) {
                     renderTable({ data: renderData, tableId: tableElementId, renderTableHead: true });
                 }
 
-                // 渲染后重新获取一次字体
-                if (typeof (fontmin) === "function") {
-                    fontmin(getPageText());
-                }
             } else {
-                alert(`出错啦！${data.errMsg} (错误码: ${data.errCode}) `);
+                swal(`出错啦！${data.errMsg} (错误码: ${data.errCode})`);
             }
         }).catch(function (error) {
             console.log(error);
-            alert("无法连接到服务器，请检查网络连接！");
+            swal("无法连接到服务器，请检查网络连接！");
+        }).finally(function () {
+            // 渲染后重新获取一次字体
+            if (typeof (fontmin) === "function") {
+                fontmin(getPageText());
+            }
         });
 }
