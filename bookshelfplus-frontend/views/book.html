@@ -485,8 +485,10 @@
                         var fileObjectList = {};
                         for (let i = 0; i < data.fileObject.length; i++) {
                             const element = data.fileObject[i];
+
                             if (!fileObjectList[element.fileId])
                                 fileObjectList[element.fileId] = [];
+
                             fileObjectList[element.fileId].push(getLinkDOM(element));
 
                             // 从文件中找到fileSha1, fileName, fileExt，并填入文件对象中，否则下载时获取不到
@@ -503,7 +505,7 @@
 
                             direckLinkInfo[element.id] = element;
                         }
-                        console.log(fileObjectList);
+                        console.log("fileObjectList", fileObjectList);
 
                         // 再处理文件
                         var fileContainer = document.getElementById("file-container");

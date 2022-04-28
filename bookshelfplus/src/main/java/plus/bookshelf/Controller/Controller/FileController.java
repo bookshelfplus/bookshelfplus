@@ -54,7 +54,7 @@ public class FileController extends BaseController {
     @ApiOperation(value = "书籍下载页面获取文件提供的下载方式", notes = "")
     @RequestMapping(value = "getFileByBookId", method = {RequestMethod.GET})
     @ResponseBody
-    public CommonReturnType getFileByBookId(@RequestParam(value = "bookId", required = false) Integer bookId) throws BusinessException, InvocationTargetException, IllegalAccessException {
+    public CommonReturnType getFileByBookId(@RequestParam(value = "bookId", required = true) Integer bookId) throws BusinessException, InvocationTargetException, IllegalAccessException {
 
         List<FileModel> fileModels = fileService.getFileByBookId(bookId);
         List<FileVO> fileVOS = new ArrayList<>();
