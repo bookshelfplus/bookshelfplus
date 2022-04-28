@@ -156,7 +156,7 @@
                 "validate": (val) => getValidateUtils().setValue(val)
                     .notString("传入的值为非字符串类型")
                     .notEmptyAfterTrim("书本名称不能为空，请输入书本名称")
-                    .length(0, 50, "书本名称不能超过 50 个字符")
+                    .length(0, 250, "书本名称不能超过 250 个字符")
                     .isValid()
             },
             {
@@ -170,11 +170,10 @@
                 "label": {
                     "value": "作者姓名",
                 },
-                "required": true, // 是否必填
+                "required": false, // 是否必填
                 "innerHTML": "",
                 "validate": (val) => getValidateUtils().setValue(val)
                     .notString("传入的值为非字符串类型")
-                    .notEmpty("作者姓名不能为空")
                     .length(0, 50, "作者姓名不能超过 50 个字符")
                     .isValid()
             },
@@ -202,7 +201,7 @@
                     "id": "language",
                     "name": "language",
                     "placeholder": "书籍语言",
-                    "value": bookDetail.language || "",
+                    "value": bookDetail.language || "Chinese",
                 },
                 "label": {
                     "value": "语言",
@@ -241,11 +240,10 @@
                 "label": {
                     "value": "出版社",
                 },
-                "required": true, // 是否必填
+                "required": false, // 是否必填
                 "innerHTML": "",
                 "validate": (val) => getValidateUtils().setValue(val)
                     .notString("传入的值为非字符串类型")
-                    .notEmpty("出版社不能为空")
                     .length(0, 50, "出版社不能超过 50 个字符")
                     .isValid()
             },
