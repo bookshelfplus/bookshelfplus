@@ -377,7 +377,7 @@
                     uploadFile(file, data.url, data.fileId, data.fileObjectId);
                 } else {
                     if (data.errCode == "60001") {
-                        // 文件已存在
+                        // 文件已存在于对象存储中
                         console.log(`出错啦！${data.errMsg} (错误码: ${data.errCode})`);
 
                         // 再次发送请求，查询这个已存在文件的 fileId
@@ -388,11 +388,15 @@
                                 var data = axiosData.data;
                                 if (status === "success") {
                                     console.log(data);
-
-                                    // 查询到之后，询问用户是否跳转到文件详情页
-                                    var isRedirect = confirm(`文件已存在，是否前往查看详情？\n（文件ID: ${data.id}）`);
-                                    if (isRedirect)
-                                        location.href = `<%= pageUrl %>../detail?fileId=${data.id}`;
+                                    if (data) {
+                                        // 查询到之后，询问用户是否跳转到文件详情页
+                                        var isRedirect = confirm(`文件已存在，是否前往查看详情？\n（文件ID: ${data.id}）`);
+                                        if (isRedirect)
+                                            location.href = `<%= pageUrl %>../detail?fileId=${data.id}`;
+                                    } else {
+                                        // 对象存储中存在该文件，但是系统数据库中找不到
+                                        swal("出错啦！该文件已存在于腾讯云对象存储中，但是系统中不存在")
+                                    }
                                 } else {
                                     swal(`出错啦！${data.errMsg} (错误码: ${data.errCode})`);
                                 }

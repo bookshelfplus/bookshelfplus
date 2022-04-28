@@ -489,6 +489,18 @@
                                 fileObjectList[element.fileId] = [];
                             fileObjectList[element.fileId].push(getLinkDOM(element));
 
+                            // 从文件中找到fileSha1, fileName, fileExt，并填入文件对象中，否则下载时获取不到
+                            var fileId = element.fileId;
+                            for (let j = 0; j < data.file.length; j++) {
+                                const fileElement = data.file[j];
+                                if (element.fileId == fileElement.id) {
+                                    // 找到文件
+                                    element.fileSha1 = fileElement.fileSha1;
+                                    element.fileName = fileElement.fileName;
+                                    element.fileExt = fileElement.fileExt;
+                                }
+                            }
+
                             direckLinkInfo[element.id] = element;
                         }
                         console.log(fileObjectList);
@@ -564,7 +576,7 @@
                 return;
             }
 
-            var fileNameForUser = `${fileObject.fileName}.${fileObject.fileType}`;
+            var fileNameForUser = `${fileObject.fileName}.${fileObject.fileExt}`;
             var fileKeyForCos = fileObject.filePath;
 
             var visitorId = await getVisitorId();

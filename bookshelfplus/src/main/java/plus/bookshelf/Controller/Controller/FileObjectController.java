@@ -324,14 +324,14 @@ public class FileObjectController extends BaseController {
                 url = qCloudCosUtils.generatePresignedUrl(userModel.getId(), httpMethodName, bookSaveFolder, fileSha1, expireMinute, urlGUID);
                 break;
             case GET:
-                if (!isExist) throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "文件不存在");
+                if (!isExist) throw new BusinessException(BusinessErrorCode.FILE_NOT_EXIST, "文件不存在");
                 if (visitorFingerprint == null || !visitorFingerprintLogService.saveFingerprint("FailureFeedback", userModel.getId(), visitorFingerprint)) {
                     throw new BusinessException(BusinessErrorCode.OPERATION_NOT_ALLOWED, "参数错误，请联系管理员处理");
                 }
                 url = qCloudCosUtils.generatePresignedUrlForGET(userModel.getId(), bookSaveFolder, fileSha1, expireMinute, urlGUID, fileNameAndExt);
                 break;
             case DELETE:
-                if (!isExist) throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "文件不存在");
+                if (!isExist) throw new BusinessException(BusinessErrorCode.FILE_NOT_EXIST, "文件不存在");
                 url = qCloudCosUtils.generatePresignedUrl(userModel.getId(), httpMethodName, bookSaveFolder, fileSha1, expireMinute, urlGUID);
                 break;
             default:
@@ -406,7 +406,7 @@ public class FileObjectController extends BaseController {
 
             // 如果找不到，就抛出异常
             if (fileObject == null) {
-                throw new BusinessException(BusinessErrorCode.PARAMETER_VALIDATION_ERROR, "文件不存在！");
+                throw new BusinessException(BusinessErrorCode.FILE_NOT_EXIST, "文件不存在！");
             }
             // 更新文件对象状态
             Boolean isSuccess1 = fileObjectService.updateFileStatus(fileObject.getId(), "SUCCESS");
