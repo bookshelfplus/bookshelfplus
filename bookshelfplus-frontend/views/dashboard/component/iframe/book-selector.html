@@ -79,6 +79,9 @@
                             var columnWidth = [20, 15, 10, 15, 5, 35];
                             renderData.push({
                                 编号: `${element.id}`,
+                                管理: `<span class="overflow-omit" style="max-width: ${columnWidth[5] * mainDivWidth / 100}vw; max-height: 2em; margin: 0 auto;">
+                                            <a href="javascript:selectItem(${element.id});">选择</a>
+                                        </span>`,
                                 书名: `<a target="_blank" href="/book?id=${element.id}">
                                             <span class="overflow-omit" style="max-width: ${columnWidth[0] * mainDivWidth / 100}vw; max-height: 2em; margin: 0 auto;">
                                                 ${element.bookName}
@@ -98,9 +101,6 @@
                                         </span>`,
                                 来源: `<span class="overflow-omit" style="max-width: ${columnWidth[4] * mainDivWidth / 100}vw; max-height: 2em; margin: 0 auto;">
                                             ${element.publishingHouse}
-                                        </span>`,
-                                管理: `<span class="overflow-omit" style="max-width: ${columnWidth[5] * mainDivWidth / 100}vw; max-height: 2em; margin: 0 auto;">
-                                            <a href="javascript:selectItem(${element.id});">选择</a>
                                         </span>`,
                             })
                         });

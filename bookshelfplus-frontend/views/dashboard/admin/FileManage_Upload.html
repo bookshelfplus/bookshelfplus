@@ -95,7 +95,7 @@
 </div>
 <!-- <input type="file" id="input" multiple onchange="handleFiles(this.files)"> -->
 <input type="file" id="fileSelector" style="display: none;">
-<p>
+<p style="font-size: 12px;">
     仅支持 Chrome 内核浏览器
 </p>
 <div id="file-detail-container" style="display: none;">
@@ -111,7 +111,7 @@
     <div id="processBar1" class="process-bar">
         <div id="processBar1Inner" class="process-bar-inner"></div>
     </div>
-    <p>文件上传进度</p>
+    <p>文件上传进度<br><span id="upload-speed"><!-- 上传速度 --></span></p>
     <div id="processBar2" class="process-bar">
         <div id="processBar2Inner" class="process-bar-inner"></div>
     </div>
@@ -342,6 +342,14 @@
             dropbox.classList.add("green");
             beginUpload.removeAttribute("disabled");
             document.getElementById("file-detail-container").style.display = "";
+
+            // 隐藏文件选择器，避免多次选择文件造成后面计算哈希及上传文件出现混乱
+            $("#dropbox").css("transition", "0.3s");
+            $("#dropbox").css("height", 0);
+            $("#dropbox").css("opacity", 0);
+            setTimeout(function () {
+                $("#dropbox").css("display", "none");
+            }, 300);
         }
     }
 
@@ -420,6 +428,9 @@
     function uploadFile(file, preSignedUrl, fileId, fileObjectId) {
         // refer: https://cloud.tencent.com/document/product/436/35651
 
+        // 存储上次更新上传进度和速度时，时间和已上传字节 （用于计算上传进度和上传速度）
+        var sTime = new Date().getTime(), sLoaded = 0;
+
         // 获取到 Url 后，前端可以这样 ajax 上传
         var xhr = new XMLHttpRequest();
         xhr.open('PUT', preSignedUrl, true);
@@ -430,7 +441,30 @@
                 // e.loaded 已传输的字节
                 // e.total 需传输的总字节
                 var procentComplete = Math.ceil((e.loaded / e.total) * 100);
+
+                // 距离上次更新界面显示经过的毫秒数 & 上传的文件大小
+                let timeSpan = new Date().getTime() - sTime;
+                let loadedSpan = e.loaded - sLoaded;
+
+                // 这段时间内的上传速度
+                let speed = loadedSpan * 1000 / timeSpan; // 1000: 毫秒 转 秒
+
+                // 更新 sTime, sLoaded
+                sTime = new Date().getTime();
+                sLoaded = e.loaded;
+
+                // 输出所选文件的总大小
+                let nBytes = speed;
+                let sOutput = nBytes + " bytes/s";
+                // optional code for multiples approximation
+                const aMultiples = ["KiB/s", "MiB/s", "GiB/s", "TiB/s", "PiB/s", "EiB/s", "ZiB/s", "YiB/s"];
+                for (nMultiple = 0, nApprox = nBytes / 1024; nApprox > 1; nApprox /= 1024, nMultiple++) {
+                    sOutput = nApprox.toFixed(2) + " " + aMultiples[nMultiple];
+                }
+
+                // 更新界面显示
                 document.getElementById("processBar2Inner").style.width = `${procentComplete}%`;
+                $("#upload-speed").html(`上传进度: ${procentComplete.toFixed(0)}%，上传速度：${sOutput}`);
                 console.log("上传进度", procentComplete);
             }
         };
