@@ -452,6 +452,9 @@
             }, 300);
         };
         xhr.onerror = function (e) {
+            swal("上传失败，请检查网络连接并重试！").then(function () {
+                location.reload();
+            });
             console.log('上传出错', xhr.status, xhr.statusText);
         };
         xhr.send(file); // file 是要上传的文件对象
