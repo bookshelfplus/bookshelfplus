@@ -174,7 +174,7 @@
                 "innerHTML": "",
                 "validate": (val) => getValidateUtils().setValue(val)
                     .notString("传入的值为非字符串类型")
-                    .length(0, 50, "作者姓名不能超过 50 个字符")
+                    .length(0, 250, "作者姓名不能超过 250 个字符")
                     .isValid()
             },
             {

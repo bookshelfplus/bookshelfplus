@@ -46,6 +46,8 @@
                 var data = axiosData.data;
                 if (status === "success") {
                     console.log("file", data);
+
+                    let bookLinkHtml = `（<a href="/book?id=${data.bookId}" target="_blank">查看关联书籍</a>）`;
                     document.getElementById("file-detail-container").innerHTML =
                         `<table border="1" style="margin: 0 auto;">
                             <tr><th>key</th><th>value</th></tr>
@@ -54,7 +56,7 @@
                             <tr><td>文件大小</td><td>${stringifyFileSize(data.fileSize)}</td></tr>
                             <tr><td>SHA1</td><td>${data.fileSha1}</td></tr>
                             <tr><td>文件Id</td><td>${data.id}</td></tr>
-                            <tr><td>关联书籍Id</td><td>${data.bookId == 0 ? "未关联书籍" : data.bookId}&nbsp; <button onclick="toggleSelectBook();">关联书籍</button></td></tr>
+                            <tr><td>关联书籍Id</td><td>${data.bookId == 0 ? "未关联书籍" : data.bookId + bookLinkHtml}&nbsp; <button onclick="toggleSelectBook();">关联书籍</button></td></tr>
                             <tr><td>是否有广告</td><td>${data.advertising ? "是" : "否"}</td></tr>
                             <tr><td>是否有水印</td><td>${data.watermark ? "是" : "否"}</td></tr>
                             <tr><td>文件创建日期</td><td>${data.fileCreateAt}</td></tr>
@@ -164,7 +166,10 @@
     function toggleSelectBook() {
         if($("#book-selector-container").css("display") === "none") {
             document.getElementById("book-selector-iframe").src = "/dashboard/iframe/book-selector";
-            $("#book-selector-container").slideDown();
+            $("#book-selector-container").slideDown(200, function () { });
+            $('body,html').animate({
+                scrollTop: $("#book-selector-container").offset().top - 20
+            });
         } else {
             $("#book-selector-container").slideUp();
         }
