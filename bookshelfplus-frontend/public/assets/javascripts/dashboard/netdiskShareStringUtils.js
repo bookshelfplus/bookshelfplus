@@ -8,20 +8,20 @@ function getNetdiskShareDetails(shareText) {
     };
     try {
         result.url = shareText.match(/https?:\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]/g)[0];
-        var pwdRegExpResult = shareText.match(/提取码[:|：][ ]*([^ \n]*)[ |\n]?/); //.match(/提取码[:|：] *(.*?)[ |\n]?/);
+        var pwdRegExpResult = shareText.match(/[提取码|密码][:|：][ ]*([^ \n]*)[ |\n]?/);
         // console.log(shareText, pwdRegExpResult);
         // console.log("--------")
         // return;
         result.pwd = pwdRegExpResult && pwdRegExpResult.length > 1 ? pwdRegExpResult[1] : "";
-        result.platform = result.url.indexOf("pan.baidu.com") > -1
-            ? { display: "百度网盘", name: "BAIDU_NETDISK" }
-            : (result.url.indexOf("aliyundrive.com") > -1
-                ? { display: "阿里云盘", name: "ALIYUN_DRIVE" }
-                : { display: null, name: null }
-            );
-        if (!result.platform || !result.platform.name) {
-            throw new Exception("error");
-        }
+        result.platform =
+            result.url.indexOf("pan.baidu.com") > -1 ? { display: "百度网盘", name: "BAIDU_NETDISK" }
+                : (result.url.indexOf("aliyundrive.com") > -1 ? { display: "阿里云盘", name: "ALIYUN_DRIVE" }
+                    : (result.url.indexOf("feishu.cn") > -1 ? { display: "飞书云文档", name: "FEISHU_DRIVE" }
+                        : (result.url.indexOf("lanzoul.com") > -1 ? { display: "蓝奏云", name: "LANZOUYUN" }
+                            : { display: "其他", name: "UNKNOWN_DRIVE" }
+                        )
+                    )
+                );
         result.success = true;
     } catch (error) {
 
@@ -59,6 +59,20 @@ function getNetdiskShareDetails(shareText) {
 // console.log("👇无提取码");
 // getNetdiskShareDetails(`「ZenTaoPMS.16.4.win64.exe」https://www.aliyundrive.com/s/aZLhoqNFyiv
 // 点击链接保存，或者复制本段内容，打开「阿里云盘」APP ，无需下载极速在线查看，视频原画倍速播放。`);
+
+// // 飞书（仅链接）
+// console.log("👇无提取码");
+// getNetdiskShareDetails(`https://x7xrycxzti.feishu.cn/file/boxcnVzbBjAwqxCePIHgoOcECto`);
+
+// // 飞书（带密码）
+// getNetdiskShareDetails(`飞书链接：https://x7xrycxzti.feishu.cn/file/boxcnVzbBjAwqxCePIHgoOcECto   密码：w2z9`);
+
+// // 蓝奏云（仅链接）
+// console.log("👇无提取码");
+// getNetdiskShareDetails(`https://zhangxiaodi.lanzoul.com/iN86f03zh5ab`);
+
+// // 蓝奏云（带密码）
+// getNetdiskShareDetails(`下载:https://zhangxiaodi.lanzoul.com/iN86f03zh5ab 密码:e0c0`);
 
 // // 其他情况
 // console.log("👇以下是非分享链接");

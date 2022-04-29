@@ -258,7 +258,7 @@
                     }
                     document.getElementById("container").innerHTML = `
                     <div class="grid">
-                        <div style="width: 100%;">
+                        <div style="width: 100%; user-select: none;">
                             <img id="bookImage" src="${data.thumbnail == "" ? "/assets/image/svg/no_photo.svg" : data.thumbnail}" alt="书籍缩略图">
                         </div>
                         <div style="text-align: left; min-height: 80%; min-width: 200px;">
@@ -281,7 +281,7 @@
                     <div>
                         <h2>书本介绍</h2>
                         <p>${data.description}</p>
-                        <h2>版权信息</h2>
+                        <h2>来源信息</h2>
                         <p>${data.copyright}</p>
                     </div>`;
 
@@ -433,8 +433,8 @@
                 } else {
                     downloadLink = `<a href="${fileObjectInfo.filePath}" target="_blank">前往</a>`;
                 }
-                switch (fileObjectInfo.storageMediumForDisplay) {
-                    case "腾讯云对象存储":
+                switch (fileObjectInfo.storageMedium) {
+                    case "QCLOUD_COS":
                         title = "直链下载";
                         if (!localStorageUtils.getLoginStatus()) {
                             downloadLink = "<span><a href='{}'>登录</a>后方可使用</span>".replace("{}", "/login?redirect=" + encodeURIComponent(location.pathname + location.search));
@@ -443,12 +443,19 @@
                             downloadLink = `<a style="cursor: pointer;" onclick="getDirectLink(${fileObjectInfo.id});">下载</a>`;
                         }
                         break;
-                    case "百度网盘":
+                    case "BAIDU_NETDISK":
                         iconSrc = "/assets/image/svg/baidu_netdisk.svg";
                         break;
-                    case "阿里云盘":
+                    case "ALIYUN_DRIVE":
                         iconSrc = "/assets/image/svg/aliyun_drive.svg";
                         break;
+                    case "FEISHU_DRIVE":
+                        iconSrc = "/assets/image/svg/feishu_drive.svg";
+                        break;
+                    case "LANZOUYUN":
+                        iconSrc = "/assets/image/svg/lanzouyun.svg";
+                        break;
+                    case "UNKNOWN_DRIVE":
                     default:
                         title = fileObjectInfo.storageMediumForDisplay;
                         downloadLink = `<a href="${fileObjectInfo.filePath}" target="_blank">前往</a>`;
