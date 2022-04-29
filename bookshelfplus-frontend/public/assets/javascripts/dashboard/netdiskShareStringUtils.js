@@ -18,7 +18,9 @@ function getNetdiskShareDetails(shareText) {
                 : (result.url.indexOf("aliyundrive.com") > -1 ? { display: "阿里云盘", name: "ALIYUN_DRIVE" }
                     : (result.url.indexOf("feishu.cn") > -1 ? { display: "飞书云文档", name: "FEISHU_DRIVE" }
                         : (result.url.indexOf("lanzoul.com") > -1 ? { display: "蓝奏云", name: "LANZOUYUN" }
-                            : { display: "其他", name: "UNKNOWN_DRIVE" }
+                            : (result.url.indexOf("quqi.avyeld.com") > -1 ? { display: "曲奇云盘", name: "QUQIYUN" }
+                                : { display: "其他", name: "UNKNOWN_DRIVE" }
+                            )
                         )
                     )
                 );
@@ -73,6 +75,13 @@ function getNetdiskShareDetails(shareText) {
 
 // // 蓝奏云（带密码）
 // getNetdiskShareDetails(`下载:https://zhangxiaodi.lanzoul.com/iN86f03zh5ab 密码:e0c0`);
+
+// // 曲奇云盘（仅链接）
+// console.log("👇无提取码");
+// getNetdiskShareDetails(`我在曲奇云盘分享了文件 链接: https://quqi.avyeld.com/s/3336039/6QDmYteBw9kUGORN`);
+
+// // 曲奇云盘（带密码）
+// getNetdiskShareDetails(`我在曲奇云盘分享了文件 链接: https://quqi.avyeld.com/s/3336039/6QDmYteBw9kUGORN 查阅码: 9kfs`);
 
 // // 其他情况
 // console.log("👇以下是非分享链接");
