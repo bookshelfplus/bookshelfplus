@@ -65,11 +65,13 @@
                     </div>
                     <button class="btn-submit">登录</button>
                     <p>
-                        快捷登录：<%- include("./dashboard/component/third-party-login-button.html"); %>
+                        <a href="/register">注册账号</a>
                     </p>
-                    <p>
-                        <a href="/register">注册</a>
-                    </p>
+                    <hr style="opacity: .3;">
+                    <div>
+                        <p style="margin-bottom: 0;">快捷登录</p>
+                        <%- include("./dashboard/component/third-party-login-button.html"); %>
+                    </div>
                 </div>
             </div>
         </div>
@@ -85,8 +87,8 @@
         var isOnLogin = false;
 
         // 用户正常登录逻辑
-        $("#username").val("xiaomo");
-        $("#password").val("123456");
+        // $("#username").val("xiaomo");
+        // $("#password").val("123456");
         $("#username").keydown(function (event) {
             if (event.keyCode === 13) {
                 if ($("#password").val() === "") {

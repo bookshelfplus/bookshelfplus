@@ -1,8 +1,28 @@
-<button class="btn-third-party" id="btn_gitee" onclick="thirdPartyLogin('gitee')">Gitee</button>
-<button class="btn-third-party" id="btn_oschina" onclick="thirdPartyLogin('OSCHINA')">OSCHINA</button>
-<button class="btn-third-party" id="btn_feishu" onclick="thirdPartyLogin('feishu')">飞书</button>
-<button class="btn-third-party" id="btn_github" onclick="thirdPartyLogin('GitHub')">GitHub(不稳定)</button>
-<button class="btn-third-party" id="btn_qq" onclick="thirdPartyLogin('qq')">QQ</button>
+<style>
+    .btn-third-party {
+        border: 0;
+        width: 30px;
+        height: 30px;
+        user-select: none;
+        cursor: pointer;
+        margin-right: 5px;
+        margin-left: 5px;
+        vertical-align: middle;
+
+        transition: all 0.2s;
+    }
+    .btn-third-party:hover {
+        transform: scale(1.2) rotate(-6deg);
+    }
+</style>
+
+<div style="color: #ebebeb;">
+    <img class="btn-third-party" id="btn_gitee" src="/assets/image/svg/third-party-login/gitee.svg" onclick="thirdPartyLogin('gitee')" alt="Gitee" /> |
+    <img class="btn-third-party" id="btn_oschina" src="/assets/image/svg/third-party-login/oschina.svg" onclick="thirdPartyLogin('OSCHINA')" alt="OSCHINA" /> |
+    <img class="btn-third-party" id="btn_feishu" src="/assets/image/svg/third-party-login/feishu.svg" onclick="thirdPartyLogin('feishu')" alt="飞书" /> |
+    <img class="btn-third-party" id="btn_github" src="/assets/image/svg/third-party-login/github.svg" onclick="thirdPartyLogin('GitHub')" alt="GitHub (不稳定)" /> |
+    <img class="btn-third-party" id="btn_qq" src="/assets/image/svg/third-party-login/qq.svg" onclick="thirdPartyLogin('qq')" alt="QQ (不稳定)" />
+</div>
 <script>
     // 第三方授权登录逻辑
     function thirdPartyLogin(platform) {

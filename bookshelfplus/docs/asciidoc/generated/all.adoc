@@ -1484,7 +1484,7 @@ GET /api/file/getFileByBookId
 |===
 |类型|名称|说明|类型
 |**Query**|**bookId** +
-__可选__|bookId|integer (int32)
+__必填__|bookId|integer (int32)
 |===
 
 
@@ -1509,7 +1509,7 @@ __可选__|bookId|integer (int32)
 
 ====== 请求 path
 ----
-/api/file/getFileByBookId
+/api/file/getFileByBookId?bookId=0
 ----
 
 
