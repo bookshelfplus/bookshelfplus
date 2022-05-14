@@ -15,7 +15,7 @@
 
 > 目前项目已上线，网址：https://bookshelf.plus/
 >
-> 也可前往Git仓库👉[GitHub](https://github.com/only-4/computer-related-books)、[Gitee](https://gitee.com/only4/computer-related-books)
+> 项目介绍视频（B站）：https://www.bilibili.com/video/BV1VT4y1k7Lv
 
 > 项目部分功能仍在开发中，另外文档部分内容尚未更新，部署使用需要掌握一定的技术，如果项目后期看好的人多，将会花精力完善文档以及适当增添新功能。
 
