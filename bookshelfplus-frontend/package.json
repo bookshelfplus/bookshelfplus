@@ -10,7 +10,7 @@
     "prod-stop": "pm2 stop bookshelfplus-frontend",
     "clean": "node cleanup.js"
   },
-  "description": "书栖网",
+  "description": "书单网",
   "dependencies": {
     "body-parser": "^1.20.0",
     "compression": "^1.7.4",

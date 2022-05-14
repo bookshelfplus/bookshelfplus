@@ -24,7 +24,7 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("书栖网 服务端接口文档")
+                .title("书单网 服务端接口文档")
                 .description("RESTful API | bookshelf.plus")
                 // .license("MIT")
                 // .contact(new Contact("程序员小墨", "only4.work", "admin@only4.work"))

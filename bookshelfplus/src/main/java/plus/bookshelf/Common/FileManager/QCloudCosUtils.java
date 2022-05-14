@@ -163,7 +163,7 @@ public class QCloudCosUtils {
 
         // 填写本次请求的参数，需与实际请求相同，能够防止用户篡改此签名的 HTTP 请求的参数
         Map<String, String> params = new HashMap<>();
-        params.put("by", "书栖网 bookshelf.plus");
+        params.put("by", "书单网 bookshelf.plus");
         params.put("userId", String.valueOf(userId));
         params.put("guid", urlGUID);
 
@@ -226,7 +226,7 @@ public class QCloudCosUtils {
 
         // 填写本次请求的参数，需与实际请求相同，能够防止用户篡改此签名的 HTTP 请求的参数
         Map<String, String> params = new HashMap<>();
-        req.addRequestParameter("by", "书栖网 bookshelf.plus");
+        req.addRequestParameter("by", "书单网 bookshelf.plus");
         req.addRequestParameter("userId", String.valueOf(userId));
         req.addRequestParameter("guid", urlGUID);
         // 填写本次请求的头部

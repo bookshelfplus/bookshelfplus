@@ -13,7 +13,6 @@ dotenv.config('./env');
 // 引入路由文件
 var indexRoute = require('./routes/index');
 var fontminRoute = require('./routes/fontmin');
-const { copyFileSync } = require('fs');
 
 // 创建应用
 var app = express();

@@ -6,10 +6,7 @@ function getPageTitle(title) {
     return `${title} | ${site.title}`
 }
 router.get('/', function (req, res) {
-    res.render('index', {
-        title: site.title,
-        headText: "书栖网",
-    });
+    res.render('index', {});
 });
 
 router.get('/search', function (req, res) {

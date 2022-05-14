@@ -4,5 +4,6 @@
     "_prefix": "http://bookshelf.plus/api",
     "prefix": "/api"
   },
-  "title": "书栖网 (内测中)"
+  "title": "书单网 (内测中)",
+  "short_title": "书单网"
 }
